@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useAction } from "convex/react";
-import { api } from "@/convex/_generated/api";
+import { api } from "convex/_generated/api";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ import {
 import { useState, useRef } from "react";
 import { toast } from "sonner";
 import Papa from "papaparse";
-import type { Doc } from "@/convex/_generated/dataModel";
+import type { Doc } from "convex/_generated/dataModel";
 import { getBaseDomain } from "@/lib/app-domain";
 
 interface ParsedBookRow {
