@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useConvexAuth } from "convex/react";
-import { api } from "convex/_generated/api";
+import { api } from "../../convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 
 export function useAdmin() {

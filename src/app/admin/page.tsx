@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useConvexAuth } from "convex/react";
-import { api } from "convex/_generated/api";
+import { api } from "../../../convex/_generated/api";
 import { Card, CardContent } from "@/components/ui/card";
 import { Building2, Shield, CreditCard, BookOpen } from "lucide-react";
 import { useIsSuperadmin } from "@/lib/use-admin";

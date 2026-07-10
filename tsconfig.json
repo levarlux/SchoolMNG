@@ -29,9 +29,6 @@
       ],
       "@/convex/*": [
         "./convex/*"
-      ],
-      "convex/*": [
-        "./convex/*"
       ]
     }
   },
