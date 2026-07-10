@@ -1,0 +1,8 @@
+node_modules/
+.next/
+.env.local
+.env*.local
+convex/_generated/
+
+# clerk configuration (can include secrets)
+/.clerk/

@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: var(--school-primary, #2563eb);
+  --color-primary-foreground: var(--school-primary-foreground, #ffffff);
+  --color-secondary: var(--school-secondary, #64748b);
+  --color-secondary-foreground: var(--school-secondary-foreground, #ffffff);
+  --color-background: var(--school-background, #ffffff);
+  --color-foreground: var(--school-foreground, #0f172a);
+  --color-muted: var(--school-muted, #f1f5f9);
+  --color-muted-foreground: var(--school-muted-foreground, #64748b);
+  --color-border: var(--school-border, #e2e8f0);
+  --color-card: var(--school-card, #ffffff);
+  --color-card-foreground: var(--school-card-foreground, #0f172a);
+  --color-ring: var(--school-primary, #2563eb);
+}
