@@ -1,4 +1,4 @@
-const PRODUCTION_DOMAIN = "levarlux.com";
+const PRODUCTION_DOMAIN = "mng.levarlux.com";
 
 export function getBaseDomain(): string {
   if (typeof window === "undefined") return PRODUCTION_DOMAIN;
