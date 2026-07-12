@@ -11,9 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search, Download } from "lucide-react";
+import { Plus, Search, Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export default function StudentsPage() {
   const school = useSchool();
@@ -31,6 +32,14 @@ export default function StudentsPage() {
   const [admNo, setAdmNo] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedStream, setSelectedStream] = useState("");
+
+  if (allStudents === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   const streamsQuery = useQuery(
     api.streams.listByClass,
@@ -73,6 +82,10 @@ export default function StudentsPage() {
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
+    if (!checkRateLimit("student-create", 5, 60_000)) {
+      toast.error("Too many attempts. Please wait a moment before trying again.");
+      return;
+    }
     if (!school || !selectedClass || !firstName.trim() || !lastName.trim() || !admNo.trim()) {
       toast.error("Please fill all required fields");
       return;

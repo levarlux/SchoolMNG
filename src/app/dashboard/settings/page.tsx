@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useMutation } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useSchool } from "@/lib/use-school";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Palette, Upload, ImageIcon, Loader2, Check, AlertCircle, Copy } from "lucide-react";
+import { Palette, Upload, ImageIcon, Loader2, Check, AlertCircle, Copy, Zap } from "lucide-react";
 import { toast } from "sonner";
 
 import { useOrganization } from "@clerk/nextjs";
@@ -16,6 +16,7 @@ import { useOrganization } from "@clerk/nextjs";
 export default function SettingsPage() {
   const school = useSchool();
   const { organization } = useOrganization();
+  const featureFlags = useQuery(api.feature_configurations.featureFlags, school ? {} : "skip");
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -245,6 +246,42 @@ export default function SettingsPage() {
               PNG or SVG recommended · max 2 MB · square aspect ratio works best
             </p>
           </div>
+        </CardContent>
+      </Card>
+      {/* ── Feature Flags ──────────────────────────────── */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Zap className="h-5 w-5" /> Feature Flags
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {featureFlags === undefined ? (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Loader2 className="h-4 w-4 animate-spin" /> Loading features...
+            </div>
+          ) : Object.keys(featureFlags).length === 0 ? (
+            <p className="text-sm text-muted-foreground">No feature flags configured for this school.</p>
+          ) : (
+            <div className="space-y-2">
+              {Object.entries(featureFlags).map(([name, enabled]) => (
+                <div key={name} className="flex items-center justify-between py-2 px-3 rounded-lg border border-border">
+                  <span className="text-sm font-medium">{name}</span>
+                  {enabled ? (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-full border border-green-200">
+                      <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                      Active
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-200">
+                      <span className="h-1.5 w-1.5 rounded-full bg-gray-400" />
+                      Inactive
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search, CircleDollarSign, CheckCircle2, XCircle, Download } from "lucide-react";
+import { Plus, Search, CircleDollarSign, CheckCircle2, XCircle, Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 
@@ -20,6 +20,14 @@ export default function FinesPage() {
   const markWaived = useMutation(api.fines.markWaived);
 
   const [search, setSearch] = useState("");
+
+  if (fines === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   const filtered = fines?.filter(
     (f) => f.reason.toLowerCase().includes(search.toLowerCase())

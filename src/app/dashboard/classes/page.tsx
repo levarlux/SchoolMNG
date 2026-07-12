@@ -9,10 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
-import { Plus, BookOpen, Trash2, Cog, Download } from "lucide-react";
+import { Plus, BookOpen, Trash2, Cog, Download, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export default function ClassesPage() {
   const school = useSchool();
@@ -24,8 +25,20 @@ export default function ClassesPage() {
   const [name, setName] = useState("");
   const [hasStreams, setHasStreams] = useState(false);
 
+  if (classes === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
+    if (!checkRateLimit("class-create", 5, 60_000)) {
+      toast.error("Too many attempts. Please wait a moment before trying again.");
+      return;
+    }
     if (!school || !name.trim()) return;
     try {
       await createClass({ schoolId: school._id, name: name.trim(), hasStreams });

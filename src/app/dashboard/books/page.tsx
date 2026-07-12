@@ -9,9 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search, BookOpen, Trash2, Download } from "lucide-react";
+import { Plus, Search, BookOpen, Trash2, Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export default function BooksPage() {
   const school = useSchool();
@@ -25,6 +26,14 @@ export default function BooksPage() {
   const [author, setAuthor] = useState("");
   const [availableCopies, setAvailableCopies] = useState("1");
 
+  if (books === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   const filtered = books?.filter((b) => {
     if (!search) return true;
     const q = search.toLowerCase();
@@ -33,6 +42,10 @@ export default function BooksPage() {
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
+    if (!checkRateLimit("book-create", 5, 60_000)) {
+      toast.error("Too many attempts. Please wait a moment before trying again.");
+      return;
+    }
     if (!school || !title.trim() || !author.trim()) {
       toast.error("Please fill all required fields");
       return;

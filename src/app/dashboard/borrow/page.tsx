@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Search, BookMarked, UserPlus, BookOpen, Download, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export default function BorrowPage() {
   const school = useSchool();
@@ -64,6 +65,10 @@ export default function BorrowPage() {
 
   async function handleCreateAndBorrow(e: React.FormEvent) {
     e.preventDefault();
+    if (!checkRateLimit("borrow-create", 5, 60_000)) {
+      toast.error("Too many attempts. Please wait a moment before trying again.");
+      return;
+    }
     if (!school) return;
 
     let studentId: string;
