@@ -1,30 +1,49 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { requireSuperadmin, requireAuth } from "./helpers";
+import {
+  requireAuth,
+  requireSuperadmin,
+  requireSchoolMembership,
+  requireSchoolFromJwt,
+  assertValidHexColor,
+} from "./helpers";
 
-
+// ── Read-only queries ──────────────────────────────────────────────
 
 export const list = query({
   args: {},
   handler: async (ctx) => {
     await requireSuperadmin(ctx);
-    return await ctx.db.query("schools").collect();
+    return await ctx.db.query("schools").take(500);
   },
 });
 
+/** Public-facing lookup by slug (school pages). Returns only safe fields. */
 export const getBySlug = query({
   args: { slug: v.string() },
   handler: async (ctx, { slug }) => {
-    return await ctx.db
+    const school = await ctx.db
       .query("schools")
       .withIndex("by_slug", (q) => q.eq("slug", slug))
       .first();
+    if (!school) return null;
+    // Strip sensitive fields before returning to an unauthenticated caller
+    return {
+      _id: school._id,
+      name: school.name,
+      slug: school.slug,
+      logoUrl: school.logoUrl,
+      primaryColor: school.primaryColor,
+      secondaryColor: school.secondaryColor,
+      accentColor: school.accentColor,
+    };
   },
 });
 
 export const getByClerkOrgId = query({
   args: { clerkOrgId: v.string() },
   handler: async (ctx, { clerkOrgId }) => {
+    await requireAuth(ctx);
     return await ctx.db
       .query("schools")
       .withIndex("by_clerkOrgId", (q) => q.eq("clerkOrgId", clerkOrgId))
@@ -35,6 +54,7 @@ export const getByClerkOrgId = query({
 export const getById = query({
   args: { id: v.id("schools") },
   handler: async (ctx, { id }) => {
+    await requireAuth(ctx);
     return await ctx.db.get(id);
   },
 });
@@ -50,6 +70,8 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
     await requireSuperadmin(ctx);
+    assertValidHexColor(args.primaryColor, "primaryColor");
+    assertValidHexColor(args.secondaryColor, "secondaryColor");
     return await ctx.db.insert("schools", args);
   },
 });
@@ -59,15 +81,11 @@ export const create = mutation({
 export const getMySchool = query({
   args: {},
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return null;
-    // Clerk embeds the active org as `org_id` in the JWT token
-    const orgId = (identity as Record<string, unknown>)["org_id"] as string | undefined;
-    if (!orgId) return null;
-    return await ctx.db
-      .query("schools")
-      .withIndex("by_clerkOrgId", (q) => q.eq("clerkOrgId", orgId))
-      .first();
+    try {
+      return await requireSchoolFromJwt(ctx);
+    } catch {
+      return null;
+    }
   },
 });
 
@@ -80,14 +98,9 @@ export const updateMySchool = mutation({
     secondaryColor: v.optional(v.string()),
   },
   handler: async (ctx, updates) => {
-    const identity = await requireAuth(ctx);
-    const orgId = (identity as Record<string, unknown>)["org_id"] as string | undefined;
-    if (!orgId) throw new Error("No active organisation");
-    const school = await ctx.db
-      .query("schools")
-      .withIndex("by_clerkOrgId", (q) => q.eq("clerkOrgId", orgId))
-      .first();
-    if (!school) throw new Error("School not found for this organisation");
+    const school = await requireSchoolFromJwt(ctx);
+    if (updates.primaryColor) assertValidHexColor(updates.primaryColor, "primaryColor");
+    if (updates.secondaryColor) assertValidHexColor(updates.secondaryColor, "secondaryColor");
     const filtered = Object.fromEntries(
       Object.entries(updates).filter(([, v]) => v !== undefined)
     );
@@ -111,6 +124,8 @@ export const update = mutation({
   },
   handler: async (ctx, { id, ...updates }) => {
     await requireSuperadmin(ctx);
+    if (updates.primaryColor) assertValidHexColor(updates.primaryColor, "primaryColor");
+    if (updates.secondaryColor) assertValidHexColor(updates.secondaryColor, "secondaryColor");
     const filtered = Object.fromEntries(
       Object.entries(updates).filter(([, v]) => v !== undefined)
     );

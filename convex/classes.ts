@@ -1,19 +1,25 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import {
+  requireSchoolMembership,
+  requireClassMembership,
+} from "./helpers";
 
 export const listBySchool = query({
   args: { schoolId: v.id("schools") },
   handler: async (ctx, { schoolId }) => {
+    await requireSchoolMembership(ctx, schoolId);
     return await ctx.db
       .query("classes")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-      .collect();
+      .take(500);
   },
 });
 
 export const get = query({
   args: { id: v.id("classes") },
   handler: async (ctx, { id }) => {
+    await requireClassMembership(ctx, id);
     return await ctx.db.get(id);
   },
 });
@@ -25,6 +31,7 @@ export const create = mutation({
     hasStreams: v.boolean(),
   },
   handler: async (ctx, args) => {
+    await requireSchoolMembership(ctx, args.schoolId);
     return await ctx.db.insert("classes", args);
   },
 });
@@ -36,6 +43,7 @@ export const update = mutation({
     hasStreams: v.optional(v.boolean()),
   },
   handler: async (ctx, { id, ...updates }) => {
+    await requireClassMembership(ctx, id);
     const filtered = Object.fromEntries(
       Object.entries(updates).filter(([_, v]) => v !== undefined)
     );
@@ -48,6 +56,7 @@ export const update = mutation({
 export const remove = mutation({
   args: { id: v.id("classes") },
   handler: async (ctx, { id }) => {
+    await requireClassMembership(ctx, id);
     const streams = await ctx.db
       .query("streams")
       .withIndex("by_classId", (q) => q.eq("classId", id))

@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search, BookOpen, Trash2 } from "lucide-react";
+import { Plus, Search, BookOpen, Trash2, Download } from "lucide-react";
 import { toast } from "sonner";
+import { exportToCsv } from "@/lib/csv-export";
 
 export default function BooksPage() {
   const school = useSchool();
@@ -64,9 +65,29 @@ export default function BooksPage() {
           <h1 className="text-3xl font-bold">Books</h1>
           <p className="text-muted-foreground mt-1">{books?.length ?? 0} books in inventory</p>
         </div>
-        <Button onClick={() => setShowModal(true)}>
-          <Plus className="h-4 w-4 mr-2" /> Add Book
-        </Button>
+        <div className="flex items-center gap-2">
+          {books && books.length > 0 && (
+            <Button
+              variant="outline"
+              onClick={() =>
+                exportToCsv(
+                  books.map((b) => ({
+                    Title: b.title,
+                    Author: b.author,
+                    "Available Copies": b.availableCopies,
+                    "Total Copies": b.totalCopies,
+                  })),
+                  "books"
+                )
+              }
+            >
+              <Download className="h-4 w-4 mr-2" /> Export
+            </Button>
+          )}
+          <Button onClick={() => setShowModal(true)}>
+            <Plus className="h-4 w-4 mr-2" /> Add Book
+          </Button>
+        </div>
       </div>
 
       <div className="relative">

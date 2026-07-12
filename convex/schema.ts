@@ -78,4 +78,55 @@ export default defineSchema({
     config: v.any(),
   }).index("by_schoolId", ["schoolId"])
     .index("by_feature", ["schoolId", "featureName"]),
+
+  fines: defineTable({
+    schoolId: v.id("schools"),
+    borrowingId: v.id("borrowings"),
+    studentId: v.id("students"),
+    amount: v.number(),
+    reason: v.union(v.literal("overdue"), v.literal("lost"), v.literal("damaged")),
+    status: v.union(v.literal("unpaid"), v.literal("paid"), v.literal("waived")),
+    paidAmount: v.number(),
+    paidAt: v.optional(v.float64()),
+    waivedAt: v.optional(v.float64()),
+    waivedBy: v.optional(v.string()),
+    createdAt: v.float64(),
+    note: v.optional(v.string()),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_studentId", ["studentId"])
+    .index("by_status", ["schoolId", "status"])
+    .index("by_borrowingId", ["borrowingId"]),
+
+  fine_payments: defineTable({
+    schoolId: v.id("schools"),
+    fineId: v.id("fines"),
+    amount: v.number(),
+    method: v.union(v.literal("cash"), v.literal("mobile_money"), v.literal("bank_transfer"), v.literal("other")),
+    receivedBy: v.string(),
+    receivedAt: v.float64(),
+    reference: v.optional(v.string()),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_fineId", ["fineId"]),
+
+  report_logs: defineTable({
+    schoolId: v.id("schools"),
+    generatedBy: v.string(),
+    reportType: v.string(),
+    generatedAt: v.float64(),
+    params: v.optional(v.any()),
+  }).index("by_schoolId", ["schoolId"]),
+
+  analytics_snapshots: defineTable({
+    schoolId: v.id("schools"),
+    snapshotDate: v.float64(),
+    totalStudents: v.number(),
+    totalBooks: v.number(),
+    activeBorrowings: v.number(),
+    overdueCount: v.number(),
+    totalBorrowingsAllTime: v.number(),
+    totalFines: v.number(),
+    unpaidFines: v.number(),
+    featuresEnabled: v.number(),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_snapshotDate", ["snapshotDate"]),
 });

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard, Building2, Shield, CreditCard, ToggleLeft, Library,
+  LayoutDashboard, Building2, Shield, CreditCard, ToggleLeft, Library, BarChart3,
 } from "lucide-react";
 import { useIsSuperadmin } from "@/lib/use-admin";
 
@@ -16,6 +16,7 @@ const navItems = [
   { href: "/admin/admins", label: "Admins", icon: Shield },
   { href: "/admin/subscriptions", label: "Subscriptions", icon: CreditCard },
   { href: "/admin/features", label: "Features", icon: ToggleLeft },
+  { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {

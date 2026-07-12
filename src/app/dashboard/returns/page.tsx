@@ -7,9 +7,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { RotateCcw, Search, CheckCircle2 } from "lucide-react";
+import { RotateCcw, Search, CheckCircle2, Download } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { exportToCsv } from "@/lib/csv-export";
 
 export default function ReturnsPage() {
   const school = useSchool();
@@ -33,9 +34,31 @@ export default function ReturnsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Returns</h1>
-        <p className="text-muted-foreground mt-1">Mark borrowed books as returned.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Returns</h1>
+          <p className="text-muted-foreground mt-1">Mark borrowed books as returned.</p>
+        </div>
+        {active.length > 0 && (
+          <Button
+            variant="outline"
+            onClick={() =>
+              exportToCsv(
+                active.map((b) => ({
+                  Book: b.bookName,
+                  "Book Number": b.bookNumber,
+                  "Borrowed Date": new Date(b.borrowedAt).toLocaleDateString(),
+                  "Due Date": new Date(b.dueDate).toLocaleDateString(),
+                  Status: b.status,
+                  Overdue: b.dueDate < Date.now() ? "Yes" : "No",
+                })),
+                "active_borrowings"
+              )
+            }
+          >
+            <Download className="h-4 w-4 mr-2" /> Export
+          </Button>
+        )}
       </div>
 
       <div className="relative">

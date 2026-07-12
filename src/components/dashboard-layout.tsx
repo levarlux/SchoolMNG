@@ -7,7 +7,7 @@ import { UserButton, useOrganization } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { useSchool } from "@/lib/use-school";
 import {
-  LayoutDashboard, BookOpen, Users, BookMarked, RotateCcw, Settings, Library,
+  LayoutDashboard, BookOpen, Users, BookMarked, RotateCcw, Settings, Library, CircleDollarSign, FileText,
 } from "lucide-react";
 
 const navItems = [
@@ -17,6 +17,8 @@ const navItems = [
   { href: "/dashboard/books", label: "Books", icon: BookOpen },
   { href: "/dashboard/borrow", label: "Borrow Book", icon: BookMarked },
   { href: "/dashboard/returns", label: "Returns", icon: RotateCcw },
+  { href: "/dashboard/fines", label: "Fines", icon: CircleDollarSign },
+  { href: "/dashboard/reports", label: "Reports", icon: FileText },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 

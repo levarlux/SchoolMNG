@@ -10,8 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Search, BookMarked, UserPlus, BookOpen } from "lucide-react";
+import { Search, BookMarked, UserPlus, BookOpen, Download } from "lucide-react";
 import { toast } from "sonner";
+import { exportToCsv } from "@/lib/csv-export";
 
 export default function BorrowPage() {
   const school = useSchool();
@@ -119,9 +120,11 @@ export default function BorrowPage() {
 
   return (
     <div className="space-y-6 max-w-2xl">
-      <div>
-        <h1 className="text-3xl font-bold">Borrow a Book</h1>
-        <p className="text-muted-foreground mt-1">Find or create a student profile, then record the borrowing.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Borrow a Book</h1>
+          <p className="text-muted-foreground mt-1">Find or create a student profile, then record the borrowing.</p>
+        </div>
       </div>
 
       <Card className="border-l-2 border-l-secondary">

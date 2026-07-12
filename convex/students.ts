@@ -1,29 +1,37 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import {
+  requireSchoolMembership,
+  requireClassMembership,
+  requireStudentMembership,
+} from "./helpers";
 
 export const listBySchool = query({
   args: { schoolId: v.id("schools") },
   handler: async (ctx, { schoolId }) => {
+    await requireSchoolMembership(ctx, schoolId);
     return await ctx.db
       .query("students")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-      .collect();
+      .take(1000);
   },
 });
 
 export const listByClass = query({
   args: { classId: v.id("classes") },
   handler: async (ctx, { classId }) => {
+    const cls = await requireClassMembership(ctx, classId);
     return await ctx.db
       .query("students")
       .withIndex("by_classId", (q) => q.eq("classId", classId))
-      .collect();
+      .take(500);
   },
 });
 
 export const getByAdmNo = query({
   args: { schoolId: v.id("schools"), admNo: v.string() },
   handler: async (ctx, { schoolId, admNo }) => {
+    await requireSchoolMembership(ctx, schoolId);
     return await ctx.db
       .query("students")
       .withIndex("by_admNo", (q) => q.eq("schoolId", schoolId).eq("admNo", admNo))
@@ -34,6 +42,7 @@ export const getByAdmNo = query({
 export const get = query({
   args: { id: v.id("students") },
   handler: async (ctx, { id }) => {
+    await requireStudentMembership(ctx, id);
     return await ctx.db.get(id);
   },
 });
@@ -42,6 +51,7 @@ export const search = query({
   args: { schoolId: v.id("schools"), query: v.string() },
   handler: async (ctx, { schoolId, query }) => {
     if (!query.trim()) return [];
+    await requireSchoolMembership(ctx, schoolId);
     return await ctx.db
       .query("students")
       .withSearchIndex("search_name", (q) => q.search("firstName", query))
@@ -60,6 +70,8 @@ export const create = mutation({
     admNo: v.string(),
   },
   handler: async (ctx, args) => {
+    await requireSchoolMembership(ctx, args.schoolId);
+    await requireClassMembership(ctx, args.classId);
     return await ctx.db.insert("students", args);
   },
 });
@@ -74,6 +86,10 @@ export const update = mutation({
     admNo: v.optional(v.string()),
   },
   handler: async (ctx, { id, ...updates }) => {
+    await requireStudentMembership(ctx, id);
+    if (updates.classId) {
+      await requireClassMembership(ctx, updates.classId);
+    }
     const filtered = Object.fromEntries(
       Object.entries(updates).filter(([_, v]) => v !== undefined)
     );

@@ -36,40 +36,17 @@ export async function POST(req: Request) {
   const { api } = await import("@/convex/_generated/api");
   const convex = new ConvexHttpClient(convexUrl);
 
-  if (evt.type === "organization.created") {
-    const { id, name, slug } = evt.data as { id: string; name: string; slug: string };
-    const existing = await convex.query(api.schools.getByClerkOrgId, { clerkOrgId: id });
-    if (!existing) {
-      await convex.mutation(api.schools.create, {
-        clerkOrgId: id,
-        name,
-        slug,
-        logoUrl: undefined,
-        primaryColor: "#2563eb",
-        secondaryColor: "#64748b",
-      });
-    }
-  }
+  const { id, name, slug } = evt.data as {
+    id: string;
+    name?: string;
+    slug?: string;
+  };
 
-  if (evt.type === "organization.updated") {
-    const { id, name, slug } = evt.data as { id: string; name?: string; slug?: string };
-    const school = await convex.query(api.schools.getByClerkOrgId, { clerkOrgId: id });
-    if (school) {
-      await convex.mutation(api.schools.update, {
-        id: school._id,
-        ...(name ? { name } : {}),
-        ...(slug ? { slug } : {}),
-      });
-    }
-  }
-
-  if (evt.type === "organization.deleted") {
-    const { id } = evt.data as { id: string };
-    const school = await convex.query(api.schools.getByClerkOrgId, { clerkOrgId: id });
-    if (school) {
-      await convex.mutation(api.schools.remove, { id: school._id });
-    }
-  }
+  await convex.mutation(api.webhooks.handleOrganizationEvent, {
+    secret,
+    event: evt.type,
+    data: { id, name, slug },
+  });
 
   return new NextResponse("OK", { status: 200 });
 }

@@ -1,22 +1,25 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { requireAuth, requireSuperadmin } from "./helpers";
+import {
+  requireSchoolMembership,
+  requireSuperadmin,
+} from "./helpers";
 
 export const listBySchool = query({
   args: { schoolId: v.id("schools") },
   handler: async (ctx, { schoolId }) => {
-    await requireAuth(ctx);
+    await requireSchoolMembership(ctx, schoolId);
     return await ctx.db
       .query("feature_configurations")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-      .collect();
+      .take(200);
   },
 });
 
 export const getByFeature = query({
   args: { schoolId: v.id("schools"), featureName: v.string() },
   handler: async (ctx, { schoolId, featureName }) => {
-    await requireAuth(ctx);
+    await requireSchoolMembership(ctx, schoolId);
     return await ctx.db
       .query("feature_configurations")
       .withIndex("by_feature", (q) => q.eq("schoolId", schoolId).eq("featureName", featureName))

@@ -1,0 +1,67 @@
+import { v } from "convex/values";
+import { mutation } from "./_generated/server";
+
+/**
+ * Public mutation that the Clerk webhook handler calls.
+ * Protected by a shared secret — NOT by auth, since webhooks have no user context.
+ * The secret is checked server-side so only the verified webhook can invoke this.
+ */
+export const handleOrganizationEvent = mutation({
+  args: {
+    secret: v.string(),
+    event: v.string(),
+    data: v.object({
+      id: v.string(),
+      name: v.optional(v.string()),
+      slug: v.optional(v.string()),
+    }),
+  },
+  handler: async (ctx, { secret, event, data }) => {
+    if (secret !== process.env.CLERK_WEBHOOK_SECRET) {
+      throw new Error("Invalid webhook secret");
+    }
+
+    if (event === "organization.created") {
+      const existing = await ctx.db
+        .query("schools")
+        .withIndex("by_clerkOrgId", (q) => q.eq("clerkOrgId", data.id))
+        .first();
+      if (!existing) {
+        await ctx.db.insert("schools", {
+          clerkOrgId: data.id,
+          name: data.name ?? "",
+          slug: data.slug ?? "",
+          primaryColor: "#2563eb",
+          secondaryColor: "#64748b",
+        });
+      }
+    }
+
+    if (event === "organization.updated") {
+      const school = await ctx.db
+        .query("schools")
+        .withIndex("by_clerkOrgId", (q) => q.eq("clerkOrgId", data.id))
+        .first();
+      if (school) {
+        const updates: Record<string, string> = {};
+        if (data.name) updates.name = data.name;
+        if (data.slug) updates.slug = data.slug;
+        if (Object.keys(updates).length > 0) {
+          await ctx.db.patch(school._id, updates);
+        }
+      }
+    }
+
+    if (event === "organization.deleted") {
+      const school = await ctx.db
+        .query("schools")
+        .withIndex("by_clerkOrgId", (q) => q.eq("clerkOrgId", data.id))
+        .first();
+      if (school) {
+        await ctx.db.delete(school._id);
+      }
+    }
+
+    return { ok: true };
+  },
+});

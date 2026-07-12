@@ -1,22 +1,25 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { requireAuth } from "./helpers";
+import {
+  requireSchoolMembership,
+  requireBookMembership,
+} from "./helpers";
 
 export const listBySchool = query({
   args: { schoolId: v.id("schools") },
   handler: async (ctx, { schoolId }) => {
-    await requireAuth(ctx);
+    await requireSchoolMembership(ctx, schoolId);
     return await ctx.db
       .query("books")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-      .collect();
+      .take(1000);
   },
 });
 
 export const get = query({
   args: { id: v.id("books") },
   handler: async (ctx, { id }) => {
-    await requireAuth(ctx);
+    await requireBookMembership(ctx, id);
     return await ctx.db.get(id);
   },
 });
@@ -32,7 +35,7 @@ export const create = mutation({
     subject: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    await requireAuth(ctx);
+    await requireSchoolMembership(ctx, args.schoolId);
     return await ctx.db.insert("books", args);
   },
 });
@@ -48,7 +51,7 @@ export const update = mutation({
     subject: v.optional(v.string()),
   },
   handler: async (ctx, { id, ...updates }) => {
-    await requireAuth(ctx);
+    await requireBookMembership(ctx, id);
     const filtered = Object.fromEntries(
       Object.entries(updates).filter(([_, v]) => v !== undefined)
     );
@@ -61,7 +64,7 @@ export const update = mutation({
 export const remove = mutation({
   args: { id: v.id("books") },
   handler: async (ctx, { id }) => {
-    await requireAuth(ctx);
+    await requireBookMembership(ctx, id);
     await ctx.db.delete(id);
   },
 });
@@ -81,7 +84,7 @@ export const bulkCreate = mutation({
     books: v.array(bookRowValidator),
   },
   handler: async (ctx, { schoolId, books }) => {
-    await requireAuth(ctx);
+    await requireSchoolMembership(ctx, schoolId);
     let count = 0;
     for (const book of books) {
       await ctx.db.insert("books", { schoolId, ...book });

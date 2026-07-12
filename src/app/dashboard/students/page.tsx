@@ -11,8 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Download } from "lucide-react";
 import { toast } from "sonner";
+import { exportToCsv } from "@/lib/csv-export";
 
 export default function StudentsPage() {
   const school = useSchool();
@@ -75,9 +76,28 @@ export default function StudentsPage() {
           <h1 className="text-3xl font-bold">Students</h1>
           <p className="text-muted-foreground mt-1">{allStudents?.length ?? 0} total students</p>
         </div>
-        <Button onClick={() => setShowModal(true)}>
-          <Plus className="h-4 w-4 mr-2" /> Add Student
-        </Button>
+        <div className="flex items-center gap-2">
+          {allStudents && allStudents.length > 0 && (
+            <Button
+              variant="outline"
+              onClick={() =>
+                exportToCsv(
+                  allStudents.map((s) => ({
+                    FirstName: s.firstName,
+                    LastName: s.lastName,
+                    "Admission No": s.admNo,
+                  })),
+                  "students"
+                )
+              }
+            >
+              <Download className="h-4 w-4 mr-2" /> Export
+            </Button>
+          )}
+          <Button onClick={() => setShowModal(true)}>
+            <Plus className="h-4 w-4 mr-2" /> Add Student
+          </Button>
+        </div>
       </div>
 
       <div className="relative">

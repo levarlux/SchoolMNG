@@ -9,9 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
-import { Plus, BookOpen, Trash2, Cog } from "lucide-react";
+import { Plus, BookOpen, Trash2, Cog, Download } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { exportToCsv } from "@/lib/csv-export";
 
 export default function ClassesPage() {
   const school = useSchool();
@@ -46,9 +47,24 @@ export default function ClassesPage() {
           <h1 className="text-3xl font-bold">Classes</h1>
           <p className="text-muted-foreground mt-1">Manage classes and streams</p>
         </div>
-        <Button onClick={() => setShowModal(true)}>
-          <Plus className="h-4 w-4 mr-2" /> Add Class
-        </Button>
+        <div className="flex items-center gap-2">
+          {classes && classes.length > 0 && (
+            <Button
+              variant="outline"
+              onClick={() =>
+                exportToCsv(
+                  classes.map((c) => ({ Name: c.name, HasStreams: c.hasStreams ? "Yes" : "No" })),
+                  "classes"
+                )
+              }
+            >
+              <Download className="h-4 w-4 mr-2" /> Export
+            </Button>
+          )}
+          <Button onClick={() => setShowModal(true)}>
+            <Plus className="h-4 w-4 mr-2" /> Add Class
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
