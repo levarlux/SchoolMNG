@@ -10,50 +10,20 @@ export const systemOverview = query({
   handler: async (ctx) => {
     await requireSuperadmin(ctx);
 
-    const schools = await ctx.db.query("schools").take(1000);
-    const schoolIds = schools.map((s) => s._id);
+    const allStudents = await ctx.db.query("students").take(50000);
+    const allBooks = await ctx.db.query("books").take(50000);
+    const allBorrowingsList = await ctx.db.query("borrowings").take(50000);
+    const activeBorrowingsList = allBorrowingsList.filter((b) => b.status === "borrowed");
+    const allFines = await ctx.db.query("fines").take(50000);
 
-    let totalStudents = 0;
-    let totalBooks = 0;
-    let activeBorrowings = 0;
-    let overdueCount = 0;
-    let totalFines = 0;
-    let unpaidFines = 0;
-
-    for (const schoolId of schoolIds) {
-      const students = await ctx.db
-        .query("students")
-        .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-        .take(1);
-      // Use count approximation — for exact counts we'd need a counter table
-      const allStudents = await ctx.db
-        .query("students")
-        .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-        .take(10000);
-      totalStudents += allStudents.length;
-
-      const allBooks = await ctx.db
-        .query("books")
-        .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-        .take(10000);
-      totalBooks += allBooks.length;
-
-      const active = await ctx.db
-        .query("borrowings")
-        .withIndex("by_status", (q) => q.eq("schoolId", schoolId).eq("status", "borrowed"))
-        .take(10000);
-      activeBorrowings += active.length;
-      overdueCount += active.filter((b) => b.dueDate < Date.now()).length;
-
-      const fines = await ctx.db
-        .query("fines")
-        .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-        .take(10000);
-      totalFines += fines.reduce((sum, f) => sum + f.amount, 0);
-      unpaidFines += fines
-        .filter((f) => f.status === "unpaid")
-        .reduce((sum, f) => sum + (f.amount - f.paidAmount), 0);
-    }
+    const totalStudents = allStudents.length;
+    const totalBooks = allBooks.length;
+    const activeBorrowings = activeBorrowingsList.length;
+    const overdueCount = activeBorrowingsList.filter((b) => b.dueDate < Date.now()).length;
+    const totalFines = allFines.reduce((sum, f) => sum + f.amount, 0);
+    const unpaidFines = allFines
+      .filter((f) => f.status === "unpaid")
+      .reduce((sum, f) => sum + (f.amount - f.paidAmount), 0);
 
     const totalSubscriptions = (await ctx.db.query("subscriptions").take(1000)).length;
     const activeSubscriptions = (await ctx.db.query("subscriptions").take(1000)).filter(
@@ -61,7 +31,7 @@ export const systemOverview = query({
     ).length;
 
     return {
-      totalSchools: schools.length,
+      totalSchools: (await ctx.db.query("schools").take(1000)).length,
       totalStudents,
       totalBooks,
       activeBorrowings,
@@ -80,7 +50,7 @@ export const schoolComparison = query({
   handler: async (ctx) => {
     await requireSuperadmin(ctx);
 
-    const schools = await ctx.db.query("schools").take(500);
+    const schools = await ctx.db.query("schools").take(50);
     const results: {
       schoolId: Id<"schools">;
       schoolName: string;
@@ -98,28 +68,28 @@ export const schoolComparison = query({
       const students = await ctx.db
         .query("students")
         .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
-        .take(10000);
+        .collect();
 
       const books = await ctx.db
         .query("books")
         .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
-        .take(10000);
+        .collect();
 
       const active = await ctx.db
         .query("borrowings")
         .withIndex("by_status", (q) => q.eq("schoolId", school._id).eq("status", "borrowed"))
-        .take(10000);
+        .collect();
 
       const allBorrowings = await ctx.db
         .query("borrowings")
         .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
-        .take(10000);
+        .collect();
 
       const overdue = active.filter((b) => b.dueDate < Date.now());
       const features = await ctx.db
         .query("feature_configurations")
         .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
-        .take(100);
+        .collect();
 
       const featuresEnabled = features.filter((f) => f.isEnabled).length;
       const featureAdoption = features.length > 0 ? featuresEnabled / features.length : 0;

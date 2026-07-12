@@ -57,6 +57,15 @@ export const remove = mutation({
   args: { id: v.id("classes") },
   handler: async (ctx, { id }) => {
     await requireClassMembership(ctx, id);
+
+    const studentsInClass = await ctx.db
+      .query("students")
+      .withIndex("by_classId", (q) => q.eq("classId", id))
+      .take(1);
+    if (studentsInClass.length > 0) {
+      throw new Error("Cannot delete class: students are still assigned to it. Reassign or remove them first.");
+    }
+
     const streams = await ctx.db
       .query("streams")
       .withIndex("by_classId", (q) => q.eq("classId", id))

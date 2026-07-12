@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useState, useEffect } from "react";
+import { useQuery, useMutation, useConvex } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
@@ -21,6 +21,9 @@ export default function StudentsPage() {
   const allStudents = useQuery(api.students.listBySchool, school ? { schoolId: school._id } : "skip");
   const createStudent = useMutation(api.students.create);
 
+  const client = useConvex();
+  const [streamMap, setStreamMap] = useState<Map<string, string>>(new Map());
+
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -35,6 +38,28 @@ export default function StudentsPage() {
   );
 
   const selectedClassData = classes?.find((c) => c._id === selectedClass);
+
+  useEffect(() => {
+    if (!allStudents || !classes) return;
+    const uniqueClassIds = [...new Set(allStudents.map((s) => s.classId))];
+    const classesWithStreams = uniqueClassIds.filter((classId) => {
+      const cls = classes.find((c) => c._id === classId);
+      return cls?.hasStreams;
+    });
+    if (classesWithStreams.length === 0) return;
+
+    Promise.all(
+      classesWithStreams.map((classId) =>
+        client.query(api.streams.listByClass, { classId: classId as any })
+      )
+    ).then((results) => {
+      const map = new Map<string, string>();
+      results.forEach((streams: any[]) => {
+        streams.forEach((s: any) => map.set(s._id, s.name));
+      });
+      setStreamMap(map);
+    });
+  }, [allStudents, classes, client]);
 
   const filtered = allStudents?.filter((s) => {
     if (!search) return true;
@@ -52,21 +77,26 @@ export default function StudentsPage() {
       toast.error("Please fill all required fields");
       return;
     }
-    await createStudent({
-      schoolId: school._id,
-      classId: selectedClass as any,
-      streamId: selectedStream ? (selectedStream as any) : undefined,
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      admNo: admNo.trim(),
-    });
-    toast.success("Student created");
-    setShowModal(false);
-    setFirstName("");
-    setLastName("");
-    setAdmNo("");
-    setSelectedClass("");
-    setSelectedStream("");
+    try {
+      await createStudent({
+        schoolId: school._id,
+        classId: selectedClass as any,
+        streamId: selectedStream ? (selectedStream as any) : undefined,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        admNo: admNo.trim(),
+      });
+      toast.success("Student created");
+      setShowModal(false);
+      setFirstName("");
+      setLastName("");
+      setAdmNo("");
+      setSelectedClass("");
+      setSelectedStream("");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error("[students.create]", error);
+    }
   }
 
   return (
@@ -129,7 +159,7 @@ export default function StudentsPage() {
                     <td className="p-3 font-medium">{s.firstName} {s.lastName}</td>
                     <td className="p-3 text-muted-foreground">{s.admNo}</td>
                     <td className="p-3">{sClass?.name ?? "—"}</td>
-                    <td className="p-3 text-muted-foreground">—</td>
+                    <td className="p-3 text-muted-foreground">{s.streamId ? (streamMap.get(s.streamId) ?? "—") : "—"}</td>
                   </tr>
                 );
               })}

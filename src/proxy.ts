@@ -1,7 +1,16 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)", "/sign-up(.*)"]);
+function isPublicRoute(pathname: string): boolean {
+  const publicRoutes = [
+    "/",
+    "/sign-in",
+    "/sign-up",
+    "/api/webhooks/clerk",
+  ];
+  return publicRoutes.includes(pathname);
+}
+
 const isApiRoute = createRouteMatcher(["/api(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
@@ -14,7 +23,7 @@ export default clerkMiddleware(async (auth, req) => {
     requestHeaders.set("x-school-slug", subdomain);
   }
 
-  if (!isPublicRoute(req) && !isApiRoute(req)) {
+  if (!isPublicRoute(req.nextUrl.pathname) && !isApiRoute(req)) {
     await auth.protect();
   }
 

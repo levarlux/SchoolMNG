@@ -10,13 +10,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Search, BookMarked, UserPlus, BookOpen, Download } from "lucide-react";
+import { Search, BookMarked, UserPlus, BookOpen, Download, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 
 export default function BorrowPage() {
   const school = useSchool();
   const classes = useQuery(api.classes.listBySchool, school ? { schoolId: school._id } : "skip");
+  const books = useQuery(api.books.listBySchool, school ? { schoolId: school._id } : "skip");
   const createBorrowing = useMutation(api.borrowings.create);
   const createStudent = useMutation(api.students.create);
 
@@ -32,9 +33,12 @@ export default function BorrowPage() {
   const [selectedStream, setSelectedStream] = useState("");
 
   // Borrowing form
+  const [selectedBookId, setSelectedBookId] = useState("");
   const [bookName, setBookName] = useState("");
   const [bookNumber, setBookNumber] = useState("");
   const [dueDate, setDueDate] = useState("");
+
+  const availableBooks = books?.filter((b) => b.availableCopies > 0) ?? [];
 
   const searchResults = useQuery(
     api.students.search,
@@ -69,16 +73,22 @@ export default function BorrowPage() {
         toast.error("Please fill all student fields");
         return;
       }
-      const id = await createStudent({
-        schoolId: school._id,
-        classId: selectedClass as any,
-        streamId: selectedStream ? (selectedStream as any) : undefined,
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        admNo: admNo.trim(),
-      });
-      studentId = id;
-      toast.success("Student profile created");
+      try {
+        const id = await createStudent({
+          schoolId: school._id,
+          classId: selectedClass as any,
+          streamId: selectedStream ? (selectedStream as any) : undefined,
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          admNo: admNo.trim(),
+        });
+        studentId = id;
+        toast.success("Student profile created");
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+        console.error("[borrowings.createStudent]", error);
+        return;
+      }
     } else {
       if (!searchedStudent) {
         toast.error("Please search and select a student");
@@ -92,16 +102,27 @@ export default function BorrowPage() {
       return;
     }
 
-    await createBorrowing({
-      schoolId: school._id,
-      studentId: studentId as any,
-      bookName: bookName.trim(),
-      bookNumber: bookNumber.trim(),
-      dueDate: new Date(dueDate).getTime(),
-    });
+    if (new Date(dueDate).getTime() < Date.now()) {
+      toast.error("Due date cannot be in the past");
+      return;
+    }
 
-    toast.success("Book borrowed successfully");
-    resetForm();
+    try {
+      await createBorrowing({
+        schoolId: school._id,
+        studentId: studentId as any,
+        bookId: selectedBookId ? (selectedBookId as any) : undefined,
+        bookName: bookName.trim(),
+        bookNumber: bookNumber.trim(),
+        dueDate: new Date(dueDate).getTime(),
+      });
+
+      toast.success("Book borrowed successfully");
+      resetForm();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error("[borrowings.create]", error);
+    }
   }
 
   function resetForm() {
@@ -112,6 +133,7 @@ export default function BorrowPage() {
     setAdmNo("");
     setSelectedClass("");
     setSelectedStream("");
+    setSelectedBookId("");
     setBookName("");
     setBookNumber("");
     setDueDate("");
@@ -232,6 +254,58 @@ export default function BorrowPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleCreateAndBorrow} className="space-y-4">
+              <div>
+                <Label htmlFor="bookSelect">Select Book (optional)</Label>
+                <select
+                  id="bookSelect"
+                  value={selectedBookId}
+                  onChange={(e) => {
+                    const id = e.target.value;
+                    setSelectedBookId(id);
+                    if (id) {
+                      const book = books?.find((b) => b._id === id);
+                      if (book) {
+                        setBookName(book.title);
+                        const due = new Date();
+                        due.setDate(due.getDate() + 14);
+                        setDueDate(due.toISOString().split("T")[0]);
+                      }
+                    } else {
+                      setBookName("");
+                      setDueDate("");
+                    }
+                  }}
+                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <option value="">Type book name manually</option>
+                  {availableBooks.map((b) => (
+                    <option key={b._id} value={b._id}>
+                      {b.title} — {b.author} ({b.availableCopies} {b.availableCopies === 1 ? "copy" : "copies"})
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {selectedBookId && (() => {
+                const book = books?.find((b) => b._id === selectedBookId);
+                if (!book) return null;
+                if (book.availableCopies === 0) {
+                  return (
+                    <div className="flex items-center gap-2 text-sm text-destructive bg-destructive/10 p-2 rounded-md">
+                      <AlertTriangle className="h-4 w-4 shrink-0" />
+                      No copies available — this book cannot be borrowed.
+                    </div>
+                  );
+                }
+                if (book.availableCopies <= 2) {
+                  return (
+                    <div className="flex items-center gap-2 text-sm text-orange-600 bg-orange-50 p-2 rounded-md">
+                      <AlertTriangle className="h-4 w-4 shrink-0" />
+                      Only {book.availableCopies} {book.availableCopies === 1 ? "copy" : "copies"} remaining.
+                    </div>
+                  );
+                }
+                return null;
+              })()}
               <div>
                 <Label htmlFor="bookName">Book Name</Label>
                 <Input id="bookName" value={bookName} onChange={(e) => setBookName(e.target.value)} placeholder="e.g. Mathematics Form 1" required />

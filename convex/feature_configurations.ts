@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
+  requireSchoolFromJwt,
   requireSuperadmin,
 } from "./helpers";
 
@@ -62,5 +63,21 @@ export const remove = mutation({
   handler: async (ctx, { id }) => {
     await requireSuperadmin(ctx);
     await ctx.db.delete(id);
+  },
+});
+
+export const featureFlags = query({
+  args: {},
+  handler: async (ctx) => {
+    const school = await requireSchoolFromJwt(ctx);
+    const features = await ctx.db
+      .query("feature_configurations")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
+      .collect();
+    const flags: Record<string, boolean> = {};
+    for (const f of features) {
+      flags[f.featureName] = f.isEnabled;
+    }
+    return flags;
   },
 });

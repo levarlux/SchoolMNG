@@ -18,6 +18,7 @@ export const handleOrganizationEvent = mutation({
   },
   handler: async (ctx, { secret, event, data }) => {
     if (secret !== process.env.CLERK_WEBHOOK_SECRET) {
+      console.warn("[webhooks] Invalid webhook secret received");
       throw new Error("Invalid webhook secret");
     }
 
@@ -59,6 +60,7 @@ export const handleOrganizationEvent = mutation({
         .first();
       if (school) {
         await ctx.db.delete(school._id);
+        console.warn("[webhooks] School deleted via webhook. Child records (classes, students, etc.) are NOT cascade-deleted. Manual cleanup may be needed.");
       }
     }
 

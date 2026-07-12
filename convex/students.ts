@@ -72,6 +72,15 @@ export const create = mutation({
   handler: async (ctx, args) => {
     await requireSchoolMembership(ctx, args.schoolId);
     await requireClassMembership(ctx, args.classId);
+
+    const existing = await ctx.db
+      .query("students")
+      .withIndex("by_admNo", (q) => q.eq("schoolId", args.schoolId).eq("admNo", args.admNo))
+      .first();
+    if (existing) {
+      throw new Error("A student with this admission number already exists in this school");
+    }
+
     return await ctx.db.insert("students", args);
   },
 });

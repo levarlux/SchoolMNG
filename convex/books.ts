@@ -36,6 +36,12 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
     await requireSchoolMembership(ctx, args.schoolId);
+    if (args.availableCopies < 0) {
+      throw new Error("availableCopies must be >= 0");
+    }
+    if (args.totalCopies !== undefined && args.totalCopies < args.availableCopies) {
+      throw new Error("totalCopies must be >= availableCopies");
+    }
     return await ctx.db.insert("books", args);
   },
 });
@@ -52,6 +58,22 @@ export const update = mutation({
   },
   handler: async (ctx, { id, ...updates }) => {
     await requireBookMembership(ctx, id);
+
+    if (updates.availableCopies !== undefined && updates.availableCopies < 0) {
+      throw new Error("availableCopies must be >= 0");
+    }
+
+    if (updates.availableCopies !== undefined || updates.totalCopies !== undefined) {
+      const existing = await ctx.db.get(id);
+      if (existing) {
+        const effectiveAvailable = updates.availableCopies ?? existing.availableCopies;
+        const effectiveTotal = updates.totalCopies ?? existing.totalCopies;
+        if (effectiveTotal !== undefined && effectiveAvailable > effectiveTotal) {
+          throw new Error("availableCopies must be <= totalCopies");
+        }
+      }
+    }
+
     const filtered = Object.fromEntries(
       Object.entries(updates).filter(([_, v]) => v !== undefined)
     );
@@ -65,6 +87,18 @@ export const remove = mutation({
   args: { id: v.id("books") },
   handler: async (ctx, { id }) => {
     await requireBookMembership(ctx, id);
+    const book = await ctx.db.get(id);
+    if (!book) throw new Error("Book not found");
+
+    const activeBorrowals = await ctx.db
+      .query("borrowings")
+      .withIndex("by_status", (q) => q.eq("schoolId", book.schoolId).eq("status", "borrowed"))
+      .take(500);
+    const hasActive = activeBorrowals.some(b => b.bookId === id || (!b.bookId && b.bookName === book.title));
+    if (hasActive) {
+      throw new Error("Cannot delete book: there are active borrowings for this book. Return them first.");
+    }
+
     await ctx.db.delete(id);
   },
 });

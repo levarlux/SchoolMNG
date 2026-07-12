@@ -27,17 +27,27 @@ export default function ClassesPage() {
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
     if (!school || !name.trim()) return;
-    await createClass({ schoolId: school._id, name: name.trim(), hasStreams });
-    toast.success("Class created");
-    setShowModal(false);
-    setName("");
-    setHasStreams(false);
+    try {
+      await createClass({ schoolId: school._id, name: name.trim(), hasStreams });
+      toast.success("Class created");
+      setShowModal(false);
+      setName("");
+      setHasStreams(false);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error("[classes.create]", error);
+    }
   }
 
   async function handleDelete(id: string) {
     if (!confirm("Delete this class and all its streams?")) return;
-    await deleteClass({ id: id as any });
-    toast.success("Class deleted");
+    try {
+      await deleteClass({ id: id as any });
+      toast.success("Class deleted");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error("[classes.remove]", error);
+    }
   }
 
   return (

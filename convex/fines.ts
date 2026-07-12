@@ -94,6 +94,18 @@ export const create = mutation({
     await requireStudentMembership(ctx, args.studentId);
     await requireBorrowingMembership(ctx, args.borrowingId);
     if (args.amount <= 0) throw new Error("Fine amount must be positive");
+
+    const borrowing = await ctx.db.get(args.borrowingId);
+    if (!borrowing) throw new Error("Borrowing not found");
+
+    if (borrowing.studentId !== args.studentId) {
+      throw new Error("Fine studentId does not match borrowing's student");
+    }
+
+    if (args.reason === "overdue" && borrowing.status === "returned") {
+      throw new Error("Cannot create overdue fine for returned borrowing");
+    }
+
     return await ctx.db.insert("fines", {
       schoolId: args.schoolId,
       borrowingId: args.borrowingId,
@@ -120,6 +132,11 @@ export const markPaid = mutation({
     const fine = await ctx.db.get(id);
     if (!fine) throw new Error("Fine not found");
     await requireSchoolMembership(ctx, fine.schoolId);
+
+    if (fine.status !== "unpaid") {
+      throw new Error("Can only pay unpaid fines");
+    }
+
     if (amount <= 0) throw new Error("Payment amount must be positive");
 
     const newPaidAmount = fine.paidAmount + amount;
@@ -157,6 +174,11 @@ export const markWaived = mutation({
     const fine = await ctx.db.get(id);
     if (!fine) throw new Error("Fine not found");
     await requireSchoolMembership(ctx, fine.schoolId);
+
+    if (fine.status !== "unpaid") {
+      throw new Error("Can only waive unpaid fines");
+    }
+
     await ctx.db.patch(id, {
       status: "waived",
       waivedAt: Date.now(),

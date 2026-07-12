@@ -45,6 +45,7 @@ export default defineSchema({
     dueDate: v.float64(),
     returnedAt: v.optional(v.float64()),
     status: v.union(v.literal("borrowed"), v.literal("returned")),
+    bookId: v.optional(v.id("books")),
   }).index("by_schoolId", ["schoolId"])
     .index("by_studentId", ["studentId"])
     .index("by_status", ["schoolId", "status"]),

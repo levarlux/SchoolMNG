@@ -27,8 +27,13 @@ export default function FinesPage() {
 
   async function handleMarkWaived(id: string) {
     if (!confirm("Waive this fine?")) return;
-    await markWaived({ id: id as any, waivedBy: "admin" });
-    toast.success("Fine waived");
+    try {
+      await markWaived({ id: id as any, waivedBy: "admin" });
+      toast.success("Fine waived");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error("[fines.markWaived]", error);
+    }
   }
 
   const totalUnpaid = fines

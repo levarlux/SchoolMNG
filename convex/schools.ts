@@ -40,6 +40,10 @@ export const getBySlug = query({
   },
 });
 
+/**
+ * @deprecated INTERNAL USE ONLY — call from functions that already verify schoolId via JWT.
+ * Do NOT use in public query functions without verifying the caller belongs to this school.
+ */
 export const getByClerkOrgId = query({
   args: { clerkOrgId: v.string() },
   handler: async (ctx, { clerkOrgId }) => {
@@ -51,6 +55,10 @@ export const getByClerkOrgId = query({
   },
 });
 
+/**
+ * @deprecated INTERNAL USE ONLY — call from functions that already verify schoolId via JWT.
+ * Do NOT use in public query functions without verifying the caller belongs to this school.
+ */
 export const getById = query({
   args: { id: v.id("schools") },
   handler: async (ctx, { id }) => {

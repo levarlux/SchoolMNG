@@ -37,25 +37,35 @@ export default function BooksPage() {
       toast.error("Please fill all required fields");
       return;
     }
-    const copies = parseInt(availableCopies) || 1;
-    await createBook({
-      schoolId: school._id,
-      title: title.trim(),
-      author: author.trim(),
-      availableCopies: copies,
-      totalCopies: copies,
-    });
-    toast.success("Book added to inventory");
-    setShowModal(false);
-    setTitle("");
-    setAuthor("");
-    setAvailableCopies("1");
+    try {
+      const copies = parseInt(availableCopies) || 1;
+      await createBook({
+        schoolId: school._id,
+        title: title.trim(),
+        author: author.trim(),
+        availableCopies: copies,
+        totalCopies: copies,
+      });
+      toast.success("Book added to inventory");
+      setShowModal(false);
+      setTitle("");
+      setAuthor("");
+      setAvailableCopies("1");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error("[books.create]", error);
+    }
   }
 
   async function handleDelete(id: string) {
     if (!confirm("Remove this book from inventory?")) return;
-    await deleteBook({ id: id as any });
-    toast.success("Book removed");
+    try {
+      await deleteBook({ id: id as any });
+      toast.success("Book removed");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error("[books.remove]", error);
+    }
   }
 
   return (
@@ -112,7 +122,7 @@ export default function BooksPage() {
                   </div>
                   <p className="text-sm text-muted-foreground truncate">{book.author}</p>
                   <p className="text-xs text-secondary font-medium mt-2">
-                    {book.availableCopies} copy{book.availableCopies !== 1 ? "ies" : "y"} available
+                    {book.availableCopies === 1 ? "1 copy" : `${book.availableCopies} copies`} available
                   </p>
                 </div>
                 <Button variant="ghost" size="icon" onClick={() => handleDelete(book._id)} className="shrink-0 ml-2">

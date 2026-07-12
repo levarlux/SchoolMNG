@@ -54,6 +54,7 @@ export default function SettingsPage() {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed to save: ${msg}`);
+      console.error("[schools.updateMySchool]", err);
     } finally {
       setSaving(false);
     }
@@ -78,6 +79,7 @@ export default function SettingsPage() {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Unknown error";
       toast.error(`Failed to upload logo: ${msg}`);
+      console.error("[files.setMyLogo]", err);
     } finally {
       setUploading(false);
       e.target.value = "";

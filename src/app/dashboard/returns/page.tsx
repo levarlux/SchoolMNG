@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { RotateCcw, Search, CheckCircle2, Download } from "lucide-react";
+import { RotateCcw, Search, CheckCircle2, Download, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
@@ -21,6 +21,14 @@ export default function ReturnsPage() {
 
   const active = allBorrowings?.filter((b) => b.status === "borrowed") ?? [];
 
+  if (allBorrowings === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin" />
+      </div>
+    );
+  }
+
   const filtered = active.filter((b) => {
     if (!search) return true;
     const q = search.toLowerCase();
@@ -28,8 +36,13 @@ export default function ReturnsPage() {
   });
 
   async function handleReturn(id: string) {
-    await markReturned({ id: id as any });
-    toast.success("Book marked as returned");
+    try {
+      await markReturned({ id: id as any });
+      toast.success("Book marked as returned");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error("[borrowings.markReturned]", error);
+    }
   }
 
   return (
