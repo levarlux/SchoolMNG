@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Search, BookMarked, UserPlus, BookOpen, Download, AlertTriangle } from "lucide-react";
+import { Search, BookMarked, UserPlus, BookOpen, Download, AlertTriangle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -58,6 +58,14 @@ export default function BorrowPage() {
 
   const activeBorrowings = studentBorrowings?.filter((b: any) => b.status === "borrowed") ?? [];
 
+  if (classes === undefined || books === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   async function handleSelectStudent(student: any) {
     setSearchedStudent(student);
     setSearchQuery("");
@@ -104,6 +112,11 @@ export default function BorrowPage() {
 
     if (!bookName.trim() || !bookNumber.trim() || !dueDate) {
       toast.error("Please fill all book fields");
+      return;
+    }
+
+    if (!selectedBookId) {
+      toast.error("Please select a book from the inventory");
       return;
     }
 

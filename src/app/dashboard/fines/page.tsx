@@ -13,6 +13,7 @@ import { Modal } from "@/components/ui/modal";
 import { Plus, Search, CircleDollarSign, CheckCircle2, XCircle, Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export default function FinesPage() {
   const school = useSchool();
@@ -35,6 +36,10 @@ export default function FinesPage() {
 
   async function handleMarkWaived(id: string) {
     if (!confirm("Waive this fine?")) return;
+    if (!checkRateLimit("fine-waive", 5, 60_000)) {
+      toast.error("Too many attempts. Please wait a moment before trying again.");
+      return;
+    }
     try {
       await markWaived({ id: id as any, waivedBy: "admin" });
       toast.success("Fine waived");

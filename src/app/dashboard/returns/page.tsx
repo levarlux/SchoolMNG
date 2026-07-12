@@ -11,6 +11,7 @@ import { RotateCcw, Search, CheckCircle2, Download, Loader2 } from "lucide-react
 import { useState } from "react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export default function ReturnsPage() {
   const school = useSchool();
@@ -36,6 +37,10 @@ export default function ReturnsPage() {
   });
 
   async function handleReturn(id: string) {
+    if (!checkRateLimit("borrow-return", 10, 60_000)) {
+      toast.error("Too many attempts. Please wait a moment before trying again.");
+      return;
+    }
     try {
       await markReturned({ id: id as any });
       toast.success("Book marked as returned");

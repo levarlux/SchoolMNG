@@ -10,8 +10,9 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
 import { Badge } from "@/components/ui/badge";
-import { ToggleLeft, Plus, Trash2 } from "lucide-react";
+import { ToggleLeft, Plus, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export default function AdminFeaturesPage() {
   const schools = useQuery(api.schools.list);
@@ -31,8 +32,20 @@ export default function AdminFeaturesPage() {
 
   const selectedSchool = schools?.find((s) => s._id === selectedSchoolId);
 
+  if (schools === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
+    if (!checkRateLimit("feature-create", 5, 60_000)) {
+      toast.error("Too many attempts. Please wait a moment before trying again.");
+      return;
+    }
     if (!selectedSchoolId || !featureName.trim()) {
       toast.error("Please fill all fields");
       return;

@@ -9,8 +9,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Shield, Trash2 } from "lucide-react";
+import { Plus, Shield, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export default function AdminAdminsPage() {
   const admins = useQuery(api.admins.list);
@@ -21,8 +22,20 @@ export default function AdminAdminsPage() {
   const [userId, setUserId] = useState("");
   const [email, setEmail] = useState("");
 
+  if (admins === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
+    if (!checkRateLimit("admin-create", 5, 60_000)) {
+      toast.error("Too many attempts. Please wait a moment before trying again.");
+      return;
+    }
     if (!userId.trim() || !email.trim()) {
       toast.error("Please fill all fields");
       return;

@@ -30,6 +30,16 @@ export const remove = mutation({
     const stream = await ctx.db.get(id);
     if (!stream) throw new Error("Stream not found");
     await requireClassMembership(ctx, stream.classId);
+
+    const studentsInStream = await ctx.db
+      .query("students")
+      .withIndex("by_classId", (q) => q.eq("classId", stream.classId))
+      .take(500);
+    const hasStudents = studentsInStream.some((s) => s.streamId === id);
+    if (hasStudents) {
+      throw new Error("Cannot delete stream: students are still assigned to it. Reassign them first.");
+    }
+
     await ctx.db.delete(id);
   },
 });

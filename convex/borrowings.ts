@@ -55,24 +55,40 @@ export const create = mutation({
     await requireSchoolMembership(ctx, args.schoolId);
     await requireStudentMembership(ctx, args.studentId);
 
-    if (args.bookId) {
-      const book = await ctx.db.get(args.bookId);
-      if (!book) {
-        console.error("[borrowings.create] Book not found:", args.bookId);
-        throw new Error("Book not found");
-      }
-      if (book.schoolId !== args.schoolId) {
-        console.error("[borrowings.create] Book does not belong to school:", args.bookId);
-        throw new Error("Book does not belong to this school");
-      }
-      if (book.availableCopies <= 0) {
-        console.error("[borrowings.create] No copies available for book:", args.bookId);
-        throw new Error("No copies available");
-      }
-      await ctx.db.patch(args.bookId, {
-        availableCopies: book.availableCopies - 1,
-      });
+    if (args.dueDate <= Date.now()) {
+      throw new Error("Due date must be in the future");
     }
+
+    const MAX_BORROW_LIMIT = 5;
+    const activeBorrowings = await ctx.db
+      .query("borrowings")
+      .withIndex("by_studentId", (q) => q.eq("studentId", args.studentId))
+      .take(100);
+    const activeCount = activeBorrowings.filter((b) => b.status === "borrowed").length;
+    if (activeCount >= MAX_BORROW_LIMIT) {
+      throw new Error(`Student has reached the maximum borrowing limit of ${MAX_BORROW_LIMIT} books`);
+    }
+
+    if (!args.bookId) {
+      throw new Error("A book must be selected from the inventory");
+    }
+
+    const book = await ctx.db.get(args.bookId);
+    if (!book) {
+      console.error("[borrowings.create] Book not found:", args.bookId);
+      throw new Error("Book not found");
+    }
+    if (book.schoolId !== args.schoolId) {
+      console.error("[borrowings.create] Book does not belong to school:", args.bookId);
+      throw new Error("Book does not belong to this school");
+    }
+    if (book.availableCopies <= 0) {
+      console.error("[borrowings.create] No copies available for book:", args.bookId);
+      throw new Error("No copies available");
+    }
+    await ctx.db.patch(args.bookId, {
+      availableCopies: book.availableCopies - 1,
+    });
 
     const now = Date.now();
     return await ctx.db.insert("borrowings", {

@@ -7,13 +7,21 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   School, Users, BookOpen, BookMarked, AlertTriangle,
-  CircleDollarSign, TrendingUp, Activity, Download,
+  CircleDollarSign, TrendingUp, Activity, Download, Loader2,
 } from "lucide-react";
 import { exportToCsv } from "@/lib/csv-export";
 
 export default function AdminAnalyticsPage() {
   const overview = useQuery(api.analytics.systemOverview);
   const schoolComparison = useQuery(api.analytics.schoolComparison);
+
+  if (overview === undefined || schoolComparison === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   const stats = [
     { label: "Schools", value: overview?.totalSchools ?? 0, icon: School, color: "text-blue-600" },

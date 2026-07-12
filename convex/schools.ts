@@ -148,6 +148,31 @@ export const remove = mutation({
   args: { id: v.id("schools") },
   handler: async (ctx, { id }) => {
     await requireSuperadmin(ctx);
+
+    const classes = await ctx.db
+      .query("classes")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", id))
+      .take(1);
+    if (classes.length > 0) {
+      throw new Error("Cannot delete school: classes still exist. Delete or reassign them first.");
+    }
+
+    const students = await ctx.db
+      .query("students")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", id))
+      .take(1);
+    if (students.length > 0) {
+      throw new Error("Cannot delete school: students still exist. Delete or reassign them first.");
+    }
+
+    const activeBorrowings = await ctx.db
+      .query("borrowings")
+      .withIndex("by_status", (q) => q.eq("schoolId", id).eq("status", "borrowed"))
+      .take(1);
+    if (activeBorrowings.length > 0) {
+      throw new Error("Cannot delete school: active borrowings exist. Return all books first.");
+    }
+
     await ctx.db.delete(id);
   },
 });

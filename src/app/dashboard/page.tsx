@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import {
   BookOpen, Users, BookMarked, AlertCircle, CircleDollarSign, Download, FileText,
-  Plus, ArrowRight, Clock,
+  Plus, ArrowRight, Clock, Loader2,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -29,6 +29,14 @@ export default function Dashboard() {
 
   const primary = school?.primaryColor ?? "#2563eb";
   const secondary = school?.secondaryColor ?? "#64748b";
+
+  if (classes === undefined || students === undefined || books === undefined || activeBorrowings === undefined || fines === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   const overdue = activeBorrowings?.filter((b: any) => b.dueDate < Date.now()) ?? [];
   const totalUnpaid = fines

@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Palette, Upload, ImageIcon, Loader2, Check, AlertCircle, Copy, Zap } from "lucide-react";
 import { toast } from "sonner";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 import { useOrganization } from "@clerk/nextjs";
 
@@ -38,6 +39,14 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
+  if (school === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   // Sync form whenever school data arrives from Convex
   useEffect(() => {
     if (school) {
@@ -48,6 +57,10 @@ export default function SettingsPage() {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
+    if (!checkRateLimit("settings-save", 5, 60_000)) {
+      toast.error("Too many attempts. Please wait a moment before trying again.");
+      return;
+    }
     setSaving(true);
     try {
       await updateMySchool({ primaryColor, secondaryColor });

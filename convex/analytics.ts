@@ -10,12 +10,17 @@ export const systemOverview = query({
   handler: async (ctx) => {
     await requireSuperadmin(ctx);
 
-    const allStudents = await ctx.db.query("students").take(50000);
-    const allBooks = await ctx.db.query("books").take(50000);
-    const allBorrowingsList = await ctx.db.query("borrowings").take(50000);
-    const activeBorrowingsList = allBorrowingsList.filter((b) => b.status === "borrowed");
-    const allFines = await ctx.db.query("fines").take(50000);
+    const [allStudents, allBooks, allBorrowingsList, allFines, allSubscriptions, allSchools] =
+      await Promise.all([
+        ctx.db.query("students").take(50000),
+        ctx.db.query("books").take(50000),
+        ctx.db.query("borrowings").take(50000),
+        ctx.db.query("fines").take(50000),
+        ctx.db.query("subscriptions").take(1000),
+        ctx.db.query("schools").take(1000),
+      ]);
 
+    const activeBorrowingsList = allBorrowingsList.filter((b) => b.status === "borrowed");
     const totalStudents = allStudents.length;
     const totalBooks = allBooks.length;
     const activeBorrowings = activeBorrowingsList.length;
@@ -25,13 +30,8 @@ export const systemOverview = query({
       .filter((f) => f.status === "unpaid")
       .reduce((sum, f) => sum + (f.amount - f.paidAmount), 0);
 
-    const totalSubscriptions = (await ctx.db.query("subscriptions").take(1000)).length;
-    const activeSubscriptions = (await ctx.db.query("subscriptions").take(1000)).filter(
-      (s) => s.status === "active"
-    ).length;
-
     return {
-      totalSchools: (await ctx.db.query("schools").take(1000)).length,
+      totalSchools: allSchools.length,
       totalStudents,
       totalBooks,
       activeBorrowings,
@@ -39,8 +39,8 @@ export const systemOverview = query({
       overdueRate: activeBorrowings > 0 ? Math.round((overdueCount / activeBorrowings) * 100) : 0,
       totalFines,
       unpaidFines,
-      totalSubscriptions,
-      activeSubscriptions,
+      totalSubscriptions: allSubscriptions.length,
+      activeSubscriptions: allSubscriptions.filter((s) => s.status === "active").length,
     };
   },
 });
@@ -51,6 +51,52 @@ export const schoolComparison = query({
     await requireSuperadmin(ctx);
 
     const schools = await ctx.db.query("schools").take(50);
+    const schoolIds = new Set(schools.map((s) => s._id));
+
+    const [allStudents, allBooks, allBorrowingsList, allFeatures] =
+      await Promise.all([
+        ctx.db.query("students").collect(),
+        ctx.db.query("books").collect(),
+        ctx.db.query("borrowings").collect(),
+        ctx.db.query("feature_configurations").collect(),
+      ]);
+
+    const allActiveBorrowings = allBorrowingsList.filter((b) => b.status === "borrowed");
+
+    const studentsBySchool = new Map<Id<"schools">, number>();
+    const booksBySchool = new Map<Id<"schools">, number>();
+    const activeBySchool = new Map<Id<"schools">, typeof allActiveBorrowings>();
+    const borrowingsBySchool = new Map<Id<"schools">, typeof allBorrowingsList>();
+    const featuresBySchool = new Map<Id<"schools">, typeof allFeatures>();
+
+    for (const s of allStudents) {
+      if (!schoolIds.has(s.schoolId)) continue;
+      studentsBySchool.set(s.schoolId, (studentsBySchool.get(s.schoolId) ?? 0) + 1);
+    }
+    for (const b of allBooks) {
+      if (!schoolIds.has(b.schoolId)) continue;
+      booksBySchool.set(b.schoolId, (booksBySchool.get(b.schoolId) ?? 0) + 1);
+    }
+    for (const b of allActiveBorrowings) {
+      if (!schoolIds.has(b.schoolId)) continue;
+      const arr = activeBySchool.get(b.schoolId) ?? [];
+      arr.push(b);
+      activeBySchool.set(b.schoolId, arr);
+    }
+    for (const b of allBorrowingsList) {
+      if (!schoolIds.has(b.schoolId)) continue;
+      const arr = borrowingsBySchool.get(b.schoolId) ?? [];
+      arr.push(b);
+      borrowingsBySchool.set(b.schoolId, arr);
+    }
+    for (const f of allFeatures) {
+      if (!schoolIds.has(f.schoolId)) continue;
+      const arr = featuresBySchool.get(f.schoolId) ?? [];
+      arr.push(f);
+      featuresBySchool.set(f.schoolId, arr);
+    }
+
+    const now = Date.now();
     const results: {
       schoolId: Id<"schools">;
       schoolName: string;
@@ -65,37 +111,18 @@ export const schoolComparison = query({
     }[] = [];
 
     for (const school of schools) {
-      const students = await ctx.db
-        .query("students")
-        .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
-        .collect();
+      const studentCount = studentsBySchool.get(school._id) ?? 0;
+      const bookCount = booksBySchool.get(school._id) ?? 0;
+      const active = activeBySchool.get(school._id) ?? ([] as typeof allActiveBorrowings);
+      const schoolBorrowings = borrowingsBySchool.get(school._id) ?? ([] as typeof allBorrowingsList);
+      const features = featuresBySchool.get(school._id) ?? ([] as typeof allFeatures);
 
-      const books = await ctx.db
-        .query("books")
-        .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
-        .collect();
-
-      const active = await ctx.db
-        .query("borrowings")
-        .withIndex("by_status", (q) => q.eq("schoolId", school._id).eq("status", "borrowed"))
-        .collect();
-
-      const allBorrowings = await ctx.db
-        .query("borrowings")
-        .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
-        .collect();
-
-      const overdue = active.filter((b) => b.dueDate < Date.now());
-      const features = await ctx.db
-        .query("feature_configurations")
-        .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
-        .collect();
-
+      const overdue = active.filter((b) => b.dueDate < now);
       const featuresEnabled = features.filter((f) => f.isEnabled).length;
       const featureAdoption = features.length > 0 ? featuresEnabled / features.length : 0;
 
-      const engagement = students.length > 0
-        ? new Set(allBorrowings.map((b) => b.studentId)).size / students.length
+      const engagement = studentCount > 0
+        ? new Set(schoolBorrowings.map((b) => b.studentId)).size / studentCount
         : 0;
 
       const overdueRate = active.length > 0 ? overdue.length / active.length : 0;
@@ -107,8 +134,8 @@ export const schoolComparison = query({
       results.push({
         schoolId: school._id,
         schoolName: school.name,
-        studentCount: students.length,
-        bookCount: books.length,
+        studentCount,
+        bookCount,
         activeBorrowings: active.length,
         overdueCount: overdue.length,
         overdueRate: Math.round(overdueRate * 100),
@@ -129,35 +156,14 @@ export const takeSnapshot = mutation({
   handler: async (ctx, { schoolId }) => {
     await requireSuperadmin(ctx);
 
-    const students = await ctx.db
-      .query("students")
-      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-      .take(10000);
-
-    const books = await ctx.db
-      .query("books")
-      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-      .take(10000);
-
-    const active = await ctx.db
-      .query("borrowings")
-      .withIndex("by_status", (q) => q.eq("schoolId", schoolId).eq("status", "borrowed"))
-      .take(10000);
-
-    const allBorrowings = await ctx.db
-      .query("borrowings")
-      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-      .take(10000);
-
-    const fines = await ctx.db
-      .query("fines")
-      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-      .take(10000);
-
-    const features = await ctx.db
-      .query("feature_configurations")
-      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
-      .take(100);
+    const [students, books, active, allBorrowings, fines, features] = await Promise.all([
+      ctx.db.query("students").withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId)).take(10000),
+      ctx.db.query("books").withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId)).take(10000),
+      ctx.db.query("borrowings").withIndex("by_status", (q) => q.eq("schoolId", schoolId).eq("status", "borrowed")).take(10000),
+      ctx.db.query("borrowings").withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId)).take(10000),
+      ctx.db.query("fines").withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId)).take(10000),
+      ctx.db.query("feature_configurations").withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId)).take(100),
+    ]);
 
     return await ctx.db.insert("analytics_snapshots", {
       schoolId,

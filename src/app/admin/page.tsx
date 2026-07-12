@@ -3,7 +3,7 @@
 import { useQuery, useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Card, CardContent } from "@/components/ui/card";
-import { Building2, Shield, CreditCard, BookOpen } from "lucide-react";
+import { Building2, Shield, CreditCard, BookOpen, Loader2 } from "lucide-react";
 import { useIsSuperadmin } from "@/lib/use-admin";
 
 export default function AdminOverview() {
@@ -23,6 +23,14 @@ export default function AdminOverview() {
   ];
 
   const activeSubs = subscriptions?.filter((s) => s.status === "active").length ?? 0;
+
+  if (schools === undefined || admins === undefined || subscriptions === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

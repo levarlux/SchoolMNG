@@ -60,6 +60,14 @@ export default function AdminSchoolsPage() {
   // Dropdown state — which school's menu is open
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
+  if (schools === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
   const filtered = schools?.filter((s) => {
     if (!search) return true;
     const q = search.toLowerCase();

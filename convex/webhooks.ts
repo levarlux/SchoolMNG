@@ -59,8 +59,25 @@ export const handleOrganizationEvent = mutation({
         .withIndex("by_clerkOrgId", (q) => q.eq("clerkOrgId", data.id))
         .first();
       if (school) {
+        const classes = await ctx.db
+          .query("classes")
+          .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
+          .take(1);
+        if (classes.length > 0) {
+          console.warn("[webhooks] School deletion blocked: classes still exist. Manual cleanup required.");
+          return { ok: false, reason: "School has dependent classes" };
+        }
+
+        const students = await ctx.db
+          .query("students")
+          .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
+          .take(1);
+        if (students.length > 0) {
+          console.warn("[webhooks] School deletion blocked: students still exist. Manual cleanup required.");
+          return { ok: false, reason: "School has dependent students" };
+        }
+
         await ctx.db.delete(school._id);
-        console.warn("[webhooks] School deleted via webhook. Child records (classes, students, etc.) are NOT cascade-deleted. Manual cleanup may be needed.");
       }
     }
 

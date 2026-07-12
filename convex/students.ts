@@ -99,6 +99,18 @@ export const update = mutation({
     if (updates.classId) {
       await requireClassMembership(ctx, updates.classId);
     }
+    if (updates.admNo !== undefined) {
+      const student = await ctx.db.get(id);
+      if (student) {
+        const existing = await ctx.db
+          .query("students")
+          .withIndex("by_admNo", (q) => q.eq("schoolId", student.schoolId).eq("admNo", updates.admNo!))
+          .first();
+        if (existing && existing._id !== id) {
+          throw new Error("A student with this admission number already exists in this school");
+        }
+      }
+    }
     const filtered = Object.fromEntries(
       Object.entries(updates).filter(([_, v]) => v !== undefined)
     );

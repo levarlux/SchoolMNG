@@ -235,15 +235,12 @@ export const fullSchoolExport = query({
       ctx.db.query("borrowings").withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId)).take(5000),
     ]);
 
-    // Fetch all streams for all classes
-    const allStreams: { _id: any; name: string; classId: any }[] = [];
-    for (const cls of classes) {
-      const classStreams = await ctx.db
-        .query("streams")
-        .withIndex("by_classId", (q) => q.eq("classId", cls._id))
-        .take(100);
-      allStreams.push(...classStreams);
-    }
+    // Fetch all streams for the school in one query instead of N+1 per class
+    const classIds = new Set(classes.map((c) => c._id));
+    const allStreams = await ctx.db
+      .query("streams")
+      .collect();
+    const relevantStreams = allStreams.filter((s) => classIds.has(s.classId));
 
     const classMap = new Map(classes.map((c) => [c._id, c.name]));
     const studentMap = new Map(students.map((s) => [s._id, `${s.firstName} ${s.lastName}`]));

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Trash2, ArrowLeft, Users } from "lucide-react";
+import { Plus, Trash2, ArrowLeft, Users, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -31,18 +31,34 @@ export default function ClassDetailPage() {
   async function handleCreateStream(e: React.FormEvent) {
     e.preventDefault();
     if (!streamName.trim()) return;
-    await createStream({ classId: classId as any, name: streamName.trim() });
-    toast.success("Stream created");
-    setShowModal(false);
-    setStreamName("");
+    try {
+      await createStream({ classId: classId as any, name: streamName.trim() });
+      toast.success("Stream created");
+      setShowModal(false);
+      setStreamName("");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error("[streams.create]", error);
+    }
   }
 
   async function handleDeleteStream(id: string) {
-    await deleteStream({ id: id as any });
-    toast.success("Stream deleted");
+    try {
+      await deleteStream({ id: id as any });
+      toast.success("Stream deleted");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error("[streams.remove]", error);
+    }
   }
 
-  if (!cls) return <div className="text-muted-foreground">Loading...</div>;
+  if (cls === undefined || cls === null || streams === undefined || students === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
