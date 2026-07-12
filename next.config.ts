@@ -1,6 +1,4 @@
-import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
-import path from "path";
 
 const nextConfig: NextConfig = {
   images: {
@@ -12,8 +10,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
-  silent: true,
-  org: "levarlux",
-  project: "schoolmng",
-});
+export default nextConfig;
