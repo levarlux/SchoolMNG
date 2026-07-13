@@ -39,14 +39,6 @@ export default function SettingsPage() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  if (school === undefined) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
   // Sync form whenever school data arrives from Convex
   useEffect(() => {
     if (school) {
@@ -54,6 +46,14 @@ export default function SettingsPage() {
       setSecondaryColor(school.secondaryColor);
     }
   }, [school]);
+
+  if (school === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();

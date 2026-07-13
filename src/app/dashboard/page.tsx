@@ -30,28 +30,7 @@ export default function Dashboard() {
   const primary = school?.primaryColor ?? "#2563eb";
   const secondary = school?.secondaryColor ?? "#64748b";
 
-  if (classes === undefined || students === undefined || books === undefined || activeBorrowings === undefined || fines === undefined) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
   const overdue = activeBorrowings?.filter((b: any) => b.dueDate < Date.now()) ?? [];
-  const totalUnpaid = fines
-    ?.filter((f) => f.status === "unpaid")
-    .reduce((sum, f) => sum + (f.amount - f.paidAmount), 0);
-
-  // ── Stats ────────────────────────────────────────────────────────
-  const stats = [
-    { label: "Classes", value: classes?.length ?? 0, icon: BookOpen, color: "text-blue-600", bg: "bg-blue-50" },
-    { label: "Students", value: students?.length ?? 0, icon: Users, color: "text-green-600", bg: "bg-green-50" },
-    { label: "Books", value: books?.length ?? 0, icon: BookOpen, color: "text-purple-600", bg: "bg-purple-50" },
-    { label: "Active Borrowings", value: activeBorrowings?.length ?? 0, icon: BookMarked, color: "text-orange-600", bg: "bg-orange-50" },
-    { label: "Overdue", value: overdue.length, icon: AlertCircle, color: "text-red-600", bg: "bg-red-50" },
-    { label: "Unpaid Fines", value: `$${(totalUnpaid ?? 0).toFixed(2)}`, icon: CircleDollarSign, color: "text-yellow-600", bg: "bg-yellow-50" },
-  ];
 
   // ── Borrowings Over Time (last 7 days) ───────────────────────────
   const borrowingsOverTime = useMemo(() => {
@@ -127,6 +106,28 @@ export default function Dashboard() {
       .filter((f) => f.status === "unpaid")
       .sort((a, b) => (b.amount - b.paidAmount) - (a.amount - a.paidAmount));
   }, [fines]);
+
+  if (classes === undefined || students === undefined || books === undefined || activeBorrowings === undefined || fines === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  const totalUnpaid = fines
+    ?.filter((f) => f.status === "unpaid")
+    .reduce((sum, f) => sum + (f.amount - f.paidAmount), 0);
+
+  // ── Stats ────────────────────────────────────────────────────────
+  const stats = [
+    { label: "Classes", value: classes?.length ?? 0, icon: BookOpen, color: "text-blue-600", bg: "bg-blue-50" },
+    { label: "Students", value: students?.length ?? 0, icon: Users, color: "text-green-600", bg: "bg-green-50" },
+    { label: "Books", value: books?.length ?? 0, icon: BookOpen, color: "text-purple-600", bg: "bg-purple-50" },
+    { label: "Active Borrowings", value: activeBorrowings?.length ?? 0, icon: BookMarked, color: "text-orange-600", bg: "bg-orange-50" },
+    { label: "Overdue", value: overdue.length, icon: AlertCircle, color: "text-red-600", bg: "bg-red-50" },
+    { label: "Unpaid Fines", value: `$${(totalUnpaid ?? 0).toFixed(2)}`, icon: CircleDollarSign, color: "text-yellow-600", bg: "bg-yellow-50" },
+  ];
 
   // ── Export ────────────────────────────────────────────────────────
   function handleFullExport() {

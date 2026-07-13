@@ -33,14 +33,6 @@ export default function StudentsPage() {
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedStream, setSelectedStream] = useState("");
 
-  if (allStudents === undefined) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
   const streamsQuery = useQuery(
     api.streams.listByClass,
     selectedClass ? { classId: selectedClass as any } : "skip"
@@ -69,6 +61,14 @@ export default function StudentsPage() {
       setStreamMap(map);
     });
   }, [allStudents, classes, client]);
+
+  if (allStudents === undefined) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   const filtered = allStudents?.filter((s) => {
     if (!search) return true;
