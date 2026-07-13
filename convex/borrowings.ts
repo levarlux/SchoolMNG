@@ -5,7 +5,9 @@ import {
   requireSchoolMembership,
   requireStudentMembership,
   requireBorrowingMembership,
+  logAuditEntry,
 } from "./helpers";
+import { log } from "./lib/logger";
 
 export const listBySchool = query({
   args: { schoolId: v.id("schools") },
@@ -75,15 +77,15 @@ export const create = mutation({
 
     const book = await ctx.db.get(args.bookId);
     if (!book) {
-      console.error("[borrowings.create] Book not found:", args.bookId);
+      log("error", "borrowings", "Book not found", { bookId: args.bookId, schoolId: args.schoolId });
       throw new Error("Book not found");
     }
     if (book.schoolId !== args.schoolId) {
-      console.error("[borrowings.create] Book does not belong to school:", args.bookId);
+      log("error", "borrowings", "Book does not belong to school", { bookId: args.bookId, schoolId: args.schoolId });
       throw new Error("Book does not belong to this school");
     }
     if (book.availableCopies <= 0) {
-      console.error("[borrowings.create] No copies available for book:", args.bookId);
+      log("error", "borrowings", "No copies available", { bookId: args.bookId, schoolId: args.schoolId });
       throw new Error("No copies available");
     }
     await ctx.db.patch(args.bookId, {
@@ -91,7 +93,7 @@ export const create = mutation({
     });
 
     const now = Date.now();
-    return await ctx.db.insert("borrowings", {
+    const borrowingId = await ctx.db.insert("borrowings", {
       schoolId: args.schoolId,
       studentId: args.studentId,
       bookName: args.bookName,
@@ -102,6 +104,16 @@ export const create = mutation({
       status: "borrowed",
       bookId: args.bookId,
     });
+
+    await logAuditEntry(ctx, args.schoolId, "borrowing.create", {
+      borrowingId,
+      studentId: args.studentId,
+      bookId: args.bookId,
+      bookName: args.bookName,
+      dueDate: args.dueDate,
+    });
+
+    return borrowingId;
   },
 });
 
@@ -111,7 +123,7 @@ export const markReturned = mutation({
     await requireBorrowingMembership(ctx, id);
     const borrowing = await ctx.db.get(id);
     if (!borrowing) {
-      console.error("[borrowings.markReturned] Borrowing not found:", id);
+      log("error", "borrowings", "Borrowing not found", { borrowingId: id });
       throw new Error("Borrowing not found");
     }
 
@@ -130,5 +142,11 @@ export const markReturned = mutation({
         });
       }
     }
+
+    await logAuditEntry(ctx, borrowing.schoolId, "borrowing.return", {
+      borrowingId: id,
+      studentId: borrowing.studentId,
+      bookId: borrowing.bookId,
+    });
   },
 });

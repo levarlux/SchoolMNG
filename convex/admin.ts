@@ -3,7 +3,13 @@ import { action } from "./_generated/server";
 import { createClerkOrg, updateClerkOrg, deleteClerkOrg } from "./clerk";
 import { api, internal } from "./_generated/api";
 
-async function assertSuperadmin(ctx: { auth: { getUserIdentity: () => Promise<unknown> } }) {
+/**
+ * Superadmin check for actions.
+ * Actions don't have `ctx.db`, so we can only verify the JWT metadata.
+ * This uses the same logic as `requireSuperadmin` in helpers.ts but
+ * works with the action context type.
+ */
+async function requireSuperadminAction(ctx: { auth: { getUserIdentity: () => Promise<unknown> } }) {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) throw new Error("Not authenticated");
   const metadata = (identity as Record<string, unknown>)["publicMetadata"] as
@@ -31,7 +37,7 @@ export const create = action({
     ),
   },
   handler: async (ctx, { name, slug, books }) => {
-    await assertSuperadmin(ctx);
+    await requireSuperadminAction(ctx);
     const org = await createClerkOrg(name);
     const schoolId = await ctx.runMutation(api.schools.create, {
       clerkOrgId: org.id,
@@ -66,7 +72,7 @@ export const update = action({
     secondaryColor: v.optional(v.string()),
   },
   handler: async (ctx, { id, ...updates }) => {
-    await assertSuperadmin(ctx);
+    await requireSuperadminAction(ctx);
     const school = await ctx.runQuery(internal.schools.getById, { id });
     if (!school) throw new Error("School not found");
 
@@ -82,7 +88,7 @@ export const update = action({
 export const remove = action({
   args: { id: v.id("schools") },
   handler: async (ctx, { id }) => {
-    await assertSuperadmin(ctx);
+    await requireSuperadminAction(ctx);
     const school = await ctx.runQuery(internal.schools.getById, { id });
     if (!school) throw new Error("School not found");
 

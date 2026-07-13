@@ -1,12 +1,12 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { requireSuperadmin } from "./helpers";
+import { requireSuperadmin, patchDefinedFields, logAuditEntry } from "./helpers";
 
 export const list = query({
   args: {},
   handler: async (ctx) => {
     await requireSuperadmin(ctx);
-    return await ctx.db.query("subscriptions").collect();
+    return await ctx.db.query("subscriptions").take(1000);
   },
 });
 
@@ -29,7 +29,13 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
     await requireSuperadmin(ctx);
-    return await ctx.db.insert("subscriptions", args);
+    const subId = await ctx.db.insert("subscriptions", args);
+    await logAuditEntry(ctx, args.schoolId, "subscription.create", {
+      subscriptionId: subId,
+      planType: args.planType,
+      status: args.status,
+    });
+    return subId;
   },
 });
 
@@ -41,11 +47,9 @@ export const update = mutation({
   },
   handler: async (ctx, { id, ...updates }) => {
     await requireSuperadmin(ctx);
-    const filtered = Object.fromEntries(
-      Object.entries(updates).filter(([_, v]) => v !== undefined)
-    );
-    if (Object.keys(filtered).length > 0) {
-      await ctx.db.patch(id, filtered);
-    }
+    const sub = await ctx.db.get(id);
+    if (!sub) throw new Error("Subscription not found");
+    await patchDefinedFields(ctx, "subscriptions", id, updates);
+    await logAuditEntry(ctx, sub.schoolId, "subscription.update", { subscriptionId: id, ...updates });
   },
 });

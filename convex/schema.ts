@@ -36,6 +36,7 @@ export default defineSchema({
   }).index("by_schoolId", ["schoolId"])
     .index("by_classId", ["classId"])
     .index("by_admNo", ["schoolId", "admNo"])
+    // _creationTime is auto-appended by Convex; no need to specify it explicitly
     .searchIndex("search_name", { searchField: "firstName" }),
 
   borrowings: defineTable({

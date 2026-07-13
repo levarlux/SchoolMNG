@@ -3,6 +3,8 @@ import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
   requireBookMembership,
+  patchDefinedFields,
+  logAuditEntry,
 } from "./helpers";
 
 export const listBySchool = query({
@@ -42,7 +44,13 @@ export const create = mutation({
     if (args.totalCopies !== undefined && args.totalCopies < args.availableCopies) {
       throw new Error("totalCopies must be >= availableCopies");
     }
-    return await ctx.db.insert("books", args);
+    const bookId = await ctx.db.insert("books", args);
+    await logAuditEntry(ctx, args.schoolId, "book.create", {
+      bookId,
+      title: args.title,
+      author: args.author,
+    });
+    return bookId;
   },
 });
 
@@ -57,37 +65,29 @@ export const update = mutation({
     subject: v.optional(v.string()),
   },
   handler: async (ctx, { id, ...updates }) => {
-    await requireBookMembership(ctx, id);
+    const book = await requireBookMembership(ctx, id);
 
     if (updates.availableCopies !== undefined && updates.availableCopies < 0) {
       throw new Error("availableCopies must be >= 0");
     }
 
     if (updates.availableCopies !== undefined || updates.totalCopies !== undefined) {
-      const existing = await ctx.db.get(id);
-      if (existing) {
-        const effectiveAvailable = updates.availableCopies ?? existing.availableCopies;
-        const effectiveTotal = updates.totalCopies ?? existing.totalCopies;
-        if (effectiveTotal !== undefined && effectiveAvailable > effectiveTotal) {
-          throw new Error("availableCopies must be <= totalCopies");
-        }
+      const effectiveAvailable = updates.availableCopies ?? book.availableCopies;
+      const effectiveTotal = updates.totalCopies ?? book.totalCopies;
+      if (effectiveTotal !== undefined && effectiveAvailable > effectiveTotal) {
+        throw new Error("availableCopies must be <= totalCopies");
       }
     }
 
-    const filtered = Object.fromEntries(
-      Object.entries(updates).filter(([_, v]) => v !== undefined)
-    );
-    if (Object.keys(filtered).length > 0) {
-      await ctx.db.patch(id, filtered);
-    }
+    await patchDefinedFields(ctx, "books", id, updates);
+    await logAuditEntry(ctx, book.schoolId, "book.update", { bookId: id, ...updates });
   },
 });
 
 export const remove = mutation({
   args: { id: v.id("books") },
   handler: async (ctx, { id }) => {
-    await requireBookMembership(ctx, id);
-    const book = await ctx.db.get(id);
+    const book = await requireBookMembership(ctx, id);
     if (!book) throw new Error("Book not found");
 
     const activeBorrowals = await ctx.db
@@ -100,6 +100,7 @@ export const remove = mutation({
     }
 
     await ctx.db.delete(id);
+    await logAuditEntry(ctx, book.schoolId, "book.remove", { bookId: id, title: book.title });
   },
 });
 
@@ -124,6 +125,7 @@ export const bulkCreate = mutation({
       await ctx.db.insert("books", { schoolId, ...book });
       count++;
     }
+    await logAuditEntry(ctx, schoolId, "book.bulkCreate", { count });
     return { count };
   },
 });

@@ -3,6 +3,19 @@ import { Doc, Id } from "./_generated/dataModel";
 
 type Ctx = QueryCtx | MutationCtx;
 
+/**
+ * JWT identity metadata shape.
+ * Clerk stores custom metadata in `publicMetadata` on the JWT.
+ */
+interface JwtIdentity {
+  subject: string;
+  email?: string;
+  org_id?: string;
+  publicMetadata?: {
+    role?: string;
+  };
+}
+
 // ── Auth primitives ────────────────────────────────────────────────
 
 export async function getCurrentUser(ctx: Ctx) {
@@ -21,9 +34,7 @@ export async function requireAuth(ctx: Ctx) {
 
 function identityIsSuperadmin(identity: Awaited<ReturnType<typeof getCurrentUser>>): boolean {
   if (!identity) return false;
-  const metadata = (identity as Record<string, unknown>)["publicMetadata"] as
-    | { role?: string }
-    | undefined;
+  const metadata = (identity as unknown as JwtIdentity)["publicMetadata"];
   return metadata?.role === "superadmin";
 }
 
@@ -51,7 +62,7 @@ export async function requireSuperadmin(ctx: Ctx) {
  */
 export async function getOrgIdFromJwt(ctx: Ctx): Promise<string> {
   const identity = await requireAuth(ctx);
-  const orgId = (identity as Record<string, unknown>)["org_id"] as string | undefined;
+  const orgId = (identity as unknown as JwtIdentity)["org_id"];
   if (!orgId) throw new Error("No active organisation");
   return orgId;
 }
@@ -81,7 +92,7 @@ export async function requireSchoolMembership(
 ): Promise<Doc<"schools">> {
   const orgId = await getOrgIdFromJwt(ctx);
   const school = await ctx.db.get(schoolId);
-  if (!school) throw new Error("School not found");
+  if (!school) throw new Error("Not authorised for this school");
   if (school.clerkOrgId !== orgId) {
     throw new Error("Not authorised for this school");
   }
@@ -169,4 +180,52 @@ export function assertValidHexColor(value: string, field: string) {
   if (!HEX_COLOR_RE.test(value)) {
     throw new Error(`Invalid hex colour for ${field}: "${value}". Expected "#rrggbb".`);
   }
+}
+
+// ── Reusable update pattern ────────────────────────────────────────
+//
+// Extracts the common "filter undefined fields then patch" pattern used
+// across multiple mutation handlers.
+
+/**
+ * Filter out undefined keys from an updates object, then apply the patch
+ * to the document with the given id.  Does nothing if all fields are undefined.
+ *
+ * Usage:
+ *   await patchDefinedFields(ctx, tableName, docId, { name: "New", slug: undefined });
+ */
+export async function patchDefinedFields<T extends Record<string, unknown>>(
+  ctx: MutationCtx,
+  _table: string,
+  id: Id<"schools"> | Id<"classes"> | Id<"books"> | Id<"subscriptions"> | Id<"feature_configurations"> | Id<"students">,
+  updates: T,
+): Promise<void> {
+  const filtered = Object.fromEntries(
+    Object.entries(updates).filter(([_, v]) => v !== undefined),
+  );
+  if (Object.keys(filtered).length > 0) {
+    await ctx.db.patch(id as any, filtered);
+  }
+}
+
+// ── Audit logging ──────────────────────────────────────────────────
+
+/**
+ * Insert an audit log entry into the report_logs table.
+ * Should be called on any write operation (create, update, delete).
+ */
+export async function logAuditEntry(
+  ctx: MutationCtx,
+  schoolId: Id<"schools">,
+  action: string,
+  details?: Record<string, unknown>,
+) {
+  const identity = await ctx.auth.getUserIdentity();
+  await ctx.db.insert("report_logs", {
+    schoolId,
+    generatedBy: identity?.subject ?? "system",
+    reportType: action,
+    generatedAt: Date.now(),
+    params: details,
+  });
 }

@@ -6,6 +6,8 @@ import {
   requireSchoolMembership,
   requireSchoolFromJwt,
   assertValidHexColor,
+  patchDefinedFields,
+  logAuditEntry,
 } from "./helpers";
 
 // ── Read-only queries ──────────────────────────────────────────────
@@ -84,7 +86,9 @@ export const create = mutation({
     await requireSuperadmin(ctx);
     assertValidHexColor(args.primaryColor, "primaryColor");
     assertValidHexColor(args.secondaryColor, "secondaryColor");
-    return await ctx.db.insert("schools", args);
+    const schoolId = await ctx.db.insert("schools", args);
+    await logAuditEntry(ctx, schoolId, "school.create", { name: args.name, slug: args.slug });
+    return schoolId;
   },
 });
 
@@ -113,12 +117,8 @@ export const updateMySchool = mutation({
     const school = await requireSchoolFromJwt(ctx);
     if (updates.primaryColor) assertValidHexColor(updates.primaryColor, "primaryColor");
     if (updates.secondaryColor) assertValidHexColor(updates.secondaryColor, "secondaryColor");
-    const filtered = Object.fromEntries(
-      Object.entries(updates).filter(([, v]) => v !== undefined)
-    );
-    if (Object.keys(filtered).length > 0) {
-      await ctx.db.patch(school._id, filtered);
-    }
+    await patchDefinedFields(ctx, "schools", school._id, updates);
+    await logAuditEntry(ctx, school._id, "school.updateMySchool", updates);
     return school._id;
   },
 });
@@ -138,12 +138,8 @@ export const update = mutation({
     await requireSuperadmin(ctx);
     if (updates.primaryColor) assertValidHexColor(updates.primaryColor, "primaryColor");
     if (updates.secondaryColor) assertValidHexColor(updates.secondaryColor, "secondaryColor");
-    const filtered = Object.fromEntries(
-      Object.entries(updates).filter(([, v]) => v !== undefined)
-    );
-    if (Object.keys(filtered).length > 0) {
-      await ctx.db.patch(id, filtered);
-    }
+    await patchDefinedFields(ctx, "schools", id, updates);
+    await logAuditEntry(ctx, id, "school.update", updates);
   },
 });
 
@@ -178,7 +174,6 @@ export const remove = mutation({
     }
 
     await ctx.db.delete(id);
+    await logAuditEntry(ctx, id, "school.remove", {});
   },
 });
-
-

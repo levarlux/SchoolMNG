@@ -3,8 +3,9 @@ import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
   requireClassMembership,
+  patchDefinedFields,
+  logAuditEntry,
 } from "./helpers";
-
 export const listBySchool = query({
   args: { schoolId: v.id("schools") },
   handler: async (ctx, { schoolId }) => {
@@ -32,7 +33,9 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
     await requireSchoolMembership(ctx, args.schoolId);
-    return await ctx.db.insert("classes", args);
+    const classId = await ctx.db.insert("classes", args);
+    await logAuditEntry(ctx, args.schoolId, "class.create", { classId, name: args.name });
+    return classId;
   },
 });
 
@@ -43,20 +46,16 @@ export const update = mutation({
     hasStreams: v.optional(v.boolean()),
   },
   handler: async (ctx, { id, ...updates }) => {
-    await requireClassMembership(ctx, id);
-    const filtered = Object.fromEntries(
-      Object.entries(updates).filter(([_, v]) => v !== undefined)
-    );
-    if (Object.keys(filtered).length > 0) {
-      await ctx.db.patch(id, filtered);
-    }
+    const cls = await requireClassMembership(ctx, id);
+    await patchDefinedFields(ctx, "classes", id, updates);
+    await logAuditEntry(ctx, cls.schoolId, "class.update", { classId: id, ...updates });
   },
 });
 
 export const remove = mutation({
   args: { id: v.id("classes") },
   handler: async (ctx, { id }) => {
-    await requireClassMembership(ctx, id);
+    const cls = await requireClassMembership(ctx, id);
 
     const studentsInClass = await ctx.db
       .query("students")
@@ -66,13 +65,23 @@ export const remove = mutation({
       throw new Error("Cannot delete class: students are still assigned to it. Reassign or remove them first.");
     }
 
-    const streams = await ctx.db
+    // Delete associated streams in batches to avoid hitting Convex mutation limits at scale
+    const BATCH_SIZE = 100;
+    let streamsBatch = await ctx.db
       .query("streams")
       .withIndex("by_classId", (q) => q.eq("classId", id))
-      .collect();
-    for (const stream of streams) {
-      await ctx.db.delete(stream._id);
+      .take(BATCH_SIZE);
+    while (streamsBatch.length > 0) {
+      for (let i = 0; i < streamsBatch.length; i++) {
+        await ctx.db.delete(streamsBatch[i]._id);
+      }
+      streamsBatch = await ctx.db
+        .query("streams")
+        .withIndex("by_classId", (q) => q.eq("classId", id))
+        .take(BATCH_SIZE);
     }
+
     await ctx.db.delete(id);
+    await logAuditEntry(ctx, cls.schoolId, "class.remove", { classId: id });
   },
 });

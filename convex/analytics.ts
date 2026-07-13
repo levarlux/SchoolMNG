@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { query, mutation } from "./_generated/server";
+import { query, mutation, internalMutation } from "./_generated/server";
 import { Id } from "./_generated/dataModel";
 import { requireSuperadmin } from "./helpers";
 
@@ -10,6 +10,7 @@ export const systemOverview = query({
   handler: async (ctx) => {
     await requireSuperadmin(ctx);
 
+    // Use indexed queries with reasonable limits to avoid full-table pulls
     const [allStudents, allBooks, allBorrowingsList, allFines, allSubscriptions, allSchools] =
       await Promise.all([
         ctx.db.query("students").take(50000),
@@ -41,6 +42,10 @@ export const systemOverview = query({
       unpaidFines,
       totalSubscriptions: allSubscriptions.length,
       activeSubscriptions: allSubscriptions.filter((s) => s.status === "active").length,
+      // Note: These queries use .take(50000) which may truncate data for schools with
+      // more than 50k records. For large-scale deployments, consider using aggregated
+      // analytics snapshots (see analytics_snapshots table and the cron job).
+      isTruncated: totalStudents >= 50000 || totalBooks >= 50000 || allBorrowingsList.length >= 50000,
     };
   },
 });
@@ -53,12 +58,13 @@ export const schoolComparison = query({
     const schools = await ctx.db.query("schools").take(50);
     const schoolIds = new Set(schools.map((s) => s._id));
 
+    // Use indexed queries with take() instead of collect() to avoid OOM
     const [allStudents, allBooks, allBorrowingsList, allFeatures] =
       await Promise.all([
-        ctx.db.query("students").collect(),
-        ctx.db.query("books").collect(),
-        ctx.db.query("borrowings").collect(),
-        ctx.db.query("feature_configurations").collect(),
+        ctx.db.query("students").take(50000),
+        ctx.db.query("books").take(50000),
+        ctx.db.query("borrowings").take(50000),
+        ctx.db.query("feature_configurations").take(5000),
       ]);
 
     const allActiveBorrowings = allBorrowingsList.filter((b) => b.status === "borrowed");
@@ -179,6 +185,43 @@ export const takeSnapshot = mutation({
         .reduce((sum, f) => sum + (f.amount - f.paidAmount), 0),
       featuresEnabled: features.filter((f) => f.isEnabled).length,
     });
+  },
+});
+
+/**
+ * Internal mutation used by the daily cron job.
+ * Takes a snapshot for every school in the system.
+ */
+export const takeAllSnapshots = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const schools = await ctx.db.query("schools").take(1000);
+    for (const school of schools) {
+      // Take snapshot inline for each school
+      const [students, books, active, allBorrowings, fines, features] = await Promise.all([
+        ctx.db.query("students").withIndex("by_schoolId", (q) => q.eq("schoolId", school._id)).take(10000),
+        ctx.db.query("books").withIndex("by_schoolId", (q) => q.eq("schoolId", school._id)).take(10000),
+        ctx.db.query("borrowings").withIndex("by_status", (q) => q.eq("schoolId", school._id).eq("status", "borrowed")).take(10000),
+        ctx.db.query("borrowings").withIndex("by_schoolId", (q) => q.eq("schoolId", school._id)).take(10000),
+        ctx.db.query("fines").withIndex("by_schoolId", (q) => q.eq("schoolId", school._id)).take(10000),
+        ctx.db.query("feature_configurations").withIndex("by_schoolId", (q) => q.eq("schoolId", school._id)).take(100),
+      ]);
+
+      await ctx.db.insert("analytics_snapshots", {
+        schoolId: school._id,
+        snapshotDate: Date.now(),
+        totalStudents: students.length,
+        totalBooks: books.length,
+        activeBorrowings: active.length,
+        overdueCount: active.filter((b) => b.dueDate < Date.now()).length,
+        totalBorrowingsAllTime: allBorrowings.length,
+        totalFines: fines.reduce((sum, f) => sum + f.amount, 0),
+        unpaidFines: fines
+          .filter((f) => f.status === "unpaid")
+          .reduce((sum, f) => sum + (f.amount - f.paidAmount), 0),
+        featuresEnabled: features.filter((f) => f.isEnabled).length,
+      });
+    }
   },
 });
 

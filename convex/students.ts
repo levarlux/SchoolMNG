@@ -4,6 +4,8 @@ import {
   requireSchoolMembership,
   requireClassMembership,
   requireStudentMembership,
+  patchDefinedFields,
+  logAuditEntry,
 } from "./helpers";
 
 export const listBySchool = query({
@@ -81,7 +83,14 @@ export const create = mutation({
       throw new Error("A student with this admission number already exists in this school");
     }
 
-    return await ctx.db.insert("students", args);
+    const studentId = await ctx.db.insert("students", args);
+    await logAuditEntry(ctx, args.schoolId, "student.create", {
+      studentId,
+      firstName: args.firstName,
+      lastName: args.lastName,
+      admNo: args.admNo,
+    });
+    return studentId;
   },
 });
 
@@ -95,27 +104,34 @@ export const update = mutation({
     admNo: v.optional(v.string()),
   },
   handler: async (ctx, { id, ...updates }) => {
-    await requireStudentMembership(ctx, id);
+    const student = await requireStudentMembership(ctx, id);
     if (updates.classId) {
       await requireClassMembership(ctx, updates.classId);
     }
     if (updates.admNo !== undefined) {
-      const student = await ctx.db.get(id);
-      if (student) {
-        const existing = await ctx.db
-          .query("students")
-          .withIndex("by_admNo", (q) => q.eq("schoolId", student.schoolId).eq("admNo", updates.admNo!))
-          .first();
-        if (existing && existing._id !== id) {
-          throw new Error("A student with this admission number already exists in this school");
-        }
+      const existing = await ctx.db
+        .query("students")
+        .withIndex("by_admNo", (q) => q.eq("schoolId", student.schoolId).eq("admNo", updates.admNo!))
+        .first();
+      if (existing && existing._id !== id) {
+        throw new Error("A student with this admission number already exists in this school");
       }
     }
-    const filtered = Object.fromEntries(
-      Object.entries(updates).filter(([_, v]) => v !== undefined)
-    );
-    if (Object.keys(filtered).length > 0) {
-      await ctx.db.patch(id, filtered);
-    }
+    await patchDefinedFields(ctx, "students", id, updates);
+    await logAuditEntry(ctx, student.schoolId, "student.update", { studentId: id, ...updates });
+  },
+});
+
+export const remove = mutation({
+  args: { id: v.id("students") },
+  handler: async (ctx, { id }) => {
+    const student = await requireStudentMembership(ctx, id);
+    await ctx.db.delete(id);
+    await logAuditEntry(ctx, student.schoolId, "student.remove", {
+      studentId: id,
+      admNo: student.admNo,
+      firstName: student.firstName,
+      lastName: student.lastName,
+    });
   },
 });

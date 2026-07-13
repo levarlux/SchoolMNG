@@ -4,6 +4,7 @@ import {
   requireSchoolMembership,
   requireStudentMembership,
   requireBorrowingMembership,
+  logAuditEntry,
 } from "./helpers";
 
 // ── Queries ────────────────────────────────────────────────────────
@@ -106,7 +107,7 @@ export const create = mutation({
       throw new Error("Cannot create overdue fine for returned borrowing");
     }
 
-    return await ctx.db.insert("fines", {
+    const fineId = await ctx.db.insert("fines", {
       schoolId: args.schoolId,
       borrowingId: args.borrowingId,
       studentId: args.studentId,
@@ -117,6 +118,15 @@ export const create = mutation({
       createdAt: Date.now(),
       note: args.note,
     });
+
+    await logAuditEntry(ctx, args.schoolId, "fine.create", {
+      fineId,
+      studentId: args.studentId,
+      amount: args.amount,
+      reason: args.reason,
+    });
+
+    return fineId;
   },
 });
 
@@ -160,6 +170,13 @@ export const markPaid = mutation({
       paidAt: newPaidAmount >= fine.amount ? Date.now() : undefined,
     });
 
+    await logAuditEntry(ctx, fine.schoolId, "fine.paid", {
+      fineId: id,
+      amount,
+      method,
+      fullyPaid: newPaidAmount >= fine.amount,
+    });
+
     return { ok: true, fullyPaid: newPaidAmount >= fine.amount };
   },
 });
@@ -185,6 +202,12 @@ export const markWaived = mutation({
       waivedBy,
       note: note ?? fine.note,
     });
+
+    await logAuditEntry(ctx, fine.schoolId, "fine.waived", {
+      fineId: id,
+      waivedBy,
+      amount: fine.amount,
+    });
   },
 });
 
@@ -198,6 +221,7 @@ export const updateNote = mutation({
     if (!fine) throw new Error("Fine not found");
     await requireSchoolMembership(ctx, fine.schoolId);
     await ctx.db.patch(id, { note });
+    await logAuditEntry(ctx, fine.schoolId, "fine.updateNote", { fineId: id });
   },
 });
 
@@ -207,14 +231,22 @@ export const remove = mutation({
     const fine = await ctx.db.get(id);
     if (!fine) throw new Error("Fine not found");
     await requireSchoolMembership(ctx, fine.schoolId);
-    // Delete associated payments first
-    const payments = await ctx.db
+    // Delete associated payments in batches to avoid hitting Convex mutation limits at scale
+    const BATCH_SIZE = 100;
+    let paymentsBatch = await ctx.db
       .query("fine_payments")
       .withIndex("by_fineId", (q) => q.eq("fineId", id))
-      .collect();
-    for (const payment of payments) {
-      await ctx.db.delete(payment._id);
+      .take(BATCH_SIZE);
+    while (paymentsBatch.length > 0) {
+      for (let i = 0; i < paymentsBatch.length; i++) {
+        await ctx.db.delete(paymentsBatch[i]._id);
+      }
+      paymentsBatch = await ctx.db
+        .query("fine_payments")
+        .withIndex("by_fineId", (q) => q.eq("fineId", id))
+        .take(BATCH_SIZE);
     }
     await ctx.db.delete(id);
+    await logAuditEntry(ctx, fine.schoolId, "fine.remove", { fineId: id, amount: fine.amount });
   },
 });

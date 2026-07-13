@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { mutation } from "./_generated/server";
+import { log } from "./lib/logger";
 
 /**
  * Public mutation that the Clerk webhook handler calls.
@@ -18,7 +19,7 @@ export const handleOrganizationEvent = mutation({
   },
   handler: async (ctx, { secret, event, data }) => {
     if (secret !== process.env.CLERK_WEBHOOK_SECRET) {
-      console.warn("[webhooks] Invalid webhook secret received");
+      log("warn", "webhooks", "Invalid webhook secret received", { event, orgId: data.id });
       throw new Error("Invalid webhook secret");
     }
 
@@ -35,6 +36,7 @@ export const handleOrganizationEvent = mutation({
           primaryColor: "#2563eb",
           secondaryColor: "#64748b",
         });
+        log("info", "webhooks", "School created from webhook", { orgId: data.id, name: data.name });
       }
     }
 
@@ -49,6 +51,7 @@ export const handleOrganizationEvent = mutation({
         if (data.slug) updates.slug = data.slug;
         if (Object.keys(updates).length > 0) {
           await ctx.db.patch(school._id, updates);
+          log("info", "webhooks", "School updated from webhook", { orgId: data.id, ...updates });
         }
       }
     }
@@ -64,7 +67,7 @@ export const handleOrganizationEvent = mutation({
           .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
           .take(1);
         if (classes.length > 0) {
-          console.warn("[webhooks] School deletion blocked: classes still exist. Manual cleanup required.");
+          log("warn", "webhooks", "School deletion blocked: classes still exist. Manual cleanup required.", { orgId: data.id, schoolId: school._id });
           return { ok: false, reason: "School has dependent classes" };
         }
 
@@ -73,11 +76,12 @@ export const handleOrganizationEvent = mutation({
           .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
           .take(1);
         if (students.length > 0) {
-          console.warn("[webhooks] School deletion blocked: students still exist. Manual cleanup required.");
+          log("warn", "webhooks", "School deletion blocked: students still exist. Manual cleanup required.", { orgId: data.id, schoolId: school._id });
           return { ok: false, reason: "School has dependent students" };
         }
 
         await ctx.db.delete(school._id);
+        log("info", "webhooks", "School deleted from webhook", { orgId: data.id, schoolId: school._id });
       }
     }
 
