@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { action } from "./_generated/server";
 import { createClerkOrg, updateClerkOrg, deleteClerkOrg } from "./clerk";
-import { api } from "./_generated/api";
+import { api, internal } from "./_generated/api";
 
 async function assertSuperadmin(ctx: { auth: { getUserIdentity: () => Promise<unknown> } }) {
   const identity = await ctx.auth.getUserIdentity();
@@ -67,7 +67,7 @@ export const update = action({
   },
   handler: async (ctx, { id, ...updates }) => {
     await assertSuperadmin(ctx);
-    const school = await ctx.runQuery(api.schools.getById, { id });
+    const school = await ctx.runQuery(internal.schools.getById, { id });
     if (!school) throw new Error("School not found");
 
     if (updates.name && updates.name !== school.name) {
@@ -83,7 +83,7 @@ export const remove = action({
   args: { id: v.id("schools") },
   handler: async (ctx, { id }) => {
     await assertSuperadmin(ctx);
-    const school = await ctx.runQuery(api.schools.getById, { id });
+    const school = await ctx.runQuery(internal.schools.getById, { id });
     if (!school) throw new Error("School not found");
 
     await deleteClerkOrg(school.clerkOrgId);

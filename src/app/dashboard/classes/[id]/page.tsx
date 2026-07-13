@@ -30,9 +30,9 @@ export default function ClassDetailPage() {
 
   async function handleCreateStream(e: React.FormEvent) {
     e.preventDefault();
-    if (!streamName.trim()) return;
+    if (!streamName.trim() || !school) return;
     try {
-      await createStream({ classId: classId as any, name: streamName.trim() });
+      await createStream({ schoolId: school._id, classId: classId as any, name: streamName.trim() });
       toast.success("Stream created");
       setShowModal(false);
       setStreamName("");

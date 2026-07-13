@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { mutation, query, internalQuery } from "./_generated/server";
 import {
   requireAuth,
   requireSuperadmin,
@@ -41,13 +41,18 @@ export const getBySlug = query({
 });
 
 /**
- * @deprecated INTERNAL USE ONLY — call from functions that already verify schoolId via JWT.
- * Do NOT use in public query functions without verifying the caller belongs to this school.
+ * Lookup by Clerk org_id — used as a client-side fallback when the JWT
+ * path is slow.  If the caller already has an org in their JWT, it
+ * must match the requested clerkOrgId to prevent cross-tenant lookups.
  */
 export const getByClerkOrgId = query({
   args: { clerkOrgId: v.string() },
   handler: async (ctx, { clerkOrgId }) => {
-    await requireAuth(ctx);
+    const identity = await requireAuth(ctx);
+    const jwtOrgId = (identity as Record<string, unknown>)["org_id"] as string | undefined;
+    if (jwtOrgId && jwtOrgId !== clerkOrgId) {
+      throw new Error("Not authorised for this school");
+    }
     return await ctx.db
       .query("schools")
       .withIndex("by_clerkOrgId", (q) => q.eq("clerkOrgId", clerkOrgId))
@@ -56,13 +61,12 @@ export const getByClerkOrgId = query({
 });
 
 /**
- * @deprecated INTERNAL USE ONLY — call from functions that already verify schoolId via JWT.
- * Do NOT use in public query functions without verifying the caller belongs to this school.
+ * INTERNAL ONLY — not callable from the client.  Used by server-side
+ * actions that already verified superadmin status.
  */
-export const getById = query({
+export const getById = internalQuery({
   args: { id: v.id("schools") },
   handler: async (ctx, { id }) => {
-    await requireAuth(ctx);
     return await ctx.db.get(id);
   },
 });

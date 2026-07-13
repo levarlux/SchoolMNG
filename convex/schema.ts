@@ -20,9 +20,11 @@ export default defineSchema({
   }).index("by_schoolId", ["schoolId"]),
 
   streams: defineTable({
+    schoolId: v.optional(v.id("schools")),
     classId: v.id("classes"),
     name: v.string(),
-  }).index("by_classId", ["classId"]),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_classId", ["classId"]),
 
   students: defineTable({
     schoolId: v.id("schools"),

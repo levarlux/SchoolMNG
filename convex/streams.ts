@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { requireClassMembership } from "./helpers";
+import { requireClassMembership, requireSchoolMembership } from "./helpers";
 
 export const listByClass = query({
   args: { classId: v.id("classes") },
@@ -13,14 +13,27 @@ export const listByClass = query({
   },
 });
 
+export const listBySchool = query({
+  args: { schoolId: v.id("schools") },
+  handler: async (ctx, { schoolId }) => {
+    await requireSchoolMembership(ctx, schoolId);
+    return await ctx.db
+      .query("streams")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(500);
+  },
+});
+
 export const create = mutation({
   args: {
+    schoolId: v.id("schools"),
     classId: v.id("classes"),
     name: v.string(),
   },
-  handler: async (ctx, { classId, name }) => {
-    await requireClassMembership(ctx, classId);
-    return await ctx.db.insert("streams", { classId, name });
+  handler: async (ctx, { schoolId, classId, name }) => {
+    const cls = await requireClassMembership(ctx, classId);
+    if (cls.schoolId !== schoolId) throw new Error("Class does not belong to this school");
+    return await ctx.db.insert("streams", { schoolId, classId, name });
   },
 });
 
