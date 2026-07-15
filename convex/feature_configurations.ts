@@ -67,12 +67,12 @@ export const remove = mutation({
 });
 
 export const featureFlags = query({
-  args: {},
-  handler: async (ctx) => {
-    const school = await requireSchoolFromJwt(ctx);
+  args: { schoolId: v.id("schools") },
+  handler: async (ctx, { schoolId }) => {
+    await requireSchoolMembership(ctx, schoolId);
     const features = await ctx.db
       .query("feature_configurations")
-      .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
       .collect();
     const flags: Record<string, boolean> = {};
     for (const f of features) {

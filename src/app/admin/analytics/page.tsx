@@ -29,7 +29,7 @@ export default function AdminAnalyticsPage() {
     { label: "Total Books", value: overview?.totalBooks ?? 0, icon: BookOpen, color: "text-purple-600" },
     { label: "Active Borrowings", value: overview?.activeBorrowings ?? 0, icon: BookMarked, color: "text-orange-600" },
     { label: "Overdue Rate", value: `${overview?.overdueRate ?? 0}%`, icon: AlertTriangle, color: "text-red-600" },
-    { label: "Unpaid Fines", value: `$${(overview?.unpaidFines ?? 0).toFixed(2)}`, icon: CircleDollarSign, color: "text-yellow-600" },
+    { label: "Unpaid Fines", value: `KES ${(overview?.unpaidFines ?? 0).toLocaleString("en-KE")}`, icon: CircleDollarSign, color: "text-yellow-600" },
   ];
 
   function handleExportComparison() {

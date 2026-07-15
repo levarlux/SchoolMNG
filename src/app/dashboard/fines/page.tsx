@@ -62,7 +62,7 @@ export default function FinesPage() {
             Track fines for overdue or damaged books
             {totalUnpaid !== undefined && totalUnpaid > 0 && (
               <span className="ml-2 text-orange-600 font-medium">
-                (${totalUnpaid.toFixed(2)} unpaid)
+                (KES {totalUnpaid.toLocaleString("en-KE")} unpaid)
               </span>
             )}
           </p>
@@ -116,10 +116,10 @@ export default function FinesPage() {
               </div>
               <div className="flex items-center gap-3">
                 <div className="text-right">
-                  <div className="font-semibold">${fine.amount.toFixed(2)}</div>
+                  <div className="font-semibold">KES {fine.amount.toLocaleString("en-KE")}</div>
                   {fine.paidAmount > 0 && (
                     <div className="text-xs text-green-600">
-                      ${fine.paidAmount.toFixed(2)} paid
+                      KES {fine.paidAmount.toLocaleString("en-KE")} paid
                     </div>
                   )}
                 </div>

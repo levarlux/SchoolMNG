@@ -133,4 +133,166 @@ export default defineSchema({
     featuresEnabled: v.number(),
   }).index("by_schoolId", ["schoolId"])
     .index("by_snapshotDate", ["snapshotDate"]),
+
+  // ── CBC Curriculum Support ────────────────────────────────────────
+
+  subjects: defineTable({
+    schoolId: v.id("schools"),
+    name: v.string(),
+    code: v.string(),
+    level: v.union(
+      v.literal("pre_primary"),
+      v.literal("lower_primary"),
+      v.literal("upper_primary"),
+      v.literal("junior_secondary"),
+      v.literal("senior_secondary"),
+      v.literal("general"),
+    ),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_level", ["schoolId", "level"]),
+
+  terms: defineTable({
+    schoolId: v.id("schools"),
+    name: v.string(),
+    year: v.number(),
+    startDate: v.float64(),
+    endDate: v.float64(),
+    isCurrent: v.boolean(),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_current", ["schoolId", "isCurrent"]),
+
+  // ── Teachers ──────────────────────────────────────────────────────
+
+  teachers: defineTable({
+    schoolId: v.id("schools"),
+    firstName: v.string(),
+    lastName: v.string(),
+    email: v.optional(v.string()),
+    phone: v.optional(v.string()),
+    staffNo: v.string(),
+    department: v.optional(v.string()),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_staffNo", ["schoolId", "staffNo"]),
+
+  teacher_subjects: defineTable({
+    schoolId: v.id("schools"),
+    teacherId: v.id("teachers"),
+    subjectId: v.id("subjects"),
+    classId: v.id("classes"),
+    streamId: v.optional(v.id("streams")),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_teacherId", ["teacherId"])
+    .index("by_subjectId", ["subjectId"])
+    .index("by_classId", ["classId"]),
+
+  // ── Exams & Results ───────────────────────────────────────────────
+
+  exams: defineTable({
+    schoolId: v.id("schools"),
+    termId: v.id("terms"),
+    name: v.string(),
+    date: v.float64(),
+    examType: v.union(
+      v.literal("mid_term"),
+      v.literal("end_term"),
+      v.literal("cat"),
+      v.literal("assignment"),
+      v.literal("other"),
+    ),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_termId", ["termId"]),
+
+  exam_results: defineTable({
+    schoolId: v.id("schools"),
+    examId: v.id("exams"),
+    studentId: v.id("students"),
+    subjectId: v.id("subjects"),
+    marks: v.number(),
+    grade: v.optional(v.string()),
+    comment: v.optional(v.string()),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_examId", ["examId"])
+    .index("by_studentId", ["studentId"])
+    .index("by_examId_and_subjectId", ["examId", "subjectId"]),
+
+  // ── Attendance ────────────────────────────────────────────────────
+
+  attendance: defineTable({
+    schoolId: v.id("schools"),
+    classId: v.id("classes"),
+    streamId: v.optional(v.id("streams")),
+    studentId: v.id("students"),
+    date: v.float64(),
+    status: v.union(
+      v.literal("present"),
+      v.literal("absent"),
+      v.literal("late"),
+      v.literal("excused"),
+    ),
+    markedBy: v.string(),
+    note: v.optional(v.string()),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_classId_and_date", ["classId", "date"])
+    .index("by_studentId", ["studentId"])
+    .index("by_date", ["schoolId", "date"]),
+
+  // ── Timetable ─────────────────────────────────────────────────────
+
+  timetable_entries: defineTable({
+    schoolId: v.id("schools"),
+    classId: v.id("classes"),
+    streamId: v.optional(v.id("streams")),
+    subjectId: v.id("subjects"),
+    teacherId: v.optional(v.id("teachers")),
+    dayOfWeek: v.number(),
+    startTime: v.string(),
+    endTime: v.string(),
+    room: v.optional(v.string()),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_classId", ["classId"])
+    .index("by_teacherId", ["teacherId"]),
+
+  // ── Events ────────────────────────────────────────────────────────
+
+  events: defineTable({
+    schoolId: v.id("schools"),
+    title: v.string(),
+    description: v.optional(v.string()),
+    startDate: v.float64(),
+    endDate: v.float64(),
+    eventType: v.union(
+      v.literal("academic"),
+      v.literal("holiday"),
+      v.literal("exam"),
+      v.literal("sports"),
+      v.literal("cultural"),
+      v.literal("meeting"),
+      v.literal("other"),
+    ),
+    isHoliday: v.boolean(),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_startDate", ["schoolId", "startDate"])
+    .index("by_eventType", ["schoolId", "eventType"]),
+
+  // ── Inventory ─────────────────────────────────────────────────────
+
+  inventory_items: defineTable({
+    schoolId: v.id("schools"),
+    name: v.string(),
+    description: v.optional(v.string()),
+    category: v.string(),
+    quantity: v.number(),
+    condition: v.union(
+      v.literal("good"),
+      v.literal("fair"),
+      v.literal("poor"),
+      v.literal("damaged"),
+    ),
+    location: v.optional(v.string()),
+    purchaseDate: v.optional(v.float64()),
+    purchasePrice: v.optional(v.number()),
+    lastChecked: v.optional(v.float64()),
+  }).index("by_schoolId", ["schoolId"])
+    .index("by_category", ["schoolId", "category"])
+    .index("by_condition", ["schoolId", "condition"]),
 });

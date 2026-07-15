@@ -5,13 +5,17 @@ type Ctx = QueryCtx | MutationCtx;
 
 /**
  * JWT identity metadata shape.
- * Clerk stores custom metadata in `publicMetadata` on the JWT.
+ * Clerk JWTs use snake_case (`public_metadata`), but some SDK versions
+ * normalize to camelCase (`publicMetadata`). Check both.
  */
 interface JwtIdentity {
   subject: string;
   email?: string;
   org_id?: string;
   publicMetadata?: {
+    role?: string;
+  };
+  public_metadata?: {
     role?: string;
   };
 }
@@ -30,23 +34,43 @@ export async function requireAuth(ctx: Ctx) {
   return identity;
 }
 
-// ── Role helpers (read from JWT — never from client args) ──────────
+// ── Role helpers ────────────────────────────────────────────────────
 
 function identityIsSuperadmin(identity: Awaited<ReturnType<typeof getCurrentUser>>): boolean {
   if (!identity) return false;
-  const metadata = (identity as unknown as JwtIdentity)["publicMetadata"];
-  return metadata?.role === "superadmin";
+  const raw = identity as unknown as JwtIdentity;
+  const role = raw.publicMetadata?.role ?? raw.public_metadata?.role;
+  return role === "superadmin";
 }
 
 export async function isSuperadmin(ctx: Ctx) {
   const identity = await getCurrentUser(ctx);
-  return identityIsSuperadmin(identity);
+  if (identityIsSuperadmin(identity)) return true;
+  // Fallback: check admins table
+  if (identity) {
+    const admin = await ctx.db
+      .query("admins")
+      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .first();
+    return admin?.role === "superadmin";
+  }
+  return false;
 }
 
 export async function requireSuperadmin(ctx: Ctx) {
   const identity = await requireAuth(ctx);
-  if (!identityIsSuperadmin(identity)) throw new Error("Not authorized");
-  return { userId: identity.subject, email: identity.email ?? "", role: "superadmin" } as Doc<"admins">;
+  if (identityIsSuperadmin(identity)) {
+    return { userId: identity.subject, email: identity.email ?? "", role: "superadmin" } as Doc<"admins">;
+  }
+  // Fallback: check admins table
+  const admin = await ctx.db
+    .query("admins")
+    .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+    .first();
+  if (admin?.role === "superadmin") {
+    return admin;
+  }
+  throw new Error("Not authorized");
 }
 
 // ── Tenant isolation ───────────────────────────────────────────────
@@ -58,13 +82,12 @@ export async function requireSuperadmin(ctx: Ctx) {
 
 /**
  * Extract the caller's Clerk org_id from the JWT.
- * Throws if the caller has no active organisation.
+ * Returns null when the JWT lacks org_id (e.g. before Clerk integration is
+ * fully configured), allowing callers to fall back gracefully.
  */
-export async function getOrgIdFromJwt(ctx: Ctx): Promise<string> {
+export async function getOrgIdFromJwt(ctx: Ctx): Promise<string | null> {
   const identity = await requireAuth(ctx);
-  const orgId = (identity as unknown as JwtIdentity)["org_id"];
-  if (!orgId) throw new Error("No active organisation");
-  return orgId;
+  return (identity as unknown as JwtIdentity)["org_id"] ?? null;
 }
 
 /**
@@ -73,6 +96,7 @@ export async function getOrgIdFromJwt(ctx: Ctx): Promise<string> {
  */
 export async function requireSchoolFromJwt(ctx: Ctx): Promise<Doc<"schools">> {
   const orgId = await getOrgIdFromJwt(ctx);
+  if (!orgId) throw new Error("No active organisation — select a school first");
   const school = await ctx.db
     .query("schools")
     .withIndex("by_clerkOrgId", (q) => q.eq("clerkOrgId", orgId))
@@ -83,8 +107,8 @@ export async function requireSchoolFromJwt(ctx: Ctx): Promise<Doc<"schools">> {
 
 /**
  * Verify that the supplied schoolId matches the caller's JWT org.
- * Returns the verified school doc for reuse.  Call this at the top of
- * every handler that accepts a `schoolId` arg.
+ * When org_id is missing from the JWT (Clerk integration not fully
+ * configured), allows superadmins through (verified via admins table).
  */
 export async function requireSchoolMembership(
   ctx: Ctx,
@@ -93,10 +117,24 @@ export async function requireSchoolMembership(
   const orgId = await getOrgIdFromJwt(ctx);
   const school = await ctx.db.get(schoolId);
   if (!school) throw new Error("Not authorised for this school");
-  if (school.clerkOrgId !== orgId) {
-    throw new Error("Not authorised for this school");
+
+  // JWT has org_id — verify it matches the school
+  if (orgId) {
+    if (school.clerkOrgId !== orgId) {
+      throw new Error("Not authorised for this school");
+    }
+    return school;
   }
-  return school;
+
+  // No org_id in JWT — allow if user is superadmin (admins table fallback)
+  const identity = await requireAuth(ctx);
+  const admin = await ctx.db
+    .query("admins")
+    .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+    .first();
+  if (admin?.role === "superadmin") return school;
+
+  throw new Error("No active organisation — select a school first");
 }
 
 /**
@@ -197,7 +235,7 @@ export function assertValidHexColor(value: string, field: string) {
 export async function patchDefinedFields<T extends Record<string, unknown>>(
   ctx: MutationCtx,
   _table: string,
-  id: Id<"schools"> | Id<"classes"> | Id<"books"> | Id<"subscriptions"> | Id<"feature_configurations"> | Id<"students">,
+  id: Id<"schools"> | Id<"classes"> | Id<"books"> | Id<"subscriptions"> | Id<"feature_configurations"> | Id<"students"> | Id<"subjects"> | Id<"terms"> | Id<"teachers"> | Id<"teacher_subjects"> | Id<"exams"> | Id<"exam_results"> | Id<"attendance"> | Id<"timetable_entries"> | Id<"events"> | Id<"inventory_items">,
   updates: T,
 ): Promise<void> {
   const filtered = Object.fromEntries(

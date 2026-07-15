@@ -17,7 +17,7 @@ import { useOrganization } from "@clerk/nextjs";
 export default function SettingsPage() {
   const school = useSchool();
   const { organization } = useOrganization();
-  const featureFlags = useQuery(api.feature_configurations.featureFlags, school ? {} : "skip");
+  const featureFlags = useQuery(api.feature_configurations.featureFlags, school ? { schoolId: school._id } : "skip");
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {

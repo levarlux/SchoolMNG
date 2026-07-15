@@ -4,6 +4,8 @@ import { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Building2, Shield, CreditCard, ToggleLeft, Library, BarChart3, Menu,
@@ -59,7 +61,15 @@ function AdminSidebarNav({ pathname, onNavigate }: { pathname: string; onNavigat
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isSuperadmin = useIsSuperadmin();
+  const ensureSuperadmin = useMutation(api.admins.ensureSuperadmin);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Auto-bootstrap: create admins record if JWT says superadmin but none exists
+  useEffect(() => {
+    if (isSuperadmin) {
+      ensureSuperadmin().catch(() => {});
+    }
+  }, [isSuperadmin, ensureSuperadmin]);
 
   // Close mobile sidebar on Escape
   useEffect(() => {

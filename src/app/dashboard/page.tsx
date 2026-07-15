@@ -126,7 +126,7 @@ export default function Dashboard() {
     { label: "Books", value: books?.length ?? 0, icon: BookOpen, color: "text-purple-600", bg: "bg-purple-50" },
     { label: "Active Borrowings", value: activeBorrowings?.length ?? 0, icon: BookMarked, color: "text-orange-600", bg: "bg-orange-50" },
     { label: "Overdue", value: overdue.length, icon: AlertCircle, color: "text-red-600", bg: "bg-red-50" },
-    { label: "Unpaid Fines", value: `$${(totalUnpaid ?? 0).toFixed(2)}`, icon: CircleDollarSign, color: "text-yellow-600", bg: "bg-yellow-50" },
+    { label: "Unpaid Fines", value: `KES ${(totalUnpaid ?? 0).toLocaleString("en-KE")}`, icon: CircleDollarSign, color: "text-yellow-600", bg: "bg-yellow-50" },
   ];
 
   // ── Export ────────────────────────────────────────────────────────
@@ -299,7 +299,7 @@ export default function Dashboard() {
                     ))}
                   </Pie>
                   <Tooltip
-                    formatter={(value) => [`$${Number(value).toFixed(2)}`, undefined]}
+                    formatter={(value) => [`KES ${Number(value).toLocaleString("en-KE")}`, undefined]}
                     contentStyle={{
                       borderRadius: "8px",
                       border: "1px solid #e2e8f0",
@@ -320,7 +320,7 @@ export default function Dashboard() {
                     dominantBaseline="middle"
                     className="fill-foreground text-lg font-bold"
                   >
-                    ${(finesByStatus.reduce((s, d) => s + d.value, 0)).toFixed(2)}
+                    KES ${(finesByStatus.reduce((s, d) => s + d.value, 0)).toLocaleString("en-KE")}
                   </text>
                   <text
                     x="50%"
@@ -364,7 +364,7 @@ export default function Dashboard() {
                     tick={{ fontSize: 12, fill: "#64748b" }}
                     tickLine={false}
                     axisLine={false}
-                    tickFormatter={(v) => `$${v}`}
+                    tickFormatter={(v) => `KES ${Number(v).toLocaleString("en-KE")}`}
                   />
                   <YAxis
                     type="category"
@@ -375,7 +375,7 @@ export default function Dashboard() {
                     width={80}
                   />
                   <Tooltip
-                    formatter={(value) => [`$${Number(value).toFixed(2)}`, "Amount"]}
+                    formatter={(value) => [`KES ${Number(value).toLocaleString("en-KE")}`, "Amount"]}
                     contentStyle={{
                       borderRadius: "8px",
                       border: "1px solid #e2e8f0",
@@ -505,7 +505,7 @@ export default function Dashboard() {
             <CardDescription>
               Outstanding balance:{" "}
               <span className="font-semibold text-foreground">
-                ${(totalUnpaid ?? 0).toFixed(2)}
+                KES ${(totalUnpaid ?? 0).toLocaleString("en-KE")}
               </span>
             </CardDescription>
           </CardHeader>
@@ -524,7 +524,7 @@ export default function Dashboard() {
                     {unpaidFines.slice(0, 6).map((f) => (
                       <tr key={f._id} className="border-b last:border-0">
                         <td className="py-2.5 font-semibold">
-                          ${(f.amount - f.paidAmount).toFixed(2)}
+                          KES ${(f.amount - f.paidAmount).toLocaleString("en-KE")}
                         </td>
                         <td className="py-2.5 capitalize">{f.reason}</td>
                         <td className="py-2.5 text-muted-foreground">

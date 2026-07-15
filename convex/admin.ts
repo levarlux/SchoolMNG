@@ -5,17 +5,27 @@ import { api, internal } from "./_generated/api";
 
 /**
  * Superadmin check for actions.
- * Actions don't have `ctx.db`, so we can only verify the JWT metadata.
- * This uses the same logic as `requireSuperadmin` in helpers.ts but
- * works with the action context type.
+ * Checks JWT metadata first, then falls back to the admins table.
  */
-async function requireSuperadminAction(ctx: { auth: { getUserIdentity: () => Promise<unknown> } }) {
+async function requireSuperadminAction(ctx: {
+  auth: { getUserIdentity: () => Promise<unknown> };
+  runQuery: (fn: any, args: any) => Promise<any>;
+}) {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) throw new Error("Not authenticated");
-  const metadata = (identity as Record<string, unknown>)["publicMetadata"] as
-    | { role?: string }
-    | undefined;
-  if (metadata?.role !== "superadmin") throw new Error("Not authorized");
+
+  // Check JWT metadata first
+  const meta = (identity as Record<string, unknown>)["publicMetadata"] ??
+    (identity as Record<string, unknown>)["public_metadata"];
+  if ((meta as { role?: string })?.role === "superadmin") return;
+
+  // Fallback: check admins table
+  const admin = await ctx.runQuery(internal.admins.getByUserIdInternal, {
+    userId: (identity as { subject: string }).subject,
+  });
+  if (admin?.role === "superadmin") return;
+
+  throw new Error("Not authorized");
 }
 
 // Create school + create Clerk organisation.

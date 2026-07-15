@@ -8,16 +8,32 @@ import { cn } from "@/lib/utils";
 import { useSchool } from "@/lib/use-school";
 import {
   LayoutDashboard, BookOpen, Users, BookMarked, RotateCcw, Settings, Library, CircleDollarSign, FileText, Menu, X,
+  GraduationCap, UserCheck, Calendar, ClipboardList, Clock, Package, BookCopy,
 } from "lucide-react";
 
-const navItems = [
+interface NavItem {
+  href: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  group?: string;
+}
+
+const navItems: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/classes", label: "Classes", icon: BookOpen },
-  { href: "/dashboard/students", label: "Students", icon: Users },
-  { href: "/dashboard/books", label: "Books", icon: BookOpen },
-  { href: "/dashboard/borrow", label: "Borrow Book", icon: BookMarked },
-  { href: "/dashboard/returns", label: "Returns", icon: RotateCcw },
-  { href: "/dashboard/fines", label: "Fines", icon: CircleDollarSign },
+  { href: "/dashboard/classes", label: "Classes", icon: BookOpen, group: "Academics" },
+  { href: "/dashboard/students", label: "Students", icon: Users, group: "Academics" },
+  { href: "/dashboard/subjects", label: "Subjects", icon: BookCopy, group: "Academics" },
+  { href: "/dashboard/teachers", label: "Teachers", icon: GraduationCap, group: "Academics" },
+  { href: "/dashboard/terms", label: "Terms", icon: Calendar, group: "Academics" },
+  { href: "/dashboard/exams", label: "Exams", icon: ClipboardList, group: "Assessments" },
+  { href: "/dashboard/attendance", label: "Attendance", icon: UserCheck, group: "Assessments" },
+  { href: "/dashboard/books", label: "Books", icon: BookOpen, group: "Library" },
+  { href: "/dashboard/borrow", label: "Borrow Book", icon: BookMarked, group: "Library" },
+  { href: "/dashboard/returns", label: "Returns", icon: RotateCcw, group: "Library" },
+  { href: "/dashboard/fines", label: "Fines", icon: CircleDollarSign, group: "Library" },
+  { href: "/dashboard/timetable", label: "Timetable", icon: Clock, group: "Operations" },
+  { href: "/dashboard/events", label: "Events", icon: Calendar, group: "Operations" },
+  { href: "/dashboard/inventory", label: "Inventory", icon: Package, group: "Operations" },
   { href: "/dashboard/reports", label: "Reports", icon: FileText },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
@@ -37,6 +53,22 @@ function SidebarNav({ pathname, onNavigate }: { pathname: string; onNavigate?: (
   const school = useSchool();
   const { organization } = useOrganization();
 
+  const groups: { label: string; items: NavItem[] }[] = [];
+  let currentGroup: { label: string; items: NavItem[] } | null = null;
+
+  for (const item of navItems) {
+    if (item.group) {
+      if (!currentGroup || currentGroup.label !== item.group) {
+        currentGroup = { label: item.group, items: [] };
+        groups.push(currentGroup);
+      }
+      currentGroup.items.push(item);
+    } else {
+      currentGroup = null;
+      groups.push({ label: "", items: [item] });
+    }
+  }
+
   return (
     <>
       <div className="flex items-center gap-2 p-6 border-b border-secondary/20 bg-secondary/5">
@@ -49,30 +81,39 @@ function SidebarNav({ pathname, onNavigate }: { pathname: string; onNavigate?: (
           {school?.name || organization?.name || "School Library"}
         </span>
       </div>
-      <nav className="flex-1 p-4 space-y-1">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const active =
-            item.href === "/dashboard"
-              ? pathname === item.href
-              : pathname === item.href || pathname.startsWith(item.href + "/");
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onNavigate}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors border-l-2 border-transparent",
-                active
-                  ? "bg-secondary/10 text-primary border-l-2 border-primary"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              )}
-            >
-              <Icon className="h-4 w-4" />
-              {item.label}
-            </Link>
-          );
-        })}
+      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+        {groups.map((group, gi) => (
+          <div key={gi}>
+            {group.label && (
+              <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60 px-3 pt-4 pb-1">
+                {group.label}
+              </div>
+            )}
+            {group.items.map((item) => {
+              const Icon = item.icon;
+              const active =
+                item.href === "/dashboard"
+                  ? pathname === item.href
+                  : pathname === item.href || pathname.startsWith(item.href + "/");
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onNavigate}
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors border-l-2 border-transparent",
+                    active
+                      ? "bg-secondary/10 text-primary border-l-2 border-primary"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        ))}
       </nav>
       <div className="p-4 border-t border-border flex items-center gap-3">
         <UserButton />
