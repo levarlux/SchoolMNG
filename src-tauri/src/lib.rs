@@ -139,6 +139,15 @@ pub fn run() {
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
+            // Set the window icon at runtime from embedded bytes
+            if let Some(window) = app.get_webview_window("main") {
+                let icon_bytes = include_bytes!("../icons/icon.ico");
+                let _ = window.set_icon(Some(
+                    tauri::image::Image::from_encoded(icon_bytes)
+                        .expect("Failed to decode icon"),
+                ));
+            }
+
             let handle = app.handle().clone();
             tauri::async_runtime::spawn(async move {
                 check_and_prompt_update(handle).await;
