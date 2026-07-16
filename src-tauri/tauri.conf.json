@@ -37,7 +37,7 @@
   "plugins": {
     "updater": {
       "endpoints": [],
-      "pubkey": ""
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDc0ODREMjRDRTA3OUE2M0UKUldRK3BubmdUTktFZEV3MHA4N2NqWlQwdk51cUZYSUtuczV4M21mMjdXdDBBZUxwN2Z1WFlpaVoK"
     }
   }
 }
