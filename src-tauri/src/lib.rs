@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use std::path::PathBuf;
+use tauri::Manager;
 use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_updater::UpdaterExt;
 
@@ -143,7 +144,7 @@ pub fn run() {
             if let Some(window) = app.get_webview_window("main") {
                 let icon_bytes = include_bytes!("../icons/icon.ico");
                 let _ = window.set_icon(Some(
-                    tauri::image::Image::from_encoded(icon_bytes)
+                    tauri::image::Image::from_bytes(icon_bytes)
                         .expect("Failed to decode icon"),
                 ));
             }
