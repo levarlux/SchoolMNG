@@ -13,7 +13,6 @@
     "windows": [
       {
         "title": "SchoolMNG",
-        "icon": "icons/icon.ico",
         "width": 1280,
         "height": 800,
         "minWidth": 900,
