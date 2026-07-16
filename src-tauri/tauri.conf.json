@@ -13,6 +13,7 @@
     "windows": [
       {
         "title": "School Library Manager",
+        "icon": "icons/icon.ico",
         "width": 1280,
         "height": 800,
         "minWidth": 900,
