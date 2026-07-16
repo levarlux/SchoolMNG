@@ -1,0 +1,61 @@
+﻿  ΓÇó electron-builder  version=26.15.3 os=10.0.26200
+  ΓÇó loaded configuration  file=D:\proograms\mine\projects\Commercial\SchoolMNG\electron-builder.yml
+  ΓÇó effective config  config=directories:
+  output: dist-electron
+  buildResources: build
+appId: com.levarlux.schoolmng
+productName: School Library Manager
+files:
+  - filter:
+      - '!.next/**'
+      - '!node_modules/**'
+      - '!src/**'
+      - '!convex/**'
+      - '!electron/**'
+      - '!.env*'
+      - public/**
+      - package.json
+extraResources:
+  - from: .next/standalone
+    to: standalone
+  - from: .next/static
+    to: standalone/.next/static
+  - from: public
+    to: standalone/public
+asar: true
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.png
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: School Library Manager
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  icon: build/icon.icns
+  category: public.app-category.education
+linux:
+  target:
+    - target: AppImage
+      arch:
+        - x64
+  icon: build/icon.png
+  category: Education
+
+  ΓÇó spawning        command=npm prefix -w cwd=D:\proograms\mine\projects\Commercial\SchoolMNG
+  ΓÇó exited          command=npm code=1 pid=8096
+  ΓÇó no event listeners found  event=beforePack
+  ΓÇó executing @electron/rebuild  electronVersion=43.1.1 arch=x64 buildFromSource=false workspaceRoot=D:\proograms\mine\projects\Commercial\SchoolMNG projectDir=./ appDir=./
+  ΓÇó installing native dependencies  arch=x64
+  ΓÇó completed installing native dependencies
+  ΓÇó packaging       platform=win32 arch=x64 electron=43.1.1 appOutDir=dist-electron\win-unpacked
+  ΓÇó no custom electronDist provided, unpacking default Electron distribution
