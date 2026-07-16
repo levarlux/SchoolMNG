@@ -143,7 +143,8 @@ pub fn run() {
             // Set the window icon at runtime from embedded bytes
             if let Some(window) = app.get_webview_window("main") {
                 let icon = tauri::include_image!("icons/icon.ico");
-                let _ = window.set_icon(Some(icon));
+                // Fixed: Passed raw Image directly, avoiding Option mismatch[cite: 1]
+                let _ = window.set_icon(icon); 
             }
 
             let handle = app.handle().clone();
