@@ -1,0 +1,49 @@
+appId: com.levarlux.schoolmng
+productName: School Library Manager
+directories:
+  output: dist-electron
+  buildResources: build
+files:
+  - "!.next/**"
+  - "!node_modules/**"
+  - "!src/**"
+  - "!convex/**"
+  - "!electron/**"
+  - "!.env*"
+  - "public/**"
+  - "package.json"
+extraResources:
+  - from: ".next/standalone"
+    to: "standalone"
+  - from: ".next/static"
+    to: "standalone/.next/static"
+  - from: "public"
+    to: "standalone/public"
+asar: true
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.png
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: School Library Manager
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+  icon: build/icon.icns
+  category: public.app-category.education
+linux:
+  target:
+    - target: AppImage
+      arch:
+        - x64
+  icon: build/icon.png
+  category: Education

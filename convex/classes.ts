@@ -3,6 +3,7 @@ import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
   requireClassMembership,
+  requireSuperadmin,
   patchDefinedFields,
   logAuditEntry,
 } from "./helpers";
@@ -53,8 +54,11 @@ export const update = mutation({
 });
 
 export const remove = mutation({
-  args: { id: v.id("classes") },
-  handler: async (ctx, { id }) => {
+  args: {
+    id: v.id("classes"),
+    force: v.optional(v.boolean()),
+  },
+  handler: async (ctx, { id, force }) => {
     const cls = await requireClassMembership(ctx, id);
 
     const studentsInClass = await ctx.db
@@ -62,10 +66,27 @@ export const remove = mutation({
       .withIndex("by_classId", (q) => q.eq("classId", id))
       .take(1);
     if (studentsInClass.length > 0) {
-      throw new Error("Cannot delete class: students are still assigned to it. Reassign or remove them first.");
+      if (!force) {
+        throw new Error("Cannot delete class: students are still assigned to it. Reassign or remove them first, or use force delete.");
+      }
+      // Cascade: delete all students in this class (allowed for class owners and superadmin)
+      const BATCH_SIZE = 100;
+      let studentsBatch = await ctx.db
+        .query("students")
+        .withIndex("by_classId", (q) => q.eq("classId", id))
+        .take(BATCH_SIZE);
+      while (studentsBatch.length > 0) {
+        for (let i = 0; i < studentsBatch.length; i++) {
+          await ctx.db.delete(studentsBatch[i]._id);
+        }
+        studentsBatch = await ctx.db
+          .query("students")
+          .withIndex("by_classId", (q) => q.eq("classId", id))
+          .take(BATCH_SIZE);
+      }
     }
 
-    // Delete associated streams in batches to avoid hitting Convex mutation limits at scale
+    // Delete associated streams in batches
     const BATCH_SIZE = 100;
     let streamsBatch = await ctx.db
       .query("streams")
@@ -82,6 +103,6 @@ export const remove = mutation({
     }
 
     await ctx.db.delete(id);
-    await logAuditEntry(ctx, cls.schoolId, "class.remove", { classId: id });
+    await logAuditEntry(ctx, cls.schoolId, "class.remove", { classId: id, force: !!force });
   },
 });

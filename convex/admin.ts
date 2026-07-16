@@ -103,6 +103,6 @@ export const remove = action({
     if (!school) throw new Error("School not found");
 
     await deleteClerkOrg(school.clerkOrgId);
-    await ctx.runMutation(api.schools.remove, { id });
+    await ctx.runMutation(api.schools.remove, { id, force: true });
   },
 });

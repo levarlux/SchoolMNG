@@ -3,7 +3,8 @@
 import { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton } from "@clerk/clerk-react";
+import { RequireAuth } from "@/components/require-auth";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { cn } from "@/lib/utils";
@@ -86,6 +87,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   return (
+    <RequireAuth>
     <div className="flex min-h-screen bg-muted/30">
       {/* Desktop sidebar */}
       <aside className="w-64 border-r border-border bg-card hidden lg:flex flex-col">
@@ -139,5 +141,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </main>
       </div>
     </div>
+    </RequireAuth>
   );
 }

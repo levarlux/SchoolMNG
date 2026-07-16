@@ -69,6 +69,19 @@ export default defineSchema({
     role: v.literal("superadmin"),
   }).index("by_userId", ["userId"]),
 
+  members: defineTable({
+    userId: v.string(),
+    schoolId: v.id("schools"),
+    role: v.union(
+      v.literal("teacher"),
+      v.literal("principal"),
+    ),
+    email: v.optional(v.string()),
+    name: v.optional(v.string()),
+  }).index("by_userId", ["userId"])
+    .index("by_schoolId", ["schoolId"])
+    .index("by_userId_and_schoolId", ["userId", "schoolId"]),
+
   subscriptions: defineTable({
     schoolId: v.id("schools"),
     planType: v.string(),
@@ -240,6 +253,7 @@ export default defineSchema({
 
   timetable_entries: defineTable({
     schoolId: v.id("schools"),
+    userId: v.optional(v.string()),
     classId: v.id("classes"),
     streamId: v.optional(v.id("streams")),
     subjectId: v.id("subjects"),
@@ -250,7 +264,8 @@ export default defineSchema({
     room: v.optional(v.string()),
   }).index("by_schoolId", ["schoolId"])
     .index("by_classId", ["classId"])
-    .index("by_teacherId", ["teacherId"]),
+    .index("by_teacherId", ["teacherId"])
+    .index("by_userId", ["userId"]),
 
   // ── Events ────────────────────────────────────────────────────────
 

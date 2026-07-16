@@ -1,9 +1,11 @@
-import { SignUp } from "@clerk/nextjs";
+import { SignUpClient } from "./sign-up-client";
+
+export const generateStaticParams = () => [
+  { "sign-up": [] },
+  { "sign-up": ["sso-callback"] },
+  { "sign-up": ["verify-email-address"] },
+];
 
 export default function SignUpPage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <SignUp routing="path" path="/sign-up" fallbackRedirectUrl="/dashboard" />
-    </div>
-  );
+  return <SignUpClient />;
 }

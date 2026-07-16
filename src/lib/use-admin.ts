@@ -2,7 +2,7 @@
 
 import { useQuery, useConvexAuth } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { useUser } from "@clerk/nextjs";
+import { useUser } from "@clerk/clerk-react";
 
 export function useAdmin() {
   const { user } = useUser();

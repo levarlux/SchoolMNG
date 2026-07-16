@@ -1,9 +1,13 @@
-import { SignIn } from "@clerk/nextjs";
+import { SignInClient } from "./sign-in-client";
+
+export const generateStaticParams = () => [
+  { "sign-in": [] },
+  { "sign-in": ["factor-one"] },
+  { "sign-in": ["factor-two"] },
+  { "sign-in": ["sso-callback"] },
+  { "sign-in": ["reset-password"] },
+];
 
 export default function SignInPage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <SignIn routing="path" path="/sign-in" fallbackRedirectUrl="/dashboard" />
-    </div>
-  );
+  return <SignInClient />;
 }

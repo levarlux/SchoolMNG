@@ -3,9 +3,10 @@
 import { useEffect, useState, ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserButton, useOrganization } from "@clerk/nextjs";
+import { UserButton, useOrganization } from "@clerk/clerk-react";
 import { cn } from "@/lib/utils";
 import { useSchool } from "@/lib/use-school";
+import { useRole, isAtLeast, type MemberRole } from "@/lib/use-role";
 import {
   LayoutDashboard, BookOpen, Users, BookMarked, RotateCcw, Settings, Library, CircleDollarSign, FileText, Menu, X,
   GraduationCap, UserCheck, Calendar, ClipboardList, Clock, Package, BookCopy,
@@ -16,26 +17,28 @@ interface NavItem {
   label: string;
   icon: typeof LayoutDashboard;
   group?: string;
+  minRole?: MemberRole;
 }
 
 const navItems: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/classes", label: "Classes", icon: BookOpen, group: "Academics" },
+  { href: "/dashboard/classes", label: "Classes", icon: BookOpen, group: "Academics", minRole: "principal" },
   { href: "/dashboard/students", label: "Students", icon: Users, group: "Academics" },
-  { href: "/dashboard/subjects", label: "Subjects", icon: BookCopy, group: "Academics" },
-  { href: "/dashboard/teachers", label: "Teachers", icon: GraduationCap, group: "Academics" },
-  { href: "/dashboard/terms", label: "Terms", icon: Calendar, group: "Academics" },
-  { href: "/dashboard/exams", label: "Exams", icon: ClipboardList, group: "Assessments" },
+  { href: "/dashboard/subjects", label: "Subjects", icon: BookCopy, group: "Academics", minRole: "principal" },
+  { href: "/dashboard/teachers", label: "Teachers", icon: GraduationCap, group: "Academics", minRole: "principal" },
+  { href: "/dashboard/terms", label: "Terms", icon: Calendar, group: "Academics", minRole: "principal" },
+  { href: "/dashboard/exams", label: "Exams", icon: ClipboardList, group: "Assessments", minRole: "principal" },
   { href: "/dashboard/attendance", label: "Attendance", icon: UserCheck, group: "Assessments" },
   { href: "/dashboard/books", label: "Books", icon: BookOpen, group: "Library" },
   { href: "/dashboard/borrow", label: "Borrow Book", icon: BookMarked, group: "Library" },
   { href: "/dashboard/returns", label: "Returns", icon: RotateCcw, group: "Library" },
   { href: "/dashboard/fines", label: "Fines", icon: CircleDollarSign, group: "Library" },
-  { href: "/dashboard/timetable", label: "Timetable", icon: Clock, group: "Operations" },
+  { href: "/dashboard/timetable", label: "Timetable", icon: Clock, group: "Operations", minRole: "principal" },
   { href: "/dashboard/events", label: "Events", icon: Calendar, group: "Operations" },
-  { href: "/dashboard/inventory", label: "Inventory", icon: Package, group: "Operations" },
-  { href: "/dashboard/reports", label: "Reports", icon: FileText },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings },
+  { href: "/dashboard/inventory", label: "Inventory", icon: Package, group: "Operations", minRole: "principal" },
+  { href: "/dashboard/reports", label: "Reports", icon: FileText, minRole: "principal" },
+  { href: "/dashboard/members", label: "Members", icon: Users, minRole: "principal" },
+  { href: "/dashboard/settings", label: "Settings", icon: Settings, minRole: "principal" },
 ];
 
 function hexToLuminance(hex: string) {
@@ -52,11 +55,17 @@ function contrastText(hex: string) {
 function SidebarNav({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
   const school = useSchool();
   const { organization } = useOrganization();
+  const role = useRole();
+
+  // Filter nav items by role
+  const visibleItems = role === undefined || role === null
+    ? navItems // still loading or no membership — show all
+    : navItems.filter((item) => !item.minRole || isAtLeast(role, item.minRole));
 
   const groups: { label: string; items: NavItem[] }[] = [];
   let currentGroup: { label: string; items: NavItem[] } | null = null;
 
-  for (const item of navItems) {
+  for (const item of visibleItems) {
     if (item.group) {
       if (!currentGroup || currentGroup.label !== item.group) {
         currentGroup = { label: item.group, items: [] };
@@ -117,7 +126,14 @@ function SidebarNav({ pathname, onNavigate }: { pathname: string; onNavigate?: (
       </nav>
       <div className="p-4 border-t border-border flex items-center gap-3">
         <UserButton />
-        <span className="text-sm text-muted-foreground truncate">Account</span>
+        <div className="flex-1 min-w-0">
+          <span className="text-sm text-muted-foreground truncate block">Account</span>
+          {role && role !== null && (
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+              {role}
+            </span>
+          )}
+        </div>
       </div>
     </>
   );

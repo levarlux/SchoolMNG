@@ -53,9 +53,9 @@ export default function ClassesPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Delete this class and all its streams?")) return;
+    if (!confirm("Delete this class, its students, and all streams?")) return;
     try {
-      await deleteClass({ id: id as any });
+      await deleteClass({ id: id as any, force: true });
       toast.success("Class deleted");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
@@ -96,10 +96,11 @@ export default function ClassesPage() {
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-lg">{cls.name}</CardTitle>
               <div className="flex items-center gap-1">
-                <Link href={`/dashboard/classes/${cls._id}`}>
-                  <Button variant="ghost" size="icon">
-                    <Cog className="h-4 w-4" />
-                  </Button>
+                <Link
+                  href={`/dashboard/classes/${cls._id}`}
+                  className="inline-flex items-center justify-center h-10 w-10 rounded-lg hover:bg-muted transition-colors"
+                >
+                  <Cog className="h-4 w-4" />
                 </Link>
                 <Button variant="ghost" size="icon" onClick={() => handleDelete(cls._id)}>
                   <Trash2 className="h-4 w-4 text-red-500" />

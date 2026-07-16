@@ -145,26 +145,16 @@ export const update = mutation({
 
 // Superadmin: delete a school by ID.
 export const remove = mutation({
-  args: { id: v.id("schools") },
-  handler: async (ctx, { id }) => {
+  args: {
+    id: v.id("schools"),
+    force: v.optional(v.boolean()),
+  },
+  handler: async (ctx, { id, force }) => {
     await requireSuperadmin(ctx);
 
-    const classes = await ctx.db
-      .query("classes")
-      .withIndex("by_schoolId", (q) => q.eq("schoolId", id))
-      .take(1);
-    if (classes.length > 0) {
-      throw new Error("Cannot delete school: classes still exist. Delete or reassign them first.");
-    }
+    const BATCH_SIZE = 100;
 
-    const students = await ctx.db
-      .query("students")
-      .withIndex("by_schoolId", (q) => q.eq("schoolId", id))
-      .take(1);
-    if (students.length > 0) {
-      throw new Error("Cannot delete school: students still exist. Delete or reassign them first.");
-    }
-
+    // Check for active borrowings first (never force-delete these)
     const activeBorrowings = await ctx.db
       .query("borrowings")
       .withIndex("by_status", (q) => q.eq("schoolId", id).eq("status", "borrowed"))
@@ -173,7 +163,72 @@ export const remove = mutation({
       throw new Error("Cannot delete school: active borrowings exist. Return all books first.");
     }
 
+    // Check for classes
+    const classes = await ctx.db
+      .query("classes")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", id))
+      .take(1);
+    if (classes.length > 0 && !force) {
+      throw new Error("Cannot delete school: classes still exist. Delete or reassign them first, or use force delete.");
+    }
+
+    // Check for students
+    const students = await ctx.db
+      .query("students")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", id))
+      .take(1);
+    if (students.length > 0 && !force) {
+      throw new Error("Cannot delete school: students still exist. Delete or reassign them first, or use force delete.");
+    }
+
+    if (force) {
+      // Cascade: delete all students in this school
+      let studentsBatch = await ctx.db
+        .query("students")
+        .withIndex("by_schoolId", (q) => q.eq("schoolId", id))
+        .take(BATCH_SIZE);
+      while (studentsBatch.length > 0) {
+        for (let i = 0; i < studentsBatch.length; i++) {
+          await ctx.db.delete(studentsBatch[i]._id);
+        }
+        studentsBatch = await ctx.db
+          .query("students")
+          .withIndex("by_schoolId", (q) => q.eq("schoolId", id))
+          .take(BATCH_SIZE);
+      }
+
+      // Cascade: delete all classes (and their streams) in this school
+      let classesBatch = await ctx.db
+        .query("classes")
+        .withIndex("by_schoolId", (q) => q.eq("schoolId", id))
+        .take(BATCH_SIZE);
+      while (classesBatch.length > 0) {
+        for (let i = 0; i < classesBatch.length; i++) {
+          const classId = classesBatch[i]._id;
+          // Delete streams for this class
+          let streamsBatch = await ctx.db
+            .query("streams")
+            .withIndex("by_classId", (q) => q.eq("classId", classId))
+            .take(BATCH_SIZE);
+          while (streamsBatch.length > 0) {
+            for (let j = 0; j < streamsBatch.length; j++) {
+              await ctx.db.delete(streamsBatch[j]._id);
+            }
+            streamsBatch = await ctx.db
+              .query("streams")
+              .withIndex("by_classId", (q) => q.eq("classId", classId))
+              .take(BATCH_SIZE);
+          }
+          await ctx.db.delete(classId);
+        }
+        classesBatch = await ctx.db
+          .query("classes")
+          .withIndex("by_schoolId", (q) => q.eq("schoolId", id))
+          .take(BATCH_SIZE);
+      }
+    }
+
     await ctx.db.delete(id);
-    await logAuditEntry(ctx, id, "school.remove", {});
+    await logAuditEntry(ctx, id, "school.remove", { force: !!force });
   },
 });

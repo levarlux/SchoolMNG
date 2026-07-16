@@ -1,5 +1,6 @@
 node_modules/
 .next/
+out/
 .env.local
 .env*.local
 
@@ -8,3 +9,9 @@ node_modules/
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+# Tauri
+src-tauri/target/
+src-tauri/WixTools/
+src-tauri/Frameworks/
+dist-electron/

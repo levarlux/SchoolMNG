@@ -12,7 +12,7 @@ import { Palette, Upload, ImageIcon, Loader2, Check, AlertCircle, Copy, Zap } fr
 import { toast } from "sonner";
 import { checkRateLimit } from "@/lib/rate-limit";
 
-import { useOrganization } from "@clerk/nextjs";
+import { useOrganization } from "@clerk/clerk-react";
 
 export default function SettingsPage() {
   const school = useSchool();

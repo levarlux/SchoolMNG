@@ -2,7 +2,7 @@
 
 import { ReactNode, useMemo } from "react";
 import { ConvexReactClient } from "convex/react";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth } from "@clerk/clerk-react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 
 export function ConvexClientProvider({ children }: { children: ReactNode }) {

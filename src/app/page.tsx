@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { SignInButton, useAuth } from "@clerk/nextjs";
+import { SignInButton, useAuth } from "@clerk/clerk-react";
 import { useConvexAuth } from "convex/react";
 import { Button } from "@/components/ui/button";
 import { Library } from "lucide-react";
@@ -23,6 +23,7 @@ export default function Home() {
   }, [isSuperadmin, isLoaded, authLoading, router]);
 
   if (isSuperadmin) return null;
+  if (!isLoaded) return null;
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-background to-muted p-4">

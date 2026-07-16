@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
+  requireAuth,
   requireSchoolMembership,
   logAuditEntry,
 } from "./helpers";
@@ -13,6 +14,31 @@ export const listBySchool = query({
       .query("timetable_entries")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
       .take(1000);
+  },
+});
+
+/** Get the current user's personal timetable for the week. */
+export const listMyTimetable = query({
+  args: { schoolId: v.id("schools") },
+  handler: async (ctx, { schoolId }) => {
+    const identity = await requireAuth(ctx);
+    await requireSchoolMembership(ctx, schoolId);
+    return await ctx.db
+      .query("timetable_entries")
+      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .take(200);
+  },
+});
+
+/** Get another user's timetable (for principals viewing teachers). */
+export const listByUser = query({
+  args: { schoolId: v.id("schools"), userId: v.string() },
+  handler: async (ctx, { schoolId, userId }) => {
+    await requireSchoolMembership(ctx, schoolId);
+    return await ctx.db
+      .query("timetable_entries")
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
+      .take(200);
   },
 });
 
@@ -55,37 +81,34 @@ export const create = mutation({
     room: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const identity = await requireAuth(ctx);
     await requireSchoolMembership(ctx, args.schoolId);
 
-    const conflicting = await ctx.db
+    // Conflict check: same user, same day, overlapping time
+    const userConflict = await ctx.db
       .query("timetable_entries")
-      .withIndex("by_classId", (q) => q.eq("classId", args.classId))
+      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
       .filter((q) =>
         q.eq(q.field("dayOfWeek"), args.dayOfWeek) &&
         q.lt(q.field("startTime"), args.endTime) &&
         q.gt(q.field("endTime"), args.startTime)
       )
       .first();
-    if (conflicting) {
-      throw new Error("Time slot conflicts with an existing entry for this class");
+    if (userConflict) {
+      const subject = await ctx.db.get(userConflict.subjectId);
+      const cls = await ctx.db.get(userConflict.classId);
+      const subjectName = subject?.name ?? "Unknown";
+      const className = cls?.name ?? "Unknown";
+      const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      throw new Error(
+        `Time conflict: ${subjectName} (${className}) is already scheduled on ${DAY_NAMES[userConflict.dayOfWeek]} from ${userConflict.startTime} to ${userConflict.endTime}. Delete or move that entry first.`
+      );
     }
 
-    if (args.teacherId) {
-      const teacherConflict = await ctx.db
-        .query("timetable_entries")
-        .withIndex("by_teacherId", (q) => q.eq("teacherId", args.teacherId!))
-        .filter((q) =>
-          q.eq(q.field("dayOfWeek"), args.dayOfWeek) &&
-          q.lt(q.field("startTime"), args.endTime) &&
-          q.gt(q.field("endTime"), args.startTime)
-        )
-        .first();
-      if (teacherConflict) {
-        throw new Error("Time slot conflicts with the teacher's existing schedule");
-      }
-    }
-
-    const entryId = await ctx.db.insert("timetable_entries", args);
+    const entryId = await ctx.db.insert("timetable_entries", {
+      ...args,
+      userId: identity.subject,
+    });
     await logAuditEntry(ctx, args.schoolId, "timetable.create", {
       entryId,
       classId: args.classId,
@@ -101,26 +124,37 @@ export const remove = mutation({
     const entry = await ctx.db.get(id);
     if (!entry) throw new Error("Timetable entry not found");
     await requireSchoolMembership(ctx, entry.schoolId);
+
+    const identity = await requireAuth(ctx);
+    // Only the owner or superadmin can delete
+    const isSuperadmin = await ctx.db
+      .query("admins")
+      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
+      .first();
+    if (entry.userId !== identity.subject && !isSuperadmin) {
+      throw new Error("You can only delete your own timetable entries");
+    }
+
     await ctx.db.delete(id);
     await logAuditEntry(ctx, entry.schoolId, "timetable.remove", { entryId: id });
   },
 });
 
-export const clearClassTimetable = mutation({
-  args: { classId: v.id("classes") },
-  handler: async (ctx, { classId }) => {
-    const cls = await ctx.db.get(classId);
-    if (!cls) throw new Error("Class not found");
-    await requireSchoolMembership(ctx, cls.schoolId);
+/** Clear all of the current user's timetable entries. */
+export const clearMyTimetable = mutation({
+  args: { schoolId: v.id("schools") },
+  handler: async (ctx, { schoolId }) => {
+    const identity = await requireAuth(ctx);
+    await requireSchoolMembership(ctx, schoolId);
 
     const entries = await ctx.db
       .query("timetable_entries")
-      .withIndex("by_classId", (q) => q.eq("classId", classId))
+      .withIndex("by_userId", (q) => q.eq("userId", identity.subject))
       .take(200);
     for (const e of entries) {
       await ctx.db.delete(e._id);
     }
 
-    await logAuditEntry(ctx, cls.schoolId, "timetable.clearClass", { classId });
+    await logAuditEntry(ctx, schoolId, "timetable.clearMyTimetable", {});
   },
 });

@@ -39,6 +39,11 @@ export default function BorrowPage() {
   const [bookNumber, setBookNumber] = useState("");
   const [dueDate, setDueDate] = useState("");
 
+  const getStudentByAdmNo = useQuery(
+    api.students.getByAdmNo,
+    school && admNo.trim() ? { schoolId: school._id, admNo: admNo.trim() } : "skip"
+  );
+
   const availableBooks = books?.filter((b) => b.availableCopies > 0) ?? [];
 
   const searchResults = useQuery(
@@ -87,7 +92,8 @@ export default function BorrowPage() {
         return;
       }
       try {
-        const id = await createStudent({
+        // Check if student with this admNo already exists
+        const existingStudent = await createStudent({
           schoolId: school._id,
           classId: selectedClass as any,
           streamId: selectedStream ? (selectedStream as any) : undefined,
@@ -95,12 +101,26 @@ export default function BorrowPage() {
           lastName: lastName.trim(),
           admNo: admNo.trim(),
         });
-        studentId = id;
+        studentId = existingStudent;
         toast.success("Student profile created");
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
-        console.error("[borrowings.createStudent]", error);
-        return;
+        const msg = error instanceof Error ? error.message : "";
+        if (msg.includes("already exists")) {
+          // Student already exists — find and use them
+          const existing = getStudentByAdmNo;
+          if (existing) {
+            studentId = existing._id;
+            toast.success("Using existing student profile");
+          } else {
+            // Fallback: the query might not have loaded yet
+            toast.error("A student with this admission number already exists. Search for them instead.");
+            return;
+          }
+        } else {
+          toast.error(msg || "An unexpected error occurred");
+          console.error("[borrowings.createStudent]", error);
+          return;
+        }
       }
     } else {
       if (!searchedStudent) {
@@ -117,11 +137,6 @@ export default function BorrowPage() {
 
     if (!selectedBookId) {
       toast.error("Please select a book from the inventory");
-      return;
-    }
-
-    if (new Date(dueDate).getTime() < Date.now()) {
-      toast.error("Due date cannot be in the past");
       return;
     }
 
@@ -284,9 +299,7 @@ export default function BorrowPage() {
                       const book = books?.find((b) => b._id === id);
                       if (book) {
                         setBookName(book.title);
-                        const due = new Date();
-                        due.setDate(due.getDate() + 14);
-                        setDueDate(due.toISOString().split("T")[0]);
+                        setDueDate(new Date().toISOString().split("T")[0]);
                       }
                     } else {
                       setBookName("");
@@ -334,7 +347,16 @@ export default function BorrowPage() {
               </div>
               <div>
                 <Label htmlFor="dueDate">Due Date</Label>
-                <Input id="dueDate" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required />
+                <Input
+                  id="dueDate"
+                  type="date"
+                  value={dueDate || new Date().toISOString().split("T")[0]}
+                  min={new Date().toISOString().split("T")[0]}
+                  max={new Date().toISOString().split("T")[0]}
+                  onChange={(e) => setDueDate(e.target.value)}
+                  required
+                />
+                <p className="text-xs text-muted-foreground mt-1">Books are due today</p>
               </div>
               <Button type="submit" className="w-full">
                 <BookMarked className="h-4 w-4 mr-2" />

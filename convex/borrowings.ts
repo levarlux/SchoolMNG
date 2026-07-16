@@ -57,8 +57,10 @@ export const create = mutation({
     await requireSchoolMembership(ctx, args.schoolId);
     await requireStudentMembership(ctx, args.studentId);
 
-    if (args.dueDate <= Date.now()) {
-      throw new Error("Due date must be in the future");
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    if (args.dueDate < todayStart.getTime()) {
+      throw new Error("Due date cannot be in the past");
     }
 
     const MAX_BORROW_LIMIT = 5;

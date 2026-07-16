@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { RequireAuth } from "@/components/require-auth";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { useIsSuperadmin } from "@/lib/use-admin";
 
@@ -18,5 +19,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   // Block render until we know the role
   if (isSuperadmin === undefined || isSuperadmin === true) return null;
 
-  return <DashboardLayout>{children}</DashboardLayout>;
+  return (
+    <RequireAuth>
+      <DashboardLayout>{children}</DashboardLayout>
+    </RequireAuth>
+  );
 }

@@ -3,7 +3,7 @@
 import { useQuery, useConvexAuth } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useSchoolSlug } from "./use-school-slug";
-import { useOrganization } from "@clerk/nextjs";
+import { useOrganization } from "@clerk/clerk-react";
 
 export function useSchool() {
   const slug = useSchoolSlug();

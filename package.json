@@ -5,16 +5,18 @@
   "scripts": {
     "dev": "next dev",
     "build": "npx convex codegen && npx convex deploy --cmd \"next build --webpack\"",
+    "build:static": "node scripts/build-static.js",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
   },
   "dependencies": {
-    "@clerk/nextjs": "^7.5.14",
+    "@clerk/clerk-react": "^5.0.0",
     "@clerk/shared": "^4.25.0",
-    "@sentry/nextjs": "^10.65.0",
     "@types/papaparse": "^5.5.2",
     "@types/recharts": "^1.8.29",
-    "@vercel/analytics": "^2.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "convex": "^1.18.0",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.0",
+    "@tauri-apps/cli": "^2",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

@@ -80,6 +80,73 @@ export async function requireSuperadmin(ctx: Ctx) {
 // `schoolId` field.  This prevents cross-tenant access regardless of
 // what the client sends.
 
+// ── School role helpers ─────────────────────────────────────────────
+
+type MemberRole = "teacher" | "principal";
+const ROLE_HIERARCHY: Record<MemberRole, number> = {
+  teacher: 0,
+  principal: 1,
+};
+
+/**
+ * Look up the caller's member record for a school.
+ * Returns null if the user has no member record (e.g. they're not a teacher).
+ */
+async function getMemberRole(
+  ctx: Ctx,
+  schoolId: Id<"schools">
+): Promise<MemberRole | null> {
+  const identity = await requireAuth(ctx);
+  // Superadmins bypass role checks
+  if (await isSuperadmin(ctx)) return "principal";
+
+  const member = await ctx.db
+    .query("members")
+    .withIndex("by_userId_and_schoolId", (q) =>
+      q.eq("userId", identity.subject).eq("schoolId", schoolId)
+    )
+    .first();
+  return (member?.role as MemberRole) ?? null;
+}
+
+/**
+ * Require the caller to have at least the given role in the school.
+ * Superadmins always pass.
+ */
+async function requireMinimumRole(
+  ctx: Ctx,
+  schoolId: Id<"schools">,
+  minimum: MemberRole
+): Promise<void> {
+  const role = await getMemberRole(ctx, schoolId);
+  if (!role) {
+    throw new Error("You are not a member of this school");
+  }
+  if (ROLE_HIERARCHY[role] < ROLE_HIERARCHY[minimum]) {
+    throw new Error(
+      `${minimum} access required. Your role: ${role}`
+    );
+  }
+}
+
+/** Require teacher role or above (everyone). */
+export async function requireTeacher(
+  ctx: Ctx,
+  schoolId: Id<"schools">
+): Promise<void> {
+  await requireMinimumRole(ctx, schoolId, "teacher");
+}
+
+/** Require principal role or above. */
+export async function requirePrincipal(
+  ctx: Ctx,
+  schoolId: Id<"schools">
+): Promise<void> {
+  await requireMinimumRole(ctx, schoolId, "principal");
+}
+
+// ── Tenant isolation ───────────────────────────────────────────────
+
 /**
  * Extract the caller's Clerk org_id from the JWT.
  * Returns null when the JWT lacks org_id (e.g. before Clerk integration is
