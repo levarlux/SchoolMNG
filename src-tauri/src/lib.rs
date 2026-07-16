@@ -142,11 +142,8 @@ pub fn run() {
         .setup(|app| {
             // Set the window icon at runtime from embedded bytes
             if let Some(window) = app.get_webview_window("main") {
-                let icon_bytes = include_bytes!("../icons/icon.ico");
-                let _ = window.set_icon(Some(
-                    tauri::image::Image::from_bytes(icon_bytes)
-                        .expect("Failed to decode icon"),
-                ));
+                let icon = tauri::include_image!("../icons/icon.ico");
+                let _ = window.set_icon(Some(icon));
             }
 
             let handle = app.handle().clone();
