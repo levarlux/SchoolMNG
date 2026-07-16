@@ -3,10 +3,26 @@ use std::path::PathBuf;
 use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_updater::UpdaterExt;
 
+// --- GitHub API types for prerelease auto-discovery ---
+
+#[derive(Deserialize, Debug)]
+struct GitHubAsset {
+    name: String,
+    browser_download_url: String,
+}
+
+#[derive(Deserialize, Debug)]
+struct GitHubRelease {
+    prerelease: bool,
+    draft: bool,
+    assets: Vec<GitHubAsset>,
+}
+
+// --- Local updater config ---
+
 #[derive(Deserialize, Default)]
 struct UpdaterConfig {
     preview: bool,
-    preview_tag: Option<String>,
 }
 
 fn config_path() -> PathBuf {
@@ -24,27 +40,55 @@ fn load_updater_config() -> UpdaterConfig {
         .unwrap_or_default()
 }
 
-const STABLE_ENDPOINT: &str =
+// --- Constants ---
+
+const GITHUB_API_RELEASES: &str =
+    "https://api.github.com/repos/levarlux/SchoolMNG/releases?per_page=20";
+
+const STABLE_LATEST_JSON: &str =
     "https://github.com/levarlux/SchoolMNG/releases/latest/download/latest.json";
+
+// --- Auto-discovery: find the latest prerelease's latest.json URL ---
+
+async fn fetch_latest_prerelease_url() -> Result<String, Box<dyn std::error::Error>> {
+    let client = reqwest::Client::builder()
+        .user_agent("SchoolMNG-Updater/2.0")
+        .build()?;
+
+    let releases: Vec<GitHubRelease> = client
+        .get(GITHUB_API_RELEASES)
+        .send()
+        .await?
+        .json()
+        .await?;
+
+    let latest_prerelease = releases
+        .into_iter()
+        .find(|r| r.prerelease && !r.draft);
+
+    if let Some(release) = latest_prerelease {
+        if let Some(asset) = release.assets.into_iter().find(|a| a.name == "latest.json") {
+            return Ok(asset.browser_download_url);
+        }
+    }
+
+    Err("No prerelease with latest.json found".into())
+}
+
+// --- Main update logic ---
 
 async fn check_and_prompt_update(app: tauri::AppHandle) {
     let config = load_updater_config();
 
     let endpoint = if config.preview {
-        config
-            .preview_tag
-            .map(|tag| {
-                format!(
-                    "https://github.com/levarlux/SchoolMNG/releases/download/{}/latest.json",
-                    tag
-                )
-            })
-            .unwrap_or_else(|| STABLE_ENDPOINT.into())
+        fetch_latest_prerelease_url()
+            .await
+            .unwrap_or_else(|_| STABLE_LATEST_JSON.into())
     } else {
-        STABLE_ENDPOINT.into()
+        STABLE_LATEST_JSON.into()
     };
 
-    let url: url::Url = match endpoint.parse() {
+    let url = match endpoint.parse() {
         Ok(u) => u,
         Err(_) => return,
     };
@@ -69,13 +113,23 @@ async fn check_and_prompt_update(app: tauri::AppHandle) {
             .blocking_show();
 
         if should_install {
-            let _ = update
+            app.dialog()
+                .message("Downloading update... The app will restart automatically when ready.")
+                .title("Downloading Update")
+                .show(|_| {});
+
+            if update
                 .download_and_install(|_, _| {}, || {})
-                .await;
-            app.restart();
+                .await
+                .is_ok()
+            {
+                app.restart();
+            }
         }
     }
 }
+
+// --- Entry point ---
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

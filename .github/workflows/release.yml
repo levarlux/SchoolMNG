@@ -1,0 +1,110 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          CLERK_WEBHOOK_SECRET: ${{ secrets.CLERK_WEBHOOK_SECRET }}
+          CLERK_FRONTEND_API_URL: ${{ secrets.CLERK_FRONTEND_API_URL }}
+          CONVEX_DEPLOYMENT: ${{ secrets.CONVEX_DEPLOYMENT }}
+          NEXT_PUBLIC_CONVEX_URL: ${{ secrets.NEXT_PUBLIC_CONVEX_URL }}
+          NEXT_PUBLIC_CONVEX_SITE_URL: ${{ secrets.NEXT_PUBLIC_CONVEX_SITE_URL }}
+          CONVEX_CLERK_ISSUER_URL: ${{ secrets.CONVEX_CLERK_ISSUER_URL }}
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "SchoolMNG ${{ github.ref_name }}"
+          releaseBody: "See the assets below for the installer."
+          releaseDraft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          args: "--target x86_64-pc-windows-msvc"
+
+      - name: Generate latest.json
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $version = $tag -replace '^v', ''
+
+          # Find the NSIS installer and its sig file
+          $nsis = Get-ChildItem -Path "src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis" -Filter "*.exe" | Select-Object -First 1
+          $nsisSig = Get-ChildItem -Path "src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis" -Filter "*.sig" | Select-Object -First 1
+          $msi = Get-ChildItem -Path "src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi" -Filter "*.msi" | Select-Object -First 1
+          $msiSig = Get-ChildItem -Path "src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi" -Filter "*.sig" | Select-Object -First 1
+
+          $nsisUrl = "https://github.com/levarlux/SchoolMNG/releases/download/$tag/$($nsis.Name)"
+          $nsisSigContent = if ($nsisSig) { Get-Content $nsisSig.FullName -Raw } else { "" }
+          $nsisSha256 = if ($nsis) { (Get-FileHash $nsis.FullName -Algorithm SHA256).Hash.ToLower() } else { "" }
+
+          $msiUrl = "https://github.com/levarlux/SchoolMNG/releases/download/$tag/$($msi.Name)"
+          $msiSigContent = if ($msiSig) { Get-Content $msiSig.FullName -Raw } else { "" }
+          $msiSha256 = if ($msi) { (Get-FileHash $msi.FullName -Algorithm SHA256).Hash.ToLower() } else { "" }
+
+          $latest = @{
+            version = $version
+            notes = "SchoolMNG $tag"
+            pub_date = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+            platforms = @{
+              "windows-x86_64" = @{
+                signature = $nsisSigContent.Trim()
+                url = $nsisUrl
+              }
+              "windows-x86_64-msi" = @{
+                signature = $msiSigContent.Trim()
+                url = $msiUrl
+              }
+            }
+          }
+
+          $latest | ConvertTo-Json -Depth 10 | Set-Content -Path "latest.json" -Encoding UTF8
+          Write-Host "Generated latest.json:"
+          Get-Content latest.json
+
+      - name: Upload latest.json to release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: latest.json
+          token: ${{ secrets.GITHUB_TOKEN }}

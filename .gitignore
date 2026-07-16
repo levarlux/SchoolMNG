@@ -3,6 +3,7 @@ node_modules/
 out/
 .env.local
 .env*.local
+.env.production
 
 # clerk configuration (can include secrets)
 /.clerk/
@@ -14,4 +15,5 @@ out/
 src-tauri/target/
 src-tauri/WixTools/
 src-tauri/Frameworks/
+src-tauri/.tauri-signing-key.txt
 dist-electron/
