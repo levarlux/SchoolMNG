@@ -20,19 +20,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Suspense fallback={<div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: "#0a0a0a", color: "#888", fontFamily: "system-ui, sans-serif" }}>Loading…</div>}>
-      <ClerkProviderWithRouter>
-        <html lang="en">
-          <body className="bg-background text-foreground antialiased">
-            <ConvexClientProvider>
-              <SchoolThemeProvider>
+    <html lang="en">
+      <body className="bg-background text-foreground antialiased">
+        <ClerkProviderWithRouter>
+          <ConvexClientProvider>
+            <SchoolThemeProvider>
+              <Suspense fallback={<div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: "#0a0a0a", color: "#888", fontFamily: "system-ui, sans-serif" }}>Loading…</div>}>
                 {children}
-              </SchoolThemeProvider>
-            </ConvexClientProvider>
-            <Toaster richColors />
-          </body>
-        </html>
-      </ClerkProviderWithRouter>
-    </Suspense>
+              </Suspense>
+            </SchoolThemeProvider>
+          </ConvexClientProvider>
+          <Toaster richColors />
+        </ClerkProviderWithRouter>
+      </body>
+    </html>
   );
 }
