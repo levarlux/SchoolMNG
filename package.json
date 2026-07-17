@@ -10,7 +10,8 @@
     "lint": "next lint",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build"
+    "tauri:build": "tauri build",
+    "postinstall": "node scripts/fix-clerk-shared.mjs"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.0.0",
@@ -28,7 +29,8 @@
     "recharts": "^3.9.2",
     "sonner": "^2.0.1",
     "svix": "^1.96.1",
-    "tailwind-merge": "^3.0.2"
+    "tailwind-merge": "^3.0.2",
+    "tauri-plugin-clerk": "0.1.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.0",

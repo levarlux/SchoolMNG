@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: process.env.NEXT_EXPORT === "true" ? "export" : undefined,
-  transpilePackages: ["@clerk/clerk-react", "@clerk/shared"],
+  transpilePackages: ["@clerk/clerk-react", "@clerk/shared", "tauri-plugin-clerk"],
   images: {
     unoptimized: true,
     remotePatterns: [

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { ClerkProviderWithRouter } from "@/components/clerk-provider-with-router";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { SchoolThemeProvider } from "@/components/school-theme-provider";
@@ -19,17 +20,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProviderWithRouter>
-      <html lang="en">
-        <body className="bg-background text-foreground antialiased">
-          <ConvexClientProvider>
-            <SchoolThemeProvider>
-              {children}
-            </SchoolThemeProvider>
-          </ConvexClientProvider>
-          <Toaster richColors />
-        </body>
-      </html>
-    </ClerkProviderWithRouter>
+    <Suspense fallback={<div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: "#0a0a0a", color: "#888", fontFamily: "system-ui, sans-serif" }}>Loading…</div>}>
+      <ClerkProviderWithRouter>
+        <html lang="en">
+          <body className="bg-background text-foreground antialiased">
+            <ConvexClientProvider>
+              <SchoolThemeProvider>
+                {children}
+              </SchoolThemeProvider>
+            </ConvexClientProvider>
+            <Toaster richColors />
+          </body>
+        </html>
+      </ClerkProviderWithRouter>
+    </Suspense>
   );
 }

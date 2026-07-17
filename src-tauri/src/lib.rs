@@ -139,6 +139,18 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_store::Builder::new().build())
+        .plugin(
+            tauri_plugin_clerk::ClerkPluginBuilder::new()
+                .publishable_key(
+                    option_env!("NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY")
+                        .unwrap_or("") // empty → Clerk will error visibly if key wasn't embedded at compile time
+                        .to_string()
+                )
+                .with_tauri_store()
+                .build()
+        )
         .setup(|app| {
             // Set the window icon at runtime from embedded bytes
             if let Some(window) = app.get_webview_window("main") {
