@@ -8,6 +8,16 @@
     "updater:default",
     "process:default",
     "process:allow-restart",
-    "dialog:default"
+    "dialog:default",
+    "clerk:default",
+    "store:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "https://*"
+        }
+      ]
+    }
   ]
 }
