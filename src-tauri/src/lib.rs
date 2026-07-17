@@ -134,23 +134,28 @@ async fn check_and_prompt_update(app: tauri::AppHandle) {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    tauri::Builder::default()
+    let clerk_key = option_env!("NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY");
+
+    let mut builder = tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_http::init())
-        .plugin(tauri_plugin_store::Builder::new().build())
-        .plugin(
-            tauri_plugin_clerk::ClerkPluginBuilder::new()
-                .publishable_key(
-                    option_env!("NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY")
-                        .unwrap_or("") // empty → Clerk will error visibly if key wasn't embedded at compile time
-                        .to_string()
-                )
-                .with_tauri_store()
-                .build()
-        )
+        .plugin(tauri_plugin_store::Builder::new().build());
+
+    if let Some(key) = clerk_key {
+        if !key.is_empty() {
+            builder = builder.plugin(
+                tauri_plugin_clerk::ClerkPluginBuilder::new()
+                    .publishable_key(key.to_string())
+                    .with_tauri_store()
+                    .build(),
+            );
+        }
+    }
+
+    builder
         .setup(|app| {
             // Set the window icon at runtime from embedded bytes
             if let Some(window) = app.get_webview_window("main") {
