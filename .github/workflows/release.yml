@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Setup Rust
@@ -34,7 +34,7 @@ jobs:
           shared-key: "windows-release"
 
       - name: Install frontend dependencies
-        run: npm ci
+        run: npm install
 
       - name: Cache Next.js
         uses: actions/cache@v4
