@@ -1,9 +1,10 @@
 [package]
 name = "school-library-manager"
-version = "0.1.3"
+version = "0.1.4"
 description = "School Library Manager Desktop App"
 authors = ["levarlux"]
 edition = "2021"
+build = "build.rs"
 
 [lib]
 name = "school_library_manager_lib"
@@ -11,6 +12,7 @@ crate-type = ["lib", "cdylib", "staticlib"]
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
+dotenvy = "0.15"
 
 [dependencies]
 tauri = { version = "2", features = [] }

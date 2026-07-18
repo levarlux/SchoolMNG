@@ -135,32 +135,51 @@ async fn check_and_prompt_update(app: tauri::AppHandle) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let clerk_key = option_env!("NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY");
+    let clerk_proxy = option_env!("NEXT_PUBLIC_CLERK_PROXY_URL");
+
+    eprintln!("=== CLERK PLUGIN DIAGNOSTICS ===");
+    eprintln!("option_env!(NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) = {:?}", clerk_key);
+    eprintln!("option_env!(NEXT_PUBLIC_CLERK_PROXY_URL) = {:?}", clerk_proxy);
 
     let mut builder = tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
-        .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_http::init()) // Native HTTP routing required by tauri-plugin-clerk
         .plugin(tauri_plugin_store::Builder::new().build());
 
     if let Some(key) = clerk_key {
         if !key.is_empty() {
-            builder = builder.plugin(
-                tauri_plugin_clerk::ClerkPluginBuilder::new()
-                    .publishable_key(key.to_string())
-                    .with_tauri_store()
-                    .build(),
-            );
+            eprintln!("CLERK PLUGIN: Registering with key={}...", &key[..12]);
+            let mut clerk_builder = tauri_plugin_clerk::ClerkPluginBuilder::new()
+                .publishable_key(key.to_string())
+                .with_tauri_store();
+
+            if let Some(proxy) = clerk_proxy {
+                if !proxy.is_empty() {
+                    eprintln!("CLERK PLUGIN: proxy={}", proxy);
+                    clerk_builder = clerk_builder.proxy(proxy.to_string());
+                }
+            } else {
+                eprintln!("CLERK PLUGIN: No proxy URL configured");
+            }
+
+            builder = builder.plugin(clerk_builder.build());
+            eprintln!("CLERK PLUGIN: Registered successfully");
+        } else {
+            eprintln!("CLERK PLUGIN: Key is empty, NOT registering");
         }
+    } else {
+        eprintln!("CLERK PLUGIN: option_env returned None, NOT registering");
     }
+    eprintln!("=== END CLERK PLUGIN DIAGNOSTICS ===");
 
     builder
         .setup(|app| {
             // Set the window icon at runtime from embedded bytes
             if let Some(window) = app.get_webview_window("main") {
                 let icon = tauri::include_image!("icons/icon.ico");
-                // Fixed: Passed raw Image directly, avoiding Option mismatch[cite: 1]
                 let _ = window.set_icon(icon); 
             }
 
