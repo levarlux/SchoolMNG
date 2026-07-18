@@ -104,37 +104,37 @@ const clerkProxyHandler = httpAction(async (_ctx, request) => {
 });
 
 http.route({
-  path: "/__clerk",
+  pathPrefix: "/__clerk/",
   method: "GET",
   handler: clerkProxyHandler,
 });
 
 http.route({
-  path: "/__clerk",
+  pathPrefix: "/__clerk/",
   method: "POST",
   handler: clerkProxyHandler,
 });
 
 http.route({
-  path: "/__clerk",
+  pathPrefix: "/__clerk/",
   method: "PUT",
   handler: clerkProxyHandler,
 });
 
 http.route({
-  path: "/__clerk",
+  pathPrefix: "/__clerk/",
   method: "PATCH",
   handler: clerkProxyHandler,
 });
 
 http.route({
-  path: "/__clerk",
+  pathPrefix: "/__clerk/",
   method: "DELETE",
   handler: clerkProxyHandler,
 });
 
 http.route({
-  path: "/__clerk",
+  pathPrefix: "/__clerk/",
   method: "OPTIONS",
   handler: clerkProxyHandler,
 });
