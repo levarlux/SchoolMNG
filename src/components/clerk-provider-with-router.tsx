@@ -1,30 +1,40 @@
 "use client";
 
-import { ReactNode, useState, useEffect } from "react";
+import React, { Suspense, use, ReactNode } from "react";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
+import { isTauri } from "@tauri-apps/api/core";
 
 const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
-export function ClerkProviderWithRouter({ children }: { children: ReactNode }) {
-  const router = useRouter();
-  const [clerk, setClerk] = useState<any>(null);
+const clerkPromise = (async () => {
+  if (isTauri()) {
+    const { initClerk } = await import("tauri-plugin-clerk");
+    return initClerk();
+  }
+  return null;
+})();
 
-  useEffect(() => {
-    import("tauri-plugin-clerk")
-      .then((mod) => mod.initClerk())
-      .then(setClerk)
-      .catch(console.error);
-  }, []);
+function AuthProviderInner({ children }: { children: ReactNode }) {
+  const router = useRouter();
+  const clerk = use(clerkPromise);
 
   return (
     <ClerkProvider
       publishableKey={clerk?.publishableKey ?? publishableKey}
-      {...(clerk ? { Clerk: clerk } : {})}
+      {...(clerk ? { Clerk: clerk as any } : {})}
       routerPush={(to) => router.push(to)}
       routerReplace={(to) => router.replace(to)}
     >
       {children}
     </ClerkProvider>
+  );
+}
+
+export function ClerkProviderWithRouter({ children }: { children: ReactNode }) {
+  return (
+    <Suspense fallback={<div style={{ background: "#fff", height: "100vh" }}>Loading Authenticator...</div>}>
+      <AuthProviderInner>{children}</AuthProviderInner>
+    </Suspense>
   );
 }

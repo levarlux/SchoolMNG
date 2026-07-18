@@ -22,16 +22,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-background text-foreground antialiased">
-        <ClerkProviderWithRouter>
-          <ConvexClientProvider>
-            <SchoolThemeProvider>
-              <Suspense fallback={<div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: "#0a0a0a", color: "#888", fontFamily: "system-ui, sans-serif" }}>Loading…</div>}>
+        <Suspense fallback={<div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: "#0a0a0a", color: "#888", fontFamily: "system-ui, sans-serif" }}>Loading…</div>}>
+          <ClerkProviderWithRouter>
+            <ConvexClientProvider>
+              <SchoolThemeProvider>
                 {children}
-              </Suspense>
-            </SchoolThemeProvider>
-          </ConvexClientProvider>
-          <Toaster richColors />
-        </ClerkProviderWithRouter>
+              </SchoolThemeProvider>
+            </ConvexClientProvider>
+            <Toaster richColors />
+          </ClerkProviderWithRouter>
+        </Suspense>
       </body>
     </html>
   );
