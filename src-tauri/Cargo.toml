@@ -1,6 +1,6 @@
 [package]
 name = "school-library-manager"
-version = "0.1.4"
+version = "0.2.0"
 description = "School Library Manager Desktop App"
 authors = ["levarlux"]
 edition = "2021"
