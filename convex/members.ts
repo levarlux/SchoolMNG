@@ -1,11 +1,31 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
-import { requireAuth, requireSchoolMembership, logAuditEntry } from "./helpers";
+import { mutation, query, internalMutation, internalQuery } from "./_generated/server";
+import { requireAuth, requireSchoolMembership, requirePrincipal, logAuditEntry } from "./helpers";
 
 const MEMBER_ROLES = v.union(
   v.literal("teacher"),
   v.literal("principal"),
 );
+
+/**
+ * Internal-only: look up a user's role in a school.
+ * No auth check — used by action-level role verification that already checked auth.
+ */
+export const getRoleInternal = internalQuery({
+  args: {
+    userId: v.string(),
+    schoolId: v.id("schools"),
+  },
+  handler: async (ctx, { userId, schoolId }) => {
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_userId_and_schoolId", (q) =>
+        q.eq("userId", userId).eq("schoolId", schoolId)
+      )
+      .first();
+    return member?.role ?? null;
+  },
+});
 
 /** Get the current user's member record for a school. */
 export const getMyMembership = query({
@@ -34,7 +54,7 @@ export const listBySchool = query({
   },
 });
 
-/** Add a member to a school. Defaults to "teacher" role. */
+/** Add a member to a school. Principal-only; can only assign "teacher" role. */
 export const add = mutation({
   args: {
     schoolId: v.id("schools"),
@@ -44,7 +64,11 @@ export const add = mutation({
     name: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    await requireSchoolMembership(ctx, args.schoolId);
+    await requirePrincipal(ctx, args.schoolId);
+
+    if (args.role === "principal") {
+      throw new Error("Cannot assign principal role through this method");
+    }
 
     // Check for duplicates
     const existing = await ctx.db
@@ -67,6 +91,41 @@ export const add = mutation({
   },
 });
 
+/**
+ * Internal-only: add a member from a Clerk webhook.
+ * Idempotent — returns existing member if already present.
+ * No auth required (called by webhook handler which verified the secret).
+ */
+export const addFromWebhook = internalMutation({
+  args: {
+    userId: v.string(),
+    schoolId: v.id("schools"),
+    email: v.optional(v.string()),
+    name: v.optional(v.string()),
+    role: MEMBER_ROLES,
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("members")
+      .withIndex("by_userId_and_schoolId", (q) =>
+        q.eq("userId", args.userId).eq("schoolId", args.schoolId)
+      )
+      .first();
+    if (existing) {
+      return { ok: true, alreadyMember: true, memberId: existing._id };
+    }
+
+    const memberId = await ctx.db.insert("members", {
+      userId: args.userId,
+      schoolId: args.schoolId,
+      role: args.role,
+      email: args.email,
+      name: args.name,
+    });
+    return { ok: true, alreadyMember: false, memberId };
+  },
+});
+
 /** Update a member's role. */
 export const updateRole = mutation({
   args: {
@@ -76,7 +135,7 @@ export const updateRole = mutation({
   handler: async (ctx, { memberId, role }) => {
     const member = await ctx.db.get(memberId);
     if (!member) throw new Error("Member not found");
-    await requireSchoolMembership(ctx, member.schoolId);
+    await requirePrincipal(ctx, member.schoolId);
 
     await ctx.db.patch(memberId, { role });
     await logAuditEntry(ctx, member.schoolId, "member.updateRole", {
@@ -92,7 +151,7 @@ export const remove = mutation({
   handler: async (ctx, { memberId }) => {
     const member = await ctx.db.get(memberId);
     if (!member) throw new Error("Member not found");
-    await requireSchoolMembership(ctx, member.schoolId);
+    await requirePrincipal(ctx, member.schoolId);
 
     await ctx.db.delete(memberId);
     await logAuditEntry(ctx, member.schoolId, "member.remove", {

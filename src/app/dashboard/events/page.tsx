@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
+import { useRole } from "@/lib/use-role";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +31,8 @@ function formatDate(ts: number) {
 
 export default function EventsPage() {
   const school = useSchool();
+  const role = useRole();
+  const isPrincipal = role === "principal";
   const events = useQuery(api.events.listBySchool, school ? { schoolId: school._id } : "skip");
   const createEvent = useMutation(api.events.create);
   const deleteEvent = useMutation(api.events.remove);
@@ -106,9 +109,11 @@ export default function EventsPage() {
           <h1 className="text-3xl font-bold">School Events</h1>
           <p className="text-muted-foreground mt-1">{events.length} total events</p>
         </div>
-        <Button onClick={() => setShowModal(true)}>
-          <Plus className="h-4 w-4 mr-2" /> Add Event
-        </Button>
+        {isPrincipal && (
+          <Button onClick={() => setShowModal(true)}>
+            <Plus className="h-4 w-4 mr-2" /> Add Event
+          </Button>
+        )}
       </div>
 
       <div className="relative">
@@ -132,12 +137,14 @@ export default function EventsPage() {
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-base">{ev.title}</CardTitle>
-                      <button
-                        onClick={() => handleDelete(ev._id)}
-                        className="p-1 text-muted-foreground hover:text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      {isPrincipal && (
+                        <button
+                          onClick={() => handleDelete(ev._id)}
+                          className="p-1 text-muted-foreground hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-2">
@@ -171,12 +178,14 @@ export default function EventsPage() {
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-base">{ev.title}</CardTitle>
-                      <button
-                        onClick={() => handleDelete(ev._id)}
-                        className="p-1 text-muted-foreground hover:text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      {isPrincipal && (
+                        <button
+                          onClick={() => handleDelete(ev._id)}
+                          className="p-1 text-muted-foreground hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-2">

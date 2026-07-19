@@ -28,6 +28,7 @@ import type * as fines from "../fines.js";
 import type * as helpers from "../helpers.js";
 import type * as http from "../http.js";
 import type * as inventory from "../inventory.js";
+import type * as invitations from "../invitations.js";
 import type * as lib_logger from "../lib/logger.js";
 import type * as members from "../members.js";
 import type * as reports from "../reports.js";
@@ -68,6 +69,7 @@ declare const fullApi: ApiFromModules<{
   helpers: typeof helpers;
   http: typeof http;
   inventory: typeof inventory;
+  invitations: typeof invitations;
   "lib/logger": typeof lib_logger;
   members: typeof members;
   reports: typeof reports;

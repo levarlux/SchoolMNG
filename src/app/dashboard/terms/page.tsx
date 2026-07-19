@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
+import { useRole } from "@/lib/use-role";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,8 @@ function formatDate(ts: number) {
 
 export default function TermsPage() {
   const school = useSchool();
+  const role = useRole();
+  const isPrincipal = role === "principal";
   const terms = useQuery(api.terms.listBySchool, school ? { schoolId: school._id } : "skip");
   const createTerm = useMutation(api.terms.create);
   const updateTerm = useMutation(api.terms.update);
@@ -92,9 +95,11 @@ export default function TermsPage() {
           <h1 className="text-3xl font-bold">Academic Terms</h1>
           <p className="text-muted-foreground mt-1">Manage your school terms (Kenya: 3 terms per year)</p>
         </div>
-        <Button onClick={() => setShowModal(true)}>
-          <Plus className="h-4 w-4 mr-2" /> Add Term
-        </Button>
+        {isPrincipal && (
+          <Button onClick={() => setShowModal(true)}>
+            <Plus className="h-4 w-4 mr-2" /> Add Term
+          </Button>
+        )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -116,21 +121,25 @@ export default function TermsPage() {
                 <span>{formatDate(t.startDate)} - {formatDate(t.endDate)}</span>
               </div>
               <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleToggleCurrent(t)}
-                >
-                  {t.isCurrent ? "Unset Current" : "Set as Current"}
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-destructive hover:text-destructive"
-                  onClick={() => handleDelete(t._id)}
-                >
-                  Delete
-                </Button>
+                {isPrincipal && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleToggleCurrent(t)}
+                  >
+                    {t.isCurrent ? "Unset Current" : "Set as Current"}
+                  </Button>
+                )}
+                {isPrincipal && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-destructive hover:text-destructive"
+                    onClick={() => handleDelete(t._id)}
+                  >
+                    Delete
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>

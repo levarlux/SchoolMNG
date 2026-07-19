@@ -1,17 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useSchool } from "@/lib/use-school";
+import { useRole } from "@/lib/use-role";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
-import { Badge } from "@/components/ui/badge";
-import { Users, Plus, Trash2, Loader2, Shield } from "lucide-react";
+import { Users, Plus, Trash2, Loader2, Shield, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { Id } from "@/convex/_generated/dataModel";
 
@@ -27,18 +27,18 @@ const ROLE_BADGE_VARIANT: Record<string, string> = {
 
 export default function MembersPage() {
   const school = useSchool();
+  const myRole = useRole();
+  const isPrincipal = myRole === "principal";
   const members = useQuery(
     api.members.listBySchool,
     school ? { schoolId: school._id } : "skip"
   );
-  const addMember = useMutation(api.members.add);
+  const sendInvitation = useAction(api.invitations.sendInvitation);
   const updateRole = useMutation(api.members.updateRole);
   const removeMember = useMutation(api.members.remove);
 
   const [showAddModal, setShowAddModal] = useState(false);
-  const [userId, setUserId] = useState("");
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [role, setRole] = useState<"teacher" | "principal">("teacher");
   const [loading, setLoading] = useState(false);
 
@@ -50,29 +50,25 @@ export default function MembersPage() {
     );
   }
 
-  async function handleAdd(e: React.FormEvent) {
+  async function handleInvite(e: React.FormEvent) {
     e.preventDefault();
-    if (!userId.trim()) {
-      toast.error("User ID is required");
+    if (!email.trim()) {
+      toast.error("Email is required");
       return;
     }
     setLoading(true);
     try {
-      await addMember({
+      await sendInvitation({
         schoolId: school!._id,
-        userId: userId.trim(),
+        email: email.trim(),
         role,
-        email: email.trim() || undefined,
-        name: name.trim() || undefined,
       });
-      toast.success("Member added");
+      toast.success(`Invitation sent to ${email.trim()}`);
       setShowAddModal(false);
-      setUserId("");
       setEmail("");
-      setName("");
       setRole("teacher");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to add member");
+      toast.error(error instanceof Error ? error.message : "Failed to send invitation");
     } finally {
       setLoading(false);
     }
@@ -104,9 +100,11 @@ export default function MembersPage() {
           <h1 className="text-3xl font-bold">Members</h1>
           <p className="text-muted-foreground mt-1">Manage who has access and their roles</p>
         </div>
-        <Button onClick={() => setShowAddModal(true)}>
-          <Plus className="h-4 w-4 mr-2" /> Add Member
-        </Button>
+        {isPrincipal && (
+          <Button onClick={() => setShowAddModal(true)}>
+            <Plus className="h-4 w-4 mr-2" /> Invite Member
+          </Button>
+        )}
       </div>
 
       {/* Role legend */}
@@ -139,17 +137,25 @@ export default function MembersPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Select
-                    value={member.role}
-                    onChange={(e) => handleRoleChange(member._id, e.target.value as any)}
-                    className="w-40"
-                  >
-                    <option value="teacher">Teacher</option>
-                    <option value="principal">Principal</option>
-                  </Select>
-                  <Button variant="ghost" size="icon" onClick={() => handleRemove(member._id)}>
-                    <Trash2 className="h-4 w-4 text-red-500" />
-                  </Button>
+                  {isPrincipal ? (
+                    <>
+                      <Select
+                        value={member.role}
+                        onChange={(e) => handleRoleChange(member._id, e.target.value as any)}
+                        className="w-40"
+                      >
+                        <option value="teacher">Teacher</option>
+                        <option value="principal">Principal</option>
+                      </Select>
+                      <Button variant="ghost" size="icon" onClick={() => handleRemove(member._id)}>
+                        <Trash2 className="h-4 w-4 text-red-500" />
+                      </Button>
+                    </>
+                  ) : (
+                    <span className="text-sm font-medium px-3 py-1 rounded bg-secondary/10">
+                      {ROLE_LABELS[member.role] ?? member.role}
+                    </span>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -159,46 +165,42 @@ export default function MembersPage() {
           <div className="text-center py-12 text-muted-foreground">
             <Users className="h-12 w-12 mx-auto mb-3 opacity-50" />
             <p>No members yet</p>
-            <p className="text-sm mt-1">Add teachers or principals to your school</p>
+            <p className="text-sm mt-1">Invite teachers or principals to your school</p>
           </div>
         )}
       </div>
 
-      <Modal open={showAddModal} onClose={() => setShowAddModal(false)} title="Add Member">
-        <form onSubmit={handleAdd} className="space-y-4">
+      <Modal open={showAddModal} onClose={() => setShowAddModal(false)} title="Invite Member">
+        <form onSubmit={handleInvite} className="space-y-4">
           <div>
-            <Label htmlFor="userId">Clerk User ID</Label>
+            <Label htmlFor="email">Email Address</Label>
             <Input
-              id="userId"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              placeholder="user_..."
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="teacher@school.com"
               required
             />
             <p className="text-xs text-muted-foreground mt-1">
-              The Clerk user must already have an account and be part of this school&apos;s organisation.
+              An invitation email will be sent. They&apos;ll create their account and join your school.
             </p>
-          </div>
-          <div>
-            <Label htmlFor="email">Email (optional)</Label>
-            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          </div>
-          <div>
-            <Label htmlFor="name">Display Name (optional)</Label>
-            <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. John Doe" />
           </div>
           <div>
             <Label htmlFor="role">Role</Label>
             <Select id="role" value={role} onChange={(e) => setRole(e.target.value as any)}>
               <option value="teacher">Teacher</option>
-              <option value="principal">Principal</option>
             </Select>
+            <p className="text-xs text-muted-foreground mt-1">
+              Only teacher invitations are supported. Contact a superadmin to add principals.
+            </p>
           </div>
           <div className="flex justify-end gap-2">
             <Button variant="outline" type="button" onClick={() => setShowAddModal(false)}>Cancel</Button>
             <Button type="submit" disabled={loading}>
               {loading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-              Add Member
+              <Mail className="h-4 w-4 mr-2" />
+              Send Invitation
             </Button>
           </div>
         </form>

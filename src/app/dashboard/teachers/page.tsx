@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
+import { useRole } from "@/lib/use-role";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,8 @@ import { toast } from "sonner";
 
 export default function TeachersPage() {
   const school = useSchool();
+  const role = useRole();
+  const isPrincipal = role === "principal";
   const teachers = useQuery(api.teachers.listBySchool, school ? { schoolId: school._id } : "skip");
   const createTeacher = useMutation(api.teachers.create);
   const deleteTeacher = useMutation(api.teachers.remove);
@@ -93,9 +96,11 @@ export default function TeachersPage() {
           <h1 className="text-3xl font-bold">Teachers</h1>
           <p className="text-muted-foreground mt-1">{teachers.length} total teachers</p>
         </div>
-        <Button onClick={() => setShowModal(true)}>
-          <Plus className="h-4 w-4 mr-2" /> Add Teacher
-        </Button>
+        {isPrincipal && (
+          <Button onClick={() => setShowModal(true)}>
+            <Plus className="h-4 w-4 mr-2" /> Add Teacher
+          </Button>
+        )}
       </div>
 
       <div className="relative">
@@ -130,14 +135,16 @@ export default function TeachersPage() {
                   <td className="p-3 text-muted-foreground">{t.email || "—"}</td>
                   <td className="p-3 text-muted-foreground">{t.phone || "—"}</td>
                   <td className="p-3 text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-destructive hover:text-destructive"
-                      onClick={() => handleDelete(t._id)}
-                    >
-                      Delete
-                    </Button>
+                    {isPrincipal && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-destructive hover:text-destructive"
+                        onClick={() => handleDelete(t._id)}
+                      >
+                        Delete
+                      </Button>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -25,16 +25,47 @@ export const verifyAndProcessWebhook = internalAction({
       throw new Error("Verification failed");
     }
 
-    const { id, name, slug } = evt.data as {
-      id: string;
-      name?: string;
-      slug?: string;
-    };
+    const eventType = evt.type;
+    console.log(`[webhook] ${eventType} — org: ${evt.data?.organization?.id ?? evt.data?.id ?? "n/a"}, user: ${evt.data?.public_user_data?.user_id ?? evt.data?.user?.id ?? "n/a"}`);
 
-    await ctx.runMutation(api.webhooks.handleOrganizationEvent, {
-      secret,
-      event: evt.type,
-      data: { id, name, slug },
-    });
+    if (
+      eventType === "organization.created" ||
+      eventType === "organization.updated" ||
+      eventType === "organization.deleted"
+    ) {
+      const { id, name, slug } = evt.data as {
+        id: string;
+        name?: string;
+        slug?: string;
+      };
+      await ctx.runMutation(api.webhooks.handleOrganizationEvent, {
+        secret,
+        event: eventType,
+        data: { id, name, slug },
+      });
+    } else if (
+      eventType === "organizationMembership.created" ||
+      eventType === "organizationMembership.deleted"
+    ) {
+      const data = evt.data as {
+        id: string;
+        organization: { id: string };
+        public_user_data: { user_id: string; identifier?: string; email_addresses?: { email_address: string }[] };
+        public_metadata?: Record<string, unknown>;
+      };
+      const email =
+        data.public_user_data.email_addresses?.[0]?.email_address ??
+        data.public_user_data.identifier;
+      await ctx.runMutation(api.webhooks.handleMembershipEvent, {
+        secret,
+        event: eventType,
+        data: {
+          orgId: data.organization.id,
+          userId: data.public_user_data.user_id,
+          email,
+          publicMetadata: data.public_metadata,
+        },
+      });
+    }
   },
 });

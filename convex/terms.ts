@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
+  requirePrincipal,
   patchDefinedFields,
   logAuditEntry,
 } from "./helpers";
@@ -48,7 +49,7 @@ export const create = mutation({
     isCurrent: v.boolean(),
   },
   handler: async (ctx, args) => {
-    await requireSchoolMembership(ctx, args.schoolId);
+    await requirePrincipal(ctx, args.schoolId);
 
     if (args.isCurrent) {
       const currentTerm = await ctx.db
@@ -82,7 +83,7 @@ export const update = mutation({
   handler: async (ctx, { id, ...updates }) => {
     const term = await ctx.db.get(id);
     if (!term) throw new Error("Term not found");
-    await requireSchoolMembership(ctx, term.schoolId);
+    await requirePrincipal(ctx, term.schoolId);
 
     if (updates.isCurrent === true) {
       const currentTerm = await ctx.db
@@ -104,7 +105,7 @@ export const remove = mutation({
   handler: async (ctx, { id }) => {
     const term = await ctx.db.get(id);
     if (!term) throw new Error("Term not found");
-    await requireSchoolMembership(ctx, term.schoolId);
+    await requirePrincipal(ctx, term.schoolId);
 
     const examsInTerm = await ctx.db
       .query("exams")

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useSchool } from "@/lib/use-school";
+import { useRole } from "@/lib/use-role";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,8 @@ import { checkRateLimit } from "@/lib/rate-limit";
 
 export default function BooksPage() {
   const school = useSchool();
+  const role = useRole();
+  const isPrincipal = role === "principal";
   const books = useQuery(api.books.listBySchool, school ? { schoolId: school._id } : "skip");
   const createBook = useMutation(api.books.create);
   const deleteBook = useMutation(api.books.remove);
@@ -107,9 +110,11 @@ export default function BooksPage() {
               <Download className="h-4 w-4 mr-2" /> Export
             </Button>
           )}
-          <Button onClick={() => setShowModal(true)}>
-            <Plus className="h-4 w-4 mr-2" /> Add Book
-          </Button>
+          {isPrincipal && (
+            <Button onClick={() => setShowModal(true)}>
+              <Plus className="h-4 w-4 mr-2" /> Add Book
+            </Button>
+          )}
         </div>
       </div>
 
@@ -138,9 +143,11 @@ export default function BooksPage() {
                     {book.availableCopies === 1 ? "1 copy" : `${book.availableCopies} copies`} available
                   </p>
                 </div>
-                <Button variant="ghost" size="icon" onClick={() => handleDelete(book._id)} className="shrink-0 ml-2">
-                  <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
+                {isPrincipal && (
+                  <Button variant="ghost" size="icon" onClick={() => handleDelete(book._id)} className="shrink-0 ml-2">
+                    <Trash2 className="h-4 w-4 text-red-500" />
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>

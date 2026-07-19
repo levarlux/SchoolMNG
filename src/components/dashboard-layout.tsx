@@ -23,20 +23,20 @@ interface NavItem {
 const navItems: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/classes", label: "Classes", icon: BookOpen, group: "Academics", minRole: "principal" },
-  { href: "/dashboard/students", label: "Students", icon: Users, group: "Academics" },
+  { href: "/dashboard/students", label: "Students", icon: Users, group: "Academics", minRole: "principal" },
   { href: "/dashboard/subjects", label: "Subjects", icon: BookCopy, group: "Academics", minRole: "principal" },
   { href: "/dashboard/teachers", label: "Teachers", icon: GraduationCap, group: "Academics", minRole: "principal" },
-  { href: "/dashboard/terms", label: "Terms", icon: Calendar, group: "Academics", minRole: "principal" },
-  { href: "/dashboard/exams", label: "Exams", icon: ClipboardList, group: "Assessments", minRole: "principal" },
+  { href: "/dashboard/terms", label: "Terms", icon: Calendar, group: "Academics" },
+  { href: "/dashboard/exams", label: "Exams", icon: ClipboardList, group: "Assessments" },
   { href: "/dashboard/attendance", label: "Attendance", icon: UserCheck, group: "Assessments" },
   { href: "/dashboard/books", label: "Books", icon: BookOpen, group: "Library" },
   { href: "/dashboard/borrow", label: "Borrow Book", icon: BookMarked, group: "Library" },
   { href: "/dashboard/returns", label: "Returns", icon: RotateCcw, group: "Library" },
   { href: "/dashboard/fines", label: "Fines", icon: CircleDollarSign, group: "Library" },
-  { href: "/dashboard/timetable", label: "Timetable", icon: Clock, group: "Operations", minRole: "principal" },
+  { href: "/dashboard/timetable", label: "Timetable", icon: Clock, group: "Operations" },
   { href: "/dashboard/events", label: "Events", icon: Calendar, group: "Operations" },
   { href: "/dashboard/inventory", label: "Inventory", icon: Package, group: "Operations", minRole: "principal" },
-  { href: "/dashboard/reports", label: "Reports", icon: FileText, minRole: "principal" },
+  { href: "/dashboard/reports", label: "Reports", icon: FileText },
   { href: "/dashboard/members", label: "Members", icon: Users, minRole: "principal" },
   { href: "/dashboard/settings", label: "Settings", icon: Settings, minRole: "principal" },
 ];
@@ -57,10 +57,11 @@ function SidebarNav({ pathname, onNavigate }: { pathname: string; onNavigate?: (
   const { organization } = useOrganization();
   const role = useRole();
 
-  // Filter nav items by role
-  const visibleItems = role === undefined || role === null
-    ? navItems // still loading or no membership — show all
-    : navItems.filter((item) => !item.minRole || isAtLeast(role, item.minRole));
+  // Filter nav items by role — fail-closed: during loading or when no membership
+  // is found, only show items that have no role requirement (safe default).
+  const visibleItems = navItems.filter(
+    (item) => !item.minRole || isAtLeast(role, item.minRole),
+  );
 
   const groups: { label: string; items: NavItem[] }[] = [];
   let currentGroup: { label: string; items: NavItem[] } | null = null;

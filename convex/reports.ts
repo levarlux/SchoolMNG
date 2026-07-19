@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { query } from "./_generated/server";
 import {
   requireSchoolMembership,
+  requirePrincipal,
   requireStudentMembership,
 } from "./helpers";
 
@@ -226,7 +227,7 @@ export const readingLog = query({
 export const fullSchoolExport = query({
   args: { schoolId: v.id("schools") },
   handler: async (ctx, { schoolId }) => {
-    await requireSchoolMembership(ctx, schoolId);
+    await requirePrincipal(ctx, schoolId);
 
     const [classes, students, books, borrowings] = await Promise.all([
       ctx.db.query("classes").withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId)).take(500),

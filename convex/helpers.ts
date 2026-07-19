@@ -92,7 +92,7 @@ const ROLE_HIERARCHY: Record<MemberRole, number> = {
  * Look up the caller's member record for a school.
  * Returns null if the user has no member record (e.g. they're not a teacher).
  */
-async function getMemberRole(
+export async function getMemberRole(
   ctx: Ctx,
   schoolId: Id<"schools">
 ): Promise<MemberRole | null> {

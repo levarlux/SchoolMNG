@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
+  requirePrincipal,
   requireBookMembership,
   patchDefinedFields,
   logAuditEntry,
@@ -37,7 +38,7 @@ export const create = mutation({
     subject: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    await requireSchoolMembership(ctx, args.schoolId);
+    await requirePrincipal(ctx, args.schoolId);
     if (args.availableCopies < 0) {
       throw new Error("availableCopies must be >= 0");
     }
@@ -66,6 +67,7 @@ export const update = mutation({
   },
   handler: async (ctx, { id, ...updates }) => {
     const book = await requireBookMembership(ctx, id);
+    await requirePrincipal(ctx, book.schoolId);
 
     if (updates.availableCopies !== undefined && updates.availableCopies < 0) {
       throw new Error("availableCopies must be >= 0");
@@ -88,6 +90,7 @@ export const remove = mutation({
   args: { id: v.id("books") },
   handler: async (ctx, { id }) => {
     const book = await requireBookMembership(ctx, id);
+    await requirePrincipal(ctx, book.schoolId);
     if (!book) throw new Error("Book not found");
 
     const activeBorrowals = await ctx.db
@@ -119,7 +122,7 @@ export const bulkCreate = mutation({
     books: v.array(bookRowValidator),
   },
   handler: async (ctx, { schoolId, books }) => {
-    await requireSchoolMembership(ctx, schoolId);
+    await requirePrincipal(ctx, schoolId);
     let count = 0;
     for (const book of books) {
       await ctx.db.insert("books", { schoolId, ...book });

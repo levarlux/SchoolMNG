@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
+import { useRole } from "@/lib/use-role";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +30,8 @@ function formatDate(ts: number) {
 
 export default function ExamsPage() {
   const school = useSchool();
+  const role = useRole();
+  const isPrincipal = role === "principal";
   const exams = useQuery(api.exams.listBySchool, school ? { schoolId: school._id } : "skip");
   const terms = useQuery(api.terms.listBySchool, school ? { schoolId: school._id } : "skip");
   const createExam = useMutation(api.exams.create);
@@ -98,9 +101,11 @@ export default function ExamsPage() {
           <h1 className="text-3xl font-bold">Exams</h1>
           <p className="text-muted-foreground mt-1">{exams.length} total exams</p>
         </div>
-        <Button onClick={() => setShowModal(true)}>
-          <Plus className="h-4 w-4 mr-2" /> Add Exam
-        </Button>
+        {isPrincipal && (
+          <Button onClick={() => setShowModal(true)}>
+            <Plus className="h-4 w-4 mr-2" /> Add Exam
+          </Button>
+        )}
       </div>
 
       <div className="relative">
@@ -148,14 +153,16 @@ export default function ExamsPage() {
                           <FileText className="h-4 w-4 mr-1" /> Results
                         </Button>
                       </Link>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-destructive hover:text-destructive"
-                        onClick={() => handleDelete(ex._id)}
-                      >
-                        Delete
-                      </Button>
+                      {isPrincipal && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive"
+                          onClick={() => handleDelete(ex._id)}
+                        >
+                          Delete
+                        </Button>
+                      )}
                     </td>
                   </tr>
                 );
