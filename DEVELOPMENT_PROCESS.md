@@ -259,8 +259,10 @@ Copy-paste this before every release:
 
 | Type | When | Example |
 |---|---|---|
-| Patch (`0.1.4` → `0.1.5`) | Bug fixes only | Fix auth proxy, fix UI glitch |
-| Minor (`0.1.x` → `0.2.0`) | New features | Add new report type, add bulk import |
+| Patch (`0.1.x` → `0.1.x+1`) | Bug fixes only, no new features | Fix auth proxy, fix UI glitch |
+| Feature (`0.x.0` → `0.x+1.0`) | Any release that adds a feature | Add invitation system, add reports |
+
+**Rule:** once you bump to `0.2.0` for a feature, the next patch-only fix is `0.2.1`, not `0.1.4`. You never go backwards. Major version (`1.0.0`) is reserved for a deliberate future milestone (e.g., first paid/GA release).
 
 Minor versions **always** go through preview for a minimum of 3 calendar days before stable. No exceptions. This gives at least one full school day of real usage before all schools receive the update.
 
