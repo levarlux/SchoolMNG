@@ -82,6 +82,24 @@ The site URLs (for HTTP actions):
 
 7. **Convex env vars require `npx convex env set`** — `npx convex deploy` does NOT sync `.env` files into Convex's environment. These are two separate stores.
 
+8. **Clerk's `organizationMembership.created` webhook payload does NOT have a `data.user` field.** The user info lives in `data.public_user_data`, and the ID field is `user_id` (snake_case), not `id`. The correct shape:
+   ```
+   data: {
+     object: "organization_membership",
+     id: "om_xxx",
+     organization: { id: "org_xxx", ... },
+     public_user_data: { user_id: "user_xxx", email_addresses: [...], ... },
+     role: "org:member",
+     public_metadata: { appRole: "teacher" },
+     ...
+   }
+   ```
+   Accessing `data.user.id` throws `Cannot read properties of undefined (reading 'id')` and silently breaks the whole webhook chain — Svix reports it as "verification failed" even though verification isn't the actual problem; it's an uncaught error inside the handler. Always log/inspect the raw payload for a new event type before assuming its shape matches a different event you've already handled.
+
+9. **Convex HTTP actions (webhooks, the Clerk proxy) must be served from `.convex.site`, not `.convex.cloud`.** `.convex.cloud` is for the regular Convex client API only. A webhook endpoint configured with `.convex.cloud` will fail delivery silently from Clerk's side — Clerk just shows "Failed" with no further detail, and Convex logs show nothing at all, since the request never reaches your deployment. Always double-check the exact domain suffix when configuring external services (Clerk webhooks, any other webhook-based integration) against a Convex HTTP action — this is easy to typo, especially when copy-editing an existing URL (watch for accidentally leaving a duplicated `convex.convex.site` when swapping suffixes).
+
+10. **Clerk invitation `public_metadata` does NOT automatically propagate to the resulting `organizationMembership` object's metadata in a way you can rely on without testing.** We initially assumed it would carry through, but it turned out the metadata IS correctly attached (confirmed via the invitation's own payload) and DOES flow through correctly to the membership webhook — but this was never something to assume; it required end-to-end log verification (`npx convex logs` at the exact moment of a real accept event) to confirm, not just checking the Clerk Dashboard's org membership UI (which showed empty metadata for unrelated reasons — dashboard display quirks, not the actual webhook payload). **Lesson: never trust the Clerk Dashboard UI's display of metadata as proof of what the webhook payload actually contains — always verify via actual Convex logs of the real event.**
+
 ---
 
 ## 2. Environment Setup
@@ -381,6 +399,37 @@ build.rs: NEXT_PUBLIC_CLERK_PROXY_URL = https:... (len=53)
 ```
 
 If keys show `NOT SET` → dotenvy can't find the files. Check the path resolution.
+
+---
+
+## 7b. Debugging Checklist: Webhook Not Firing / Feature Not Persisting Data
+
+If an invite, membership change, or other webhook-dependent feature silently fails (no error in the app, but data never appears):
+
+### Step 1: Check the Clerk Dashboard Webhook Endpoint
+
+Clerk Dashboard → Webhooks → your endpoint. Confirm:
+- **URL is exactly correct** — right deployment name, `.convex.site` not `.convex.cloud`, no typos or duplicated path segments
+- **Endpoint is enabled** (not "Disabled")
+- The event types you need are subscribed (e.g., `organizationMembership.created`, `organizationMembership.deleted`)
+
+### Step 2: Check Message Attempts for the Specific Event
+
+In the endpoint's Message Attempts tab, find the event type that's failing. If some events succeed but one fails, the issue is in your handler code, not the endpoint URL.
+
+### Step 3: Check Convex Logs on the Correct Deployment
+
+```bash
+$env:CONVEX_DEPLOYMENT="prod:polite-fly-292"; npx convex logs
+```
+
+Filter around the exact timestamp from Step 2. Look for:
+- The `[webhook] <eventType>` receipt log (confirms delivery reached Convex)
+- Any thrown error — typically a field-access TypeError from `clerkWebhook.ts`
+
+### Step 4: If There's a Field-Access Error, Don't Assume the Payload Shape
+
+Different Clerk event types have different payload shapes even when they seem related. Don't assume `data.user.id` exists just because a different event had it. Log the raw `evt.data` for the specific event type, then fix the field access to match. Gotchas #8–#10 above document the exact traps we hit here.
 
 ---
 
