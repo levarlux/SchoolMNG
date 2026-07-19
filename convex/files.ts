@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { mutation } from "./_generated/server";
 import {
   requireAuth,
-  requireSchoolMembership,
+  requirePrincipal,
   requireSchoolFromJwt,
 } from "./helpers";
 
@@ -36,7 +36,7 @@ export const setLogo = mutation({
     storageId: v.id("_storage"),
   },
   handler: async (ctx, { schoolId, storageId }) => {
-    await requireSchoolMembership(ctx, schoolId);
+    await requirePrincipal(ctx, schoolId);
     const url = await ctx.storage.getUrl(storageId);
     if (!url) throw new Error("Upload not found");
     await ctx.db.patch(schoolId, { logoUrl: url });

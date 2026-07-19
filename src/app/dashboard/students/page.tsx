@@ -5,6 +5,7 @@ import { useQuery, useMutation, useConvex } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
+import { useRole } from "@/lib/use-role";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,6 +19,8 @@ import { checkRateLimit } from "@/lib/rate-limit";
 
 export default function StudentsPage() {
   const school = useSchool();
+  const role = useRole();
+  const isPrincipal = role === "principal";
   const classes = useQuery(api.classes.listBySchool, school ? { schoolId: school._id } : "skip");
   const allStudents = useQuery(api.students.listBySchool, school ? { schoolId: school._id } : "skip");
   const createStudent = useMutation(api.students.create);
@@ -120,7 +123,7 @@ export default function StudentsPage() {
           <p className="text-muted-foreground mt-1">{allStudents?.length ?? 0} total students</p>
         </div>
         <div className="flex items-center gap-2">
-          {allStudents && allStudents.length > 0 && (
+          {isPrincipal && allStudents && allStudents.length > 0 && (
             <Button
               variant="outline"
               onClick={() =>
@@ -137,9 +140,11 @@ export default function StudentsPage() {
               <Download className="h-4 w-4 mr-2" /> Export
             </Button>
           )}
-          <Button onClick={() => setShowModal(true)}>
-            <Plus className="h-4 w-4 mr-2" /> Add Student
-          </Button>
+          {isPrincipal && (
+            <Button onClick={() => setShowModal(true)}>
+              <Plus className="h-4 w-4 mr-2" /> Add Student
+            </Button>
+          )}
         </div>
       </div>
 

@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
+  requirePrincipal,
   patchDefinedFields,
   logAuditEntry,
 } from "./helpers";
@@ -56,7 +57,7 @@ export const create = mutation({
     purchasePrice: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    await requireSchoolMembership(ctx, args.schoolId);
+    await requirePrincipal(ctx, args.schoolId);
     const itemId = await ctx.db.insert("inventory_items", {
       ...args,
       lastChecked: Date.now(),
@@ -92,7 +93,7 @@ export const update = mutation({
   handler: async (ctx, { id, ...updates }) => {
     const item = await ctx.db.get(id);
     if (!item) throw new Error("Inventory item not found");
-    await requireSchoolMembership(ctx, item.schoolId);
+    await requirePrincipal(ctx, item.schoolId);
     await patchDefinedFields(ctx, "inventory_items", id, updates);
     await logAuditEntry(ctx, item.schoolId, "inventory.update", { itemId: id, ...updates });
   },
@@ -103,7 +104,7 @@ export const remove = mutation({
   handler: async (ctx, { id }) => {
     const item = await ctx.db.get(id);
     if (!item) throw new Error("Inventory item not found");
-    await requireSchoolMembership(ctx, item.schoolId);
+    await requirePrincipal(ctx, item.schoolId);
     await ctx.db.delete(id);
     await logAuditEntry(ctx, item.schoolId, "inventory.remove", { itemId: id });
   },

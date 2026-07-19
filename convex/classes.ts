@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
+  requirePrincipal,
   requireClassMembership,
   requireSuperadmin,
   patchDefinedFields,
@@ -33,7 +34,7 @@ export const create = mutation({
     hasStreams: v.boolean(),
   },
   handler: async (ctx, args) => {
-    await requireSchoolMembership(ctx, args.schoolId);
+    await requirePrincipal(ctx, args.schoolId);
     const classId = await ctx.db.insert("classes", args);
     await logAuditEntry(ctx, args.schoolId, "class.create", { classId, name: args.name });
     return classId;

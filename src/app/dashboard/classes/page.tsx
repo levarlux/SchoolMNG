@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useSchool } from "@/lib/use-school";
+import { useRole } from "@/lib/use-role";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,8 @@ import { checkRateLimit } from "@/lib/rate-limit";
 
 export default function ClassesPage() {
   const school = useSchool();
+  const role = useRole();
+  const isPrincipal = role === "principal";
   const classes = useQuery(api.classes.listBySchool, school ? { schoolId: school._id } : "skip");
   const createClass = useMutation(api.classes.create);
   const deleteClass = useMutation(api.classes.remove);
@@ -84,9 +87,11 @@ export default function ClassesPage() {
               <Download className="h-4 w-4 mr-2" /> Export
             </Button>
           )}
-          <Button onClick={() => setShowModal(true)}>
-            <Plus className="h-4 w-4 mr-2" /> Add Class
-          </Button>
+          {isPrincipal && (
+            <Button onClick={() => setShowModal(true)}>
+              <Plus className="h-4 w-4 mr-2" /> Add Class
+            </Button>
+          )}
         </div>
       </div>
 
@@ -102,9 +107,11 @@ export default function ClassesPage() {
                 >
                   <Cog className="h-4 w-4" />
                 </Link>
-                <Button variant="ghost" size="icon" onClick={() => handleDelete(cls._id)}>
-                  <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
+                {isPrincipal && (
+                  <Button variant="ghost" size="icon" onClick={() => handleDelete(cls._id)}>
+                    <Trash2 className="h-4 w-4 text-red-500" />
+                  </Button>
+                )}
               </div>
             </CardHeader>
             <CardContent>

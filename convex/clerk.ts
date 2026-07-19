@@ -42,3 +42,24 @@ export async function deleteClerkOrg(orgId: string) {
     throw new Error(`Clerk deleteOrg failed (${res.status}): ${body}`);
   }
 }
+
+export async function sendClerkOrgInvitation(
+  orgId: string,
+  emailAddress: string,
+  publicMetadata: Record<string, unknown>
+) {
+  const res = await fetch(`${CLERK_API}/organizations/${orgId}/invitations`, {
+    method: "POST",
+    headers: authHeader(),
+    body: JSON.stringify({
+      email_address: emailAddress,
+      role: "org:member",
+      public_metadata: publicMetadata,
+    }),
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Clerk invite failed (${res.status}): ${body}`);
+  }
+  return (await res.json()) as { id: string };
+}

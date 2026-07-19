@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
+  requirePrincipal,
   patchDefinedFields,
   logAuditEntry,
 } from "./helpers";
@@ -51,7 +52,7 @@ export const create = mutation({
     department: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    await requireSchoolMembership(ctx, args.schoolId);
+    await requirePrincipal(ctx, args.schoolId);
 
     const existing = await ctx.db
       .query("teachers")
@@ -85,7 +86,7 @@ export const update = mutation({
   handler: async (ctx, { id, ...updates }) => {
     const teacher = await ctx.db.get(id);
     if (!teacher) throw new Error("Teacher not found");
-    await requireSchoolMembership(ctx, teacher.schoolId);
+    await requirePrincipal(ctx, teacher.schoolId);
 
     if (updates.staffNo !== undefined) {
       const existing = await ctx.db
@@ -107,7 +108,7 @@ export const remove = mutation({
   handler: async (ctx, { id }) => {
     const teacher = await ctx.db.get(id);
     if (!teacher) throw new Error("Teacher not found");
-    await requireSchoolMembership(ctx, teacher.schoolId);
+    await requirePrincipal(ctx, teacher.schoolId);
 
     const assignments = await ctx.db
       .query("teacher_subjects")
@@ -134,7 +135,7 @@ export const assignSubject = mutation({
     streamId: v.optional(v.id("streams")),
   },
   handler: async (ctx, args) => {
-    await requireSchoolMembership(ctx, args.schoolId);
+    await requirePrincipal(ctx, args.schoolId);
 
     const teacher = await ctx.db.get(args.teacherId);
     if (!teacher) throw new Error("Teacher not found");
@@ -173,7 +174,7 @@ export const removeSubjectAssignment = mutation({
   handler: async (ctx, { id }) => {
     const assignment = await ctx.db.get(id);
     if (!assignment) throw new Error("Assignment not found");
-    await requireSchoolMembership(ctx, assignment.schoolId);
+    await requirePrincipal(ctx, assignment.schoolId);
     await ctx.db.delete(id);
     await logAuditEntry(ctx, assignment.schoolId, "teacher.removeSubjectAssignment", {
       assignmentId: id,

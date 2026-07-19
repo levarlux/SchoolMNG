@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
+import { useRole } from "@/lib/use-role";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +33,8 @@ function formatCurrency(amount: number) {
 
 export default function InventoryPage() {
   const school = useSchool();
+  const role = useRole();
+  const isPrincipal = role === "principal";
   const items = useQuery(api.inventory.listBySchool, school ? { schoolId: school._id } : "skip");
   const summary = useQuery(api.inventory.getSummary, school ? { schoolId: school._id } : "skip");
   const createItem = useMutation(api.inventory.create);
@@ -112,9 +115,11 @@ export default function InventoryPage() {
           <h1 className="text-3xl font-bold">Inventory</h1>
           <p className="text-muted-foreground mt-1">School supplies and equipment</p>
         </div>
-        <Button onClick={() => setShowModal(true)}>
-          <Plus className="h-4 w-4 mr-2" /> Add Item
-        </Button>
+        {isPrincipal && (
+          <Button onClick={() => setShowModal(true)}>
+            <Plus className="h-4 w-4 mr-2" /> Add Item
+          </Button>
+        )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-4">
@@ -209,14 +214,16 @@ export default function InventoryPage() {
                       {item.purchasePrice ? formatCurrency(item.purchasePrice) : "—"}
                     </td>
                     <td className="p-3 text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-destructive hover:text-destructive"
-                        onClick={() => handleDelete(item._id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                      {isPrincipal && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive"
+                          onClick={() => handleDelete(item._id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      )}
                     </td>
                   </tr>
                 );
