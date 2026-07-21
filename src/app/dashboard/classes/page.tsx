@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
 import { Plus, BookOpen, Trash2, Cog, Download, Loader2 } from "lucide-react";
-import Link from "next/link";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -23,10 +22,15 @@ export default function ClassesPage() {
   const classes = useQuery(api.classes.listBySchool, school ? { schoolId: school._id } : "skip");
   const createClass = useMutation(api.classes.create);
   const deleteClass = useMutation(api.classes.remove);
+  const createStream = useMutation(api.streams.create);
 
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState("");
   const [hasStreams, setHasStreams] = useState(false);
+
+  const [showStreamModal, setShowStreamModal] = useState(false);
+  const [selectedClassId, setSelectedClassId] = useState<string | null>(null);
+  const [streamName, setStreamName] = useState("");
 
   if (classes === undefined) {
     return (
@@ -52,6 +56,21 @@ export default function ClassesPage() {
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
       console.error("[classes.create]", error);
+    }
+  }
+
+  async function handleCreateStream(e: React.FormEvent) {
+    e.preventDefault();
+    if (!streamName.trim() || !school || !selectedClassId) return;
+    try {
+      await createStream({ schoolId: school._id, classId: selectedClassId as any, name: streamName.trim() });
+      toast.success("Stream created");
+      setShowStreamModal(false);
+      setStreamName("");
+      setSelectedClassId(null);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      console.error("[streams.create]", error);
     }
   }
 
@@ -101,12 +120,18 @@ export default function ClassesPage() {
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-lg">{cls.name}</CardTitle>
               <div className="flex items-center gap-1">
-                <Link
-                  href={`/dashboard/classes/${cls._id}`}
-                  className="inline-flex items-center justify-center h-10 w-10 rounded-lg hover:bg-muted transition-colors"
-                >
-                  <Cog className="h-4 w-4" />
-                </Link>
+                {cls.hasStreams && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => {
+                      setSelectedClassId(cls._id);
+                      setShowStreamModal(true);
+                    }}
+                  >
+                    <Cog className="h-4 w-4" />
+                  </Button>
+                )}
                 {isPrincipal && (
                   <Button variant="ghost" size="icon" onClick={() => handleDelete(cls._id)}>
                     <Trash2 className="h-4 w-4 text-red-500" />
@@ -136,6 +161,19 @@ export default function ClassesPage() {
           </div>
           <div className="flex justify-end gap-2">
             <Button variant="outline" type="button" onClick={() => setShowModal(false)}>Cancel</Button>
+            <Button type="submit">Create</Button>
+          </div>
+        </form>
+      </Modal>
+
+      <Modal open={showStreamModal} onClose={() => { setShowStreamModal(false); setSelectedClassId(null); setStreamName(""); }} title="Create Stream">
+        <form onSubmit={handleCreateStream} className="space-y-4">
+          <div>
+            <Label htmlFor="streamName">Stream Name</Label>
+            <Input id="streamName" value={streamName} onChange={(e) => setStreamName(e.target.value)} placeholder="e.g. East, West, A, B" required />
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" type="button" onClick={() => { setShowStreamModal(false); setSelectedClassId(null); setStreamName(""); }}>Cancel</Button>
             <Button type="submit">Create</Button>
           </div>
         </form>
