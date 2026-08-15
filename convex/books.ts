@@ -1,8 +1,9 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { paginationOptsValidator } from "convex/server";
 import {
   requireSchoolMembership,
-  requirePrincipal,
+  requireModuleEditAccessByName,
   requireBookMembership,
   patchDefinedFields,
   logAuditEntry,
@@ -16,6 +17,37 @@ export const listBySchool = query({
       .query("books")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
       .take(1000);
+  },
+});
+
+/**
+ * Paginated version of listBySchool for large datasets.
+ * Returns books in pages with cursor-based pagination.
+ */
+export const listBySchoolPaginated = query({
+  args: {
+    schoolId: v.id("schools"),
+    paginationOpts: paginationOptsValidator,
+  },
+  handler: async (ctx, { schoolId, paginationOpts }) => {
+    await requireSchoolMembership(ctx, schoolId);
+    return await ctx.db
+      .query("books")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .paginate(paginationOpts);
+  },
+});
+
+/** Count of books for a school */
+export const countBySchool = query({
+  args: { schoolId: v.id("schools") },
+  handler: async (ctx, { schoolId }) => {
+    await requireSchoolMembership(ctx, schoolId);
+    const results = await ctx.db
+      .query("books")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(5000);
+    return results.length;
   },
 });
 
@@ -38,7 +70,7 @@ export const create = mutation({
     subject: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    await requirePrincipal(ctx, args.schoolId);
+    await requireModuleEditAccessByName(ctx, args.schoolId, "Library");
     if (args.availableCopies < 0) {
       throw new Error("availableCopies must be >= 0");
     }
@@ -67,7 +99,7 @@ export const update = mutation({
   },
   handler: async (ctx, { id, ...updates }) => {
     const book = await requireBookMembership(ctx, id);
-    await requirePrincipal(ctx, book.schoolId);
+    await requireModuleEditAccessByName(ctx, book.schoolId, "Library");
 
     if (updates.availableCopies !== undefined && updates.availableCopies < 0) {
       throw new Error("availableCopies must be >= 0");
@@ -90,7 +122,7 @@ export const remove = mutation({
   args: { id: v.id("books") },
   handler: async (ctx, { id }) => {
     const book = await requireBookMembership(ctx, id);
-    await requirePrincipal(ctx, book.schoolId);
+    await requireModuleEditAccessByName(ctx, book.schoolId, "Library");
     if (!book) throw new Error("Book not found");
 
     const activeBorrowals = await ctx.db
@@ -122,7 +154,7 @@ export const bulkCreate = mutation({
     books: v.array(bookRowValidator),
   },
   handler: async (ctx, { schoolId, books }) => {
-    await requirePrincipal(ctx, schoolId);
+    await requireModuleEditAccessByName(ctx, schoolId, "Library");
     let count = 0;
     for (const book of books) {
       await ctx.db.insert("books", { schoolId, ...book });

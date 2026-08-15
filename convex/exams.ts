@@ -1,8 +1,8 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
-  requirePrincipal,
   requireSchoolMembership,
+  requireModuleEditAccessByName,
   logAuditEntry,
 } from "./helpers";
 
@@ -81,7 +81,7 @@ export const create = mutation({
     ),
   },
   handler: async (ctx, args) => {
-    await requirePrincipal(ctx, args.schoolId);
+    await requireModuleEditAccessByName(ctx, args.schoolId, "Academics");
     const examId = await ctx.db.insert("exams", args);
     await logAuditEntry(ctx, args.schoolId, "exam.create", {
       examId,
@@ -111,7 +111,7 @@ export const update = mutation({
   handler: async (ctx, { id, ...updates }) => {
     const exam = await ctx.db.get(id);
     if (!exam) throw new Error("Exam not found");
-    await requirePrincipal(ctx, exam.schoolId);
+    await requireModuleEditAccessByName(ctx, exam.schoolId, "Academics");
     const filtered = Object.fromEntries(
       Object.entries(updates).filter(([_, v]) => v !== undefined)
     );
@@ -127,7 +127,7 @@ export const remove = mutation({
   handler: async (ctx, { id }) => {
     const exam = await ctx.db.get(id);
     if (!exam) throw new Error("Exam not found");
-    await requirePrincipal(ctx, exam.schoolId);
+    await requireModuleEditAccessByName(ctx, exam.schoolId, "Academics");
 
     const results = await ctx.db
       .query("exam_results")
@@ -197,7 +197,7 @@ export const removeResult = mutation({
   handler: async (ctx, { id }) => {
     const result = await ctx.db.get(id);
     if (!result) throw new Error("Result not found");
-    await requirePrincipal(ctx, result.schoolId);
+    await requireModuleEditAccessByName(ctx, result.schoolId, "Academics");
     await ctx.db.delete(id);
     await logAuditEntry(ctx, result.schoolId, "exam.removeResult", { resultId: id });
   },

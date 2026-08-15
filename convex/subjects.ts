@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
-  requirePrincipal,
+  requireModuleEditAccessByName,
   patchDefinedFields,
   logAuditEntry,
 } from "./helpers";
@@ -54,7 +54,7 @@ export const create = mutation({
     ),
   },
   handler: async (ctx, args) => {
-    await requirePrincipal(ctx, args.schoolId);
+    await requireModuleEditAccessByName(ctx, args.schoolId, "Academics");
     const subjectId = await ctx.db.insert("subjects", args);
     await logAuditEntry(ctx, args.schoolId, "subject.create", {
       subjectId,
@@ -84,7 +84,7 @@ export const update = mutation({
   handler: async (ctx, { id, ...updates }) => {
     const subject = await ctx.db.get(id);
     if (!subject) throw new Error("Subject not found");
-    await requirePrincipal(ctx, subject.schoolId);
+    await requireModuleEditAccessByName(ctx, subject.schoolId, "Academics");
     await patchDefinedFields(ctx, "subjects", id, updates);
     await logAuditEntry(ctx, subject.schoolId, "subject.update", { subjectId: id, ...updates });
   },
@@ -95,7 +95,7 @@ export const remove = mutation({
   handler: async (ctx, { id }) => {
     const subject = await ctx.db.get(id);
     if (!subject) throw new Error("Subject not found");
-    await requirePrincipal(ctx, subject.schoolId);
+    await requireModuleEditAccessByName(ctx, subject.schoolId, "Academics");
 
     const linkedTeachers = await ctx.db
       .query("teacher_subjects")

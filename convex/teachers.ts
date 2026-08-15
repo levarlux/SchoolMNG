@@ -2,10 +2,11 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
-  requirePrincipal,
+  requireModuleEditAccessByName,
   patchDefinedFields,
   logAuditEntry,
 } from "./helpers";
+import { nextStaffNumberInternal } from "./blueprints";
 
 export const listBySchool = query({
   args: { schoolId: v.id("schools") },
@@ -48,21 +49,27 @@ export const create = mutation({
     lastName: v.string(),
     email: v.optional(v.string()),
     phone: v.optional(v.string()),
-    staffNo: v.string(),
+    // Optional: when blank, the school's blueprint convention generates it.
+    staffNo: v.optional(v.string()),
     department: v.optional(v.string()),
+    category: v.optional(v.union(v.literal("teaching"), v.literal("non_teaching"))),
   },
   handler: async (ctx, args) => {
-    await requirePrincipal(ctx, args.schoolId);
+    await requireModuleEditAccessByName(ctx, args.schoolId, "Staff Record");
+
+    // Auto-generate the staff number when the caller left it blank, using the
+    // school's blueprint convention (falls back to legacy scheme).
+    const staffNo = args.staffNo?.trim() || (await nextStaffNumberInternal(ctx, args.schoolId));
 
     const existing = await ctx.db
       .query("teachers")
-      .withIndex("by_staffNo", (q) => q.eq("schoolId", args.schoolId).eq("staffNo", args.staffNo))
+      .withIndex("by_staffNo", (q) => q.eq("schoolId", args.schoolId).eq("staffNo", staffNo))
       .first();
     if (existing) {
       throw new Error("A teacher with this staff number already exists");
     }
 
-    const teacherId = await ctx.db.insert("teachers", args);
+    const teacherId = await ctx.db.insert("teachers", { ...args, staffNo });
     await logAuditEntry(ctx, args.schoolId, "teacher.create", {
       teacherId,
       firstName: args.firstName,
@@ -82,11 +89,12 @@ export const update = mutation({
     phone: v.optional(v.string()),
     staffNo: v.optional(v.string()),
     department: v.optional(v.string()),
+    category: v.optional(v.union(v.literal("teaching"), v.literal("non_teaching"))),
   },
   handler: async (ctx, { id, ...updates }) => {
     const teacher = await ctx.db.get(id);
     if (!teacher) throw new Error("Teacher not found");
-    await requirePrincipal(ctx, teacher.schoolId);
+    await requireModuleEditAccessByName(ctx, teacher.schoolId, "Staff Record");
 
     if (updates.staffNo !== undefined) {
       const existing = await ctx.db
@@ -108,7 +116,7 @@ export const remove = mutation({
   handler: async (ctx, { id }) => {
     const teacher = await ctx.db.get(id);
     if (!teacher) throw new Error("Teacher not found");
-    await requirePrincipal(ctx, teacher.schoolId);
+    await requireModuleEditAccessByName(ctx, teacher.schoolId, "Staff Record");
 
     const assignments = await ctx.db
       .query("teacher_subjects")
@@ -135,7 +143,7 @@ export const assignSubject = mutation({
     streamId: v.optional(v.id("streams")),
   },
   handler: async (ctx, args) => {
-    await requirePrincipal(ctx, args.schoolId);
+    await requireModuleEditAccessByName(ctx, args.schoolId, "Staff Record");
 
     const teacher = await ctx.db.get(args.teacherId);
     if (!teacher) throw new Error("Teacher not found");
@@ -174,7 +182,7 @@ export const removeSubjectAssignment = mutation({
   handler: async (ctx, { id }) => {
     const assignment = await ctx.db.get(id);
     if (!assignment) throw new Error("Assignment not found");
-    await requirePrincipal(ctx, assignment.schoolId);
+    await requireModuleEditAccessByName(ctx, assignment.schoolId, "Staff Record");
     await ctx.db.delete(id);
     await logAuditEntry(ctx, assignment.schoolId, "teacher.removeSubjectAssignment", {
       assignmentId: id,

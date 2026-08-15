@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import {
   requireSchoolMembership,
-  requirePrincipal,
+  requireModuleEditAccessByName,
   patchDefinedFields,
   logAuditEntry,
 } from "./helpers";
@@ -69,7 +69,7 @@ export const create = mutation({
     isHoliday: v.boolean(),
   },
   handler: async (ctx, args) => {
-    await requirePrincipal(ctx, args.schoolId);
+    await requireModuleEditAccessByName(ctx, args.schoolId, "Communication");
     const eventId = await ctx.db.insert("events", args);
     await logAuditEntry(ctx, args.schoolId, "event.create", {
       eventId,
@@ -103,7 +103,7 @@ export const update = mutation({
   handler: async (ctx, { id, ...updates }) => {
     const event = await ctx.db.get(id);
     if (!event) throw new Error("Event not found");
-    await requirePrincipal(ctx, event.schoolId);
+    await requireModuleEditAccessByName(ctx, event.schoolId, "Communication");
     await patchDefinedFields(ctx, "events", id, updates);
     await logAuditEntry(ctx, event.schoolId, "event.update", { eventId: id, ...updates });
   },
@@ -114,7 +114,7 @@ export const remove = mutation({
   handler: async (ctx, { id }) => {
     const event = await ctx.db.get(id);
     if (!event) throw new Error("Event not found");
-    await requirePrincipal(ctx, event.schoolId);
+    await requireModuleEditAccessByName(ctx, event.schoolId, "Communication");
     await ctx.db.delete(id);
     await logAuditEntry(ctx, event.schoolId, "event.remove", { eventId: id });
   },
