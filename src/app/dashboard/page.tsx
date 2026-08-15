@@ -20,6 +20,7 @@ import {
   BarChart, LineChart, DoughnutChart, HorizontalBarChart, RadialProgress,
   Sparkline, EmptyChart,
 } from "@/components/charts";
+import { ChartConfigPanel } from "@/components/chart-config-panel";
 
 function fmtKESCompact(n: number) {
   if (n >= 1_000_000) return `KES ${(n / 1_000_000).toFixed(1)}M`;
@@ -53,6 +54,19 @@ export default function Dashboard() {
     const id = setInterval(() => setNow(Date.now()), 60_000);
     return () => clearInterval(id);
   }, []);
+
+  // Chart configuration for this page
+  const chartConfigs = useQuery(
+    api.chartConfigs.listByPage,
+    school ? { schoolId: school._id, page: "dashboard" } : "skip"
+  );
+
+  // Helper: check if a chart is visible (defaults to true for backward compat)
+  function isChartVisible(chartKey: string): boolean {
+    if (!chartConfigs) return true; // loading — show everything
+    const config = chartConfigs.find((c) => c.chartKey === chartKey);
+    return config ? config.isVisible : true;
+  }
 
   // Borrowings over time and students per class now come from stats (server-computed)
   const borrowingsOverTime = stats?.borrowingsOverTime ?? [];
@@ -183,6 +197,13 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {school && (
+            <ChartConfigPanel
+              schoolId={school._id}
+              page="dashboard"
+              configs={chartConfigs ?? []}
+            />
+          )}
           <Link href="/dashboard/reports">
             <Button variant="outline">
               <FileText className="h-4 w-4 mr-2" /> Reports
@@ -293,7 +314,7 @@ export default function Dashboard() {
       </div>
 
       {/* ══ Financial Performance (leadership only) ═════════════════ */}
-      {isLeadership && hasFinance && (
+      {isLeadership && hasFinance && isChartVisible("fee_collection_trend") && (
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <CircleDollarSign className="h-5 w-5 text-green-600" />
@@ -401,7 +422,7 @@ export default function Dashboard() {
       )}
 
       {/* ══ Academic Performance ════════════════════════════════════ */}
-      {hasAcademic && (
+      {hasAcademic && isChartVisible("exam_mean_trend") && (
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <GraduationCap className="h-5 w-5 text-purple-600" />
@@ -505,7 +526,7 @@ export default function Dashboard() {
       )}
 
       {/* ══ Attendance & Engagement ═════════════════════════════════ */}
-      {hasAttendance && (
+      {hasAttendance && isChartVisible("attendance_rate_trend") && (
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <UserCheck className="h-5 w-5 text-emerald-600" />

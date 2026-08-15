@@ -464,7 +464,11 @@ export default defineSchema({
     .index("by_fieldId", ["fieldId"])
     .index("by_recordId_fieldId", ["recordId", "fieldId"])
     .index("by_recordId_instance", ["recordId", "instanceId"])
-    .index("by_schoolId", ["schoolId"]),
+    .index("by_schoolId", ["schoolId"])
+    .searchIndex("search_value", {
+      searchField: "value",
+      filterFields: ["schoolId"],
+    }),
 
   // Records are the top-level entities in each bucket.
   // displayName and photoUrl are denormalized for fast search/display.
@@ -567,6 +571,37 @@ export default defineSchema({
   })
     .index("by_staffRecordId", ["staffRecordId"])
     .index("by_schoolId", ["schoolId"]),
+
+  // ── Generic Entity Links (§2: Relationship Model) ──────────────
+  // Any-to-any link table. Schools create/remove/rewire relationships
+  // between arbitrary entities without new tables or migrations.
+  // Entity endpoints are stored as (tableName, documentId) string pairs
+  // to support polymorphic FKs across the entire schema.
+
+  entity_links: defineTable({
+    schoolId: v.id("schools"),
+    linkType: v.string(), // e.g. "teaches", "enrolled_in", "guardian_of"
+    // Entity A ("from" side)
+    fromTable: v.string(), // table name, e.g. "students", "teachers"
+    fromId: v.string(),    // document _id as string (polymorphic FK)
+    // Entity B ("to" side)
+    toTable: v.string(),   // table name
+    toId: v.string(),      // document _id as string
+    // Optional metadata
+    role: v.optional(v.string()),     // e.g. "primary", "assistant"
+    weight: v.optional(v.number()),   // ordering / priority
+    startDate: v.optional(v.float64()),
+    endDate: v.optional(v.float64()),
+    notes: v.optional(v.string()),
+    isActive: v.boolean(),
+    createdBy: v.optional(v.string()),
+  })
+    .index("by_schoolId", ["schoolId"])
+    .index("by_schoolId_linkType", ["schoolId", "linkType"])
+    .index("by_fromTable_fromId", ["fromTable", "fromId"])
+    .index("by_toTable_toId", ["toTable", "toId"])
+    .index("by_fromTable_fromId_linkType", ["fromTable", "fromId", "linkType"])
+    .index("by_toTable_toId_linkType", ["toTable", "toId", "linkType"]),
 
   analytics_snapshots: defineTable({
     schoolId: v.id("schools"),
@@ -2150,4 +2185,24 @@ export default defineSchema({
     analytics: v.any(),   // full getDashboardAnalytics payload
     computedAt: v.float64(),
   }).index("by_schoolId", ["schoolId"]),
+
+  // ── Chart Configuration (§5 — per-page chart customization) ──────
+  // Each row represents one configurable chart widget on a dashboard page.
+  // Schools can show/hide, reorder, rename, and restyle charts.
+  chart_configs: defineTable({
+    schoolId: v.id("schools"),
+    page: v.string(),           // which page: "dashboard", "analytics", "attendance", "finance"
+    chartKey: v.string(),       // unique key for the chart: "fee_collection_trend", "attendance_rate", etc.
+    chartType: v.string(),      // "bar" | "line" | "doughnut" | "horizontalBar" | "radial" | "sparkline"
+    title: v.string(),          // custom title
+    description: v.optional(v.string()),
+    isVisible: v.boolean(),     // show/hide toggle
+    position: v.number(),       // sort order (lower = higher)
+    color: v.optional(v.string()),  // hex color override
+    options: v.optional(v.any()),   // chart-specific config (timeRange, filters, etc.)
+    createdAt: v.float64(),
+    updatedAt: v.float64(),
+  })
+    .index("by_schoolId_page", ["schoolId", "page"])
+    .index("by_schoolId_page_key", ["schoolId", "page", "chartKey"]),
 });
