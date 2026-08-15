@@ -1,18 +1,19 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
-import { useRole } from "@/lib/use-role";
+import { useRole, isLeadershipRole } from "@/lib/use-role";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search, Loader2 } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { toast } from "sonner";
 
 const CBC_LEVELS = [
@@ -27,7 +28,7 @@ const CBC_LEVELS = [
 export default function SubjectsPage() {
   const school = useSchool();
   const role = useRole();
-  const isPrincipal = role === "principal";
+  const isLeadership = isLeadershipRole(role);
   const subjects = useQuery(api.subjects.listBySchool, school ? { schoolId: school._id } : "skip");
   const createSubject = useMutation(api.subjects.create);
   const deleteSubject = useMutation(api.subjects.remove);
@@ -41,7 +42,7 @@ export default function SubjectsPage() {
   if (subjects === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <BrandLoader variant="book" size="md" />
       </div>
     );
   }
@@ -97,7 +98,7 @@ export default function SubjectsPage() {
           <h1 className="text-3xl font-bold">Subjects</h1>
           <p className="text-muted-foreground mt-1">{subjects.length} total subjects</p>
         </div>
-        {isPrincipal && (
+        {isLeadership && (
           <Button onClick={() => setShowModal(true)}>
             <Plus className="h-4 w-4 mr-2" /> Add Subject
           </Button>
@@ -134,7 +135,7 @@ export default function SubjectsPage() {
                     <td className="p-3 font-mono font-medium">{s.code}</td>
                     <td className="p-3">{s.name}</td>
                     <td className="p-3 text-right">
-                      {isPrincipal && (
+                      {isLeadership && (
                         <Button
                           variant="ghost"
                           size="sm"
@@ -190,3 +191,4 @@ export default function SubjectsPage() {
     </div>
   );
 }
+

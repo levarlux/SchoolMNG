@@ -8,6 +8,7 @@ import {
 } from "./helpers";
 import { LEADERSHIP_ROLE_KEY } from "./roles";
 import { Doc, Id } from "./_generated/dataModel";
+import { CACHE_TTL_MS } from "./dashboardCache";
 
 /**
  * Phase 9.1 — School-level enterprise analytics, auth-gated.
@@ -349,7 +350,7 @@ async function attendanceAnalytics(ctx: QueryCtx, schoolId: Id<"schools">, dateF
         .gte("date", today)
         .lte("date", endOfDay)
     )
-    .collect();
+    .take(5000);
 
   // OPTIMIZED: Query trend period using by_date index (reads ONLY date-range docs)
   const trendStart = dateFrom ?? (now - 13 * DAY);
@@ -364,7 +365,7 @@ async function attendanceAnalytics(ctx: QueryCtx, schoolId: Id<"schools">, dateF
         .gte("date", trendStartDay)
         .lte("date", endOfDay)
     )
-    .collect();
+    .take(10000);
 
   // Build trend from queried records (no in-memory filtering needed)
   const trend: { label: string; rate: number; present: number; total: number }[] = [];
@@ -477,16 +478,11 @@ export const getAttendanceAnalytics = query({
   },
 });
 
-// ── Bundled, role-aware dashboard analytics ────────────────────────
+// ── Bundled, role-aware dashboard analytics (with lazy cache) ───
 
-export const getDashboardAnalytics = query({
-  args: {
-    schoolId: v.id("schools"),
-    termId: v.optional(v.id("terms")),
-  },
-  handler: async (ctx, { schoolId, termId }) => {
-    await requireActiveMembership(ctx, schoolId);
-
+/** The actual computation, extracted so it can be called from the cache path. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function computeDashboardAnalytics(ctx: QueryCtx, schoolId: Id<"schools">, termId?: Id<"terms">): Promise<any> {
     const role = await resolveRole(ctx, schoolId);
     const isLeadership = role === LEADERSHIP_ROLE_KEY;
 
@@ -498,5 +494,26 @@ export const getDashboardAnalytics = query({
     ]);
 
     return { role, isLeadership, finance, academic, attendance };
+}
+
+export const getDashboardAnalytics = query({
+  args: {
+    schoolId: v.id("schools"),
+    termId: v.optional(v.id("terms")),
+  },
+  handler: async (ctx, { schoolId, termId }) => {
+    await requireActiveMembership(ctx, schoolId);
+
+    // ── Read-through cache: read directly from DB (avoids ctx.runQuery circular types) ──
+    const cacheEntry = await ctx.db
+      .query("dashboard_cache")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .first();
+    if (cacheEntry && (Date.now() - cacheEntry.computedAt) < CACHE_TTL_MS && cacheEntry.analytics) {
+      return cacheEntry.analytics;
+    }
+
+    // ── Cache miss — compute live (cron job will refresh cache) ────
+    return computeDashboardAnalytics(ctx, schoolId, termId);
   },
 });

@@ -1,16 +1,17 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useSchool } from "@/lib/use-school";
-import { useRole } from "@/lib/use-role";
+import { useRole, isLeadershipRole } from "@/lib/use-role";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
-import { Plus, BookOpen, Trash2, Cog, Download, Loader2 } from "lucide-react";
+import { Plus, BookOpen, Trash2, Cog, Download } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -18,7 +19,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 export default function ClassesPage() {
   const school = useSchool();
   const role = useRole();
-  const isPrincipal = role === "principal";
+  const isLeadership = isLeadershipRole(role);
   const classes = useQuery(api.classes.listBySchool, school ? { schoolId: school._id } : "skip");
   const createClass = useMutation(api.classes.create);
   const deleteClass = useMutation(api.classes.remove);
@@ -35,7 +36,7 @@ export default function ClassesPage() {
   if (classes === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <BrandLoader variant="book" size="md" />
       </div>
     );
   }
@@ -106,7 +107,7 @@ export default function ClassesPage() {
               <Download className="h-4 w-4 mr-2" /> Export
             </Button>
           )}
-          {isPrincipal && (
+          {isLeadership && (
             <Button onClick={() => setShowModal(true)}>
               <Plus className="h-4 w-4 mr-2" /> Add Class
             </Button>
@@ -132,7 +133,7 @@ export default function ClassesPage() {
                     <Cog className="h-4 w-4" />
                   </Button>
                 )}
-                {isPrincipal && (
+                {isLeadership && (
                   <Button variant="ghost" size="icon" onClick={() => handleDelete(cls._id)}>
                     <Trash2 className="h-4 w-4 text-red-500" />
                   </Button>
@@ -181,3 +182,4 @@ export default function ClassesPage() {
     </div>
   );
 }
+

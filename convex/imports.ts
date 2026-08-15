@@ -309,7 +309,7 @@ async function batchWriteEavValues(
     const results = await ctx.db
       .query("fieldValues")
       .withIndex("by_recordId", (q) => q.eq("recordId", recordId))
-      .collect();
+      .take(100);
     for (const r of results) {
       existingFieldValues.push({ recordId: r.recordId, fieldId: r.fieldId, _id: r._id });
     }
@@ -452,7 +452,7 @@ export const importStudentsInternal = internalMutation({
         const classStudents = await ctx.db
           .query("students")
           .withIndex("by_classId", (q) => q.eq("classId", cid))
-          .collect();
+          .take(1000);
           
         for (const s of classStudents) {
           if (s.schoolId !== schoolId) continue;
@@ -910,7 +910,369 @@ const feeRow = v.object({
   amount: v.float64(),
   // Term the fee schedule row belongs to (from the file's Term/Year columns,
   // when the school provides them). Resolved by name+year against the school's
-  // own terms �?" never invented.
+  // own terms — never invented.
+  termName: v.optional(v.string()),
+  termYear: v.optional(v.number()),
+});
+
+export const importStaffInternal = internalMutation({
+  args: {
+    schoolId: v.id("schools"),
+    rows: v.array(staffRow),
+    // Phase 2.2: per-row user decisions from the duplicate UI. Indexes are
+    // positions within `rows`. Defaults: unmatched rows are created, matched
+    // rows are skipped. Only "overwrite" ever touches existing data.
+    resolutions: v.optional(v.array(resolution)),
+    // Phase 17C: EAV fields this file maps to (key → fieldId). Staff rows
+    // write to the teaching_staff / non_teaching_staff buckets.
+    eavFields: v.optional(v.array(eavFieldDef)),
+  },
+  handler: async (ctx, { schoolId, rows, resolutions, eavFields }) => {
+    await requirePrincipal(ctx, schoolId);
+    const eavDefs = eavFields ?? [];
+
+    if (rows.length === 0) throw new Error("No staff rows to import");
+    if (rows.length > IMPORT_CHUNK) throw new Error(`Too many staff rows in one chunk (max ${IMPORT_CHUNK}).`);
+
+    const resolutionMap = new Map<number, "create" | "skip" | "overwrite" | "keep_both">(
+      (resolutions ?? []).map((r) => [r.index, r.action])
+    );
+
+    // Existing staff by staffNo (authoritative) + name fallback.
+    const existingStaff = await ctx.db
+      .query("teachers")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(2000);
+    const byStaffNo = new Map<string, Doc<"teachers">>();
+    const byName = new Map<string, Doc<"teachers">>();
+    for (const t of existingStaff) {
+      byStaffNo.set(t.staffNo.trim().toLowerCase(), t);
+      const nk = nameKey(t.firstName, t.lastName);
+      if (nk && !byName.has(nk)) byName.set(nk, t);
+    }
+
+    let created = 0;
+    let skipped = 0;
+    let overwritten = 0;
+    let teaching = 0;
+    let nonTeaching = 0;
+    const errors: { row: number; reason: string }[] = [];
+    const rowResults: RowResult[] = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const rowNum = i + 1;
+
+      const firstName = row.firstName?.trim();
+      const lastName = row.lastName?.trim();
+      if (!firstName) {
+        errors.push({ row: rowNum, reason: "Missing staff name (first name required)" });
+        rowResults.push({ row: rowNum, status: "error", reason: "Missing staff name (first name required)" });
+        continue;
+      }
+
+      let staffNo = row.staffNo?.trim();
+      if (!staffNo || staffNo.startsWith("AUTO-")) {
+        staffNo = await nextStaffNumberInternal(ctx, schoolId, i + 1);
+      }
+      const staffKey = staffNo.toLowerCase();
+      const authoritativeDup = byStaffNo.get(staffKey);
+      const action = resolutionMap.get(i) ?? (authoritativeDup ? "skip" : "create");
+
+      // Taken staff number + no explicit overwrite/keep-both → skip before any writes.
+      if (authoritativeDup && action !== "overwrite" && action !== "keep_both") {
+        skipped++;
+        rowResults.push({
+          row: rowNum,
+          status: "skipped",
+          reason: `Staff number already exists (${authoritativeDup.staffNo})`,
+        });
+        continue;
+      }
+
+      // Name fallback only when the staff number is free.
+      let matched = authoritativeDup;
+      if (!matched && firstName && lastName) {
+        matched = byName.get(nameKey(firstName, lastName));
+      }
+
+      // Overwrite: update the existing teacher with the file's values.
+      if (matched && resolutionMap.get(i) === "overwrite") {
+        const category = row.category ?? matched.category;
+        await ctx.db.patch(matched._id, {
+          firstName,
+          lastName,
+          email: row.email ?? matched.email,
+          phone: row.phone ?? matched.phone,
+          department: row.department ?? matched.department,
+          category,
+        });
+        overwritten++;
+        if (category === "teaching") teaching++;
+        else nonTeaching++;
+        rowResults.push({
+          row: rowNum,
+          status: "overwritten",
+          reason: `Updated existing staff (${matched.staffNo})`,
+        });
+        const recId = await upsertEavRecord(ctx, {
+          schoolId,
+          bucket: (row.category ?? matched.category) === "teaching" ? "teaching_staff" : "non_teaching_staff",
+          displayName: `${firstName} ${lastName}`.trim(),
+          teacherId: matched._id,
+        });
+        await writeEavValues(ctx, { schoolId, recordId: recId, eavFields: eavDefs, eavValues: row.eavValues });
+        continue;
+      }
+
+      // Skip (matched, or explicit user choice).
+      if (matched || action === "skip") {
+        skipped++;
+        rowResults.push({
+          row: rowNum,
+          status: "skipped",
+          reason: matched ? `Already exists (${matched.staffNo})` : "Skipped by user",
+        });
+        continue;
+      }
+
+      const category = row.category ?? "teaching";
+      const teacherId = await ctx.db.insert("teachers", {
+        schoolId,
+        firstName,
+        lastName,
+        staffNo,
+        email: row.email,
+        phone: row.phone,
+        department: row.department,
+        category,
+      });
+      created++;
+      if (category === "teaching") teaching++;
+      else nonTeaching++;
+      rowResults.push({ row: rowNum, status: "created" });
+      const recId = await upsertEavRecord(ctx, {
+        schoolId,
+        bucket: category === "teaching" ? "teaching_staff" : "non_teaching_staff",
+        displayName: `${firstName} ${lastName}`.trim(),
+        teacherId,
+      });
+      await writeEavValues(ctx, { schoolId, recordId: recId, eavFields: eavDefs, eavValues: row.eavValues });
+    }
+
+    await logAuditEntry(ctx, schoolId, "staff.import", {
+      attempted: rows.length,
+      created,
+      skipped,
+      overwritten,
+      errors: errors.length,
+    });
+
+    return { created, skipped, overwritten, teaching, nonTeaching, errors, rowResults };
+  },
+});
+
+export const importFeesInternal = internalMutation({
+  args: {
+    schoolId: v.id("schools"),
+    rows: v.array(feeRow),
+    createMissingClasses: v.boolean(),
+    // Term the fee schedule belongs to (from the action-level current-term
+    // args, or the file's own Term/Year columns when present). Resolved by
+    // name+year against the school's own terms — never invented.
+    termName: v.optional(v.string()),
+    termYear: v.optional(v.number()),
+  },
+  handler: async (ctx, { schoolId, rows, createMissingClasses, termName, termYear }) => {
+    await requirePrincipal(ctx, schoolId);
+
+    if (rows.length === 0) throw new Error("No fee rows to import");
+    if (rows.length > IMPORT_CHUNK) throw new Error(`Too many fee rows in one chunk (max ${IMPORT_CHUNK}).`);
+
+    // ── Term resolution ──────────────────────────────────────────────
+    // Resolve the term by name+year when the school provided one; otherwise
+    // fall back to the school's current term. Creating a term is the caller's
+    // job (terms are imported explicitly) — we never invent one.
+    let termId: Id<"terms"> | undefined;
+    let resolvedTermName = termName;
+    let resolvedTermYear = termYear;
+    let createdTerm = false;
+
+    if (termName && termYear !== undefined) {
+      const existing = await ctx.db
+        .query("terms")
+        .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+        .filter((q) => q.and(q.eq(q.field("name"), termName), q.eq(q.field("year"), termYear)))
+        .first();
+      if (existing) termId = existing._id;
+    }
+    if (!termId) {
+      const current = await ctx.db
+        .query("terms")
+        .withIndex("by_current", (q) => q.eq("schoolId", schoolId).eq("isCurrent", true))
+        .first();
+      if (current) {
+        termId = current._id;
+        resolvedTermName = current.name;
+        resolvedTermYear = current.year;
+      }
+    }
+    if (!termId) {
+      const reason = "No term to attach fee structures to. Import a term first, or run the import with a current term set.";
+      throw new Error(reason);
+    }
+
+    // ── Class + stream resolution (school-agnostic resolver) ─────────
+    const classes = await ctx.db
+      .query("classes")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(500);
+    const classByName = new Map<string, Doc<"classes">>();
+    for (const c of classes) classByName.set(normalizeName(c.name), c);
+    const streams = await ctx.db
+      .query("streams")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(500);
+    const streamByClassAndName = new Map<string, Doc<"streams">>();
+    for (const s of streams) streamByClassAndName.set(`${s.classId}:${s.name.toLowerCase().trim()}`, s);
+
+    const classRefs = classes.map((c) => ({ id: c._id, name: c.name, hasStreams: c.hasStreams }));
+    const streamRefs = streams.map((s) => ({ id: s._id, classId: s.classId, name: s.name }));
+    // Student-derived dictionary (registry thin but students exist).
+    const studentRefs: { classId: string; streamId?: string }[] = [];
+    for (const row of rows) {
+      const cls = classByName.get(normalizeName(row.className));
+      if (!cls) continue;
+      const list = await ctx.db
+        .query("students")
+        .withIndex("by_classId", (q) => q.eq("classId", cls._id))
+        .take(1000);
+      for (const s of list) {
+        if (s.schoolId !== schoolId) continue;
+        studentRefs.push({ classId: s.classId, streamId: s.streamId === undefined ? undefined : s.streamId });
+      }
+    }
+
+    let structuresCreated = 0;
+    const errors: { row: number; reason: string }[] = [];
+    const resolutions: FeeImportResult["resolutions"] = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const rowNum = i + 1;
+
+      const outcome = resolveClassStream(
+        { className: row.className, streamName: row.streamName },
+        classRefs,
+        streamRefs,
+        studentRefs
+      );
+
+      let cls: Doc<"classes"> | undefined;
+      let streamId: Id<"streams"> | undefined;
+
+      if (outcome.status === "exact") {
+        cls = classByName.get(normalizeName(outcome.className)) ?? classes.find((c) => c._id === outcome.classId);
+        if (outcome.streamId) {
+          const st = streams.find((s) => s._id === outcome.streamId);
+          streamId = st?._id;
+        }
+      } else if (outcome.status === "reconciled") {
+        cls = classes.find((c) => c._id === outcome.classId);
+        const st = streams.find((s) => s._id === outcome.streamId);
+        streamId = st?._id;
+      } else if (outcome.status === "ambiguous") {
+        const reason = `Class "${row.className}" is ambiguous — it matches ${outcome.matches
+          .map((m) => m.label)
+          .join(" and ")}. Split it into Class + Stream columns, or fix the mapping in the Import review.`;
+        errors.push({ row: rowNum, reason });
+        resolutions.push({ row: rowNum, className: row.className, streamName: row.streamName, matchedClass: "—", matchedStream: undefined });
+        continue;
+      } else {
+        // nomatch — reuse an existing class of this name first.
+        cls = classByName.get(normalizeName(row.className));
+        if (!cls) {
+          const existing = (await ctx.db
+            .query("classes")
+            .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+            .take(500)).find((c) => normalizeName(c.name) === normalizeName(row.className));
+          if (existing) {
+            cls = existing;
+            classByName.set(normalizeName(existing.name), existing);
+            classRefs.push({ id: existing._id, name: existing.name, hasStreams: existing.hasStreams });
+          }
+        }
+        if (!cls && createMissingClasses) {
+          const classId = await ctx.db.insert("classes", {
+            schoolId,
+            name: row.className,
+            hasStreams: !!row.streamName,
+          });
+          cls = { _id: classId, schoolId, name: row.className, hasStreams: !!row.streamName } as Doc<"classes">;
+          classByName.set(normalizeName(row.className), cls);
+          classRefs.push({ id: classId, name: row.className, hasStreams: !!row.streamName });
+        }
+        if (!cls) {
+          const reason = `Class "${row.className}" does not exist. Create it first, or approve auto-create in the Import step.`;
+          errors.push({ row: rowNum, reason });
+          resolutions.push({ row: rowNum, className: row.className, streamName: row.streamName, matchedClass: "—", matchedStream: undefined });
+          continue;
+        }
+        // Stream, when present — create under the (possibly just-created) class.
+        if (row.streamName) {
+          let stream = streamByClassAndName.get(`${cls._id}:${row.streamName?.toLowerCase()}`);
+          if (!stream && createMissingClasses) {
+            const streamIdNew = await ctx.db.insert("streams", {
+              schoolId,
+              classId: cls._id,
+              name: row.streamName!,
+            });
+            stream = { _id: streamIdNew, schoolId, classId: cls._id, name: row.streamName! } as Doc<"streams">;
+            streamByClassAndName.set(`${cls._id}:${row.streamName!.toLowerCase()}`, stream);
+            streamRefs.push({ id: streamIdNew, classId: cls._id, name: row.streamName! });
+          }
+          if (stream) streamId = stream._id;
+        }
+      }
+
+      if (!cls) continue;
+
+      // Upsert fee_structures (class + term + optional stream).
+      const existing = await ctx.db
+        .query("fee_structures")
+        .withIndex("by_class_term", (q) => q.eq("classId", cls._id).eq("termId", termId))
+        .take(20);
+      const match = existing.find((e) => (e.streamId ?? null) === (streamId ?? null));
+      if (match) {
+        await ctx.db.patch(match._id, { amount: row.amount });
+      } else {
+        await ctx.db.insert("fee_structures", { schoolId, classId: cls._id, termId, streamId, amount: row.amount });
+      }
+      structuresCreated++;
+      resolutions.push({
+        row: rowNum,
+        className: row.className,
+        streamName: row.streamName,
+        matchedClass: cls.name,
+        matchedStream: streamId ? streams.find((s) => s._id === streamId)?.name : undefined,
+      });
+    }
+
+    await logAuditEntry(ctx, schoolId, "feeStructure.import", {
+      attempted: rows.length,
+      structuresCreated,
+      errors: errors.length,
+    });
+
+    return {
+      structuresCreated,
+      errors,
+      createdTerm,
+      termName: resolvedTermName,
+      termYear: resolvedTermYear,
+      resolutions,
+    };
+  },
 });
 
 /** Persist one file's import run to the audit trail. */
@@ -918,6 +1280,7 @@ export const recordImportRunInternal = internalMutation({
   args: {
     schoolId: v.id("schools"),
     fileName: v.string(),
+    kind: v.optional(v.string()),
     ok: v.boolean(),
     summary: v.object({
       studentsCreated: v.number(),
@@ -940,13 +1303,1035 @@ export const recordImportRunInternal = internalMutation({
     ),
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    const runAt = Date.now();
+    // The Files history (Bulk Operations → Files) reads import_runs + the
+    // per-row results expandable under each run. Status mirrors the schema
+    // union: success / partial / failed (pending/in_progress reserved for a
+    // resumable import, which we don't yet implement).
+    const status: "success" | "partial" | "failed" = args.ok
+      ? args.summary.errors > 0
+        ? "partial"
+        : "success"
+      : "failed";
+    const runId = await ctx.db.insert("import_runs", {
+      schoolId: args.schoolId,
+      fileName: args.fileName,
+      status,
+      studentsCreated: args.summary.studentsCreated,
+      studentsSkipped: args.summary.studentsSkipped,
+      studentsOverwritten: args.summary.studentsOverwritten,
+      staffCreated: args.summary.staffCreated,
+      staffSkipped: args.summary.staffSkipped,
+      staffOverwritten: args.summary.staffOverwritten,
+      structuresCreated: args.summary.structuresCreated,
+      errors: args.summary.errors,
+      ranBy: identity?.subject ?? "system",
+      runAt,
+      totalRows: args.rowResults.length,
+      lastProcessedRow: args.rowResults.length,
+      kind: args.kind,
+    });
+    // Persist per-row outcomes (capped to keep the mutation inside write
+    // limits — row-level detail is diagnostic, the run summary is not).
+    for (const rr of args.rowResults.slice(0, 2000)) {
+      await ctx.db.insert("import_row_results", {
+        schoolId: args.schoolId,
+        runId,
+        row: rr.row,
+        kind: rr.kind,
+        status: rr.status,
+        reason: rr.reason,
+        studentId: rr.studentId,
+      });
+    }
     await logAuditEntry(ctx, args.schoolId, "import.run", {
       fileName: args.fileName,
       ok: args.ok,
       summary: args.summary,
+      runId,
     });
   },
 });
 
+// ── Public queries & mutations for the Import Studio UI ───────────
 
+export const listImportRuns = query({
+  args: { schoolId: v.id("schools") },
+  handler: async (ctx, { schoolId }) => {
+    await requireSchoolMembership(ctx, schoolId);
+    return await ctx.db
+      .query("import_runs")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .order("desc")
+      .take(50);
+  },
+});
+
+export const getImportRunRowResults = query({
+  args: { runId: v.id("import_runs") },
+  handler: async (ctx, { runId }) => {
+    const run = await ctx.db.get(runId);
+    if (!run) throw new Error("Import run not found");
+    await requireSchoolMembership(ctx, run.schoolId);
+    return await ctx.db
+      .query("import_row_results")
+      .withIndex("by_runId", (q) => q.eq("runId", runId))
+      .order("asc")
+      .take(5000);
+  },
+});
+
+export const deleteImportRun = mutation({
+  args: { id: v.id("import_runs") },
+  handler: async (ctx, { id }) => {
+    const run = await ctx.db.get(id);
+    if (!run) throw new Error("Import run not found");
+    await requireSchoolMembership(ctx, run.schoolId);
+    // Delete associated row results
+    const rowResults = await ctx.db
+      .query("import_row_results")
+      .withIndex("by_runId", (q) => q.eq("runId", id))
+      .take(5000);
+    for (const rr of rowResults) {
+      await ctx.db.delete(rr._id);
+    }
+    await ctx.db.delete(id);
+  },
+});
+
+// ── Internal helpers for import actions ─────────────────────────────
+
+export const getStudentByAdmNo = internalQuery({
+  args: { schoolId: v.id("schools"), admNo: v.string() },
+  handler: async (ctx, { schoolId, admNo }) => {
+    return await ctx.db
+      .query("students")
+      .withIndex("by_admNo", (q) => q.eq("schoolId", schoolId).eq("admNo", admNo))
+      .first();
+  },
+});
+
+export const upsertAttendance = internalMutation({
+  args: {
+    schoolId: v.id("schools"),
+    classId: v.id("classes"),
+    studentId: v.id("students"),
+    date: v.float64(),
+    status: v.union(v.literal("present"), v.literal("absent"), v.literal("late"), v.literal("excused")),
+    markedBy: v.string(),
+  },
+  handler: async (ctx, { schoolId, classId, studentId, date, status, markedBy }) => {
+    const dayStart = new Date(date); dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(date); dayEnd.setHours(23, 59, 59, 999);
+    const existing = await ctx.db
+      .query("attendance")
+      .withIndex("by_classId_and_date", (q) =>
+        q.eq("classId", classId).gte("date", dayStart.getTime()).lte("date", dayEnd.getTime())
+      )
+      .filter((q) => q.eq(q.field("studentId"), studentId))
+      .first();
+    if (existing) {
+      await ctx.db.patch(existing._id, { status, markedBy });
+    } else {
+      await ctx.db.insert("attendance", {
+        schoolId, classId, studentId, date: dayStart.getTime(), status, markedBy,
+      });
+    }
+  },
+});
+
+// ── Internal batch mutations for the catalog + payments actions ────
+
+/** Normalize a raw payment-method string onto the fee_payments union. */
+function normalizeMethod(s: string): "cash" | "mpesa" | "bank_transfer" | "other" {
+  const v = (s ?? "").trim().toLowerCase();
+  if (/cash|cheque|check|bank slip/.test(v)) return "cash";
+  if (/mpesa|m-pesa|m pesa|safaricom|mobile money/.test(v)) return "mpesa";
+  if (/bank|transfer|wire|eft|rtgs/.test(v)) return "bank_transfer";
+  return "other";
+}
+
+/** Normalize a level string onto the subjects union (fallback "general"). */
+function normalizeLevel(
+  s: string
+): "pre_primary" | "lower_primary" | "upper_primary" | "junior_secondary" | "senior_secondary" | "general" {
+  const v = (s ?? "").trim().toLowerCase();
+  if (/pre|kindergarten|nursery|pp1|pp2/.test(v)) return "pre_primary";
+  if (/lower/.test(v)) return "lower_primary";
+  if (/upper/.test(v)) return "upper_primary";
+  if (/junior/.test(v)) return "junior_secondary";
+  if (/senior/.test(v)) return "senior_secondary";
+  return "general";
+}
+
+export const importFeePaymentsInternal = internalMutation({
+  args: {
+    schoolId: v.id("schools"),
+    rows: v.array(
+      v.object({
+        admNo: v.string(),
+        amount: v.number(),
+        method: v.string(),
+        date: v.optional(v.number()),
+        reference: v.optional(v.string()),
+        termName: v.optional(v.string()),
+        termYear: v.optional(v.number()),
+      })
+    ),
+  },
+  handler: async (ctx, { schoolId, rows }) => {
+    await requirePrincipal(ctx, schoolId);
+    if (rows.length === 0) throw new Error("No fee payment rows to import");
+    if (rows.length > IMPORT_CHUNK) throw new Error(`Too many fee payment rows in one chunk (max ${IMPORT_CHUNK}).`);
+
+    const students = await ctx.db
+      .query("students")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(5000);
+    const byAdmNo = new Map<string, Doc<"students">>();
+    for (const s of students) byAdmNo.set(s.admNo.trim().toLowerCase(), s);
+
+    type ResolvedTerm = { id: Id<"terms">; name: string; year: number };
+    const termCache = new Map<string, ResolvedTerm | undefined>();
+    const resolveTerm = async (tn?: string, ty?: number): Promise<ResolvedTerm | undefined> => {
+      const key = `${tn ?? ""}|${ty ?? ""}`;
+      if (termCache.has(key)) return termCache.get(key);
+      let term: Doc<"terms"> | undefined;
+      if (tn && ty !== undefined) {
+        term = (
+          await ctx.db
+            .query("terms")
+            .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+            .filter((q) => q.and(q.eq(q.field("name"), tn), q.eq(q.field("year"), ty)))
+            .take(10)
+        )[0];
+      }
+      if (!term) {
+        const current = await ctx.db
+          .query("terms")
+          .withIndex("by_current", (q) => q.eq("schoolId", schoolId).eq("isCurrent", true))
+          .first();
+        term = current ?? undefined;
+      }
+      const out = term ? { id: term._id, name: term.name, year: term.year } : undefined;
+      termCache.set(key, out);
+      return out;
+    };
+
+    let created = 0;
+    const errors: { row: number; reason: string }[] = [];
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const rowNum = i + 1;
+      const student = byAdmNo.get(row.admNo.trim().toLowerCase());
+      if (!student) {
+        errors.push({ row: rowNum, reason: `Student ${row.admNo} not found` });
+        continue;
+      }
+      const term = await resolveTerm(row.termName, row.termYear);
+      if (!term) {
+        errors.push({
+          row: rowNum,
+          reason: "No term to attach the payment to. Import a term first, or set the current term.",
+        });
+        continue;
+      }
+      await ctx.db.insert("fee_payments", {
+        schoolId,
+        studentId: student._id,
+        termId: term.id,
+        amount: row.amount,
+        method: normalizeMethod(row.method),
+        reference: row.reference,
+        receivedBy: "import",
+        receivedAt: row.date ?? Date.now(),
+      });
+      created++;
+    }
+    await logAuditEntry(ctx, schoolId, "feePayment.import", {
+      attempted: rows.length,
+      created,
+      errors: errors.length,
+    });
+    return { created, errors };
+  },
+});
+
+export const importSubjectsInternal = internalMutation({
+  args: {
+    schoolId: v.id("schools"),
+    rows: v.array(v.object({ name: v.string(), code: v.string(), level: v.string() })),
+  },
+  handler: async (ctx, { schoolId, rows }) => {
+    await requirePrincipal(ctx, schoolId);
+    if (rows.length === 0) throw new Error("No subject rows to import");
+    if (rows.length > IMPORT_CHUNK) throw new Error(`Too many subject rows in one chunk (max ${IMPORT_CHUNK}).`);
+
+    const existing = await ctx.db
+      .query("subjects")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(5000);
+    const byName = new Map<string, Doc<"subjects">>();
+    for (const s of existing) byName.set(normalizeName(s.name), s);
+
+    let created = 0;
+    const errors: { row: number; reason: string }[] = [];
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const rowNum = i + 1;
+      const key = normalizeName(row.name);
+      if (!row.name.trim()) {
+        errors.push({ row: rowNum, reason: "Subject name is required" });
+        continue;
+      }
+      if (byName.has(key)) {
+        errors.push({ row: rowNum, reason: `Subject "${row.name}" already exists` });
+        continue;
+      }
+      await ctx.db.insert("subjects", {
+        schoolId,
+        name: row.name.trim(),
+        code: row.code.trim(),
+        level: normalizeLevel(row.level),
+      });
+      byName.set(key, null as unknown as Doc<"subjects">);
+      created++;
+    }
+    await logAuditEntry(ctx, schoolId, "subject.import", {
+      attempted: rows.length,
+      created,
+      errors: errors.length,
+    });
+    return { created, errors };
+  },
+});
+
+export const importClassesInternal = internalMutation({
+  args: {
+    schoolId: v.id("schools"),
+    rows: v.array(v.object({ className: v.string(), streamName: v.optional(v.string()) })),
+  },
+  handler: async (ctx, { schoolId, rows }) => {
+    await requirePrincipal(ctx, schoolId);
+    if (rows.length === 0) throw new Error("No class rows to import");
+    if (rows.length > IMPORT_CHUNK) throw new Error(`Too many class rows in one chunk (max ${IMPORT_CHUNK}).`);
+
+    const classes = await ctx.db
+      .query("classes")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(2000);
+    const streams = await ctx.db
+      .query("streams")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(2000);
+    const classByName = new Map<string, Doc<"classes">>();
+    for (const c of classes) classByName.set(normalizeName(c.name), c);
+    const streamByClassAndName = new Map<string, Doc<"streams">>();
+    for (const s of streams) streamByClassAndName.set(`${s.classId}:${s.name.toLowerCase().trim()}`, s);
+
+    let classesCreated = 0;
+    let streamsCreated = 0;
+    const errors: { row: number; reason: string }[] = [];
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const rowNum = i + 1;
+      if (!row.className.trim()) {
+        errors.push({ row: rowNum, reason: "Class name is required" });
+        continue;
+      }
+      let cls = classByName.get(normalizeName(row.className));
+      if (!cls) {
+        const classId = await ctx.db.insert("classes", {
+          schoolId,
+          name: row.className.trim(),
+          hasStreams: !!row.streamName,
+        });
+        cls = { _id: classId, schoolId, name: row.className.trim(), hasStreams: !!row.streamName } as Doc<"classes">;
+        classByName.set(normalizeName(cls.name), cls);
+        classesCreated++;
+      } else if (!!row.streamName && !cls.hasStreams) {
+        await ctx.db.patch(cls._id, { hasStreams: true });
+      }
+      if (row.streamName) {
+        let stream = streamByClassAndName.get(`${cls._id}:${row.streamName.toLowerCase().trim()}`);
+        if (!stream) {
+          const streamId = await ctx.db.insert("streams", {
+            schoolId,
+            classId: cls._id,
+            name: row.streamName.trim(),
+          });
+          stream = { _id: streamId, schoolId, classId: cls._id, name: row.streamName.trim() } as Doc<"streams">;
+          streamByClassAndName.set(`${cls._id}:${row.streamName.toLowerCase().trim()}`, stream);
+          streamsCreated++;
+        }
+      }
+    }
+    await logAuditEntry(ctx, schoolId, "class.import", {
+      attempted: rows.length,
+      classesCreated,
+      streamsCreated,
+      errors: errors.length,
+    });
+    return { classesCreated, streamsCreated, errors };
+  },
+});
+
+export const importTermsInternal = internalMutation({
+  args: {
+    schoolId: v.id("schools"),
+    rows: v.array(
+      v.object({
+        name: v.string(),
+        year: v.number(),
+        startDate: v.number(),
+        endDate: v.number(),
+      })
+    ),
+  },
+  handler: async (ctx, { schoolId, rows }) => {
+    await requirePrincipal(ctx, schoolId);
+    if (rows.length === 0) throw new Error("No term rows to import");
+    if (rows.length > IMPORT_CHUNK) throw new Error(`Too many term rows in one chunk (max ${IMPORT_CHUNK}).`);
+
+    const years = await ctx.db
+      .query("academicYears")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(100);
+    const terms = await ctx.db
+      .query("terms")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(2000);
+    const yearByLabel = new Map<string, Doc<"academicYears">>();
+    for (const y of years) yearByLabel.set(y.label.trim().toLowerCase(), y);
+    const termByKey = new Map<string, Doc<"terms">>();
+    for (const t of terms) termByKey.set(`${t.name.toLowerCase().trim()}|${t.year}`, t);
+
+    let termsCreated = 0;
+    let academicYearsCreated = 0;
+    const errors: { row: number; reason: string }[] = [];
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const rowNum = i + 1;
+      if (!row.name.trim() || !(row.year > 2000)) {
+        errors.push({ row: rowNum, reason: "Term name and a valid year are required" });
+        continue;
+      }
+      if (termByKey.has(`${row.name.trim().toLowerCase()}|${row.year}`)) {
+        errors.push({ row: rowNum, reason: `Term "${row.name}" ${row.year} already exists` });
+        continue;
+      }
+      const yearLabel = String(row.year);
+      let acYear = yearByLabel.get(yearLabel);
+      if (!acYear) {
+        const acYearId = await ctx.db.insert("academicYears", {
+          schoolId,
+          label: yearLabel,
+          startDate: row.startDate,
+          endDate: row.endDate,
+          status: "upcoming",
+        });
+        acYear = {
+          _id: acYearId,
+          schoolId,
+          label: yearLabel,
+          startDate: row.startDate,
+          endDate: row.endDate,
+          status: "upcoming",
+        } as Doc<"academicYears">;
+        yearByLabel.set(yearLabel, acYear);
+        academicYearsCreated++;
+      }
+      await ctx.db.insert("terms", {
+        schoolId,
+        academicYearId: acYear._id,
+        name: row.name.trim(),
+        year: row.year,
+        startDate: row.startDate,
+        endDate: row.endDate,
+        status: "upcoming",
+      });
+      termByKey.set(`${row.name.trim().toLowerCase()}|${row.year}`, null as unknown as Doc<"terms">);
+      termsCreated++;
+    }
+    await logAuditEntry(ctx, schoolId, "term.import", {
+      attempted: rows.length,
+      termsCreated,
+      academicYearsCreated,
+      errors: errors.length,
+    });
+    return { termsCreated, academicYearsCreated, errors };
+  },
+});
+
+// ── Import Actions (public, called by Import Studio UI) ────────────
+// These are stub implementations that return the expected shapes.
+// The actual import logic lives in importStudentsInternal and the
+// importBatch action. These stubs satisfy the frontend type references.
+
+export const detectDuplicates = query({
+  args: {
+    schoolId: v.id("schools"),
+    rows: v.array(v.object({
+      firstName: v.string(),
+      lastName: v.string(),
+      admNo: v.string(),
+      className: v.string(),
+    })),
+    staffRows: v.array(v.object({
+      firstName: v.string(),
+      lastName: v.string(),
+      staffNo: v.string(),
+    })),
+  },
+  handler: async (ctx, { schoolId, rows, staffRows }) => {
+    await requireSchoolMembership(ctx, schoolId);
+
+    // ── Students: admNo is authoritative; name+class is the fallback. ──
+    const classes = await ctx.db
+      .query("classes")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(500);
+    const classByName = new Map<string, Doc<"classes">>();
+    for (const c of classes) classByName.set(normalizeName(c.name), c);
+    const studentsByClass = new Map<string, Doc<"students">[]>();
+
+    const students: {
+      index: number;
+      status: "new" | "duplicate" | "conflicting";
+      reasons: string[];
+      matched?: { id: string; name: string; admNo: string; className: string };
+    }[] = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      const reasons: string[] = [];
+      let matched: { id: string; name: string; admNo: string; className: string } | undefined;
+
+      const admNo = row.admNo.trim();
+      if (admNo) {
+        const existing = await ctx.db
+          .query("students")
+          .withIndex("by_admNo", (q) => q.eq("schoolId", schoolId).eq("admNo", admNo))
+          .first();
+        if (existing) {
+          matched = {
+            id: existing._id,
+            name: `${existing.firstName} ${existing.lastName}`.trim(),
+            admNo: existing.admNo,
+            className: "",
+          };
+          reasons.push("Admission number already exists");
+        }
+      }
+
+      if (!matched && row.firstName.trim() && row.lastName.trim()) {
+        const cls = classByName.get(normalizeName(row.className));
+        if (cls) {
+          let list = studentsByClass.get(cls._id);
+          if (!list) {
+            list = await ctx.db
+              .query("students")
+              .withIndex("by_classId", (q) => q.eq("classId", cls._id))
+              .take(1000);
+            studentsByClass.set(cls._id, list);
+          }
+          const nk = nameKey(row.firstName, row.lastName);
+          const hits = list.filter((s) => s.schoolId === schoolId && nameKey(s.firstName, s.lastName) === nk);
+          if (hits.length > 0) {
+            const existing = hits[0];
+            matched = {
+              id: existing._id,
+              name: `${existing.firstName} ${existing.lastName}`.trim(),
+              admNo: existing.admNo,
+              className: cls.name,
+            };
+            reasons.push(
+              hits.length > 1
+                ? `Name matches ${hits.length} existing students in ${cls.name} — verify which one`
+                : `Name matches an existing student in ${cls.name}`
+            );
+          }
+        }
+      }
+
+      students.push({
+        index: i,
+        status: !matched ? "new" : admNo ? "duplicate" : "conflicting",
+        reasons,
+        ...(matched ? { matched } : {}),
+      });
+    }
+
+    // ── Staff: staffNo is authoritative; name is the fallback. ─────────
+    const teachers = await ctx.db
+      .query("teachers")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(2000);
+    const teacherByStaffNo = new Map<string, Doc<"teachers">>();
+    for (const t of teachers) teacherByStaffNo.set(t.staffNo.trim().toLowerCase(), t);
+
+    const staff: {
+      index: number;
+      status: "new" | "duplicate" | "conflicting";
+      reasons: string[];
+      matched?: { id: string; name: string; staffNo: string };
+    }[] = [];
+
+    for (let i = 0; i < staffRows.length; i++) {
+      const row = staffRows[i];
+      const reasons: string[] = [];
+      let matched: { id: string; name: string; staffNo: string } | undefined;
+
+      const staffNo = row.staffNo.trim();
+      if (staffNo) {
+        const existing = teacherByStaffNo.get(staffNo.toLowerCase());
+        if (existing) {
+          matched = {
+            id: existing._id,
+            name: `${existing.firstName} ${existing.lastName}`.trim(),
+            staffNo: existing.staffNo,
+          };
+          reasons.push("Staff number already exists");
+        }
+      }
+
+      if (!matched && row.firstName.trim() && row.lastName.trim()) {
+        const nk = nameKey(row.firstName, row.lastName);
+        const hits = teachers.filter((t) => t.schoolId === schoolId && nameKey(t.firstName, t.lastName) === nk);
+        if (hits.length > 0) {
+          const existing = hits[0];
+          matched = {
+            id: existing._id,
+            name: `${existing.firstName} ${existing.lastName}`.trim(),
+            staffNo: existing.staffNo,
+          };
+          reasons.push(
+            hits.length > 1
+              ? `Name matches ${hits.length} existing staff members — verify which one`
+              : "Name matches an existing staff member"
+          );
+        }
+      }
+
+      staff.push({
+        index: i,
+        status: !matched ? "new" : staffNo ? "duplicate" : "conflicting",
+        reasons,
+        ...(matched ? { matched } : {}),
+      });
+    }
+
+    return { students, staff };
+  },
+});
+
+export const importBatch = action({
+  args: {
+    schoolId: v.id("schools"),
+    files: v.array(
+      v.object({
+        fileName: v.string(),
+        kind: v.string(),
+        // Students file: student rows live in `rows`; the same file may also
+        // carry staff rows (staffRows) or fee rows (feeRows) after preview
+        // reconciliation. Every array is optional — only present entries run.
+        rows: v.optional(v.array(importRow)),
+        staffRows: v.optional(v.array(staffRow)),
+        feeRows: v.optional(v.array(feeRow)),
+        eavFields: v.optional(v.array(eavFieldDef)),
+        staffEavFields: v.optional(v.array(eavFieldDef)),
+        studentResolutions: v.optional(v.array(resolution)),
+        staffResolutions: v.optional(v.array(resolution)),
+      })
+    ),
+    createMissingClasses: v.boolean(),
+    termName: v.optional(v.string()),
+    termYear: v.optional(v.number()),
+  },
+  handler: async (ctx, { schoolId, files, createMissingClasses, termName, termYear }) => {
+    type BatchRowResult = {
+      row: number;
+      status: "created" | "skipped" | "overwritten" | "error";
+      reason?: string;
+    };
+    type FileResult = {
+      students?: {
+        created: number;
+        skippedDuplicates: number;
+        overwritten: number;
+        guardiansCreated: number;
+        guardianLinksCreated: number;
+        errors: { row: number; reason: string }[];
+        createdClasses: string[];
+        createdStreams: string[];
+        rowResults: BatchRowResult[];
+      };
+      staff?: {
+        created: number;
+        skipped: number;
+        overwritten: number;
+        teaching: number;
+        nonTeaching: number;
+        errors: { row: number; reason: string }[];
+        rowResults: BatchRowResult[];
+      };
+      fees?: {
+        structuresCreated: number;
+        errors: { row: number; reason: string }[];
+        createdTerm: boolean;
+        termName?: string;
+        termYear?: number;
+        resolutions: {
+          row: number;
+          className: string;
+          streamName?: string;
+          matchedClass: string;
+          matchedStream?: string;
+        }[];
+      };
+    };
+    const results: {
+      fileName: string;
+      kind: string;
+      ok: boolean;
+      result?: FileResult;
+      error?: string;
+    }[] = [];
+
+    for (const file of files) {
+      let ok = true;
+      let fileError: string | undefined;
+      const summary = {
+        studentsCreated: 0,
+        studentsSkipped: 0,
+        studentsOverwritten: 0,
+        staffCreated: 0,
+        staffSkipped: 0,
+        staffOverwritten: 0,
+        structuresCreated: 0,
+        errors: 0,
+      };
+      const rowResults: {
+        row: number;
+        kind: "student" | "staff" | "fee";
+        status: "created" | "skipped" | "overwritten" | "error";
+        reason?: string;
+      }[] = [];
+      const result: FileResult = {};
+
+      // ── Students ─────────────────────────────────────────────────────
+      if (file.rows && file.rows.length > 0) {
+        const agg = {
+          created: 0,
+          skippedDuplicates: 0,
+          overwritten: 0,
+          guardiansCreated: 0,
+          guardianLinksCreated: 0,
+          errors: [] as { row: number; reason: string }[],
+          createdClasses: [] as string[],
+          createdStreams: [] as string[],
+          rowResults: [] as BatchRowResult[],
+        };
+        for (let o = 0; o < file.rows.length; o += IMPORT_CHUNK) {
+          const chunk = file.rows.slice(o, o + IMPORT_CHUNK);
+          // Re-index per-row resolutions from the file's row space into this
+          // chunk's local row space (indexes are positions within `rows`).
+          const chunkResolutions = (file.studentResolutions ?? [])
+            .filter((r) => r.index >= o && r.index < o + chunk.length)
+            .map((r) => ({ index: r.index - o, action: r.action }));
+          try {
+            const res = await ctx.runMutation(internal.imports.importStudentsInternal, {
+              schoolId,
+              rows: chunk,
+              createMissingClasses,
+              resolutions: chunkResolutions.length > 0 ? chunkResolutions : undefined,
+              eavFields: file.eavFields,
+            });
+            agg.created += res.created;
+            agg.skippedDuplicates += res.skippedDuplicates;
+            agg.overwritten += res.overwritten;
+            agg.guardiansCreated += res.guardiansCreated;
+            agg.guardianLinksCreated += res.guardianLinksCreated;
+            agg.createdClasses.push(...res.createdClasses);
+            agg.createdStreams.push(...res.createdStreams);
+            for (const e of res.errors) agg.errors.push({ row: e.row + o, reason: e.reason });
+            for (const rr of res.rowResults) {
+              agg.rowResults.push({ row: rr.row + o, status: rr.status, reason: rr.reason });
+              rowResults.push({ row: rr.row + o, kind: "student", status: rr.status, reason: rr.reason });
+            }
+          } catch (err: any) {
+            ok = false;
+            fileError = err?.message ?? String(err);
+            break;
+          }
+        }
+        summary.studentsCreated += agg.created;
+        summary.studentsSkipped += agg.skippedDuplicates;
+        summary.studentsOverwritten += agg.overwritten;
+        summary.errors += agg.errors.length;
+        result.students = agg;
+      }
+
+      // ── Staff ────────────────────────────────────────────────────────
+      if (ok && file.staffRows && file.staffRows.length > 0) {
+        const agg = {
+          created: 0,
+          skipped: 0,
+          overwritten: 0,
+          teaching: 0,
+          nonTeaching: 0,
+          errors: [] as { row: number; reason: string }[],
+          rowResults: [] as BatchRowResult[],
+        };
+        for (let o = 0; o < file.staffRows.length; o += IMPORT_CHUNK) {
+          const chunk = file.staffRows.slice(o, o + IMPORT_CHUNK);
+          const chunkResolutions = (file.staffResolutions ?? [])
+            .filter((r) => r.index >= o && r.index < o + chunk.length)
+            .map((r) => ({ index: r.index - o, action: r.action }));
+          try {
+            const res = await ctx.runMutation(internal.imports.importStaffInternal, {
+              schoolId,
+              rows: chunk,
+              resolutions: chunkResolutions.length > 0 ? chunkResolutions : undefined,
+              eavFields: file.staffEavFields,
+            });
+            agg.created += res.created;
+            agg.skipped += res.skipped;
+            agg.overwritten += res.overwritten;
+            agg.teaching += res.teaching;
+            agg.nonTeaching += res.nonTeaching;
+            for (const e of res.errors) agg.errors.push({ row: e.row + o, reason: e.reason });
+            for (const rr of res.rowResults) {
+              agg.rowResults.push({ row: rr.row + o, status: rr.status, reason: rr.reason });
+              rowResults.push({ row: rr.row + o, kind: "staff", status: rr.status, reason: rr.reason });
+            }
+          } catch (err: any) {
+            ok = false;
+            fileError = err?.message ?? String(err);
+            break;
+          }
+        }
+        summary.staffCreated += agg.created;
+        summary.staffSkipped += agg.skipped;
+        summary.staffOverwritten += agg.overwritten;
+        summary.errors += agg.errors.length;
+        result.staff = agg;
+      }
+
+      // ── Fees ─────────────────────────────────────────────────────────
+      if (ok && file.feeRows && file.feeRows.length > 0) {
+        const agg = {
+          structuresCreated: 0,
+          errors: [] as { row: number; reason: string }[],
+          createdTerm: false,
+          termName: undefined as string | undefined,
+          termYear: undefined as number | undefined,
+          resolutions: [] as {
+            row: number;
+            className: string;
+            streamName?: string;
+            matchedClass: string;
+            matchedStream?: string;
+          }[],
+        };
+        // Effective term: prefer the file's own Term/Year columns; fall back
+        // to the action-level current term.
+        const rowTerm = file.feeRows.find((r) => r.termName && r.termYear !== undefined);
+        const effTermName = rowTerm?.termName ?? termName;
+        const effTermYear = rowTerm?.termYear ?? termYear;
+        for (let o = 0; o < file.feeRows.length; o += IMPORT_CHUNK) {
+          const chunk = file.feeRows.slice(o, o + IMPORT_CHUNK);
+          try {
+            const res = await ctx.runMutation(internal.imports.importFeesInternal, {
+              schoolId,
+              rows: chunk,
+              createMissingClasses,
+              termName: effTermName,
+              termYear: effTermYear,
+            });
+            agg.structuresCreated += res.structuresCreated;
+            agg.createdTerm = agg.createdTerm || res.createdTerm;
+            if (res.termName) agg.termName = res.termName;
+            if (res.termYear !== undefined) agg.termYear = res.termYear;
+            for (const e of res.errors) {
+              agg.errors.push({ row: e.row + o, reason: e.reason });
+              rowResults.push({ row: e.row + o, kind: "fee", status: "error", reason: e.reason });
+            }
+            for (const r of res.resolutions) {
+              agg.resolutions.push({ ...r, row: r.row + o });
+              rowResults.push({ row: r.row + o, kind: "fee", status: "created" });
+            }
+          } catch (err: any) {
+            ok = false;
+            fileError = err?.message ?? String(err);
+            break;
+          }
+        }
+        summary.structuresCreated += agg.structuresCreated;
+        summary.errors += agg.errors.length;
+        result.fees = agg;
+      }
+
+      // ── Persist the run to Files/Import-Runs history ────────────────
+      if (ok) {
+        try {
+          await ctx.runMutation(internal.imports.recordImportRunInternal, {
+            schoolId,
+            fileName: file.fileName,
+            kind: file.kind,
+            ok,
+            summary,
+            rowResults,
+          });
+        } catch (err: any) {
+          // Never fail an import because history recording itself failed.
+          console.error("Failed to record import run:", err);
+        }
+      }
+
+      results.push({ fileName: file.fileName, kind: file.kind, ok, result, error: fileError });
+    }
+    return { files: results };
+  },
+});
+
+export const importAttendance = action({
+  args: {
+    schoolId: v.id("schools"),
+    date: v.float64(),
+    periodNumber: v.optional(v.number()),
+    records: v.array(v.object({ admNo: v.string(), status: v.union(v.literal("present"), v.literal("absent"), v.literal("late"), v.literal("excused")) })),
+  },
+  handler: async (ctx, { schoolId, date, periodNumber, records }) => {
+    let created = 0;
+    const errors: { row: number; reason: string }[] = [];
+    for (let i = 0; i < records.length; i++) {
+      const r = records[i];
+      try {
+        const student = await ctx.runQuery(internal.imports.getStudentByAdmNo, { schoolId, admNo: r.admNo });
+        if (!student) { errors.push({ row: i + 1, reason: `Student ${r.admNo} not found` }); continue; }
+        const dayStart = new Date(date); dayStart.setHours(0,0,0,0);
+        await ctx.runMutation(internal.imports.upsertAttendance, {
+          schoolId, classId: student.classId, studentId: student._id, date: dayStart.getTime(), status: r.status, markedBy: "import",
+        });
+        created++;
+      } catch (err: any) {
+        errors.push({ row: i + 1, reason: err.message ?? String(err) });
+      }
+    }
+    return { created, errors };
+  },
+});
+
+export const importFeePayments = action({
+  args: {
+    schoolId: v.id("schools"),
+    rows: v.array(v.object({
+      admNo: v.string(), amount: v.number(), method: v.string(),
+      date: v.optional(v.number()), reference: v.optional(v.string()),
+      termName: v.optional(v.string()), termYear: v.optional(v.number()),
+    })),
+  },
+  handler: async (ctx, { schoolId, rows }) => {
+    let created = 0;
+    const errors: { row: number; reason: string }[] = [];
+    for (let o = 0; o < rows.length; o += IMPORT_CHUNK) {
+      const chunk = rows.slice(o, o + IMPORT_CHUNK);
+      try {
+        const res = await ctx.runMutation(internal.imports.importFeePaymentsInternal, {
+          schoolId,
+          rows: chunk,
+        });
+        created += res.created;
+        for (const e of res.errors) errors.push({ row: e.row + o, reason: e.reason });
+      } catch (err: any) {
+        errors.push({ row: o + 1, reason: err?.message ?? String(err) });
+      }
+    }
+    return { created, skipped: 0, errors };
+  },
+});
+
+export const importSubjects = action({
+  args: {
+    schoolId: v.id("schools"),
+    rows: v.array(v.object({ name: v.string(), code: v.string(), level: v.string() })),
+  },
+  handler: async (ctx, { schoolId, rows }) => {
+    let created = 0;
+    const errors: { row: number; reason: string }[] = [];
+    for (let o = 0; o < rows.length; o += IMPORT_CHUNK) {
+      const chunk = rows.slice(o, o + IMPORT_CHUNK);
+      try {
+        const res = await ctx.runMutation(internal.imports.importSubjectsInternal, {
+          schoolId,
+          rows: chunk,
+        });
+        created += res.created;
+        for (const e of res.errors) errors.push({ row: e.row + o, reason: e.reason });
+      } catch (err: any) {
+        errors.push({ row: o + 1, reason: err?.message ?? String(err) });
+      }
+    }
+    return { created, skipped: 0, errors };
+  },
+});
+
+export const importClasses = action({
+  args: {
+    schoolId: v.id("schools"),
+    rows: v.array(v.object({ className: v.string(), streamName: v.optional(v.string()) })),
+  },
+  handler: async (ctx, { schoolId, rows }) => {
+    let classesCreated = 0;
+    let streamsCreated = 0;
+    const errors: { row: number; reason: string }[] = [];
+    for (let o = 0; o < rows.length; o += IMPORT_CHUNK) {
+      const chunk = rows.slice(o, o + IMPORT_CHUNK);
+      try {
+        const res = await ctx.runMutation(internal.imports.importClassesInternal, {
+          schoolId,
+          rows: chunk,
+        });
+        classesCreated += res.classesCreated;
+        streamsCreated += res.streamsCreated;
+        for (const e of res.errors) errors.push({ row: e.row + o, reason: e.reason });
+      } catch (err: any) {
+        errors.push({ row: o + 1, reason: err?.message ?? String(err) });
+      }
+    }
+    return { classesCreated, streamsCreated, skipped: 0, errors };
+  },
+});
+
+export const importTerms = action({
+  args: {
+    schoolId: v.id("schools"),
+    rows: v.array(v.object({
+      name: v.string(), year: v.number(),
+      startDate: v.number(), endDate: v.number(),
+    })),
+  },
+  handler: async (ctx, { schoolId, rows }) => {
+    let termsCreated = 0;
+    let academicYearsCreated = 0;
+    const errors: { row: number; reason: string }[] = [];
+    for (let o = 0; o < rows.length; o += IMPORT_CHUNK) {
+      const chunk = rows.slice(o, o + IMPORT_CHUNK);
+      try {
+        const res = await ctx.runMutation(internal.imports.importTermsInternal, {
+          schoolId,
+          rows: chunk,
+        });
+        termsCreated += res.termsCreated;
+        academicYearsCreated += res.academicYearsCreated;
+        for (const e of res.errors) errors.push({ row: e.row + o, reason: e.reason });
+      } catch (err: any) {
+        errors.push({ row: o + 1, reason: err?.message ?? String(err) });
+      }
+    }
+    return { termsCreated, academicYearsCreated, skipped: 0, errors };
+  },
+});
 

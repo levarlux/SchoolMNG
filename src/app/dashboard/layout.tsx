@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { RequireAuth } from "@/components/require-auth";
 import { DashboardLayout } from "@/components/dashboard-layout";
+import { PaywallWrapper } from "@/components/paywall";
 import { useIsSuperadmin } from "@/lib/use-admin";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -21,7 +22,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <RequireAuth>
-      <DashboardLayout>{children}</DashboardLayout>
+      <PaywallWrapper>
+        <DashboardLayout>{children}</DashboardLayout>
+      </PaywallWrapper>
     </RequireAuth>
   );
 }

@@ -4,7 +4,7 @@ import { internalQuery, internalMutation } from "./_generated/server";
 export const getStreamsNeedingBackfill = internalQuery({
   args: {},
   handler: async (ctx) => {
-    const streams = await ctx.db.query("streams").collect();
+    const streams = await ctx.db.query("streams").take(5000);
     return streams.filter((s) => !s.schoolId).map((s) => ({ id: s._id, classId: s.classId }));
   },
 });

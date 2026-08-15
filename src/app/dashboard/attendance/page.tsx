@@ -5,12 +5,17 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
-import { Loader2, CheckCircle2, XCircle, Clock, AlertCircle, Save } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, AlertCircle, Save, Download, Upload } from "lucide-react";
 import { toast } from "sonner";
+import { exportToCsv } from "@/lib/csv-export";
+import { useRole, isLeadershipRole } from "@/lib/use-role";
+import { ImportStudio } from "@/components/import-studio";
+import { LineChart, DoughnutChart, HorizontalBarChart, EmptyChart } from "@/components/charts";
 
 const STATUS_OPTIONS = [
   { value: "present", label: "Present", icon: CheckCircle2, color: "text-green-600" },
@@ -25,8 +30,15 @@ function todayString() {
 
 export default function AttendancePage() {
   const school = useSchool();
+  const role = useRole();
+  const isLeadership = isLeadershipRole(role);
+  const [showImport, setShowImport] = useState(false);
   const classes = useQuery(api.classes.listBySchool, school ? { schoolId: school._id } : "skip");
   const markAttendance = useMutation(api.attendance.markAttendance);
+  const attAnalytics = useQuery(
+    api.schoolAnalytics.getAttendanceAnalytics,
+    school ? { schoolId: school._id } : "skip"
+  );
 
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedDate, setSelectedDate] = useState(todayString());
@@ -53,10 +65,10 @@ export default function AttendancePage() {
     setLoaded(true);
   }
 
-  if (classes === undefined) {
+  if (classes === undefined || attAnalytics === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <BrandLoader variant="book" size="md" />
       </div>
     );
   }
@@ -102,10 +114,72 @@ export default function AttendancePage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Attendance</h1>
-        <p className="text-muted-foreground mt-1">Mark daily class attendance</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Attendance</h1>
+          <p className="text-muted-foreground mt-1">Mark daily class attendance</p>
+        </div>
+        {isLeadership && (
+          <Button variant="outline" onClick={() => setShowImport(true)}>
+            <Upload className="h-4 w-4 mr-2" /> Import
+          </Button>
+        )}
       </div>
+
+      {/* ── Analytics ── */}
+      {(attAnalytics.trend.some((t) => t.total > 0) || attAnalytics.today.total > 0) && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <Card className="lg:col-span-2">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Attendance Rate Trend</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {attAnalytics.trend.some((t) => t.total > 0) ? (
+                <LineChart
+                  labels={attAnalytics.trend.map((t) => t.label)}
+                  datasets={[{ label: "Attendance %", data: attAnalytics.trend.map((t) => t.rate), color: "#10b981" }]}
+                  height={200}
+                  showArea
+                />
+              ) : (
+                <EmptyChart message="No attendance recorded yet" />
+              )}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base">Today&apos;s Status</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {attAnalytics.today.total > 0 ? (
+                <DoughnutChart
+                  labels={["Present", "Absent", "Late", "Excused"]}
+                  data={[attAnalytics.today.present, attAnalytics.today.absent, attAnalytics.today.late, attAnalytics.today.excused]}
+                  height={200}
+                />
+              ) : (
+                <EmptyChart message="No attendance taken today" />
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {attAnalytics.byClass.length > 0 && (
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Attendance by Class</CardTitle>
+            <CardDescription>Last 30 days — lowest first</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <HorizontalBarChart
+              labels={attAnalytics.byClass.map((c) => c.className)}
+              datasets={[{ label: "Attendance %", data: attAnalytics.byClass.map((c) => c.rate), color: "#10b981" }]}
+              height={Math.max(140, attAnalytics.byClass.length * 34)}
+            />
+          </CardContent>
+        </Card>
+      )}
 
       <div className="grid gap-4 md:grid-cols-3">
         <div>
@@ -128,9 +202,29 @@ export default function AttendancePage() {
           />
         </div>
         <div className="flex items-end">
-          <Button onClick={handleSave} disabled={!selectedClass || !students || students.length === 0}>
-            <Save className="h-4 w-4 mr-2" /> Save Attendance
-          </Button>
+          <div className="flex items-center gap-2 ml-auto">
+            {selectedClass && students && students.length > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  exportToCsv(
+                    students.map((s) => ({
+                      Name: `${s.firstName} ${s.lastName}`,
+                      "Adm No": s.admNo,
+                      Status: attendance[s._id] || "present",
+                    })),
+                    `attendance_${selectedDate}`
+                  );
+                }}
+              >
+                <Download className="h-4 w-4 mr-2" /> Export
+              </Button>
+            )}
+            <Button onClick={handleSave} disabled={!selectedClass || !students || students.length === 0}>
+              <Save className="h-4 w-4 mr-2" /> Save Attendance
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -198,6 +292,8 @@ export default function AttendancePage() {
           </CardContent>
         </Card>
       )}
+
+      <ImportStudio open={showImport} onClose={() => setShowImport(false)} />
     </div>
   );
 }

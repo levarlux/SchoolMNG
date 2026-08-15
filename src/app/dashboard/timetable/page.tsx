@@ -6,12 +6,13 @@ import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Loader2, Trash2, AlertTriangle } from "lucide-react";
+import { Plus, Trash2, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -49,7 +50,7 @@ export default function TimetablePage() {
   if (classes === undefined || subjects === undefined || timetable === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <BrandLoader variant="book" size="md" />
       </div>
     );
   }

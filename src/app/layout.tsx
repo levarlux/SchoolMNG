@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 import { Suspense } from "react";
 import { ClerkProviderWithRouter } from "@/components/clerk-provider-with-router";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { SchoolThemeProvider } from "@/components/school-theme-provider";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Toaster } from "sonner";
 import "./globals.css";
+import "@sentry/nextjs";
 
 export const metadata: Metadata = {
   title: "School Library Manager",
@@ -21,8 +26,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-background text-foreground antialiased">
-        <Suspense fallback={<div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh", background: "#0a0a0a", color: "#888", fontFamily: "system-ui, sans-serif" }}>Loading…</div>}>
+      <body className={`bg-background text-foreground antialiased ${inter.variable} font-sans`}>
+        <Suspense fallback={<BrandLoader variant="full" size="lg" />}>
           <ClerkProviderWithRouter>
             <ConvexClientProvider>
               <SchoolThemeProvider>

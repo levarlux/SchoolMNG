@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query, internalQuery } from "./_generated/server";
 import { requireAuth, requireSuperadmin } from "./helpers";
+import { api } from "./_generated/api";
 
 /**
  * Internal-only: look up admin by userId. No auth check — used by
@@ -100,15 +101,31 @@ export const create = mutation({
     email: v.string(),
   },
   handler: async (ctx, args) => {
-    await requireSuperadmin(ctx);
-    return await ctx.db.insert("admins", { ...args, role: "superadmin" });
+    const admin = await requireSuperadmin(ctx);
+    const id = await ctx.db.insert("admins", { ...args, role: "superadmin" });
+    await ctx.db.insert("platform_audit_logs", {
+      adminUserId: admin.userId,
+      adminEmail: admin.email,
+      action: "admin.create",
+      details: { userId: args.userId, email: args.email },
+      timestamp: Date.now(),
+    });
+    return id;
   },
 });
 
 export const remove = mutation({
   args: { id: v.id("admins") },
   handler: async (ctx, { id }) => {
-    await requireSuperadmin(ctx);
+    const admin = await requireSuperadmin(ctx);
+    const target = await ctx.db.get(id);
     await ctx.db.delete(id);
+    await ctx.db.insert("platform_audit_logs", {
+      adminUserId: admin.userId,
+      adminEmail: admin.email,
+      action: "admin.remove",
+      details: { removedUserId: target?.userId, removedEmail: target?.email },
+      timestamp: Date.now(),
+    });
   },
 });

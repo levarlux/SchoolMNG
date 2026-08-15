@@ -1,0 +1,561 @@
+﻿FirstName,LastName,Admission No,Class,Stream,Gender,Date of Birth,Admission Date,Status,Guardian Name,Relationship,Guardian Phone,Alternative Phone,Guardian Email,Home Address,Emergency Contact,Emergency Phone
+Gideon,Waweru,ADM-1001,Grade 1,A,Male,2020-03-22,2026-04-21,Active,Nathaniel Waweru,Father,0772 909 154,,,"Langas, Nakuru",Simon Wanjiku,0782 109 389
+George,Ndolo,ADM-1002,Grade 1,A,Male,2019-08-19,2026-01-17,Active,Vincent Ndolo,Father,0792 239 715,,vincent.ndolo@icloud.com,"Lanet, Kisumu",Sophia Sein,0792 792 512
+John,Njuguna,ADM-1003,Grade 1,A,Male,2020-12-19,2026-02-21,Active,Samuel Njuguna,Uncle,0751 492 293,,samuel.njuguna@yahoo.com,"South C, Nakuru",Lawrence Maina,0740 511 753
+Samuel,Hassan,ADM-1004,Grade 1,A,Male,2020-11-13,2026-11-20,Active,Catherine Hassan,Mother,0733 723 103,0722 217 412,,"Sekei, Kilifi",Samuel Githinji,0772 753 389
+Alice,Farah,ADM-1005,Grade 1,A,Female,2019-01-09,2026-01-07,Active,Kiplangat Farah,Father,0701 198 841,,kiplangat.farah@gmail.com,"Kiamunyi, Nakuru",Nicholas Mpaine,0762 230 474
+Anthony,Omar,ADM-1006,Grade 1,A,Male,2019-02-21,2026-07-08,Active,Caleb Omar,Father,0751 125 171,,caleb.omar@icloud.com,"Kiamunyi, Mombasa",Priscilla Natepo,0772 415 236
+Abigail,Mutuku,ADM-1007,Grade 1,A,Female,2020-07-26,2026-03-21,Active,Joshua Mutuku,Father,0772 294 268,,joshua.mutuku@icloud.com,"Section 58, Arusha",Joshua Makokha,0740 550 883
+Eric,Odera,ADM-1008,Grade 1,A,Male,2020-11-05,2026-07-11,Active,Thomas Odera,Father,0701 209 964,0772 412 893,,"Milimani Kisumu, Uasin Gishu",Caleb Baariu,0762 763 572
+Dorcas,Bakari,ADM-1009,Grade 1,A,Female,2020-07-07,2026-11-09,Active,Damaris Bakari,Mother,0711 240 383,0762 570 499,,"Lanet, Uasin Gishu",Hillary Kioko,0733 401 276
+Kevin,Pashua,ADM-1010,Grade 1,A,Male,2020-03-16,2026-01-02,Active,Frank Pashua,Father,0792 778 743,,frank.pashua@outlook.com,"Kahawa Wendani, Kakamega",Gloria Baariu,0792 620 869
+Winfred,Bakari,ADM-1011,Grade 1,A,Female,2020-03-23,2026-08-16,Active,Julius Bakari,Father,0762 885 820,,julius.bakari@protonmail.com,"Huruma, Mombasa",Hillary Kilonzo,0712 296 747
+Diana,Khaemba,ADM-1012,Grade 1,A,Female,2020-12-04,2026-06-12,Active,Irene Khaemba,Guardian,0751 167 188,,irene.khaemba@yahoo.com,"Thika Road, Nairobi",Michael Kioko,0772 675 917
+Purity,Nzioka,ADM-1013,Grade 1,A,Female,2020-01-17,2026-05-23,Active,Peter Nzioka,Father,0711 495 485,0733 333 150,,"Milimani Kisumu, Arusha",David Mganga,0792 212 895
+Eric,Mutoro,ADM-1014,Grade 1,A,Male,2019-08-14,2026-12-12,Active,Anthony Mutoro,Father,0733 394 331,0792 398 915,anthony.mutoro@icloud.com,"Njiro, Garissa",Dennis Mugo,0711 384 342
+Yvonne,Kariuki,ADM-1015,Grade 1,A,Female,2019-05-02,2026-08-02,Active,Frank Kariuki,Father,0701 994 761,,frank.kariuki@protonmail.com,"Bahati, Nakuru",Felix Achieng,0740 813 486
+John,Lugalia,ADM-1016,Grade 1,A,Male,2019-08-08,2026-04-02,Active,James Lugalia,Father,0733 680 529,0701 183 796,james.lugalia@gmail.com,"Bahati, Nairobi",Stephen Maundu,0772 282 921
+Fridah,Oluoch,ADM-1017,Grade 1,A,Female,2020-04-24,2026-06-07,Active,Dennis Oluoch,Father,0772 342 358,0792 695 294,dennis.oluoch@gmail.com,"Njiro, Kakamega",Ibrahim Chepkirui,0751 647 676
+Charity,Sichangi,ADM-1018,Grade 1,A,Female,2019-10-06,2026-06-10,Active,Moses Sichangi,Father,0733 409 398,0792 675 619,moses.sichangi@gmail.com,"Umoja, Arusha",Trevor Achieng,0701 589 502
+Stephen,Kinyua,ADM-1019,Grade 1,A,Male,2019-01-27,2026-10-10,Active,Amos Kinyua,Father,0740 694 528,0712 804 593,amos.kinyua@gmail.com,"Naka, Kisumu",Samuel Mwinyi,0782 104 844
+James,Mganga,ADM-1020,Grade 1,A,Male,2019-05-22,2026-07-12,Active,Alex Mganga,Father,0722 168 862,,alex.mganga@yahoo.com,"Kaptembwo, Nakuru",Agnes Nthiga,0751 948 788
+Brenda,Oduor,ADM-1021,Grade 1,A,Female,2020-07-08,2026-12-11,Active,Ian Oduor,Father,0762 978 969,,ian.oduor@yahoo.com,"Huruma, Nakuru",Yvonne Yusuf,0762 487 777
+Kiplangat,Wafula,ADM-1022,Grade 1,A,Male,2019-11-01,2026-11-08,Active,Caleb Wafula,Grandfather,0722 270 990,0701 897 350,caleb.wafula@protonmail.com,"Sakina, Nakuru",Irene Owuor,0792 597 870
+Karen,Makokha,ADM-1023,Grade 1,A,Female,2020-05-19,2026-09-03,Active,Kennedy Makokha,Father,0733 925 688,,,"Section 58, Arusha",Edna Adan,0722 993 722
+Tabitha,Ndungu,ADM-1024,Grade 1,A,Female,2020-05-20,2026-03-03,Active,Catherine Ndungu,Mother,0792 329 588,0772 889 514,catherine.ndungu@outlook.com,"Annex, Kakamega",Daniel Nthiga,0711 758 897
+Mark,Kioko,ADM-1025,Grade 1,A,Male,2020-04-05,2026-08-06,Active,Mark Kioko,Father,0792 101 330,0722 692 268,mark.kioko@gmail.com,"Ruiru, Kilifi",Michael Kiprop,0701 676 184
+Eric,Obiero,ADM-1026,Grade 1,A,Male,2019-05-10,2026-11-09,Active,Beatrice Obiero,Mother,0762 555 979,0733 672 111,,"Bahati, Makueni",Hellen Maina,0782 481 829
+Michael,Ndolo,ADM-1027,Grade 1,A,Male,2020-03-12,2026-05-08,Active,Patrick Ndolo,Father,0701 829 788,0701 250 949,patrick.ndolo@protonmail.com,"Shabab, Nakuru",Susan Mbithi,0712 905 156
+Lawrence,Chemtai,ADM-1028,Grade 1,A,Male,2019-05-02,2026-03-19,Active,Brenda Chemtai,Mother,0712 536 181,,brenda.chemtai@icloud.com,"Section 58, Garissa",Patrick Khaemba,0762 712 139
+Emmanuel,Njenga,ADM-1029,Grade 1,A,Male,2020-11-17,2026-11-14,Active,Frank Njenga,Father,0740 611 600,,frank.njenga@outlook.com,"Lanet, Bungoma",Peninah Salim,0772 799 866
+Yvonne,Karanja,ADM-1030,Grade 1,A,Female,2019-01-23,2026-11-04,Active,Rebecca Karanja,Grandmother,0782 659 260,,rebecca.karanja@protonmail.com,"Sekei, Nakuru",Agnes Nzomo,0740 314 386
+Yvonne,Njeri,ADM-1031,Grade 1,A,Female,2020-06-14,2026-10-05,Active,Donald Njeri,Uncle,0792 393 863,0701 870 195,donald.njeri@icloud.com,"Annex, Bungoma",Mark Chepkoech,0733 823 229
+Esther,Mutiso,ADM-1032,Grade 1,A,Female,2019-03-20,2026-06-17,Active,Lawrence Mutiso,Father,0751 118 287,,,"Kimandolu, Garissa",Janet Lugalia,0701 715 407
+Daniel,Noor,ADM-1033,Grade 1,A,Male,2019-02-02,2026-11-27,Active,Emily Noor,Guardian,0782 161 426,0762 974 985,emily.noor@protonmail.com,"Embakasi, Uasin Gishu",Purity Abdi,0722 202 146
+Alice,Metto,ADM-1034,Grade 1,A,Female,2020-07-09,2026-09-13,Active,Harrison Metto,Father,0740 840 663,0751 668 727,harrison.metto@outlook.com,"South C, Machakos",Veronica Ndolo,0751 393 466
+Maureen,Muthoka,ADM-1035,Grade 1,B,Female,2019-05-11,2026-01-28,Active,Zipporah Muthoka,Mother,0701 689 208,,zipporah.muthoka@icloud.com,"Embakasi, Garissa",Rebecca Kitonga,0712 389 484
+Alice,Abdi,ADM-1036,Grade 1,B,Female,2019-05-28,2026-05-04,Active,Andrew Abdi,Father,0751 158 280,,andrew.abdi@protonmail.com,"Annex, Machakos",Shalom Owino,0782 666 124
+Kipchoge,Akoth,ADM-1037,Grade 1,B,Male,2019-04-03,2026-11-18,Active,Doreen Akoth,Mother,0782 500 486,0740 291 194,doreen.akoth@yahoo.com,"Sakina, Kiambu",Monica Oduor,0733 756 531
+Abigail,Yusuf,ADM-1038,Grade 1,B,Female,2020-10-14,2026-08-17,Active,Peter Yusuf,Father,0722 139 490,0711 748 787,peter.yusuf@yahoo.com,"Langas, Nakuru",Emily Ruto,0751 285 356
+Peter,Choge,ADM-1039,Grade 1,B,Male,2019-01-06,2026-01-09,Active,Daniel Choge,Father,0701 469 587,,,"Kaptembwo, Makueni",Isaac Mpaine,0792 275 349
+Joshua,Nzioka,ADM-1040,Grade 1,B,Male,2019-07-28,2026-04-15,Active,Moses Nzioka,Father,0701 410 180,,,"Donholm, Uasin Gishu",Vincent Nzioka,0782 542 227
+Winnie,Suleiman,ADM-1041,Grade 1,B,Female,2020-04-21,2026-07-15,Active,Charity Suleiman,Mother,0711 491 789,0782 106 576,charity.suleiman@outlook.com,"Pioneer, Uasin Gishu",William Chepkoech,0751 831 390
+John,Pekeri,ADM-1042,Grade 1,B,Male,2020-05-17,2026-02-27,Active,Alex Pekeri,Father,0701 769 209,0712 939 938,alex.pekeri@yahoo.com,"Lake View, Nairobi",Ibrahim Langat,0751 136 634
+Judith,Njuguna,ADM-1043,Grade 1,B,Female,2019-04-22,2026-08-27,Active,Nathaniel Njuguna,Father,0751 910 588,0712 810 200,nathaniel.njuguna@icloud.com,"Olasiti, Machakos",Wesley Noor,0772 985 158
+Joyce,Mutoro,ADM-1044,Grade 1,B,Female,2020-09-15,2026-12-18,Active,Kennedy Mutoro,Father,0712 966 851,0792 396 656,kennedy.mutoro@protonmail.com,"Migosi, Nakuru",Zachary Igweta,0722 482 148
+Yvonne,Choge,ADM-1045,Grade 1,B,Female,2019-01-04,2026-09-19,Active,Kennedy Choge,Father,0701 113 283,0740 421 381,kennedy.choge@outlook.com,"Sakina, Nakuru",Nicholas Mugambi,0782 363 833
+Timothy,Khisa,ADM-1046,Grade 1,B,Male,2020-09-16,2026-08-08,Active,Simon Khisa,Father,0733 788 876,0792 193 471,simon.khisa@outlook.com,"Lake View, Nakuru",Charles Kamau,0733 253 527
+Charles,Njeru,ADM-1047,Grade 1,B,Male,2019-05-15,2026-06-20,Active,Caleb Njeru,Father,0782 496 309,,,"Bahati, Nakuru",Charles Bunoro,0782 367 443
+Vincent,Wamalwa,ADM-1048,Grade 1,B,Male,2020-05-24,2026-03-23,Active,Lawrence Wamalwa,Father,0711 968 534,0792 506 685,lawrence.wamalwa@gmail.com,"Baraka, Nairobi",Maureen Kiptoo,0740 742 749
+Isaac,Mwirigi,ADM-1049,Grade 1,B,Male,2019-06-06,2026-04-26,Active,Nathaniel Mwirigi,Father,0772 783 567,0740 966 843,,"Kimandolu, Uasin Gishu",Gladys Otieno,0712 224 385
+David,Kaelo,ADM-1050,Grade 1,B,Male,2020-05-23,2026-12-22,Active,Diana Kaelo,Aunt,0782 261 474,0701 294 797,diana.kaelo@outlook.com,"Kayole, Nairobi",Gloria Ruto,0711 843 320
+Purity,Kioko,ADM-1051,Grade 1,B,Female,2019-05-27,2026-12-28,Active,Isaac Kioko,Father,0751 429 252,0792 457 529,isaac.kioko@outlook.com,"Kahawa Wendani, Nakuru",William Odhiambo,0762 523 299
+Thomas,Korir,ADM-1052,Grade 1,B,Male,2020-10-07,2026-07-18,Active,Caleb Korir,Father,0792 762 867,0733 113 324,caleb.korir@yahoo.com,"Lake View, Garissa",Cynthia Nandwa,0772 195 432
+Zachary,Omollo,ADM-1053,Grade 1,B,Male,2020-03-12,2026-01-18,Active,John Omollo,Father,0762 132 196,,john.omollo@protonmail.com,"Langas, Kilifi",Patrick Mwakisha,0733 849 831
+Sharon,Kombo,ADM-1054,Grade 1,B,Female,2020-06-18,2026-12-26,Active,Godfrey Kombo,Father,0772 623 406,0762 543 192,,"Kapsoya, Uasin Gishu",John Kiprop,0762 357 944
+Luke,Bunoro,ADM-1055,Grade 1,B,Male,2020-12-16,2026-05-16,Active,Alex Bunoro,Father,0782 410 103,0792 349 272,alex.bunoro@outlook.com,"Kayole, Nakuru",Peter Masinde,0722 228 537
+Dorcas,Nassor,ADM-1056,Grade 1,B,Female,2019-01-09,2026-09-11,Active,Ian Nassor,Father,0712 986 989,0792 954 513,,"Kimandolu, Uasin Gishu",Moses Mugo,0762 303 937
+Wesley,Bakari,ADM-1057,Grade 1,B,Male,2020-01-14,2026-05-26,Active,George Bakari,Father,0792 513 175,0733 591 754,,"Njiro, Kisumu",Zachary Salim,0711 322 315
+Winfred,Odera,ADM-1058,Grade 1,B,Female,2019-09-17,2026-09-20,Active,Lawrence Odera,Father,0711 413 952,,,"Milimani, Mombasa",Felix Karanja,0751 260 391
+Trevor,Syombua,ADM-1059,Grade 1,B,Male,2020-01-28,2026-04-19,Active,Patrick Syombua,Uncle,0711 857 473,,patrick.syombua@gmail.com,"Obunga, Mombasa",Ibrahim Wambua,0712 638 749
+Nancy,Musalia,ADM-1060,Grade 1,B,Female,2019-04-07,2026-05-21,Active,Elijah Musalia,Father,0712 878 677,0782 516 111,elijah.musalia@icloud.com,"Olasiti, Kakamega",Amos Tianai,0792 385 320
+Eric,Chepkirui,ADM-1061,Grade 1,B,Male,2019-01-06,2026-03-18,Active,Caleb Chepkirui,Father,0733 605 362,0751 524 780,caleb.chepkirui@yahoo.com,"Kasarani, Kakamega",Priscilla Bakari,0701 951 533
+Faith,Owino,ADM-1062,Grade 1,B,Female,2019-03-02,2026-10-14,Active,Kevin Owino,Father,0712 658 181,0751 833 701,kevin.owino@outlook.com,"Lake View, Uasin Gishu",John Kitonga,0782 484 375
+Julia,Kaelo,ADM-1063,Grade 1,B,Female,2019-05-19,2026-05-16,Active,Lilian Kaelo,Mother,0782 145 266,,,"Obunga, Garissa",Winfred Owino,0772 429 409
+Andrew,Suleiman,ADM-1064,Grade 1,B,Male,2020-04-15,2026-04-16,Active,Beth Suleiman,Guardian,0712 279 523,,beth.suleiman@yahoo.com,"Milimani Kisumu, Arusha",Edna Makhoha,0772 444 385
+Julius,Mutiso,ADM-1065,Grade 1,B,Male,2020-10-02,2026-07-03,Active,Frank Mutiso,Father,0751 778 939,0762 382 205,,"Lanet, Nakuru",Veronica Gatwiri,0711 117 447
+Nancy,Abdi,ADM-1066,Grade 1,B,Female,2019-04-11,2026-07-11,Active,Karen Abdi,Guardian,0762 611 267,0712 644 555,karen.abdi@icloud.com,"Donholm, Kisumu",Victor Maina,0762 461 752
+Joyce,Kitonga,ADM-1067,Grade 1,B,Female,2019-12-11,2026-06-27,Active,Anthony Kitonga,Father,0733 466 645,,,"Annex, Nairobi",Fridah Wanjala,0722 625 610
+Brenda,Adan,ADM-1068,Grade 1,C,Female,2019-02-26,2026-04-10,Active,Susan Adan,Aunt,0701 973 480,0711 900 739,,"Kiamunyi, Kisumu",Eunice Nasimiyu,0772 784 516
+Purity,Mwende,ADM-1069,Grade 1,C,Female,2019-07-15,2026-08-28,Active,Edwin Mwende,Father,0701 866 298,0722 454 336,edwin.mwende@yahoo.com,"Milimani, Nakuru",Amara Kimutai,0712 555 240
+Judith,Khisa,ADM-1070,Grade 1,C,Female,2019-12-04,2026-01-26,Active,Amos Khisa,Grandfather,0772 973 966,,amos.khisa@protonmail.com,"Lake View, Nakuru",Doreen Mburu,0712 647 603
+Stephen,Wekesa,ADM-1071,Grade 1,C,Male,2019-11-21,2026-09-11,Active,Charity Wekesa,Mother,0733 637 639,,charity.wekesa@gmail.com,"Bahati, Bungoma",Amos Kaelo,0722 982 336
+Martin,Bunoro,ADM-1072,Grade 1,C,Male,2020-07-26,2026-06-10,Active,Emmanuel Bunoro,Father,0751 825 658,0762 346 574,,"Kiamunyi, Kakamega",Rebecca Waweru,0782 647 703
+Cynthia,Zawadi,ADM-1073,Grade 1,C,Female,2019-06-14,2026-01-28,Active,Susan Zawadi,Mother,0740 780 104,,susan.zawadi@gmail.com,"Umoja, Kakamega",Frank Wanjiku,0740 847 404
+Hillary,Njenga,ADM-1074,Grade 1,C,Male,2019-01-01,2026-02-06,Active,Frank Njenga,Father,0701 538 387,0701 625 934,frank.njenga@gmail.com,"South B, Mombasa",Edwin Namukuru,0751 340 581
+Amara,Mugambi,ADM-1075,Grade 1,C,Female,2019-06-13,2026-07-16,Active,Sophia Mugambi,Mother,0751 118 178,,sophia.mugambi@icloud.com,"Nyalenda, Arusha",Brian Kilonzo,0722 760 371
+Charles,Kigen,ADM-1076,Grade 1,C,Male,2019-09-10,2026-12-02,Active,Faith Kigen,Aunt,0740 123 659,,faith.kigen@yahoo.com,"Bahati, Nairobi",William Owino,0740 955 490
+David,Wanjala,ADM-1077,Grade 1,C,Male,2019-02-21,2026-07-23,Active,George Wanjala,Father,0772 946 749,,george.wanjala@icloud.com,"Lake View, Kilifi",Fridah Njuguna,0740 988 835
+Lawrence,Ciawi,ADM-1078,Grade 1,C,Male,2019-12-11,2026-09-12,Active,Abigail Ciawi,Guardian,0751 435 955,,abigail.ciawi@icloud.com,"Kondele, Bungoma",Harrison Anyango,0722 786 476
+Benjamin,Okello,ADM-1079,Grade 1,C,Male,2020-12-08,2026-03-06,Active,Andrew Okello,Father,0701 205 312,0711 821 372,,"Milimani, Nakuru",Eric Mutua,0722 327 593
+Samuel,Sironka,ADM-1080,Grade 1,C,Male,2019-10-08,2026-08-19,Active,Martin Sironka,Father,0751 152 855,0782 320 633,,"Huruma, Kakamega",Maureen Kamau,0762 841 239
+Nicholas,Makokha,ADM-1081,Grade 1,C,Male,2020-05-05,2026-01-24,Active,Veronica Makokha,Mother,0751 249 497,0711 124 579,veronica.makokha@yahoo.com,"Section 58, Kiambu",Purity Sein,0711 286 765
+Rebecca,Ndolo,ADM-1082,Grade 1,C,Female,2019-08-18,2026-08-23,Active,Ian Ndolo,Father,0722 666 532,,,"Kahawa Wendani, Nairobi",Diana Mganga,0792 657 146
+William,Masinde,ADM-1083,Grade 1,C,Male,2020-06-19,2026-05-27,Active,Shalom Masinde,Guardian,0701 400 329,0762 993 132,shalom.masinde@outlook.com,"Umoja, Kakamega",Fridah Leshan,0772 531 237
+Victor,Maina,ADM-1084,Grade 1,C,Male,2020-03-16,2026-08-15,Active,Emmanuel Maina,Uncle,0701 826 613,0772 391 932,,"Pioneer, Garissa",Brenda Ogot,0740 939 691
+Mercy,Mburu,ADM-1085,Grade 1,C,Female,2020-10-24,2026-11-12,Active,Moses Mburu,Uncle,0711 996 428,0740 355 702,,"Donholm, Kisumu",Peninah Mwende,0792 812 557
+Timothy,Kaelo,ADM-1086,Grade 1,C,Male,2020-04-05,2026-07-28,Active,Wesley Kaelo,Father,0711 737 535,,wesley.kaelo@icloud.com,"Naka, Uasin Gishu",David Chepkoech,0792 532 768
+Dorcas,Mwinyi,ADM-1087,Grade 1,C,Female,2020-08-26,2026-06-10,Active,Harrison Mwinyi,Father,0751 713 547,,harrison.mwinyi@outlook.com,"Lanet, Arusha",Eunice Ciawi,0762 231 985
+Frank,Ndungu,ADM-1088,Grade 1,C,Male,2019-08-19,2026-01-25,Active,Alex Ndungu,Father,0782 905 350,0751 905 388,alex.ndungu@icloud.com,"Kapsoya, Kilifi",Emily Barasa,0751 556 263
+Faith,Githinji,ADM-1089,Grade 1,C,Female,2019-03-17,2026-07-26,Active,Gloria Githinji,Aunt,0792 601 695,0782 719 770,gloria.githinji@yahoo.com,"Nyawita, Mombasa",Ian Mganga,0701 713 497
+Alex,Akoth,ADM-1090,Grade 1,C,Male,2019-10-23,2026-09-09,Active,Godfrey Akoth,Father,0762 906 906,0701 335 757,,"Milimani Estate, Kilifi",Alice Adan,0751 681 878
+Nathaniel,Wekesa,ADM-1091,Grade 1,C,Male,2020-05-11,2026-05-13,Active,Francis Wekesa,Father,0740 106 912,,francis.wekesa@protonmail.com,"Kaptembwo, Mombasa",Zipporah Kiptoo,0733 503 597
+Olivia,Pekeri,ADM-1092,Grade 1,C,Female,2020-07-24,2026-07-17,Active,Kiplangat Pekeri,Father,0762 816 895,0772 644 741,,"Annex, Kiambu",Gloria Ndungu,0772 387 800
+Winfred,Muthoka,ADM-1093,Grade 1,C,Female,2019-02-22,2026-05-14,Active,Joshua Muthoka,Father,0712 191 523,,joshua.muthoka@yahoo.com,"Naka, Kilifi",Andrew Nassor,0712 425 389
+Nicholas,Namukuru,ADM-1094,Grade 1,C,Male,2020-10-28,2026-04-05,Active,Rebecca Namukuru,Mother,0701 738 271,0772 110 129,,"Pioneer, Kakamega",Ian Namukuru,0733 361 763
+Faith,Mutua,ADM-1095,Grade 1,C,Female,2020-01-10,2026-03-16,Active,David Mutua,Father,0751 710 832,,david.mutua@outlook.com,"Naka, Kilifi",Mark Mburu,0701 642 196
+Nancy,Nandwa,ADM-1096,Grade 1,C,Female,2020-03-03,2026-04-10,Active,Felix Nandwa,Father,0701 836 519,0722 901 682,felix.nandwa@gmail.com,"Umoja, Mombasa",Kiplangat Karanja,0782 787 450
+Judith,Kosgei,ADM-1097,Grade 1,C,Female,2020-07-03,2026-09-13,Active,Joseph Kosgei,Father,0712 501 874,0722 276 843,joseph.kosgei@outlook.com,"Sakina, Kiambu",Damaris Mwakisha,0733 471 902
+John,Metto,ADM-1098,Grade 1,C,Male,2019-03-01,2026-03-15,Active,Edna Metto,Grandmother,0712 454 606,0711 929 967,edna.metto@icloud.com,"Baraka, Nakuru",Ibrahim Lugalia,0740 514 396
+Dorcas,Karanja,ADM-1099,Grade 1,C,Female,2019-04-06,2026-01-17,Active,Ian Karanja,Grandfather,0712 907 586,0701 333 527,,"Elgon View, Mombasa",Tabitha Chebet,0740 263 215
+Faith,Choge,ADM-1100,Grade 1,C,Female,2020-09-13,2026-11-04,Active,Amara Choge,Mother,0722 217 613,0782 747 797,amara.choge@yahoo.com,"Thika Road, Kilifi",Kiplangat Abdi,0701 683 103
+Eric,Musyoka,ADM-1101,Grade 2,A,Male,2018-01-16,2026-09-06,Active,Moses Musyoka,Father,0782 944 637,,,"Umoja, Kakamega",Brian Owuor,0751 842 126
+Elijah,Natepo,ADM-1102,Grade 2,A,Male,2018-12-03,2025-09-20,Active,Trevor Natepo,Father,0762 137 447,0711 586 237,trevor.natepo@icloud.com,"South C, Kakamega",Cynthia Waweru,0712 818 355
+Alex,Tanui,ADM-1103,Grade 2,A,Male,2018-11-05,2026-07-07,Active,Purity Tanui,Mother,0792 290 217,0792 268 949,purity.tanui@protonmail.com,"Kimandolu, Makueni",Yvonne Yusuf,0782 526 774
+Emmanuel,Ndolo,ADM-1104,Grade 2,A,Male,2018-10-18,2025-03-24,Active,Julia Ndolo,Mother,0701 659 299,,julia.ndolo@yahoo.com,"Kimandolu, Kilifi",Doreen Sein,0762 976 199
+Magdalene,Mpaine,ADM-1105,Grade 2,A,Female,2019-12-19,2026-08-07,Active,Maureen Mpaine,Mother,0722 378 412,,maureen.mpaine@yahoo.com,"Kimumu, Nakuru",Janet Owino,0740 192 958
+Gideon,Tanui,ADM-1106,Grade 2,A,Male,2019-12-05,2026-02-18,Active,Joshua Tanui,Father,0740 183 784,0701 700 778,,"Kapsoya, Kakamega",Vincent Adhiambo,0792 236 892
+Rachael,Kiprop,ADM-1107,Grade 2,A,Female,2019-03-21,2026-04-09,Active,Gideon Kiprop,Father,0751 890 545,0772 647 905,gideon.kiprop@yahoo.com,"South C, Machakos",Mercy Adhiambo,0701 990 690
+Harrison,Kioko,ADM-1108,Grade 2,A,Male,2018-09-04,2025-04-20,Active,Eric Kioko,Father,0782 838 749,0772 454 260,,"Kaptembwo, Kakamega",Dorcas Suleiman,0722 325 776
+Tabitha,Bunoro,ADM-1109,Grade 2,A,Female,2019-02-19,2025-04-15,Active,Frank Bunoro,Father,0782 141 918,,frank.bunoro@icloud.com,"Bahati, Machakos",Susan Namukuru,0740 541 979
+Andrew,Leshan,ADM-1110,Grade 2,A,Male,2018-09-02,2025-11-04,Active,Maureen Leshan,Guardian,0712 458 676,,maureen.leshan@outlook.com,"Sekei, Nakuru",Gideon Omondi,0740 825 801
+Samuel,Nzioka,ADM-1111,Grade 2,A,Male,2019-08-14,2025-01-18,Active,Joseph Nzioka,Father,0782 671 414,,joseph.nzioka@yahoo.com,"Kaptembwo, Garissa",Stephen Mwanzia,0740 139 887
+Diana,Njeri,ADM-1112,Grade 2,A,Female,2018-07-12,2026-01-15,Active,Yvonne Njeri,Mother,0772 420 722,0751 116 657,yvonne.njeri@protonmail.com,"Bahati, Nakuru",Gladys Tianai,0751 642 375
+Joyce,Njoroge,ADM-1113,Grade 2,A,Female,2018-02-13,2026-04-20,Active,Zipporah Njoroge,Mother,0722 158 168,,,"Milimani, Machakos",William Githinji,0751 231 973
+Fridah,Kimeu,ADM-1114,Grade 2,A,Female,2019-09-11,2026-06-05,Active,Julius Kimeu,Father,0712 944 963,,,"Njiro, Nakuru",Sharon Mbithi,0711 187 161
+Caleb,Kioko,ADM-1115,Grade 2,A,Male,2018-01-23,2025-03-24,Active,Nathaniel Kioko,Father,0712 207 904,0772 924 615,nathaniel.kioko@outlook.com,"Shabab, Nakuru",Peter Odera,0712 158 770
+Hillary,Odhiambo,ADM-1116,Grade 2,A,Male,2018-10-20,2025-04-16,Active,Charles Odhiambo,Uncle,0772 638 608,0733 637 700,charles.odhiambo@outlook.com,"Nyawita, Nakuru",Julia Wambua,0792 410 503
+Martin,Zawadi,ADM-1117,Grade 2,A,Male,2019-02-23,2025-02-14,Active,Charles Zawadi,Grandfather,0711 659 940,0792 226 738,charles.zawadi@yahoo.com,"Sakina, Uasin Gishu",Kipchoge Abdi,0711 136 478
+Alex,Mwangi,ADM-1118,Grade 2,A,Male,2018-03-11,2026-09-07,Active,Ibrahim Mwangi,Father,0762 858 546,0722 839 922,ibrahim.mwangi@icloud.com,"Milimani, Mombasa",Martha Wambua,0740 964 123
+Sharon,Githinji,ADM-1119,Grade 2,A,Female,2019-11-04,2026-02-11,Active,Amos Githinji,Father,0782 134 261,0711 141 730,,"Njiro, Bungoma",Doreen Hassan,0772 471 756
+Shalom,Syombua,ADM-1120,Grade 2,A,Female,2019-08-11,2026-02-13,Active,Eric Syombua,Father,0733 795 381,0772 592 731,eric.syombua@yahoo.com,"Elgon View, Kilifi",Ibrahim Kipchumba,0762 876 658
+Faith,Omar,ADM-1121,Grade 2,A,Female,2019-09-20,2025-03-14,Active,Felix Omar,Father,0762 142 640,0740 216 849,felix.omar@icloud.com,"Nyawita, Arusha",Emily Mwangi,0711 787 612
+Charles,Mutoro,ADM-1122,Grade 2,A,Male,2018-10-08,2026-12-25,Active,Edwin Mutoro,Father,0711 571 828,,,"Kasarani, Uasin Gishu",Beatrice Gatwiri,0722 633 242
+Joshua,Gatwiri,ADM-1123,Grade 2,A,Male,2018-07-12,2025-10-17,Active,Kevin Gatwiri,Father,0740 483 223,,kevin.gatwiri@yahoo.com,"Ruiru, Nakuru",Andrew Kathambi,0792 279 449
+Peter,Mutoro,ADM-1124,Grade 2,A,Male,2019-06-13,2026-07-14,Active,Eunice Mutoro,Mother,0733 393 880,0782 314 775,eunice.mutoro@yahoo.com,"Njiro, Nairobi",Caroline Maundu,0711 477 869
+Donald,Kiprop,ADM-1125,Grade 2,A,Male,2019-10-05,2025-12-09,Active,William Kiprop,Father,0722 306 567,0722 820 162,,"Kaptembwo, Arusha",Judith Gitau,0751 904 743
+Rachael,Mbithi,ADM-1126,Grade 2,A,Female,2018-05-03,2026-09-26,Active,Teresia Mbithi,Aunt,0751 318 283,,,"Annex, Garissa",Agnes Njeri,0762 127 624
+James,Natepo,ADM-1127,Grade 2,A,Male,2018-12-25,2025-06-09,Active,Samuel Natepo,Uncle,0733 580 268,0751 358 938,samuel.natepo@icloud.com,"Sakina, Garissa",Francis Nzioka,0712 203 153
+Amos,Langat,ADM-1128,Grade 2,A,Male,2018-04-11,2026-07-22,Active,Luke Langat,Father,0733 356 706,0772 569 208,,"Baraka, Nakuru",Fridah Syombua,0733 565 831
+Olivia,Suleiman,ADM-1129,Grade 2,A,Female,2018-03-04,2025-05-27,Active,Collins Suleiman,Father,0751 753 878,0733 600 955,,"Sekei, Makueni",Martha Abdalla,0701 921 511
+Isaac,Mpaine,ADM-1130,Grade 2,A,Male,2018-11-12,2025-04-17,Active,Edna Mpaine,Grandmother,0711 342 488,0722 969 704,edna.mpaine@outlook.com,"Huruma, Kakamega",Amos Ambani,0782 994 935
+Joshua,Sichangi,ADM-1131,Grade 2,A,Male,2018-10-25,2025-06-06,Active,Mark Sichangi,Father,0740 575 324,0722 446 636,,"Embakasi, Bungoma",Magdalene Nthiga,0751 769 688
+Ian,Abdi,ADM-1132,Grade 2,A,Male,2019-08-17,2025-11-26,Active,Alex Abdi,Father,0740 913 908,0762 425 683,,"Kaptembwo, Mombasa",Doreen Chepkirui,0733 446 259
+Timothy,Maundu,ADM-1133,Grade 2,B,Male,2018-07-15,2026-12-26,Active,Michael Maundu,Father,0751 727 482,,,"Njiro, Bungoma",Sophia Odera,0711 688 112
+Eric,Kosgei,ADM-1134,Grade 2,B,Male,2018-08-20,2025-02-04,Active,Kipchoge Kosgei,Father,0733 569 701,,kipchoge.kosgei@icloud.com,"Sakina, Kisumu",Shalom Bii,0733 286 232
+Amara,Abdalla,ADM-1135,Grade 2,B,Female,2019-03-14,2026-06-03,Active,Felix Abdalla,Father,0701 166 925,,,"Bahati, Nakuru",Peninah Owino,0733 431 956
+Hillary,Adhiambo,ADM-1136,Grade 2,B,Male,2018-10-19,2025-05-16,Active,Benjamin Adhiambo,Father,0733 948 489,0722 318 957,benjamin.adhiambo@gmail.com,"Section 58, Kiambu",Sharon Githinji,0701 656 216
+Patrick,Hassan,ADM-1137,Grade 2,B,Male,2019-12-17,2025-06-27,Active,Sophia Hassan,Mother,0712 601 443,0762 319 218,sophia.hassan@gmail.com,"Lanet, Nairobi",Doreen Mbithi,0733 521 970
+Alex,Juma,ADM-1138,Grade 2,B,Male,2019-11-17,2026-12-04,Active,Grace Juma,Mother,0792 143 105,,grace.juma@icloud.com,"Naka, Nakuru",Anthony Langat,0782 143 635
+Trevor,Kinyua,ADM-1139,Grade 2,B,Male,2019-05-10,2025-12-21,Active,David Kinyua,Uncle,0740 143 544,0751 690 612,,"Kahawa Wendani, Machakos",Esther Mbithe,0740 959 468
+Judith,Farah,ADM-1140,Grade 2,B,Female,2018-06-23,2025-12-28,Active,Meshack Farah,Father,0762 723 456,,meshack.farah@icloud.com,"Elgon View, Mombasa",Edwin Otieno,0772 137 518
+Purity,Maundu,ADM-1141,Grade 2,B,Female,2018-11-24,2025-08-08,Active,Sonia Maundu,Grandmother,0722 836 787,,,"Ruiru, Nakuru",Amos Njeri,0722 264 984
+Kiplangat,Syombua,ADM-1142,Grade 2,B,Male,2019-09-02,2025-04-24,Active,Gladys Syombua,Mother,0772 528 989,0740 930 795,gladys.syombua@protonmail.com,"Thika Road, Kakamega",Alice Khisa,0701 902 457
+Esther,Sironka,ADM-1143,Grade 2,B,Female,2018-07-02,2025-12-03,Active,Vincent Sironka,Father,0711 492 680,0772 102 667,vincent.sironka@protonmail.com,"Kayole, Kisumu",Mercy Odera,0782 378 675
+Harrison,Njoroge,ADM-1144,Grade 2,B,Male,2019-06-24,2025-08-13,Active,Stephen Njoroge,Father,0722 569 374,0762 885 204,stephen.njoroge@yahoo.com,"Pioneer, Makueni",Lilian Mbithe,0762 132 237
+Wesley,Mwende,ADM-1145,Grade 2,B,Male,2018-10-14,2026-03-26,Active,Joshua Mwende,Grandfather,0772 932 571,,joshua.mwende@gmail.com,"Kayole, Kakamega",Rebecca Omar,0782 866 960
+Gloria,Khisa,ADM-1146,Grade 2,B,Female,2019-05-01,2025-04-17,Active,Donald Khisa,Grandfather,0712 964 564,0712 147 876,donald.khisa@icloud.com,"South C, Nakuru",Gloria Omollo,0722 844 967
+Francis,Khamis,ADM-1147,Grade 2,B,Male,2018-01-05,2026-06-15,Active,Timothy Khamis,Father,0792 393 156,,timothy.khamis@yahoo.com,"Kimumu, Kiambu",Naomi Githinji,0751 366 759
+Moses,Omondi,ADM-1148,Grade 2,B,Male,2018-07-10,2025-02-05,Active,Mark Omondi,Grandfather,0701 959 310,0751 515 152,,"Embakasi, Nakuru",Florence Mbithe,0740 347 195
+Anthony,Igweta,ADM-1149,Grade 2,B,Male,2018-06-25,2025-01-05,Active,Dennis Igweta,Father,0762 936 523,,dennis.igweta@yahoo.com,"Annex, Makueni",Nicholas Auma,0740 469 918
+Michael,Mwangi,ADM-1150,Grade 2,B,Male,2018-02-05,2026-05-25,Active,Anthony Mwangi,Father,0712 886 651,0701 433 871,,"South C, Bungoma",Elijah Adhiambo,0722 209 949
+Grace,Juma,ADM-1151,Grade 2,B,Female,2018-10-17,2025-07-06,Active,Ian Juma,Father,0712 842 840,,,"Embakasi, Mombasa",Alex Ogot,0740 193 920
+Dorcas,Khisa,ADM-1152,Grade 2,B,Female,2019-08-22,2026-06-22,Active,James Khisa,Father,0751 354 836,0711 544 516,james.khisa@gmail.com,"Donholm, Kiambu",Julius Makhoha,0751 604 234
+Hellen,Langat,ADM-1153,Grade 2,B,Female,2018-02-02,2025-12-02,Active,William Langat,Father,0782 794 269,0751 602 695,,"Kaptembwo, Kiambu",George Korir,0782 870 531
+Naomi,Kiptum,ADM-1154,Grade 2,B,Female,2019-10-05,2025-03-13,Active,Elijah Kiptum,Father,0712 217 981,0740 123 549,,"Sakina, Garissa",Sharon Yusuf,0762 493 264
+Wesley,Njoroge,ADM-1155,Grade 2,B,Male,2019-02-10,2026-12-23,Active,Luke Njoroge,Father,0762 450 811,,,"Milimani Estate, Kilifi",Dennis Juma,0772 223 681
+Susan,Nthiga,ADM-1156,Grade 2,B,Female,2019-07-05,2026-09-25,Active,Hillary Nthiga,Father,0772 232 899,0782 971 821,hillary.nthiga@gmail.com,"Sekei, Nakuru",Agnes Lugalia,0762 305 752
+Alex,Hassan,ADM-1157,Grade 2,B,Male,2018-01-12,2025-12-19,Active,Charity Hassan,Mother,0762 568 131,0712 857 679,charity.hassan@icloud.com,"Kimumu, Nakuru",Hillary Oduor,0711 831 281
+David,Kimeu,ADM-1158,Grade 2,B,Male,2019-10-16,2026-07-22,Active,Gideon Kimeu,Father,0782 943 575,,gideon.kimeu@gmail.com,"Umoja, Machakos",Mercy Auma,0751 599 305
+Francis,Wamalwa,ADM-1159,Grade 2,B,Male,2019-02-02,2026-12-19,Active,Winnie Wamalwa,Mother,0782 147 507,0722 451 691,winnie.wamalwa@yahoo.com,"Lake View, Bungoma",Magdalene Choge,0712 878 945
+Sonia,Chemtai,ADM-1160,Grade 2,B,Female,2018-08-23,2026-12-09,Active,Patrick Chemtai,Father,0762 996 305,0751 319 414,,"Section 58, Nakuru",Irene Kiprop,0772 868 146
+Gladys,Onyango,ADM-1161,Grade 2,B,Female,2018-02-17,2025-02-19,Active,Meshack Onyango,Father,0722 632 584,,,"Section 58, Kakamega",Simon Pekeri,0751 302 424
+Monica,Njenga,ADM-1162,Grade 2,B,Female,2019-12-18,2025-10-02,Active,Trevor Njenga,Father,0711 133 128,,trevor.njenga@outlook.com,"Ruiru, Nairobi",Olivia Ambani,0762 379 740
+Harrison,Muthoka,ADM-1163,Grade 2,B,Male,2018-03-18,2025-10-25,Active,Godfrey Muthoka,Father,0722 286 554,0762 443 288,godfrey.muthoka@outlook.com,"Kahawa Wendani, Uasin Gishu",Charity Wambua,0792 863 396
+Janet,Maina,ADM-1164,Grade 2,B,Female,2018-12-20,2025-04-04,Active,Andrew Maina,Father,0733 726 331,0782 657 359,andrew.maina@gmail.com,"Elgon View, Mombasa",Elijah Njeri,0772 802 259
+Vincent,Chemtai,ADM-1165,Grade 3,A,Male,2017-05-18,2024-09-10,Active,Samuel Chemtai,Father,0772 114 223,,samuel.chemtai@gmail.com,"Kimumu, Arusha",Julius Wanjala,0782 165 379
+Kennedy,Leshan,ADM-1166,Grade 3,A,Male,2017-07-23,2024-09-11,Active,Peter Leshan,Father,0782 978 654,0733 157 586,peter.leshan@outlook.com,"Pioneer, Garissa",Eunice Ciawi,0792 545 297
+Dennis,Mganga,ADM-1167,Grade 3,A,Male,2017-06-25,2026-04-07,Active,Patrick Mganga,Father,0740 206 587,,patrick.mganga@gmail.com,"Elgon View, Machakos",Florence Chepkirui,0782 609 646
+Wesley,Baariu,ADM-1168,Grade 3,A,Male,2018-02-03,2026-10-11,Active,Michael Baariu,Father,0712 405 638,0701 871 920,michael.baariu@outlook.com,"Kondele, Mombasa",Ian Maina,0733 128 967
+Edna,Igweta,ADM-1169,Grade 3,A,Female,2017-04-23,2024-09-24,Active,William Igweta,Father,0782 213 142,,william.igweta@icloud.com,"Embakasi, Uasin Gishu",Diana Mbithi,0762 243 488
+Thomas,Oduor,ADM-1170,Grade 3,A,Male,2017-06-17,2024-04-24,Active,Francis Oduor,Father,0782 752 152,0762 571 384,francis.oduor@gmail.com,"Kapsoya, Makueni",Isaac Mbithi,0740 727 154
+Julia,Mwangi,ADM-1171,Grade 3,A,Female,2018-03-19,2024-11-19,Active,Trevor Mwangi,Father,0712 438 860,0762 475 540,,"Kayole, Makueni",Brian Oduor,0722 639 333
+Judith,Khamis,ADM-1172,Grade 3,A,Female,2018-07-04,2024-09-03,Active,George Khamis,Father,0733 449 245,,,"Kaptembwo, Mombasa",Timothy Suleiman,0740 469 193
+Fridah,Mutua,ADM-1173,Grade 3,A,Female,2017-01-02,2024-05-19,Active,Alice Mutua,Aunt,0762 517 782,0712 554 317,alice.mutua@protonmail.com,"Milimani Kisumu, Uasin Gishu",Janet Achieng,0701 640 114
+Frank,Kinyua,ADM-1174,Grade 3,A,Male,2018-02-18,2024-12-12,Active,Joshua Kinyua,Father,0751 326 802,,,"Annex, Uasin Gishu",Cynthia Kamau,0701 691 595
+George,Auma,ADM-1175,Grade 3,A,Male,2017-05-01,2025-03-25,Active,Amos Auma,Father,0772 960 495,,,"Langas, Mombasa",Sharon Ochieng,0711 559 120
+Anthony,Wekesa,ADM-1176,Grade 3,A,Male,2018-01-05,2024-10-25,Active,William Wekesa,Father,0762 327 657,0762 870 403,william.wekesa@outlook.com,"Annex, Nakuru",Magdalene Kimani,0701 950 732
+Emmanuel,Anyango,ADM-1177,Grade 3,A,Male,2018-02-18,2024-01-21,Active,Kipchoge Anyango,Father,0762 518 658,0711 557 894,,"Kasarani, Makueni",Julia Mwirigi,0751 493 880
+Abigail,Wanjala,ADM-1178,Grade 3,A,Female,2017-11-23,2024-11-03,Active,Trevor Wanjala,Father,0711 711 941,0762 650 149,trevor.wanjala@gmail.com,"Kahawa Wendani, Makueni",Collins Kilonzo,0792 204 320
+Patrick,Ruto,ADM-1179,Grade 3,A,Male,2017-01-23,2026-03-20,Active,Faith Ruto,Mother,0792 318 870,,,"Sakina, Uasin Gishu",Anthony Juma,0792 295 655
+Beatrice,Mpaine,ADM-1180,Grade 3,A,Female,2017-08-24,2024-06-03,Active,Ibrahim Mpaine,Father,0712 630 569,,,"Kahawa Wendani, Nakuru",Andrew Oluoch,0712 833 413
+Meshack,Hassan,ADM-1181,Grade 3,A,Male,2017-04-08,2025-10-05,Active,Veronica Hassan,Mother,0792 477 621,,veronica.hassan@gmail.com,"South C, Kakamega",Joshua Chebet,0722 840 131
+Dennis,Barasa,ADM-1182,Grade 3,A,Male,2017-05-05,2024-07-12,Active,Benjamin Barasa,Father,0701 744 368,,,"Kondele, Kiambu",Caleb Sironka,0740 752 255
+Martha,Oluoch,ADM-1183,Grade 3,A,Female,2018-07-27,2025-04-15,Active,Kennedy Oluoch,Father,0782 933 989,0740 384 617,kennedy.oluoch@yahoo.com,"Naka, Kisumu",Patrick Gatwiri,0762 479 419
+Kennedy,Oluoch,ADM-1184,Grade 3,A,Male,2017-05-24,2024-01-23,Active,Emmanuel Oluoch,Grandfather,0751 707 538,0712 943 851,,"Milimani Kisumu, Nakuru",Janet Omondi,0712 995 716
+Priscilla,Mwangi,ADM-1185,Grade 3,A,Female,2018-07-21,2024-08-04,Active,Brian Mwangi,Father,0701 703 377,0772 186 272,brian.mwangi@outlook.com,"Milimani, Kilifi",Donald Akoth,0762 659 857
+Julia,Wanjala,ADM-1186,Grade 3,A,Female,2017-03-02,2024-12-04,Active,Shalom Wanjala,Mother,0792 656 648,0762 534 218,,"Elgon View, Nakuru",Priscilla Namukuru,0712 454 272
+Donald,Mutoro,ADM-1187,Grade 3,A,Male,2017-03-23,2024-05-27,Active,Benjamin Mutoro,Father,0762 427 337,,,"Milimani Estate, Kakamega",Peninah Bii,0762 382 675
+Eric,Nandwa,ADM-1188,Grade 3,A,Male,2018-03-14,2024-10-21,Active,David Nandwa,Father,0733 531 528,0733 614 886,david.nandwa@gmail.com,"Lanet, Nakuru",Susan Wamalwa,0782 338 480
+Faith,Adan,ADM-1189,Grade 3,A,Female,2018-02-19,2026-01-07,Active,Peninah Adan,Mother,0740 215 396,,,"Obunga, Nakuru",John Wafula,0751 400 252
+Karen,Okoth,ADM-1190,Grade 3,A,Female,2018-01-03,2024-12-08,Active,Eric Okoth,Father,0782 301 914,,,"Manyatta, Nakuru",Kennedy Auma,0712 520 986
+Winfred,Mwirigi,ADM-1191,Grade 3,A,Female,2017-11-16,2024-08-18,Active,Elijah Mwirigi,Father,0701 693 562,0792 913 539,,"Njiro, Arusha",Grace Nzioka,0712 306 302
+James,Akoth,ADM-1192,Grade 3,A,Male,2018-09-12,2024-06-04,Active,Vincent Akoth,Father,0711 195 771,0701 415 997,vincent.akoth@yahoo.com,"Nyalenda, Kilifi",Martin Wanjiku,0711 134 940
+George,Kiprop,ADM-1193,Grade 3,A,Male,2018-10-11,2024-12-27,Active,Luke Kiprop,Father,0701 528 770,,,"Sakina, Kilifi",Janet Kinyua,0792 411 126
+Winnie,Kinyua,ADM-1194,Grade 3,A,Female,2018-03-22,2024-12-05,Active,Timothy Kinyua,Father,0711 607 208,,timothy.kinyua@protonmail.com,"Lanet, Garissa",Stephen Kiptum,0772 164 545
+Esther,Choge,ADM-1195,Grade 3,A,Female,2018-10-16,2024-12-02,Active,Samuel Choge,Father,0712 956 457,0712 418 380,samuel.choge@gmail.com,"Sakina, Nairobi",Monica Odera,0712 376 807
+Grace,Nassor,ADM-1196,Grade 3,A,Female,2017-04-14,2026-08-22,Active,Elijah Nassor,Father,0740 984 664,0740 697 744,elijah.nassor@outlook.com,"Sakina, Nakuru",Godfrey Wafula,0701 522 121
+Trevor,Njuguna,ADM-1197,Grade 3,B,Male,2017-07-07,2024-11-08,Active,Daniel Njuguna,Father,0792 466 237,0762 923 195,daniel.njuguna@outlook.com,"Kiamunyi, Nakuru",Winfred Khaemba,0772 612 877
+James,Mutuku,ADM-1198,Grade 3,B,Male,2017-10-12,2026-10-07,Active,Olivia Mutuku,Mother,0733 104 394,0733 275 963,olivia.mutuku@outlook.com,"Kimandolu, Kiambu",Emmanuel Kitonga,0782 781 493
+Peninah,Achieng,ADM-1199,Grade 3,B,Female,2018-09-17,2024-03-26,Active,Martin Achieng,Father,0712 513 286,,,"Shabab, Nakuru",Daniel Waweru,0792 411 855
+Karen,Maina,ADM-1200,Grade 3,B,Female,2018-09-17,2026-02-27,Active,Kiplangat Maina,Father,0751 363 552,0733 653 909,kiplangat.maina@protonmail.com,"Lanet, Kiambu",John Githinji,0733 960 467
+Brenda,Wambui,ADM-1201,Grade 3,B,Female,2018-06-16,2024-02-12,Active,Martin Wambui,Uncle,0751 960 224,0792 121 474,martin.wambui@outlook.com,"Langas, Kiambu",Emily Sein,0762 739 625
+Doreen,Njeri,ADM-1202,Grade 3,B,Female,2018-07-28,2024-08-19,Active,Joshua Njeri,Father,0701 162 217,,joshua.njeri@yahoo.com,"Embakasi, Makueni",Veronica Kimani,0733 850 528
+Julius,Onyango,ADM-1203,Grade 3,B,Male,2017-02-08,2026-03-26,Active,Emmanuel Onyango,Father,0762 746 566,,emmanuel.onyango@protonmail.com,"Kiamunyi, Machakos",Hellen Mwakisha,0782 595 154
+Irene,Pashua,ADM-1204,Grade 3,B,Female,2018-03-18,2024-05-20,Active,Charles Pashua,Father,0762 185 816,,charles.pashua@protonmail.com,"Pioneer, Kisumu",Judith Omar,0711 726 436
+Kennedy,Kitonga,ADM-1205,Grade 3,B,Male,2018-04-26,2024-01-23,Active,Luke Kitonga,Father,0751 993 348,,luke.kitonga@protonmail.com,"Bahati, Kakamega",Hillary Mutuku,0722 410 728
+Faith,Kathambi,ADM-1206,Grade 3,B,Female,2018-03-04,2024-01-21,Active,Samuel Kathambi,Father,0722 124 152,,samuel.kathambi@yahoo.com,"Kahawa Wendani, Nakuru",Gladys Kathambi,0711 986 345
+Teresia,Baariu,ADM-1207,Grade 3,B,Female,2017-04-09,2024-02-06,Active,Veronica Baariu,Grandmother,0711 699 114,,,"Kimandolu, Kisumu",Sophia Wambua,0733 972 559
+Edwin,Abdalla,ADM-1208,Grade 3,B,Male,2017-08-20,2024-04-03,Active,Daniel Abdalla,Father,0722 731 429,,,"Milimani Estate, Kiambu",Olivia Kathambi,0772 915 761
+Meshack,Wafula,ADM-1209,Grade 3,B,Male,2018-06-27,2024-10-24,Active,David Wafula,Father,0712 236 127,,,"Kaptembwo, Garissa",Doreen Mbithi,0782 576 368
+Kipchoge,Mwinyi,ADM-1210,Grade 3,B,Male,2018-04-22,2024-10-25,Active,Eunice Mwinyi,Aunt,0792 617 327,0712 318 847,,"Lanet, Kilifi",William Tianai,0751 124 920
+Mark,Pashua,ADM-1211,Grade 3,B,Male,2017-06-20,2026-10-04,Active,Charity Pashua,Aunt,0751 666 629,0712 994 551,,"Nyalenda, Mombasa",Anthony Korir,0772 651 436
+Grace,Langat,ADM-1212,Grade 3,B,Female,2017-04-05,2024-10-06,Active,Joyce Langat,Mother,0751 277 525,0722 682 675,joyce.langat@outlook.com,"Njiro, Kakamega",Alex Naisoi,0792 630 661
+Julia,Njuguna,ADM-1213,Grade 3,B,Female,2018-06-08,2026-08-27,Active,James Njuguna,Father,0762 362 956,,,"Sekei, Bungoma",Rachael Okoth,0701 757 492
+Thomas,Mwende,ADM-1214,Grade 3,B,Male,2017-10-19,2024-05-27,Active,Joseph Mwende,Father,0792 294 493,,joseph.mwende@protonmail.com,"Nyalenda, Mombasa",Amara Khamis,0762 547 832
+Edwin,Namukuru,ADM-1215,Grade 3,B,Male,2018-03-04,2026-09-17,Active,Damaris Namukuru,Grandmother,0722 336 596,0762 745 732,damaris.namukuru@protonmail.com,"Shabab, Uasin Gishu",Grace Kombo,0711 330 284
+Joseph,Kirimi,ADM-1216,Grade 3,B,Male,2018-04-20,2026-11-03,Active,Samuel Kirimi,Father,0762 696 560,0762 978 276,samuel.kirimi@icloud.com,"Milimani Kisumu, Kiambu",Susan Omondi,0762 269 597
+Elijah,Odera,ADM-1217,Grade 3,B,Male,2018-11-11,2024-08-07,Active,Gideon Odera,Father,0740 825 632,,gideon.odera@protonmail.com,"Kapsoya, Machakos",Dennis Ali,0772 221 481
+Gideon,Kitonga,ADM-1218,Grade 3,B,Male,2017-08-04,2024-07-01,Active,Andrew Kitonga,Father,0701 444 553,0762 937 128,andrew.kitonga@gmail.com,"Kaptembwo, Machakos",Luke Bakari,0782 115 123
+Francis,Okoth,ADM-1219,Grade 3,B,Male,2018-10-23,2024-09-24,Active,Charity Okoth,Mother,0711 191 467,0733 354 952,charity.okoth@icloud.com,"Sakina, Nakuru",Naomi Bakari,0711 909 129
+Gloria,Odhiambo,ADM-1220,Grade 3,B,Female,2018-01-17,2024-04-01,Active,Edwin Odhiambo,Father,0733 410 896,,,"Baraka, Garissa",Hellen Mwende,0711 828 714
+Monica,Kombo,ADM-1221,Grade 3,B,Female,2018-10-06,2026-12-07,Active,Esther Kombo,Mother,0711 933 627,0701 351 233,esther.kombo@icloud.com,"Kaptembwo, Nairobi",Teresia Farah,0762 343 829
+Abigail,Khisa,ADM-1222,Grade 3,B,Female,2018-01-21,2024-02-03,Active,Ibrahim Khisa,Father,0701 689 948,0772 757 767,ibrahim.khisa@outlook.com,"Milimani, Nakuru",Charles Nandwa,0782 679 924
+Simon,Gitau,ADM-1223,Grade 3,B,Male,2017-07-16,2024-10-02,Active,Felix Gitau,Father,0701 795 415,0722 757 547,felix.gitau@gmail.com,"Olasiti, Kisumu",Alice Njoroge,0733 358 402
+Frank,Abdalla,ADM-1224,Grade 3,B,Male,2017-04-05,2024-11-18,Active,Patrick Abdalla,Father,0751 130 582,0782 759 454,patrick.abdalla@outlook.com,"Njiro, Arusha",Elijah Wambui,0772 418 755
+Zachary,Oluoch,ADM-1225,Grade 3,B,Male,2018-12-27,2024-08-22,Active,Fridah Oluoch,Mother,0712 517 378,0772 456 268,fridah.oluoch@icloud.com,"Sakina, Garissa",Samuel Bii,0712 503 818
+Vincent,Ciawi,ADM-1226,Grade 3,B,Male,2018-10-02,2024-01-15,Active,Samuel Ciawi,Father,0733 362 370,,samuel.ciawi@protonmail.com,"Kimumu, Garissa",Hillary Langat,0712 462 166
+Susan,Wamalwa,ADM-1227,Grade 3,B,Female,2017-01-26,2026-02-24,Active,Amos Wamalwa,Father,0712 213 182,,amos.wamalwa@protonmail.com,"Shabab, Garissa",Janet Kinyua,0722 845 414
+Michael,Wambua,ADM-1228,Grade 3,B,Male,2017-10-02,2026-09-19,Active,Meshack Wambua,Father,0792 644 656,,meshack.wambua@icloud.com,"Sekei, Garissa",Trevor Odera,0772 968 219
+Wesley,Noor,ADM-1229,Grade 4,A,Male,2016-11-12,2026-11-24,Active,Trevor Noor,Father,0762 984 470,,,"Section 58, Arusha",Kipchoge Ali,0722 706 795
+Felix,Masinde,ADM-1230,Grade 4,A,Male,2017-12-16,2024-11-06,Active,David Masinde,Father,0782 781 666,,,"Olasiti, Machakos",Caleb Odera,0782 360 719
+Caleb,Maundu,ADM-1231,Grade 4,A,Male,2016-09-03,2023-10-09,Active,Isaac Maundu,Father,0751 858 344,0740 354 333,isaac.maundu@yahoo.com,"Annex, Nakuru",Thomas Wamalwa,0733 284 997
+Naomi,Wambua,ADM-1232,Grade 4,A,Female,2016-07-17,2023-08-01,Active,Faith Wambua,Guardian,0722 488 625,0740 477 814,faith.wambua@outlook.com,"Kasarani, Kilifi",Samuel Pashua,0751 967 551
+Michael,Syombua,ADM-1233,Grade 4,A,Male,2017-11-12,2023-05-04,Active,Caleb Syombua,Father,0751 681 609,0762 678 704,caleb.syombua@icloud.com,"Sakina, Nakuru",Eunice Chepkirui,0722 452 235
+William,Omollo,ADM-1234,Grade 4,A,Male,2016-03-09,2024-09-24,Active,Julius Omollo,Father,0792 711 633,0722 662 528,julius.omollo@outlook.com,"Lanet, Kisumu",Lawrence Hassan,0701 189 588
+Kennedy,Chemtai,ADM-1235,Grade 4,A,Male,2016-04-22,2023-04-22,Active,Brian Chemtai,Uncle,0792 123 857,,brian.chemtai@protonmail.com,"Sakina, Machakos",Damaris Kithinji,0782 237 501
+Harrison,Kitonga,ADM-1236,Grade 4,A,Male,2016-07-21,2023-10-06,Active,Mark Kitonga,Father,0712 606 589,0722 229 522,,"Embakasi, Nakuru",David Simiyu,0701 400 536
+Teresia,Kinyua,ADM-1237,Grade 4,A,Female,2016-04-24,2023-01-18,Active,George Kinyua,Father,0772 948 483,0722 637 749,,"Nyawita, Nakuru",Amos Bunoro,0772 690 199
+Kiplangat,Sichangi,ADM-1238,Grade 4,A,Male,2016-11-06,2025-04-25,Active,Edwin Sichangi,Father,0792 575 557,0792 774 935,edwin.sichangi@yahoo.com,"Kimumu, Nakuru",Gloria Chepkoech,0751 234 579
+Kiplangat,Pekeri,ADM-1239,Grade 4,A,Male,2017-03-23,2023-06-26,Active,Julius Pekeri,Father,0762 415 118,,,"Milimani, Kakamega",Simon Ndolo,0740 760 790
+Joshua,Ciawi,ADM-1240,Grade 4,A,Male,2017-04-26,2026-05-10,Active,Lawrence Ciawi,Father,0782 298 639,0751 503 106,,"Manyatta, Nakuru",Susan Njeri,0711 860 757
+Trevor,Igweta,ADM-1241,Grade 4,A,Male,2017-07-13,2023-04-18,Active,Thomas Igweta,Father,0762 860 827,,thomas.igweta@outlook.com,"Sekei, Kisumu",Amos Mganga,0792 568 353
+Emily,Gatwiri,ADM-1242,Grade 4,A,Female,2017-08-04,2023-02-27,Active,Moses Gatwiri,Father,0751 393 841,,moses.gatwiri@protonmail.com,"Sakina, Kisumu",Peninah Metto,0712 466 785
+Anthony,Muthoka,ADM-1243,Grade 4,A,Male,2016-01-12,2024-09-21,Active,Luke Muthoka,Father,0733 542 305,0733 822 555,luke.muthoka@protonmail.com,"Kayole, Nakuru",Edwin Yusuf,0762 501 539
+Magdalene,Nzomo,ADM-1244,Grade 4,A,Female,2016-07-26,2026-02-02,Active,Ian Nzomo,Father,0751 808 884,,,"Pioneer, Bungoma",Mercy Nandwa,0733 896 420
+Michael,Wamalwa,ADM-1245,Grade 4,A,Male,2017-12-06,2026-09-27,Active,Andrew Wamalwa,Father,0701 990 743,,andrew.wamalwa@yahoo.com,"Huruma, Kakamega",Moses Kinyua,0701 635 320
+Brian,Anyango,ADM-1246,Grade 4,A,Male,2017-09-13,2023-09-11,Active,Yvonne Anyango,Grandmother,0740 985 893,0701 630 485,yvonne.anyango@yahoo.com,"Annex, Kisumu",Sonia Kigen,0792 980 935
+Florence,Farah,ADM-1247,Grade 4,A,Female,2016-09-27,2026-05-16,Active,Frank Farah,Father,0782 440 532,0772 329 526,frank.farah@outlook.com,"Kiamunyi, Nakuru",Tabitha Chemtai,0733 554 998
+Kevin,Mutoro,ADM-1248,Grade 4,A,Male,2016-05-14,2026-11-18,Active,Collins Mutoro,Father,0712 523 870,0722 260 246,,"Migosi, Mombasa",Nancy Mwangi,0792 586 198
+Teresia,Kimeu,ADM-1249,Grade 4,A,Female,2016-08-07,2023-05-23,Active,Judith Kimeu,Grandmother,0792 729 556,0722 346 399,,"Nyalenda, Mombasa",Meshack Khaemba,0722 307 963
+Anthony,Khisa,ADM-1250,Grade 4,A,Male,2016-05-14,2023-06-22,Active,Simon Khisa,Father,0701 686 112,,,"Sekei, Makueni",William Owino,0712 561 972
+Hellen,Omondi,ADM-1251,Grade 4,A,Female,2016-01-21,2023-01-24,Active,Purity Omondi,Aunt,0751 606 156,,purity.omondi@icloud.com,"Kahawa Wendani, Nakuru",Edwin Naisoi,0762 382 851
+Lilian,Suleiman,ADM-1252,Grade 4,A,Female,2017-09-23,2026-05-22,Active,Simon Suleiman,Father,0712 728 838,,,"South C, Machakos",Nicholas Kiprop,0711 468 100
+Martha,Kimutai,ADM-1253,Grade 4,A,Female,2017-09-17,2023-03-26,Active,Martin Kimutai,Father,0740 502 313,0722 488 462,,"Sekei, Nakuru",Florence Makhoha,0772 759 478
+Kipchoge,Kinyua,ADM-1254,Grade 4,A,Male,2017-10-27,2023-09-26,Active,Benjamin Kinyua,Father,0740 829 199,0701 155 145,,"Nyawita, Machakos",Abigail Adan,0751 875 155
+Sophia,Kithinji,ADM-1255,Grade 4,A,Female,2016-07-16,2023-12-23,Active,Dorcas Kithinji,Mother,0762 499 478,0701 206 210,dorcas.kithinji@yahoo.com,"Sakina, Nakuru",Sarah Zawadi,0782 983 954
+Lilian,Ambani,ADM-1256,Grade 4,A,Female,2017-02-23,2023-05-02,Active,Collins Ambani,Father,0722 531 539,0782 271 338,collins.ambani@icloud.com,"South B, Kisumu",Agnes Mugambi,0782 669 521
+Thomas,Adan,ADM-1257,Grade 4,A,Male,2016-04-01,2024-02-20,Active,James Adan,Father,0762 861 829,0701 371 980,,"South B, Kilifi",Teresia Odhiambo,0711 773 771
+Samuel,Mugambi,ADM-1258,Grade 4,A,Male,2016-10-16,2026-08-25,Active,David Mugambi,Father,0722 675 185,0740 433 606,david.mugambi@icloud.com,"Umoja, Uasin Gishu",Francis Mpaine,0712 800 115
+Lawrence,Tianai,ADM-1259,Grade 4,A,Male,2017-07-10,2026-05-03,Active,Harrison Tianai,Father,0792 213 541,,harrison.tianai@yahoo.com,"Thika Road, Nakuru",Thomas Syombua,0751 882 359
+Gloria,Omollo,ADM-1260,Grade 4,A,Female,2017-08-24,2023-02-24,Active,Godfrey Omollo,Father,0772 554 404,,godfrey.omollo@icloud.com,"Lake View, Garissa",David Achieng,0751 626 215
+Vincent,Suleiman,ADM-1261,Grade 4,B,Male,2016-08-05,2026-11-16,Active,Timothy Suleiman,Father,0751 771 322,,timothy.suleiman@outlook.com,"Milimani Estate, Nakuru",Francis Farah,0772 396 762
+Cynthia,Kithinji,ADM-1262,Grade 4,B,Female,2016-06-06,2023-04-13,Active,Judith Kithinji,Aunt,0711 318 928,0751 788 982,judith.kithinji@gmail.com,"Milimani Estate, Kilifi",Fridah Oduor,0712 785 536
+Sharon,Kariuki,ADM-1263,Grade 4,B,Female,2016-05-10,2023-12-27,Active,Joseph Kariuki,Father,0733 160 682,,joseph.kariuki@gmail.com,"Huruma, Kiambu",Hannah Akoth,0740 595 242
+Peninah,Kimeu,ADM-1264,Grade 4,B,Female,2017-12-05,2023-08-01,Active,Amos Kimeu,Father,0782 574 729,,,"Annex, Nakuru",Anthony Barasa,0740 363 756
+Magdalene,Kaelo,ADM-1265,Grade 4,B,Female,2017-02-02,2023-01-21,Active,Joseph Kaelo,Father,0701 223 701,0762 968 487,joseph.kaelo@icloud.com,"Elgon View, Nakuru",Edna Ciawi,0711 892 737
+Kipchoge,Wamalwa,ADM-1266,Grade 4,B,Male,2016-07-26,2023-07-15,Active,Brian Wamalwa,Father,0762 547 899,,brian.wamalwa@protonmail.com,"Section 58, Kiambu",Timothy Wanjiku,0740 737 364
+Charles,Hassan,ADM-1267,Grade 4,B,Male,2017-11-24,2023-10-08,Active,David Hassan,Father,0722 445 422,,david.hassan@icloud.com,"Obunga, Mombasa",Dorcas Kaelo,0712 895 757
+Sarah,Maina,ADM-1268,Grade 4,B,Female,2016-07-24,2023-05-26,Active,Caroline Maina,Aunt,0711 100 715,,caroline.maina@gmail.com,"Langas, Mombasa",Michael Juma,0712 354 368
+Doreen,Kariuki,ADM-1269,Grade 4,B,Female,2017-10-17,2023-01-23,Active,Frank Kariuki,Father,0740 126 762,,frank.kariuki@yahoo.com,"Olasiti, Mombasa",Magdalene Anyango,0701 133 720
+Moses,Kimutai,ADM-1270,Grade 4,B,Male,2017-01-06,2023-04-22,Active,Isaac Kimutai,Father,0792 424 974,0740 861 923,isaac.kimutai@icloud.com,"Lake View, Kiambu",Rebecca Wanjiku,0792 522 864
+Charity,Chepkirui,ADM-1271,Grade 4,B,Female,2017-03-11,2024-03-06,Active,Edwin Chepkirui,Father,0711 474 613,0733 729 351,edwin.chepkirui@outlook.com,"Kiamunyi, Uasin Gishu",Kennedy Nasimiyu,0792 137 505
+Catherine,Mbithi,ADM-1272,Grade 4,B,Female,2017-09-09,2023-02-16,Active,Susan Mbithi,Mother,0792 278 502,0733 801 147,,"South B, Nakuru",Catherine Zawadi,0711 841 516
+Kiplangat,Oduor,ADM-1273,Grade 4,B,Male,2017-06-18,2023-02-20,Active,Donald Oduor,Father,0701 411 736,0782 331 645,donald.oduor@icloud.com,"Olasiti, Nairobi",Joseph Nassor,0711 338 891
+Zipporah,Kigen,ADM-1274,Grade 4,B,Female,2017-07-19,2023-01-10,Active,Martin Kigen,Father,0772 984 739,0701 380 319,,"Kasarani, Nakuru",Agnes Otieno,0792 476 400
+Florence,Obiero,ADM-1275,Grade 4,B,Female,2017-09-02,2026-05-05,Active,Brian Obiero,Father,0712 546 343,,brian.obiero@yahoo.com,"Lanet, Nairobi",Mark Nassor,0733 547 151
+Rachael,Githinji,ADM-1276,Grade 4,B,Female,2016-11-02,2026-06-19,Active,Ian Githinji,Father,0712 991 603,0762 148 493,,"Njiro, Mombasa",Trevor Nzomo,0711 251 864
+Anthony,Njoroge,ADM-1277,Grade 4,B,Male,2016-10-19,2026-07-14,Active,Julius Njoroge,Uncle,0740 378 524,,,"Langas, Machakos",Peninah Auma,0701 147 937
+Mark,Pekeri,ADM-1278,Grade 4,B,Male,2016-05-11,2023-02-02,Active,Zachary Pekeri,Father,0701 560 414,,zachary.pekeri@protonmail.com,"Kondele, Garissa",Shalom Juma,0792 700 193
+Joyce,Lugalia,ADM-1279,Grade 4,B,Female,2016-10-10,2023-12-03,Active,Isaac Lugalia,Father,0762 133 675,,isaac.lugalia@outlook.com,"Huruma, Garissa",Elijah Sironka,0782 191 565
+Samuel,Nandwa,ADM-1280,Grade 4,B,Male,2016-08-18,2023-12-18,Active,Moses Nandwa,Grandfather,0782 170 605,0733 703 796,moses.nandwa@outlook.com,"Nyawita, Kiambu",Naomi Ali,0712 670 816
+Collins,Kipchumba,ADM-1281,Grade 4,B,Male,2017-12-19,2023-05-08,Active,Caroline Kipchumba,Mother,0733 729 140,0722 912 350,caroline.kipchumba@yahoo.com,"Shabab, Machakos",Charity Leshan,0792 329 953
+Timothy,Chebet,ADM-1282,Grade 4,B,Male,2016-07-20,2023-06-04,Active,Kennedy Chebet,Father,0740 896 523,,kennedy.chebet@protonmail.com,"Kapsoya, Arusha",Martha Sironka,0722 782 282
+Timothy,Kamau,ADM-1283,Grade 4,B,Male,2017-12-17,2023-10-19,Active,Godfrey Kamau,Father,0712 823 252,0772 191 255,godfrey.kamau@yahoo.com,"Sakina, Kiambu",Zipporah Kaelo,0782 765 116
+Caleb,Kamau,ADM-1284,Grade 4,B,Male,2016-02-21,2023-07-28,Active,Amos Kamau,Father,0733 485 856,,,"Olasiti, Bungoma",Abigail Mwakisha,0782 446 690
+Tabitha,Oluoch,ADM-1285,Grade 4,B,Female,2016-11-21,2026-04-26,Active,John Oluoch,Father,0733 498 948,,,"Kimandolu, Kisumu",Monica Mburu,0740 457 737
+Kipchoge,Anyango,ADM-1286,Grade 4,B,Male,2017-09-05,2023-08-17,Active,Samuel Anyango,Father,0762 863 806,0772 613 358,samuel.anyango@outlook.com,"Baraka, Mombasa",Edna Kipsang,0782 554 847
+Zachary,Namukuru,ADM-1287,Grade 4,B,Male,2016-08-04,2023-01-28,Active,Frank Namukuru,Father,0751 943 736,0733 173 778,frank.namukuru@icloud.com,"Sakina, Nakuru",Rebecca Nasimiyu,0712 858 849
+Caleb,Wanjala,ADM-1288,Grade 4,B,Male,2016-11-28,2025-04-11,Active,Emmanuel Wanjala,Father,0733 259 155,0772 715 801,,"Embakasi, Kilifi",Julia Mutiso,0722 627 637
+Hellen,Odhiambo,ADM-1289,Grade 4,B,Female,2016-03-21,2026-10-07,Active,David Odhiambo,Uncle,0792 271 565,0733 441 148,david.odhiambo@outlook.com,"Kapsoya, Kisumu",Esther Njuguna,0722 737 754
+Moses,Omollo,ADM-1290,Grade 4,B,Male,2017-04-24,2023-02-01,Active,Timothy Omollo,Father,0733 455 285,,timothy.omollo@protonmail.com,"Naka, Kakamega",Eric Natepo,0711 639 546
+Dorcas,Ruto,ADM-1291,Grade 4,B,Female,2016-01-25,2023-12-28,Active,Maureen Ruto,Aunt,0712 697 669,,maureen.ruto@yahoo.com,"Lanet, Kisumu",Monica Ciawi,0711 944 786
+Dorcas,Suleiman,ADM-1292,Grade 4,B,Female,2017-04-07,2026-08-15,Active,James Suleiman,Father,0711 147 703,0740 304 869,,"Donholm, Kilifi",Julius Mugo,0762 591 137
+Vincent,Makokha,ADM-1293,Grade 5,A,Male,2016-05-24,2022-08-24,Active,David Makokha,Father,0711 775 323,,david.makokha@icloud.com,"Thika Road, Kiambu",Amara Ogot,0711 355 190
+Edna,Juma,ADM-1294,Grade 5,A,Female,2015-05-28,2023-11-02,Active,Stephen Juma,Father,0751 579 897,,,"Bahati, Uasin Gishu",Magdalene Kamau,0782 822 367
+Mercy,Karanja,ADM-1295,Grade 5,A,Female,2015-02-11,2022-04-28,Active,Peninah Karanja,Mother,0701 967 462,0772 474 552,peninah.karanja@yahoo.com,"Manyatta, Nakuru",Susan Sein,0751 707 145
+Hannah,Njuguna,ADM-1296,Grade 5,A,Female,2015-10-07,2024-03-16,Active,Martin Njuguna,Father,0751 966 202,,martin.njuguna@outlook.com,"South B, Uasin Gishu",Rachael Barasa,0712 812 152
+John,Leshan,ADM-1297,Grade 5,A,Male,2015-06-20,2023-04-19,Active,Charles Leshan,Father,0772 827 988,,charles.leshan@protonmail.com,"Nyalenda, Bungoma",Peninah Nasimiyu,0701 395 838
+Joyce,Noor,ADM-1298,Grade 5,A,Female,2016-06-19,2026-03-24,Active,Samuel Noor,Father,0712 280 931,0782 486 875,,"Shabab, Arusha",Hannah Adan,0733 166 869
+Alex,Korir,ADM-1299,Grade 5,A,Male,2015-11-12,2022-10-16,Active,Dorcas Korir,Aunt,0712 494 508,0711 235 992,dorcas.korir@gmail.com,"Embakasi, Nairobi",Purity Akoth,0751 849 785
+Lawrence,Musalia,ADM-1300,Grade 5,A,Male,2016-08-07,2026-12-15,Active,Eric Musalia,Father,0772 135 481,0722 805 460,eric.musalia@protonmail.com,"Kiamunyi, Kilifi",Winfred Kilonzo,0711 749 824
+Veronica,Mutiso,ADM-1301,Grade 5,A,Female,2015-05-04,2022-03-26,Active,Elijah Mutiso,Father,0701 259 794,0782 310 380,,"Sakina, Arusha",Doreen Mugo,0782 256 204
+Dorcas,Syombua,ADM-1302,Grade 5,A,Female,2016-12-16,2023-03-10,Active,Peter Syombua,Father,0701 355 393,,peter.syombua@protonmail.com,"Manyatta, Nakuru",Caroline Wambua,0733 414 692
+Brian,Omondi,ADM-1303,Grade 5,A,Male,2016-04-18,2022-11-26,Active,Patrick Omondi,Father,0772 169 124,,,"Milimani Kisumu, Makueni",David Waweru,0701 150 570
+Priscilla,Wafula,ADM-1304,Grade 5,A,Female,2015-03-23,2022-04-16,Active,Esther Wafula,Guardian,0762 315 949,,esther.wafula@icloud.com,"Milimani Kisumu, Nairobi",Olivia Leshan,0782 888 141
+Patrick,Tanui,ADM-1305,Grade 5,A,Male,2016-12-20,2022-02-28,Active,Susan Tanui,Mother,0740 882 333,0701 173 166,susan.tanui@protonmail.com,"Lanet, Nakuru",Judith Onyango,0762 197 313
+Anthony,Kimeu,ADM-1306,Grade 5,A,Male,2016-10-21,2022-08-05,Active,Simon Kimeu,Father,0711 803 300,0751 878 122,simon.kimeu@gmail.com,"South C, Kakamega",Magdalene Noor,0751 411 643
+Kennedy,Achieng,ADM-1307,Grade 5,A,Male,2016-11-21,2022-03-17,Active,Brian Achieng,Grandfather,0740 187 471,,brian.achieng@icloud.com,"Milimani, Machakos",Naomi Nandwa,0711 169 321
+Doreen,Makokha,ADM-1308,Grade 5,A,Female,2016-03-02,2022-10-09,Active,Charity Makokha,Mother,0733 457 308,0772 880 496,,"Kiamunyi, Nakuru",Donald Hassan,0711 550 958
+Ibrahim,Natepo,ADM-1309,Grade 5,A,Male,2016-07-28,2024-04-15,Active,Samuel Natepo,Father,0733 224 634,0712 912 939,samuel.natepo@protonmail.com,"Pioneer, Nakuru",Julia Farah,0782 995 267
+Kipchoge,Adhiambo,ADM-1310,Grade 5,A,Male,2015-07-28,2022-11-15,Active,Nathaniel Adhiambo,Father,0711 610 517,0782 181 902,,"Sekei, Nakuru",Tabitha Mburu,0740 858 256
+Amos,Chepkirui,ADM-1311,Grade 5,A,Male,2016-08-02,2022-04-13,Active,Julius Chepkirui,Uncle,0701 802 152,0772 817 943,,"Thika Road, Machakos",Charity Adhiambo,0762 505 848
+Esther,Kipsang,ADM-1312,Grade 5,A,Female,2015-10-17,2023-11-28,Active,Olivia Kipsang,Grandmother,0751 238 985,,,"Ruiru, Nakuru",Benjamin Tianai,0711 775 491
+Shalom,Kimutai,ADM-1313,Grade 5,A,Female,2016-09-19,2026-02-09,Active,Elijah Kimutai,Father,0782 689 812,0792 191 721,,"Sekei, Kisumu",Joyce Nthiga,0722 568 211
+Donald,Njenga,ADM-1314,Grade 5,A,Male,2016-04-20,2022-10-20,Active,Ian Njenga,Father,0792 593 223,,ian.njenga@outlook.com,"Section 58, Kilifi",Priscilla Mugo,0782 643 408
+Abigail,Kinyua,ADM-1315,Grade 5,A,Female,2016-06-10,2022-01-16,Active,Anthony Kinyua,Father,0740 918 197,,anthony.kinyua@outlook.com,"Migosi, Kisumu",Hannah Farah,0712 267 921
+Winfred,Kariuki,ADM-1316,Grade 5,A,Female,2016-02-14,2022-04-27,Active,Godfrey Kariuki,Father,0782 289 926,0733 657 732,godfrey.kariuki@icloud.com,"Migosi, Mombasa",Amara Baariu,0722 988 470
+Ian,Omar,ADM-1317,Grade 5,A,Male,2016-11-09,2026-09-16,Active,Veronica Omar,Grandmother,0712 589 678,,veronica.omar@gmail.com,"Naka, Nakuru",Veronica Njeru,0701 173 816
+Teresia,Mutuku,ADM-1318,Grade 5,A,Female,2015-01-16,2023-08-02,Active,Peninah Mutuku,Mother,0722 496 961,0751 966 483,,"Kahawa Wendani, Kiambu",Daniel Juma,0751 741 246
+Trevor,Adhiambo,ADM-1319,Grade 5,A,Male,2015-08-07,2022-06-02,Active,Samuel Adhiambo,Father,0772 962 262,,samuel.adhiambo@outlook.com,"Bahati, Nakuru",Kiplangat Kinyua,0762 382 205
+George,Okello,ADM-1320,Grade 5,A,Male,2016-03-10,2022-08-27,Active,Trevor Okello,Father,0751 542 999,0782 521 696,,"Kondele, Nakuru",Charity Ndolo,0762 665 387
+Dorcas,Maina,ADM-1321,Grade 5,A,Female,2015-01-04,2024-07-28,Active,Benjamin Maina,Father,0712 552 194,0712 401 640,,"Langas, Bungoma",Zipporah Kathambi,0733 616 825
+Sonia,Simiyu,ADM-1322,Grade 5,A,Female,2016-06-16,2022-12-21,Active,Magdalene Simiyu,Mother,0762 986 811,,magdalene.simiyu@gmail.com,"Kayole, Kiambu",Purity Mwangi,0772 894 884
+Daniel,Maina,ADM-1323,Grade 5,A,Male,2016-02-02,2024-12-15,Active,Lilian Maina,Grandmother,0772 568 841,0751 440 187,lilian.maina@icloud.com,"Kimandolu, Nakuru",Martha Kosgei,0772 667 639
+Tabitha,Sironka,ADM-1324,Grade 5,A,Female,2016-03-20,2022-09-11,Active,Gideon Sironka,Father,0740 252 618,0712 945 400,gideon.sironka@gmail.com,"Kahawa Wendani, Uasin Gishu",Harrison Githinji,0782 547 932
+Veronica,Pekeri,ADM-1325,Grade 5,B,Female,2015-09-24,2022-04-28,Active,Karen Pekeri,Mother,0712 457 524,,karen.pekeri@outlook.com,"Sekei, Uasin Gishu",Joyce Mwangi,0711 548 395
+Peter,Mwakisha,ADM-1326,Grade 5,B,Male,2016-06-03,2022-05-20,Active,Vincent Mwakisha,Father,0733 440 368,,vincent.mwakisha@gmail.com,"Sekei, Nairobi",Martin Choge,0722 998 147
+Florence,Kipsang,ADM-1327,Grade 5,B,Female,2016-09-17,2022-12-07,Active,Lawrence Kipsang,Father,0733 281 963,0711 873 336,,"Ruiru, Kiambu",David Korir,0722 585 937
+Anthony,Namukuru,ADM-1328,Grade 5,B,Male,2016-04-17,2022-03-02,Active,Samuel Namukuru,Father,0751 485 788,0712 403 230,samuel.namukuru@icloud.com,"Sekei, Kiambu",Samuel Ogot,0722 614 216
+Sophia,Wekesa,ADM-1329,Grade 5,B,Female,2015-04-14,2022-05-23,Active,Edwin Wekesa,Father,0712 404 460,,edwin.wekesa@outlook.com,"Umoja, Uasin Gishu",Hannah Mbithi,0762 840 252
+Edna,Nzioka,ADM-1330,Grade 5,B,Female,2015-06-06,2023-12-15,Active,Nicholas Nzioka,Father,0762 841 250,,,"Kayole, Kakamega",Catherine Mpaine,0701 362 338
+Samuel,Anyango,ADM-1331,Grade 5,B,Male,2016-09-11,2022-12-19,Active,Janet Anyango,Mother,0722 532 192,0733 486 421,janet.anyango@protonmail.com,"Shabab, Nakuru",Julius Owuor,0772 516 695
+Stephen,Nzioka,ADM-1332,Grade 5,B,Male,2016-12-27,2022-04-21,Active,Martin Nzioka,Father,0733 619 661,,martin.nzioka@protonmail.com,"Langas, Nakuru",George Mwanzia,0711 748 145
+Rebecca,Muthoka,ADM-1333,Grade 5,B,Female,2015-12-08,2023-02-04,Active,Caroline Muthoka,Mother,0782 403 329,0782 107 860,caroline.muthoka@gmail.com,"Sakina, Kisumu",Olivia Kathambi,0740 531 765
+Alice,Kirimi,ADM-1334,Grade 5,B,Female,2015-05-21,2023-10-19,Active,Samuel Kirimi,Father,0701 490 923,,samuel.kirimi@icloud.com,"Umoja, Nakuru",Purity Wanjala,0751 380 493
+Lawrence,Mugambi,ADM-1335,Grade 5,B,Male,2016-05-26,2023-03-24,Active,Gideon Mugambi,Father,0712 350 472,0772 209 919,,"Kasarani, Nakuru",Naomi Kithinji,0751 439 373
+Mark,Kinyua,ADM-1336,Grade 5,B,Male,2015-06-20,2022-05-01,Active,John Kinyua,Father,0740 605 610,0772 527 635,john.kinyua@gmail.com,"Sakina, Kakamega",Frank Nandwa,0722 928 154
+Rebecca,Sichangi,ADM-1337,Grade 5,B,Female,2015-02-06,2023-04-11,Active,Luke Sichangi,Father,0751 536 376,0722 160 137,luke.sichangi@icloud.com,"Shabab, Kilifi",Winnie Khaemba,0701 810 932
+Sophia,Mwinyi,ADM-1338,Grade 5,B,Female,2016-09-19,2025-03-11,Active,Purity Mwinyi,Mother,0782 870 642,,purity.mwinyi@protonmail.com,"Sekei, Arusha",Teresia Auma,0711 856 779
+Wesley,Pekeri,ADM-1339,Grade 5,B,Male,2015-07-26,2022-06-20,Active,Wesley Pekeri,Uncle,0740 334 311,,wesley.pekeri@outlook.com,"Kaptembwo, Nakuru",Peninah Odera,0751 485 158
+Beatrice,Mutua,ADM-1340,Grade 5,B,Female,2016-09-22,2022-02-21,Active,Hillary Mutua,Grandfather,0772 219 710,,,"Kiamunyi, Arusha",Magdalene Nthiga,0772 568 205
+Gideon,Farah,ADM-1341,Grade 5,B,Male,2016-05-19,2022-12-23,Active,Hillary Farah,Father,0772 762 944,,hillary.farah@yahoo.com,"Annex, Nakuru",Simon Kombo,0722 283 274
+Doreen,Obiero,ADM-1342,Grade 5,B,Female,2016-04-14,2024-10-15,Active,Eunice Obiero,Grandmother,0740 843 875,,eunice.obiero@yahoo.com,"Migosi, Kilifi",James Kioko,0701 727 436
+Esther,Wanjala,ADM-1343,Grade 5,B,Female,2016-09-10,2022-03-28,Active,Andrew Wanjala,Father,0782 648 351,0762 152 101,andrew.wanjala@icloud.com,"South C, Bungoma",Rachael Nassor,0782 870 361
+Joshua,Ambani,ADM-1344,Grade 5,B,Male,2015-11-22,2023-07-17,Active,Caleb Ambani,Father,0792 879 708,0782 370 146,,"Lanet, Kisumu",Magdalene Mwangi,0792 689 704
+Brian,Chepkoech,ADM-1345,Grade 5,B,Male,2016-01-16,2023-01-16,Active,Kiplangat Chepkoech,Uncle,0733 421 170,0740 721 175,,"Njiro, Nairobi",Simon Mwirigi,0792 609 442
+Rachael,Gitau,ADM-1346,Grade 5,B,Female,2015-12-05,2022-09-22,Active,Donald Gitau,Father,0792 325 338,,donald.gitau@yahoo.com,"Ruiru, Kisumu",Emmanuel Omollo,0751 708 633
+Olivia,Wanjala,ADM-1347,Grade 5,B,Female,2016-01-13,2022-04-23,Active,Kiplangat Wanjala,Father,0733 468 462,0722 518 253,kiplangat.wanjala@protonmail.com,"Kiamunyi, Kilifi",Emily Mwirigi,0722 505 748
+Amos,Nzioka,ADM-1348,Grade 5,B,Male,2015-01-19,2022-05-04,Active,Zachary Nzioka,Father,0712 421 383,0751 316 424,zachary.nzioka@yahoo.com,"Lanet, Kiambu",Judith Wairimu,0751 398 664
+Anthony,Kirimi,ADM-1349,Grade 5,B,Male,2015-11-05,2022-11-04,Active,Isaac Kirimi,Father,0782 554 800,0711 171 633,,"Lanet, Nairobi",John Mwinyi,0712 433 415
+Wesley,Bii,ADM-1350,Grade 5,B,Male,2016-06-18,2022-03-20,Active,Hillary Bii,Father,0711 986 957,0740 542 895,hillary.bii@gmail.com,"Kahawa Wendani, Arusha",Patrick Mbithe,0762 965 899
+Godfrey,Lugalia,ADM-1351,Grade 5,B,Male,2016-11-08,2023-09-15,Active,Victor Lugalia,Father,0751 660 149,0740 355 663,victor.lugalia@yahoo.com,"Pioneer, Machakos",Cynthia Leshan,0772 810 161
+Joyce,Chebet,ADM-1352,Grade 5,B,Female,2015-04-26,2022-11-03,Active,Amos Chebet,Father,0772 891 220,,,"Elgon View, Makueni",Shalom Wamalwa,0712 375 406
+Stephen,Tianai,ADM-1353,Grade 5,B,Male,2016-07-22,2025-04-18,Active,Patrick Tianai,Father,0751 216 654,0701 728 711,,"Embakasi, Kisumu",Caroline Maina,0762 892 708
+Patrick,Barasa,ADM-1354,Grade 5,B,Male,2015-08-21,2022-03-27,Active,Beth Barasa,Aunt,0701 557 657,0740 236 768,beth.barasa@protonmail.com,"Kahawa Wendani, Nakuru",Collins Njoroge,0751 702 836
+Meshack,Wamalwa,ADM-1355,Grade 5,B,Male,2015-07-22,2022-03-10,Active,Florence Wamalwa,Mother,0740 182 863,,florence.wamalwa@protonmail.com,"Nyawita, Makueni",Charles Mganga,0782 876 210
+Kipchoge,Kamau,ADM-1356,Grade 5,B,Male,2016-04-13,2022-09-06,Active,David Kamau,Father,0772 226 761,0722 753 330,david.kamau@gmail.com,"Kondele, Kakamega",Veronica Kombo,0733 849 179
+Dorcas,Mugo,ADM-1357,Grade 6,A,Female,2015-06-09,2022-01-28,Active,Edna Mugo,Mother,0762 428 682,0751 483 171,edna.mugo@gmail.com,"Manyatta, Nakuru",Mark Oduor,0772 720 541
+Karen,Korir,ADM-1358,Grade 6,A,Female,2014-11-14,2021-06-06,Active,Donald Korir,Father,0740 306 555,,donald.korir@icloud.com,"Kaptembwo, Kisumu",Doreen Tanui,0762 850 129
+Andrew,Juma,ADM-1359,Grade 6,A,Male,2015-12-21,2021-09-15,Active,Purity Juma,Mother,0792 655 138,,,"Manyatta, Nairobi",Yvonne Maundu,0722 451 321
+Gideon,Mburu,ADM-1360,Grade 6,A,Male,2014-03-14,2021-02-19,Active,Meshack Mburu,Father,0792 521 139,0782 977 335,meshack.mburu@icloud.com,"Nyawita, Kisumu",Caroline Wambui,0740 521 311
+Ian,Ali,ADM-1361,Grade 6,A,Male,2015-07-02,2021-03-20,Active,Susan Ali,Aunt,0762 479 236,0740 688 601,,"Sakina, Arusha",Grace Sein,0782 942 167
+Monica,Odhiambo,ADM-1362,Grade 6,A,Female,2014-03-21,2021-10-09,Active,Godfrey Odhiambo,Uncle,0701 219 843,0782 438 922,godfrey.odhiambo@icloud.com,"Kiamunyi, Mombasa",Caroline Wairimu,0782 986 964
+John,Barasa,ADM-1363,Grade 6,A,Male,2015-04-24,2025-08-15,Active,Eric Barasa,Father,0782 485 705,,eric.barasa@yahoo.com,"Pioneer, Machakos",Sophia Simiyu,0733 608 353
+Winfred,Ambani,ADM-1364,Grade 6,A,Female,2014-11-12,2021-11-26,Active,Sonia Ambani,Mother,0701 883 550,,sonia.ambani@gmail.com,"Embakasi, Nakuru",Rachael Chepkirui,0792 584 485
+Edwin,Tianai,ADM-1365,Grade 6,A,Male,2015-01-14,2021-09-08,Active,Brenda Tianai,Mother,0740 494 537,,brenda.tianai@protonmail.com,"Nyawita, Makueni",Dorcas Oduor,0711 202 599
+Harrison,Kimutai,ADM-1366,Grade 6,A,Male,2014-04-08,2021-04-09,Active,Timothy Kimutai,Father,0733 278 443,0782 925 944,timothy.kimutai@gmail.com,"Milimani Kisumu, Nakuru",Michael Mwakisha,0740 218 922
+Charity,Tuwei,ADM-1367,Grade 6,A,Female,2015-05-05,2021-10-03,Active,Beth Tuwei,Grandmother,0722 132 123,,beth.tuwei@outlook.com,"Baraka, Uasin Gishu",Sonia Sichangi,0792 394 795
+Stephen,Wanjiku,ADM-1368,Grade 6,A,Male,2014-02-21,2021-04-01,Active,Luke Wanjiku,Father,0712 894 913,0782 816 667,luke.wanjiku@gmail.com,"Umoja, Mombasa",Caroline Juma,0782 660 759
+Catherine,Igweta,ADM-1369,Grade 6,A,Female,2015-07-05,2021-10-28,Active,Hillary Igweta,Father,0792 205 104,0712 389 244,hillary.igweta@protonmail.com,"Kasarani, Machakos",Edwin Obiero,0792 659 609
+Joyce,Ndungu,ADM-1370,Grade 6,A,Female,2014-05-06,2024-12-18,Active,Beth Ndungu,Guardian,0740 385 552,0733 470 171,beth.ndungu@gmail.com,"Annex, Kilifi",Alice Kosgei,0762 327 258
+Agnes,Igweta,ADM-1371,Grade 6,A,Female,2014-12-06,2021-05-09,Active,Felix Igweta,Father,0782 916 816,0701 754 367,,"Embakasi, Kiambu",Beth Kiprop,0772 213 999
+Tabitha,Owino,ADM-1372,Grade 6,A,Female,2015-07-03,2021-10-05,Active,Anthony Owino,Grandfather,0712 766 260,0751 673 231,,"Huruma, Nakuru",Brian Natepo,0722 499 259
+Donald,Auma,ADM-1373,Grade 6,A,Male,2015-12-03,2021-06-17,Active,Luke Auma,Father,0733 823 773,0762 860 887,luke.auma@gmail.com,"Manyatta, Nairobi",Edwin Zawadi,0772 446 582
+Luke,Gitau,ADM-1374,Grade 6,A,Male,2015-06-04,2021-11-27,Active,Purity Gitau,Mother,0751 214 663,0772 795 956,purity.gitau@outlook.com,"Kahawa Wendani, Uasin Gishu",Alice Kipchumba,0722 491 330
+James,Kathambi,ADM-1375,Grade 6,A,Male,2014-06-09,2022-02-26,Active,Teresia Kathambi,Mother,0751 213 198,0711 480 771,teresia.kathambi@outlook.com,"Umoja, Nakuru",Eunice Khisa,0722 623 985
+Diana,Njuguna,ADM-1376,Grade 6,A,Female,2014-02-24,2021-11-08,Active,Ian Njuguna,Father,0712 843 216,,ian.njuguna@protonmail.com,"Thika Road, Kiambu",Eric Mwinyi,0751 310 359
+Winnie,Odhiambo,ADM-1377,Grade 6,A,Female,2014-08-10,2021-06-14,Active,Magdalene Odhiambo,Mother,0751 124 628,0762 896 973,magdalene.odhiambo@gmail.com,"Kondele, Bungoma",Sophia Obiero,0782 876 936
+Abigail,Mganga,ADM-1378,Grade 6,A,Female,2014-09-23,2024-02-28,Active,Anthony Mganga,Father,0701 813 489,,anthony.mganga@yahoo.com,"Baraka, Kilifi",Joshua Kilonzo,0722 191 762
+Peninah,Korir,ADM-1379,Grade 6,A,Female,2015-11-09,2024-02-21,Active,Diana Korir,Mother,0762 262 557,0733 421 773,diana.korir@gmail.com,"South C, Garissa",James Wafula,0701 304 418
+Nathaniel,Kimeu,ADM-1380,Grade 6,A,Male,2014-02-23,2025-11-10,Active,Amara Kimeu,Aunt,0711 627 550,,amara.kimeu@icloud.com,"Pioneer, Bungoma",Donald Kiprop,0751 479 140
+Gladys,Ali,ADM-1381,Grade 6,A,Female,2015-03-06,2021-08-18,Active,David Ali,Father,0772 939 428,0751 861 924,david.ali@yahoo.com,"Milimani, Arusha",Winfred Kipchumba,0751 382 158
+Esther,Suleiman,ADM-1382,Grade 6,A,Female,2014-05-11,2021-02-24,Active,Frank Suleiman,Father,0701 787 891,0762 722 293,frank.suleiman@icloud.com,"Sakina, Mombasa",Samuel Mwirigi,0751 516 552
+Emmanuel,Mutiso,ADM-1383,Grade 6,A,Male,2014-12-15,2021-08-04,Active,Collins Mutiso,Father,0733 641 741,0733 776 396,collins.mutiso@yahoo.com,"Shabab, Nakuru",Joshua Chepkirui,0772 272 217
+Francis,Omar,ADM-1384,Grade 6,A,Male,2014-03-02,2021-07-08,Active,Godfrey Omar,Grandfather,0792 826 554,0701 156 521,,"Njiro, Mombasa",Michael Baariu,0792 149 274
+Tabitha,Mugambi,ADM-1385,Grade 6,A,Female,2014-09-11,2021-05-12,Active,Andrew Mugambi,Father,0762 410 154,,andrew.mugambi@yahoo.com,"South B, Nakuru",Martha Abdi,0701 285 941
+Brian,Namukuru,ADM-1386,Grade 6,A,Male,2014-02-04,2021-08-08,Active,Faith Namukuru,Mother,0740 467 676,,faith.namukuru@protonmail.com,"Milimani Estate, Kilifi",Daniel Njoroge,0712 428 944
+Yvonne,Kinyua,ADM-1387,Grade 6,A,Female,2014-05-19,2021-04-19,Active,Anthony Kinyua,Father,0740 913 162,0733 385 900,anthony.kinyua@yahoo.com,"Umoja, Nakuru",Moses Kosgei,0740 309 208
+Maureen,Akoth,ADM-1388,Grade 6,B,Female,2015-11-11,2022-10-05,Active,Gideon Akoth,Father,0712 170 879,,gideon.akoth@protonmail.com,"Annex, Nakuru",Peninah Mwende,0772 440 876
+Damaris,Mwirigi,ADM-1389,Grade 6,B,Female,2014-01-26,2024-03-13,Active,Nancy Mwirigi,Mother,0711 197 808,0751 455 383,nancy.mwirigi@gmail.com,"Embakasi, Uasin Gishu",Naomi Natepo,0712 357 233
+Alex,Sein,ADM-1390,Grade 6,B,Male,2015-07-15,2022-10-10,Active,Martha Sein,Grandmother,0711 594 638,,martha.sein@gmail.com,"Kimumu, Nakuru",Eunice Ndolo,0772 891 747
+Dennis,Otieno,ADM-1391,Grade 6,B,Male,2014-11-22,2021-09-08,Active,Ibrahim Otieno,Father,0782 312 403,0772 615 227,ibrahim.otieno@gmail.com,"Kondele, Makueni",Magdalene Naisoi,0751 426 647
+George,Gatwiri,ADM-1392,Grade 6,B,Male,2014-11-09,2021-09-12,Active,Patrick Gatwiri,Father,0782 505 479,0733 825 593,patrick.gatwiri@yahoo.com,"Lanet, Kakamega",Judith Kipchumba,0722 538 362
+Grace,Otieno,ADM-1393,Grade 6,B,Female,2014-02-28,2025-01-06,Active,Simon Otieno,Father,0740 275 915,,simon.otieno@protonmail.com,"Milimani Kisumu, Kisumu",Alex Achieng,0711 324 585
+Mark,Korir,ADM-1394,Grade 6,B,Male,2015-12-11,2022-08-10,Active,James Korir,Father,0701 512 394,0792 763 797,james.korir@gmail.com,"Donholm, Machakos",Amara Namukuru,0701 726 534
+Lilian,Muthoka,ADM-1395,Grade 6,B,Female,2015-06-26,2022-01-09,Active,Joyce Muthoka,Aunt,0712 321 241,,joyce.muthoka@protonmail.com,"Kaptembwo, Kiambu",Sonia Nthiga,0762 291 372
+Wesley,Onyango,ADM-1396,Grade 6,B,Male,2014-11-04,2024-07-20,Active,Felix Onyango,Father,0701 165 992,,felix.onyango@outlook.com,"Kiamunyi, Bungoma",Samuel Zawadi,0740 875 518
+Donald,Obiero,ADM-1397,Grade 6,B,Male,2015-05-08,2021-08-19,Active,James Obiero,Father,0782 753 795,0751 960 881,james.obiero@yahoo.com,"Embakasi, Nairobi",David Mganga,0712 157 246
+Daniel,Nandwa,ADM-1398,Grade 6,B,Male,2015-09-06,2023-01-02,Active,Irene Nandwa,Mother,0733 506 413,0740 835 762,irene.nandwa@icloud.com,"Olasiti, Arusha",Emmanuel Gitau,0711 499 601
+Ibrahim,Wambua,ADM-1399,Grade 6,B,Male,2014-03-02,2021-01-12,Active,Amos Wambua,Father,0712 713 333,0701 105 740,amos.wambua@gmail.com,"Sakina, Kiambu",Mark Lugalia,0740 591 713
+Grace,Khisa,ADM-1400,Grade 6,B,Female,2014-03-13,2021-01-12,Active,David Khisa,Uncle,0701 568 672,0751 676 182,,"Annex, Makueni",Martin Nandwa,0733 631 286
+Nancy,Anyango,ADM-1401,Grade 6,B,Female,2014-02-11,2024-11-09,Active,Eric Anyango,Father,0740 769 999,,eric.anyango@protonmail.com,"Kiamunyi, Makueni",Monica Okello,0792 302 479
+Amos,Kithinji,ADM-1402,Grade 6,B,Male,2015-09-19,2024-05-11,Active,David Kithinji,Father,0722 348 559,0762 653 733,david.kithinji@protonmail.com,"Pioneer, Nakuru",Karen Suleiman,0762 668 848
+Kevin,Barasa,ADM-1403,Grade 6,B,Male,2014-03-06,2021-03-03,Active,Agnes Barasa,Mother,0701 556 595,0701 359 846,agnes.barasa@protonmail.com,"Donholm, Machakos",Agnes Kimani,0772 410 184
+Felix,Owuor,ADM-1404,Grade 6,B,Male,2014-11-08,2024-10-28,Active,Mark Owuor,Father,0722 313 290,0711 565 605,mark.owuor@protonmail.com,"Kaptembwo, Uasin Gishu",Priscilla Mwangi,0772 405 358
+Patrick,Kombo,ADM-1405,Grade 6,B,Male,2015-09-24,2023-08-13,Active,Maureen Kombo,Mother,0751 596 548,,,"Bahati, Nakuru",Sharon Anyango,0733 302 861
+Beth,Kilonzo,ADM-1406,Grade 6,B,Female,2014-06-12,2021-12-17,Active,Ian Kilonzo,Father,0782 405 908,,ian.kilonzo@icloud.com,"Kaptembwo, Uasin Gishu",David Kiptum,0711 221 256
+Karen,Adhiambo,ADM-1407,Grade 6,B,Female,2015-12-14,2024-06-24,Active,Mark Adhiambo,Father,0792 998 944,0751 145 800,mark.adhiambo@protonmail.com,"Elgon View, Nakuru",Tabitha Kimeu,0792 718 894
+Joshua,Leshan,ADM-1408,Grade 6,B,Male,2014-07-14,2023-04-09,Active,Samuel Leshan,Father,0772 662 478,0772 192 221,,"Lanet, Makueni",Collins Muthoka,0722 836 789
+Eunice,Bunoro,ADM-1409,Grade 6,B,Female,2014-11-27,2025-01-14,Active,Benjamin Bunoro,Father,0733 976 831,0740 355 203,,"Njiro, Uasin Gishu",Trevor Mugo,0722 711 338
+Karen,Choge,ADM-1410,Grade 6,B,Female,2015-02-17,2021-05-19,Active,Harrison Choge,Father,0722 284 189,0762 351 419,harrison.choge@icloud.com,"Sakina, Makueni",Hannah Onyango,0782 952 883
+Priscilla,Owino,ADM-1411,Grade 6,B,Female,2014-12-09,2021-02-13,Active,Purity Owino,Aunt,0751 142 409,,purity.owino@outlook.com,"Umoja, Kisumu",Karen Mwirigi,0701 716 746
+Moses,Khaemba,ADM-1412,Grade 6,B,Male,2014-09-07,2022-02-24,Active,Hillary Khaemba,Father,0772 496 440,,,"Pioneer, Nakuru",Dennis Njoroge,0711 472 368
+Beth,Kimutai,ADM-1413,Grade 6,B,Female,2015-11-13,2021-12-12,Active,Julius Kimutai,Father,0711 951 789,0782 535 766,julius.kimutai@icloud.com,"Sakina, Kisumu",Gloria Ciawi,0712 521 167
+Timothy,Kioko,ADM-1414,Grade 6,B,Male,2015-02-11,2025-03-28,Active,Stephen Kioko,Grandfather,0751 752 488,0712 147 622,stephen.kioko@gmail.com,"Milimani Estate, Arusha",Beatrice Natepo,0772 343 401
+Winnie,Ruto,ADM-1415,Grade 6,B,Female,2014-03-12,2021-08-19,Active,Elijah Ruto,Father,0772 371 842,0762 724 365,elijah.ruto@protonmail.com,"Kayole, Bungoma",Patrick Muthoka,0782 857 644
+Daniel,Omondi,ADM-1416,Grade 6,B,Male,2014-06-15,2021-01-06,Active,Daniel Omondi,Father,0792 387 392,,daniel.omondi@gmail.com,"Milimani Kisumu, Kakamega",Stephen Mwende,0782 356 355
+Hannah,Muthoka,ADM-1417,Grade 6,B,Female,2015-06-28,2021-06-10,Active,Kennedy Muthoka,Father,0782 434 320,0772 267 849,kennedy.muthoka@outlook.com,"Annex, Nakuru",Teresia Onyango,0751 802 708
+Gideon,Omollo,ADM-1418,Grade 6,B,Male,2014-01-04,2021-02-12,Active,Sarah Omollo,Aunt,0701 634 625,0772 735 278,,"Obunga, Kisumu",Emily Mwende,0762 429 492
+Catherine,Zawadi,ADM-1419,Grade 7,A,Female,2013-05-23,2022-05-22,Active,Francis Zawadi,Father,0701 183 974,,,"Lanet, Nairobi",Susan Omollo,0792 661 375
+Nancy,Maundu,ADM-1420,Grade 7,A,Female,2014-07-12,2020-06-14,Active,Emmanuel Maundu,Father,0712 339 706,,,"Umoja, Arusha",Diana Sironka,0782 276 605
+Nicholas,Njeru,ADM-1421,Grade 7,A,Male,2014-06-11,2020-08-18,Active,Beth Njeru,Grandmother,0722 402 103,0712 332 277,beth.njeru@outlook.com,"Embakasi, Nairobi",Doreen Oluoch,0740 526 384
+Godfrey,Nzioka,ADM-1422,Grade 7,A,Male,2013-02-24,2020-05-02,Active,Nicholas Nzioka,Father,0772 859 120,,,"Kaptembwo, Nairobi",Joshua Masinde,0772 526 955
+Sophia,Ruto,ADM-1423,Grade 7,A,Female,2013-11-04,2020-06-11,Active,Wesley Ruto,Father,0722 930 416,,wesley.ruto@outlook.com,"Manyatta, Uasin Gishu",Karen Tanui,0701 442 707
+Olivia,Chemtai,ADM-1424,Grade 7,A,Female,2014-04-23,2020-07-23,Active,Dennis Chemtai,Father,0722 895 748,0751 754 957,dennis.chemtai@outlook.com,"Milimani Estate, Nakuru",Eunice Bakari,0762 603 246
+Amara,Odera,ADM-1425,Grade 7,A,Female,2013-06-05,2020-03-25,Active,Nancy Odera,Grandmother,0740 717 658,,nancy.odera@yahoo.com,"Sakina, Nakuru",Brenda Njoroge,0772 990 919
+Hellen,Sichangi,ADM-1426,Grade 7,A,Female,2014-11-26,2023-08-27,Active,Nicholas Sichangi,Grandfather,0712 951 950,0772 902 697,,"Olasiti, Nakuru",Stephen Pekeri,0722 850 922
+David,Omollo,ADM-1427,Grade 7,A,Male,2013-01-07,2021-07-04,Active,Ibrahim Omollo,Grandfather,0712 684 106,,ibrahim.omollo@icloud.com,"Elgon View, Nakuru",Donald Juma,0782 337 641
+Kennedy,Kaelo,ADM-1428,Grade 7,A,Male,2013-03-16,2021-11-27,Active,Gideon Kaelo,Father,0792 838 373,0792 374 485,gideon.kaelo@outlook.com,"Ruiru, Nairobi",Ibrahim Tanui,0762 703 147
+Kevin,Chemtai,ADM-1429,Grade 7,A,Male,2013-05-18,2020-06-24,Active,Kiplangat Chemtai,Father,0701 721 625,0701 319 259,,"Pioneer, Mombasa",Beatrice Mwirigi,0751 371 939
+Francis,Okello,ADM-1430,Grade 7,A,Male,2014-10-06,2021-01-22,Active,Martin Okello,Father,0740 909 965,,martin.okello@yahoo.com,"Sakina, Mombasa",Amos Karanja,0701 885 929
+Charity,Owino,ADM-1431,Grade 7,A,Female,2014-04-25,2020-02-02,Active,Cynthia Owino,Guardian,0740 404 334,,cynthia.owino@gmail.com,"South B, Nakuru",Zipporah Ambani,0751 768 676
+Elijah,Ochieng,ADM-1432,Grade 7,A,Male,2013-11-08,2020-04-24,Active,Julius Ochieng,Father,0772 101 805,,julius.ochieng@icloud.com,"Bahati, Machakos",Simon Kimani,0740 235 307
+Olivia,Pashua,ADM-1433,Grade 7,A,Female,2013-11-18,2020-06-12,Active,Susan Pashua,Grandmother,0712 702 283,,susan.pashua@protonmail.com,"Kahawa Wendani, Arusha",Fridah Pashua,0762 165 992
+Fridah,Obiero,ADM-1434,Grade 7,A,Female,2014-01-14,2020-02-14,Active,Dennis Obiero,Father,0772 190 817,,dennis.obiero@outlook.com,"Milimani Kisumu, Arusha",Cynthia Farah,0733 375 675
+Julia,Wanjiku,ADM-1435,Grade 7,A,Female,2014-09-03,2020-08-10,Active,Caroline Wanjiku,Mother,0722 841 953,,caroline.wanjiku@icloud.com,"Milimani Kisumu, Nakuru",Joyce Hassan,0722 128 556
+Felix,Odhiambo,ADM-1436,Grade 7,A,Male,2014-08-23,2023-01-28,Active,William Odhiambo,Uncle,0762 942 213,,william.odhiambo@gmail.com,"Kasarani, Mombasa",James Khamis,0711 221 924
+Karen,Chemtai,ADM-1437,Grade 7,B,Female,2013-08-21,2023-02-23,Active,William Chemtai,Father,0762 985 447,,william.chemtai@yahoo.com,"Thika Road, Kisumu",Sarah Syombua,0772 916 235
+Kipchoge,Omar,ADM-1438,Grade 7,B,Male,2014-09-22,2023-12-24,Active,Elijah Omar,Grandfather,0701 956 433,0772 853 306,elijah.omar@yahoo.com,"Nyawita, Uasin Gishu",Collins Maina,0701 496 564
+James,Kosgei,ADM-1439,Grade 7,B,Male,2014-07-14,2022-12-09,Active,Ian Kosgei,Father,0733 731 667,,,"Thika Road, Kakamega",Patrick Omar,0762 885 328
+Andrew,Syombua,ADM-1440,Grade 7,B,Male,2014-11-20,2020-06-22,Active,Joseph Syombua,Grandfather,0701 529 307,0751 901 542,joseph.syombua@gmail.com,"Obunga, Uasin Gishu",Godfrey Ali,0711 311 730
+Damaris,Kinyua,ADM-1441,Grade 7,B,Female,2014-05-01,2020-07-17,Active,Wesley Kinyua,Father,0782 672 401,,wesley.kinyua@outlook.com,"Ruiru, Nakuru",Kevin Ruto,0701 437 841
+Felix,Tuwei,ADM-1442,Grade 7,B,Male,2013-03-22,2020-02-21,Active,Peninah Tuwei,Mother,0712 518 599,,peninah.tuwei@gmail.com,"Section 58, Mombasa",Teresia Hassan,0701 667 867
+Teresia,Tanui,ADM-1443,Grade 7,B,Female,2014-05-14,2020-03-20,Active,Rachael Tanui,Mother,0712 788 706,0782 457 707,rachael.tanui@gmail.com,"Milimani Kisumu, Uasin Gishu",Hillary Nzomo,0711 557 255
+Benjamin,Wafula,ADM-1444,Grade 7,B,Male,2014-01-16,2020-10-26,Active,Vincent Wafula,Father,0711 573 419,,vincent.wafula@yahoo.com,"Kiamunyi, Nakuru",Catherine Mutoro,0792 747 439
+John,Mwakisha,ADM-1445,Grade 7,B,Male,2014-03-17,2020-12-22,Active,Trevor Mwakisha,Grandfather,0712 199 506,0782 369 817,trevor.mwakisha@outlook.com,"Baraka, Nakuru",Frank Mganga,0751 872 203
+Julius,Bunoro,ADM-1446,Grade 7,B,Male,2014-04-25,2020-04-10,Active,Lawrence Bunoro,Father,0762 733 967,,,"Umoja, Kisumu",Caroline Mutoro,0782 442 943
+Kipchoge,Khisa,ADM-1447,Grade 7,B,Male,2014-09-25,2020-01-04,Active,Daniel Khisa,Uncle,0701 851 592,0711 932 694,daniel.khisa@yahoo.com,"Lake View, Kakamega",Alice Muthoka,0722 149 113
+George,Anyango,ADM-1448,Grade 7,B,Male,2014-09-28,2020-12-05,Active,Frank Anyango,Father,0740 439 212,0762 715 843,frank.anyango@gmail.com,"Migosi, Nakuru",Agnes Njuguna,0762 861 730
+James,Choge,ADM-1449,Grade 7,B,Male,2013-10-09,2020-12-05,Active,Amos Choge,Father,0772 661 325,0733 240 545,,"Lake View, Kakamega",Brian Ogot,0772 799 548
+Irene,Njenga,ADM-1450,Grade 7,B,Female,2013-11-24,2020-09-12,Active,Veronica Njenga,Grandmother,0712 941 670,,,"Manyatta, Kakamega",Edna Mbithe,0792 711 613
+Mercy,Auma,ADM-1451,Grade 7,B,Female,2013-01-24,2021-10-03,Active,Beth Auma,Aunt,0740 534 252,,,"Olasiti, Kiambu",Meshack Wamalwa,0722 266 806
+Victor,Barasa,ADM-1452,Grade 7,B,Male,2014-12-17,2020-07-13,Active,Ibrahim Barasa,Father,0740 991 386,,ibrahim.barasa@yahoo.com,"Ruiru, Kiambu",Shalom Okello,0740 351 109
+Zipporah,Nzomo,ADM-1453,Grade 7,B,Female,2014-01-01,2022-11-05,Active,Kevin Nzomo,Father,0733 336 764,0792 341 652,kevin.nzomo@outlook.com,"Ruiru, Nakuru",Fridah Njenga,0722 800 742
+Eric,Salim,ADM-1454,Grade 7,B,Male,2014-01-09,2020-10-22,Active,Mark Salim,Father,0722 956 569,0740 839 925,mark.salim@gmail.com,"Thika Road, Machakos",Yvonne Ogot,0711 373 984
+Mercy,Wafula,ADM-1455,Grade 7,C,Female,2013-01-07,2021-08-03,Active,Emmanuel Wafula,Father,0740 302 745,,emmanuel.wafula@outlook.com,"South B, Nakuru",Damaris Achieng,0792 222 518
+Damaris,Wanjiku,ADM-1456,Grade 7,C,Female,2014-05-02,2020-09-19,Active,Lilian Wanjiku,Grandmother,0740 831 467,0762 336 729,lilian.wanjiku@yahoo.com,"Naka, Garissa",Diana Pekeri,0762 511 138
+Maureen,Kipsang,ADM-1457,Grade 7,C,Female,2014-11-01,2020-11-01,Active,Eric Kipsang,Father,0751 238 358,0701 574 787,,"Kapsoya, Nairobi",Frank Mutua,0772 267 465
+Tabitha,Metto,ADM-1458,Grade 7,C,Female,2013-08-04,2020-12-12,Active,Edwin Metto,Father,0772 179 728,0711 888 862,,"Langas, Nairobi",Gideon Masinde,0751 765 434
+Felix,Kamau,ADM-1459,Grade 7,C,Male,2013-11-04,2021-08-03,Active,Stephen Kamau,Father,0712 271 821,0711 992 294,stephen.kamau@protonmail.com,"Kapsoya, Mombasa",Esther Pekeri,0712 580 362
+Caleb,Nzioka,ADM-1460,Grade 7,C,Male,2014-01-28,2020-12-12,Active,Andrew Nzioka,Father,0772 239 729,,,"Nyalenda, Machakos",Julia Farah,0722 289 599
+Frank,Tianai,ADM-1461,Grade 7,C,Male,2013-03-21,2020-08-22,Active,Gideon Tianai,Father,0733 902 262,0782 960 171,gideon.tianai@gmail.com,"Embakasi, Bungoma",Alex Mwinyi,0740 481 206
+Sarah,Ciawi,ADM-1462,Grade 7,C,Female,2014-09-01,2021-02-02,Active,Yvonne Ciawi,Mother,0711 157 838,,yvonne.ciawi@gmail.com,"Naka, Nakuru",Godfrey Chemtai,0751 461 357
+Joyce,Owino,ADM-1463,Grade 7,C,Female,2014-09-16,2020-05-16,Active,Sophia Owino,Mother,0711 960 987,0712 962 875,sophia.owino@outlook.com,"Umoja, Nakuru",Esther Natepo,0782 286 834
+Edna,Auma,ADM-1464,Grade 7,C,Female,2014-03-25,2022-08-26,Active,Stephen Auma,Father,0751 824 177,,stephen.auma@gmail.com,"Huruma, Mombasa",Andrew Chepkoech,0762 921 180
+Harrison,Kinyua,ADM-1465,Grade 7,C,Male,2013-10-02,2020-10-17,Active,Isaac Kinyua,Father,0711 928 413,,isaac.kinyua@gmail.com,"Elgon View, Machakos",Michael Njuguna,0711 118 666
+Julius,Kithinji,ADM-1466,Grade 7,C,Male,2014-09-28,2020-04-13,Active,Timothy Kithinji,Father,0701 652 239,,timothy.kithinji@icloud.com,"Njiro, Kiambu",Moses Musalia,0712 249 132
+Hillary,Kariuki,ADM-1467,Grade 7,C,Male,2013-05-15,2020-12-22,Active,Francis Kariuki,Father,0722 847 602,0772 163 630,francis.kariuki@outlook.com,"Milimani, Kiambu",Hannah Karanja,0740 954 443
+Lawrence,Auma,ADM-1468,Grade 7,C,Male,2014-04-05,2020-06-19,Active,Amos Auma,Father,0772 408 501,0712 385 164,amos.auma@outlook.com,"Naka, Bungoma",Monica Mutiso,0701 521 575
+William,Kinyua,ADM-1469,Grade 7,C,Male,2013-11-01,2020-10-13,Active,Maureen Kinyua,Guardian,0701 641 705,,maureen.kinyua@gmail.com,"Naka, Kilifi",Samuel Mwangi,0782 270 226
+Gloria,Tanui,ADM-1470,Grade 7,C,Female,2013-08-04,2020-09-18,Active,Nancy Tanui,Grandmother,0711 502 934,,,"Langas, Mombasa",Karen Oduor,0733 567 938
+Susan,Kimutai,ADM-1471,Grade 7,C,Female,2013-06-01,2020-04-22,Active,Julius Kimutai,Father,0733 115 177,0712 890 692,julius.kimutai@protonmail.com,"Kimandolu, Nakuru",Sonia Waweru,0711 986 991
+Fridah,Zawadi,ADM-1472,Grade 7,C,Female,2014-07-13,2021-06-02,Active,Janet Zawadi,Mother,0733 257 387,,janet.zawadi@yahoo.com,"Njiro, Kisumu",Mercy Nandwa,0772 397 807
+Charity,Simiyu,ADM-1473,Grade 8,A,Female,2013-07-04,2019-02-01,Active,Kipchoge Simiyu,Father,0782 562 761,,kipchoge.simiyu@yahoo.com,"Annex, Garissa",Kiplangat Sein,0712 568 184
+Brian,Abdi,ADM-1474,Grade 8,A,Male,2013-09-25,2019-10-23,Active,Martin Abdi,Grandfather,0722 548 230,0722 501 643,martin.abdi@gmail.com,"South B, Nakuru",Trevor Akoth,0772 457 617
+Amos,Mwirigi,ADM-1475,Grade 8,A,Male,2012-08-24,2020-06-11,Active,Karen Mwirigi,Mother,0711 470 593,0711 977 973,,"Naka, Kakamega",Veronica Ambani,0711 784 400
+Samuel,Owuor,ADM-1476,Grade 8,A,Male,2013-03-21,2022-05-19,Active,Catherine Owuor,Mother,0722 991 559,0712 384 263,catherine.owuor@outlook.com,"Umoja, Garissa",Sophia Kipsang,0701 843 335
+Tabitha,Muthoka,ADM-1477,Grade 8,A,Female,2013-11-10,2019-04-24,Active,Wesley Muthoka,Father,0722 945 840,,wesley.muthoka@icloud.com,"Sekei, Nairobi",Amara Achieng,0712 989 464
+Beatrice,Ruto,ADM-1478,Grade 8,A,Female,2012-07-19,2023-04-14,Active,Wesley Ruto,Father,0722 539 430,0792 351 732,wesley.ruto@icloud.com,"Annex, Kilifi",Frank Makokha,0782 394 828
+Olivia,Kosgei,ADM-1479,Grade 8,A,Female,2013-02-03,2022-02-01,Active,Mark Kosgei,Grandfather,0740 304 932,0740 983 805,mark.kosgei@icloud.com,"Bahati, Uasin Gishu",Wesley Muthoka,0751 183 635
+Florence,Musalia,ADM-1480,Grade 8,A,Female,2012-02-02,2019-12-13,Active,Luke Musalia,Father,0751 524 136,0782 542 615,,"Lanet, Nakuru",Wesley Wanjala,0733 686 332
+Veronica,Kithinji,ADM-1481,Grade 8,A,Female,2012-08-25,2019-02-02,Active,Kipchoge Kithinji,Father,0782 931 183,0792 338 295,kipchoge.kithinji@yahoo.com,"Naka, Bungoma",Fridah Tianai,0711 439 173
+Mercy,Kinyua,ADM-1482,Grade 8,A,Female,2013-08-25,2020-05-24,Active,Edwin Kinyua,Father,0701 505 531,,,"Manyatta, Kiambu",Caroline Juma,0722 602 623
+Sharon,Mburu,ADM-1483,Grade 8,A,Female,2012-04-02,2019-08-23,Active,Simon Mburu,Father,0782 625 349,,,"Kimumu, Makueni",Susan Tanui,0762 672 534
+Amos,Bii,ADM-1484,Grade 8,A,Male,2012-07-04,2019-04-16,Active,Samuel Bii,Father,0782 272 229,0733 579 584,samuel.bii@protonmail.com,"Kimandolu, Garissa",Grace Adhiambo,0733 612 119
+Edna,Sironka,ADM-1485,Grade 8,A,Female,2012-07-28,2021-08-09,Active,Kipchoge Sironka,Grandfather,0712 647 171,,kipchoge.sironka@yahoo.com,"Nyawita, Kilifi",Faith Karanja,0740 564 957
+Yvonne,Mwende,ADM-1486,Grade 8,A,Female,2012-08-08,2023-10-07,Active,Thomas Mwende,Father,0740 760 876,,thomas.mwende@protonmail.com,"Kasarani, Uasin Gishu",Winfred Chepkoech,0711 967 717
+Harrison,Gatwiri,ADM-1487,Grade 8,A,Male,2013-06-23,2020-10-10,Active,Hillary Gatwiri,Father,0722 303 821,0733 790 924,hillary.gatwiri@outlook.com,"Kaptembwo, Mombasa",Veronica Korir,0733 943 516
+Nancy,Kioko,ADM-1488,Grade 8,A,Female,2012-01-18,2019-09-19,Active,Charity Kioko,Mother,0740 558 996,,,"Pioneer, Nakuru",Godfrey Makhoha,0751 357 560
+Winnie,Kigen,ADM-1489,Grade 8,A,Female,2013-09-09,2020-07-06,Active,Kevin Kigen,Father,0701 648 993,0722 847 332,kevin.kigen@outlook.com,"Donholm, Nakuru",Winnie Khamis,0701 389 876
+Andrew,Kiptum,ADM-1490,Grade 8,A,Male,2012-12-02,2019-09-19,Active,Moses Kiptum,Father,0701 604 494,0782 287 653,moses.kiptum@icloud.com,"Embakasi, Kisumu",Meshack Kitonga,0722 154 751
+Damaris,Njeri,ADM-1491,Grade 8,A,Female,2012-06-06,2019-09-25,Active,Winnie Njeri,Mother,0762 973 727,0782 371 725,,"Embakasi, Nakuru",Timothy Njeru,0740 234 114
+Benjamin,Ruto,ADM-1492,Grade 8,A,Male,2012-04-04,2019-12-23,Active,Simon Ruto,Father,0751 906 379,0792 405 297,,"Manyatta, Nakuru",Susan Mwangi,0772 571 712
+Michael,Nasimiyu,ADM-1493,Grade 8,A,Male,2013-07-04,2019-04-19,Active,Francis Nasimiyu,Father,0772 892 490,,francis.nasimiyu@icloud.com,"Umoja, Mombasa",Simon Ndungu,0722 824 751
+Moses,Mwirigi,ADM-1494,Grade 8,A,Male,2013-02-12,2019-07-11,Active,Judith Mwirigi,Aunt,0762 918 734,0711 837 861,judith.mwirigi@icloud.com,"Embakasi, Kiambu",Sharon Khisa,0762 652 854
+Hannah,Naisoi,ADM-1495,Grade 8,B,Female,2012-04-05,2019-06-05,Active,Victor Naisoi,Father,0772 485 654,0792 990 895,victor.naisoi@protonmail.com,"Kayole, Bungoma",William Karanja,0701 743 146
+Winnie,Wafula,ADM-1496,Grade 8,B,Female,2012-01-09,2019-01-18,Active,Peter Wafula,Father,0712 722 860,,peter.wafula@gmail.com,"Olasiti, Makueni",Mercy Wairimu,0740 107 106
+Godfrey,Githinji,ADM-1497,Grade 8,B,Male,2013-12-15,2020-08-05,Active,Joseph Githinji,Father,0711 975 222,0722 461 142,joseph.githinji@protonmail.com,"Kasarani, Nakuru",Stephen Bakari,0740 768 508
+Michael,Musalia,ADM-1498,Grade 8,B,Male,2012-05-09,2019-10-15,Active,Vincent Musalia,Father,0711 389 662,,,"Njiro, Makueni",Gladys Kiptum,0792 776 926
+Eric,Mwanzia,ADM-1499,Grade 8,B,Male,2013-03-12,2019-02-02,Active,Andrew Mwanzia,Father,0722 880 459,,andrew.mwanzia@yahoo.com,"Manyatta, Nakuru",Martin Karanja,0772 407 704
+Grace,Obiero,ADM-1500,Grade 8,B,Female,2013-03-05,2019-12-17,Active,Lawrence Obiero,Father,0782 515 483,,lawrence.obiero@outlook.com,"Kayole, Kiambu",Samuel Obiero,0740 226 221
+Faith,Akoth,ADM-1501,Grade 8,B,Female,2012-09-24,2019-07-13,Active,Catherine Akoth,Mother,0751 184 996,,catherine.akoth@gmail.com,"Sakina, Bungoma",Martin Odhiambo,0722 270 238
+Patrick,Ndungu,ADM-1502,Grade 8,B,Male,2012-10-18,2019-06-20,Active,Charles Ndungu,Father,0701 397 396,,charles.ndungu@gmail.com,"Nyawita, Mombasa",Esther Ali,0782 901 121
+Amara,Igweta,ADM-1503,Grade 8,B,Female,2012-10-23,2019-03-05,Active,Caleb Igweta,Father,0733 926 205,0751 294 648,caleb.igweta@gmail.com,"Obunga, Bungoma",Francis Baariu,0701 706 864
+Victor,Mwinyi,ADM-1504,Grade 8,B,Male,2012-11-22,2019-07-12,Active,Ian Mwinyi,Father,0751 203 679,,ian.mwinyi@yahoo.com,"Elgon View, Makueni",Francis Barasa,0733 402 178
+Thomas,Chepkoech,ADM-1505,Grade 8,B,Male,2012-02-17,2019-01-01,Active,Samuel Chepkoech,Father,0711 933 849,0772 153 730,samuel.chepkoech@gmail.com,"Kayole, Garissa",Veronica Akoth,0711 490 300
+Patrick,Lugalia,ADM-1506,Grade 8,B,Male,2012-08-16,2023-03-23,Active,Isaac Lugalia,Father,0782 832 252,,isaac.lugalia@icloud.com,"Thika Road, Arusha",Joshua Nassor,0751 819 885
+Diana,Kipchumba,ADM-1507,Grade 8,B,Female,2013-05-12,2019-12-07,Active,Amos Kipchumba,Grandfather,0711 272 261,0762 931 548,amos.kipchumba@outlook.com,"Lanet, Arusha",Nathaniel Odhiambo,0792 162 625
+Anthony,Wafula,ADM-1508,Grade 8,B,Male,2012-12-13,2019-08-08,Active,Beatrice Wafula,Mother,0711 622 521,0722 170 716,beatrice.wafula@yahoo.com,"Langas, Mombasa",Elijah Ciawi,0751 330 564
+Veronica,Sironka,ADM-1509,Grade 8,B,Female,2012-02-21,2019-12-05,Active,Nancy Sironka,Mother,0740 765 685,,,"Kapsoya, Nakuru",Benjamin Kioko,0722 352 937
+Caroline,Chemtai,ADM-1510,Grade 8,B,Female,2013-01-13,2023-11-06,Active,Vincent Chemtai,Father,0751 188 496,,vincent.chemtai@protonmail.com,"Pioneer, Kilifi",Beatrice Tianai,0712 550 318
+Julius,Kimeu,ADM-1511,Grade 8,B,Male,2012-03-18,2023-12-08,Active,Stephen Kimeu,Father,0792 512 176,,,"Naka, Uasin Gishu",Emily Nandwa,0722 593 647
+Beth,Wambui,ADM-1512,Grade 8,B,Female,2012-06-21,2019-06-16,Active,Samuel Wambui,Father,0701 169 873,0782 997 197,samuel.wambui@icloud.com,"Thika Road, Nakuru",John Wafula,0772 207 518
+William,Chepkirui,ADM-1513,Grade 8,B,Male,2012-01-01,2022-10-16,Active,Nicholas Chepkirui,Father,0772 464 922,,,"Milimani, Nakuru",Simon Adan,0762 312 787
+Patrick,Kilonzo,ADM-1514,Grade 8,B,Male,2012-07-11,2019-08-25,Active,Veronica Kilonzo,Mother,0722 865 349,,veronica.kilonzo@protonmail.com,"Pioneer, Makueni",Godfrey Mutua,0712 910 829
+Sophia,Kimutai,ADM-1515,Grade 8,B,Female,2013-12-12,2019-11-12,Active,Simon Kimutai,Father,0792 571 381,,,"Nyawita, Kisumu",Mercy Kamau,0712 592 666
+Frank,Wamalwa,ADM-1516,Grade 8,B,Male,2013-09-27,2019-06-16,Active,Gideon Wamalwa,Father,0740 498 926,0762 661 247,gideon.wamalwa@outlook.com,"Baraka, Bungoma",Beth Kimani,0792 542 823
+Sarah,Hassan,ADM-1517,Grade 9,A,Female,2011-09-04,2018-08-22,Active,Emmanuel Hassan,Uncle,0740 699 413,,emmanuel.hassan@outlook.com,"Lanet, Garissa",Stephen Abdalla,0740 167 962
+Peninah,Khaemba,ADM-1518,Grade 9,A,Female,2012-09-04,2021-04-13,Active,Hannah Khaemba,Aunt,0792 330 645,,hannah.khaemba@yahoo.com,"Baraka, Nakuru",Luke Musalia,0722 791 421
+Gideon,Chepkirui,ADM-1519,Grade 9,A,Male,2012-02-02,2022-11-09,Active,Amos Chepkirui,Father,0711 139 122,0701 379 637,,"Migosi, Arusha",Stephen Ali,0792 842 232
+Kiplangat,Mwangi,ADM-1520,Grade 9,A,Male,2012-06-24,2021-07-14,Active,Kennedy Mwangi,Father,0792 503 830,0782 124 892,kennedy.mwangi@icloud.com,"Nyawita, Nakuru",William Chemtai,0712 977 935
+Cynthia,Kitonga,ADM-1521,Grade 9,A,Female,2012-01-22,2018-12-21,Active,Brian Kitonga,Father,0740 836 370,,brian.kitonga@yahoo.com,"Lanet, Machakos",Charles Mbithi,0751 802 743
+Edwin,Nassor,ADM-1522,Grade 9,A,Male,2012-12-10,2021-10-09,Active,Beatrice Nassor,Grandmother,0772 874 656,,beatrice.nassor@outlook.com,"Embakasi, Uasin Gishu",Faith Ambani,0792 191 516
+Dorcas,Mwanzia,ADM-1523,Grade 9,A,Female,2012-07-25,2018-04-04,Active,Luke Mwanzia,Father,0762 831 440,,luke.mwanzia@icloud.com,"Thika Road, Nakuru",Martha Khisa,0772 173 134
+Vincent,Otieno,ADM-1524,Grade 9,A,Male,2011-08-03,2018-07-24,Active,Kennedy Otieno,Father,0782 376 721,0782 171 854,kennedy.otieno@icloud.com,"Migosi, Garissa",Caleb Mutuku,0762 745 257
+Brian,Muthoka,ADM-1525,Grade 9,A,Male,2011-07-02,2018-01-08,Active,Faith Muthoka,Guardian,0782 554 418,,faith.muthoka@protonmail.com,"Kondele, Makueni",William Chebet,0751 251 882
+Yvonne,Kiprop,ADM-1526,Grade 9,A,Female,2011-01-13,2018-07-14,Active,Godfrey Kiprop,Father,0762 301 949,0712 875 171,,"Huruma, Nakuru",Ian Njenga,0782 462 252
+Peter,Ali,ADM-1527,Grade 9,A,Male,2012-09-08,2018-12-26,Active,Emmanuel Ali,Father,0722 735 987,,emmanuel.ali@protonmail.com,"Sakina, Bungoma",Dennis Ruto,0740 147 966
+Simon,Obiero,ADM-1528,Grade 9,A,Male,2011-03-12,2018-01-20,Active,Victor Obiero,Father,0722 226 497,0722 759 214,,"Huruma, Nairobi",Tabitha Kathambi,0772 472 144
+Beatrice,Gatwiri,ADM-1529,Grade 9,A,Female,2012-02-10,2021-01-25,Active,Lawrence Gatwiri,Father,0712 546 928,0722 390 763,lawrence.gatwiri@icloud.com,"Langas, Uasin Gishu",David Odhiambo,0711 163 839
+Ibrahim,Ali,ADM-1530,Grade 9,A,Male,2011-10-20,2018-09-18,Active,Hillary Ali,Father,0701 282 611,0733 601 334,hillary.ali@icloud.com,"South C, Makueni",Magdalene Masinde,0782 729 118
+Winnie,Gatwiri,ADM-1531,Grade 9,A,Female,2011-10-26,2018-02-13,Active,Winfred Gatwiri,Mother,0722 103 651,0740 351 201,,"Manyatta, Makueni",Harrison Anyango,0733 356 363
+Gladys,Kamau,ADM-1532,Grade 9,A,Female,2011-12-16,2018-01-22,Active,Amos Kamau,Father,0782 602 901,0712 121 826,amos.kamau@gmail.com,"Annex, Machakos",Stephen Namukuru,0772 789 479
+Kevin,Mbithe,ADM-1533,Grade 9,A,Male,2012-10-21,2020-09-02,Active,Kipchoge Mbithe,Father,0762 479 852,0701 240 267,,"Huruma, Mombasa",Brenda Mbithe,0751 164 291
+Lilian,Mburu,ADM-1534,Grade 9,A,Female,2011-06-28,2018-07-04,Active,Samuel Mburu,Father,0722 892 800,0762 337 442,samuel.mburu@yahoo.com,"Embakasi, Nakuru",Hillary Baariu,0722 523 192
+Hillary,Owino,ADM-1535,Grade 9,A,Male,2012-05-26,2018-04-15,Active,Faith Owino,Guardian,0722 174 641,0762 768 713,faith.owino@yahoo.com,"Kayole, Makueni",Eunice Korir,0751 204 257
+Caleb,Hassan,ADM-1536,Grade 9,A,Male,2012-04-15,2019-12-20,Active,Charity Hassan,Guardian,0712 653 559,,,"Langas, Mombasa",Karen Natepo,0782 144 437
+Trevor,Maina,ADM-1537,Grade 9,A,Male,2012-09-10,2018-07-10,Active,Donald Maina,Father,0762 457 168,0740 866 437,donald.maina@outlook.com,"Baraka, Kilifi",Sarah Omar,0740 558 405
+Grace,Waweru,ADM-1538,Grade 9,A,Female,2012-01-16,2018-07-23,Active,Martin Waweru,Uncle,0712 287 253,0740 747 611,,"Elgon View, Kakamega",Winfred Metto,0733 865 634
+Simon,Mwirigi,ADM-1539,Grade 9,B,Male,2011-07-13,2018-12-09,Active,Patrick Mwirigi,Father,0722 481 239,0782 210 859,patrick.mwirigi@outlook.com,"Lanet, Nakuru",Dorcas Kimani,0762 940 569
+Emmanuel,Abdalla,ADM-1540,Grade 9,B,Male,2012-08-11,2018-07-22,Active,Donald Abdalla,Father,0772 944 366,0740 435 421,,"Baraka, Mombasa",Purity Namukuru,0701 291 686
+Sarah,Kithinji,ADM-1541,Grade 9,B,Female,2012-04-15,2018-04-24,Active,Emmanuel Kithinji,Father,0740 674 463,0762 913 557,emmanuel.kithinji@gmail.com,"Sekei, Makueni",Daniel Okoth,0733 571 157
+Patrick,Sironka,ADM-1542,Grade 9,B,Male,2011-11-16,2018-06-05,Active,Godfrey Sironka,Father,0782 469 707,,godfrey.sironka@gmail.com,"Milimani Estate, Kiambu",Alice Mwakisha,0701 416 723
+Susan,Mutoro,ADM-1543,Grade 9,B,Female,2011-09-04,2022-01-03,Active,Emmanuel Mutoro,Father,0701 607 492,0701 473 365,,"Donholm, Arusha",Edwin Oduor,0792 326 104
+Joseph,Maina,ADM-1544,Grade 9,B,Male,2012-11-20,2022-12-13,Active,Ian Maina,Father,0792 288 307,0722 469 111,,"Kahawa Wendani, Garissa",Faith Musyoka,0762 619 815
+Brenda,Kariuki,ADM-1545,Grade 9,B,Female,2012-05-03,2018-10-24,Active,Maureen Kariuki,Grandmother,0701 829 526,,maureen.kariuki@outlook.com,"Langas, Kiambu",Eric Yusuf,0740 722 163
+Nathaniel,Njeri,ADM-1546,Grade 9,B,Male,2011-02-11,2018-07-08,Active,Charles Njeri,Father,0740 971 460,0792 749 493,charles.njeri@icloud.com,"Kimandolu, Makueni",Kennedy Otieno,0701 487 928
+Benjamin,Langat,ADM-1547,Grade 9,B,Male,2011-06-04,2022-04-28,Active,Ian Langat,Father,0722 827 176,,ian.langat@protonmail.com,"Milimani, Nakuru",Abigail Simiyu,0722 750 568
+Tabitha,Mutua,ADM-1548,Grade 9,B,Female,2012-08-19,2020-02-28,Active,Kipchoge Mutua,Father,0762 791 189,,kipchoge.mutua@yahoo.com,"Kiamunyi, Nakuru",Peter Choge,0711 807 235
+Moses,Syombua,ADM-1549,Grade 9,B,Male,2012-02-24,2021-04-20,Active,Priscilla Syombua,Grandmother,0712 758 248,0751 693 431,priscilla.syombua@yahoo.com,"Nyalenda, Kisumu",Emily Natepo,0740 966 735
+Godfrey,Wambua,ADM-1550,Grade 9,B,Male,2012-02-09,2021-07-22,Active,Kipchoge Wambua,Father,0712 481 363,0740 943 855,,"Kiamunyi, Nakuru",Patrick Njeru,0701 733 738
+Charity,Kimeu,ADM-1551,Grade 9,B,Female,2012-10-25,2018-02-28,Active,Trevor Kimeu,Father,0740 953 156,,,"Nyawita, Arusha",Doreen Makokha,0733 602 337
+Gloria,Chemtai,ADM-1552,Grade 9,B,Female,2011-04-02,2019-04-15,Active,Dennis Chemtai,Grandfather,0712 385 650,0782 362 107,dennis.chemtai@protonmail.com,"Donholm, Nakuru",Nicholas Mwende,0733 379 181
+Godfrey,Makhoha,ADM-1553,Grade 9,B,Male,2011-06-28,2018-12-18,Active,Brian Makhoha,Uncle,0751 356 914,,brian.makhoha@icloud.com,"Thika Road, Uasin Gishu",Florence Obiero,0762 149 801
+Lawrence,Wafula,ADM-1554,Grade 9,B,Male,2012-10-11,2018-04-21,Active,Felix Wafula,Father,0762 712 620,0701 266 944,felix.wafula@icloud.com,"Pioneer, Kiambu",Brian Mbithe,0751 738 202
+Benjamin,Juma,ADM-1555,Grade 9,B,Male,2012-05-27,2018-03-13,Active,Alex Juma,Father,0740 827 554,,alex.juma@yahoo.com,"Njiro, Bungoma",Luke Nandwa,0740 199 600
+Veronica,Mugo,ADM-1556,Grade 9,B,Female,2012-01-14,2018-11-28,Active,Harrison Mugo,Father,0733 797 979,0722 375 493,,"Lanet, Kisumu",Tabitha Wanjala,0792 904 709
+Harrison,Odera,ADM-1557,Grade 9,B,Male,2011-01-16,2018-11-15,Active,Alice Odera,Guardian,0751 851 145,0792 250 892,,"Bahati, Bungoma",Luke Achieng,0711 753 443
+Peter,Igweta,ADM-1558,Grade 9,B,Male,2012-09-12,2018-03-19,Active,Thomas Igweta,Grandfather,0733 726 419,0762 923 396,thomas.igweta@gmail.com,"Langas, Kiambu",Beatrice Nthiga,0722 365 138
+Monica,Anyango,ADM-1559,Grade 9,B,Female,2012-07-04,2018-08-26,Active,Gideon Anyango,Father,0701 837 890,0782 454 456,,"Milimani Estate, Makueni",Grace Njuguna,0722 892 112
+Daniel,Kamau,ADM-1560,Grade 9,B,Male,2011-04-17,2018-10-21,Active,Harrison Kamau,Uncle,0701 753 856,0772 365 579,harrison.kamau@outlook.com,"Section 58, Kakamega",Judith Kathambi,0711 744 912

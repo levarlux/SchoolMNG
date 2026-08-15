@@ -1,18 +1,19 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
-import { useRole } from "@/lib/use-role";
+import { useRole, isLeadershipRole } from "@/lib/use-role";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search, Loader2, Calendar, Trash2 } from "lucide-react";
+import { Plus, Search, Calendar, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 const EVENT_TYPES = [
@@ -32,7 +33,7 @@ function formatDate(ts: number) {
 export default function EventsPage() {
   const school = useSchool();
   const role = useRole();
-  const isPrincipal = role === "principal";
+  const isLeadership = isLeadershipRole(role);
   const events = useQuery(api.events.listBySchool, school ? { schoolId: school._id } : "skip");
   const createEvent = useMutation(api.events.create);
   const deleteEvent = useMutation(api.events.remove);
@@ -49,7 +50,7 @@ export default function EventsPage() {
   if (events === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <BrandLoader variant="book" size="md" />
       </div>
     );
   }
@@ -109,7 +110,7 @@ export default function EventsPage() {
           <h1 className="text-3xl font-bold">School Events</h1>
           <p className="text-muted-foreground mt-1">{events.length} total events</p>
         </div>
-        {isPrincipal && (
+        {isLeadership && (
           <Button onClick={() => setShowModal(true)}>
             <Plus className="h-4 w-4 mr-2" /> Add Event
           </Button>
@@ -137,7 +138,7 @@ export default function EventsPage() {
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-base">{ev.title}</CardTitle>
-                      {isPrincipal && (
+                      {isLeadership && (
                         <button
                           onClick={() => handleDelete(ev._id)}
                           className="p-1 text-muted-foreground hover:text-destructive"
@@ -178,7 +179,7 @@ export default function EventsPage() {
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-base">{ev.title}</CardTitle>
-                      {isPrincipal && (
+                      {isLeadership && (
                         <button
                           onClick={() => handleDelete(ev._id)}
                           className="p-1 text-muted-foreground hover:text-destructive"
@@ -263,3 +264,4 @@ export default function EventsPage() {
     </div>
   );
 }
+

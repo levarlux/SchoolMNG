@@ -4,10 +4,11 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useSchool } from "@/lib/use-school";
 import { Card, CardContent } from "@/components/ui/card";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { RotateCcw, Search, CheckCircle2, Download, Loader2 } from "lucide-react";
+import { RotateCcw, Search, CheckCircle2, Download } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
@@ -25,7 +26,7 @@ export default function ReturnsPage() {
   if (allBorrowings === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin" />
+        <BrandLoader variant="book" size="md" />
       </div>
     );
   }

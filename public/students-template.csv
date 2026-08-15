@@ -1,0 +1,4 @@
+FirstName,LastName,Admission No,Class,Stream,Gender,Date of Birth,Admission Date,Status,Guardian Name,Relationship,Guardian Phone,Alternative Phone,Guardian Email,Home Address,Emergency Contact,Emergency Phone
+Biko,Otieno,ADM-104,Grade 7,North,Male,2012-03-14,2023-01-09,Active,James Otieno,Father,0712 345 678,0733 000 000,james.otieno@example.com,Nairobi,Mary Otieno,0722 111 222
+Achieng,Omondi,ADM-105,Grade 7,North,Female,2012-07-22,2023-01-09,Active,Peter Omondi,Father,0722 456 789,,peter.omondi@example.com,Kisumu,Grace Omondi,0711 222 333
+Wafula,Barasa,ADM-106,Grade 8,South,Male,2011-11-02,2022-01-10,Active,Rose Barasa,Mother,0733 555 666,0740 777 888,rose.barasa@example.com,Eldoret,John Barasa,0722 999 000

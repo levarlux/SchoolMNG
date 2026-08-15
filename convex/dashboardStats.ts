@@ -1,22 +1,36 @@
 import { v } from "convex/values";
-import { query } from "./_generated/server";
+import { query, type QueryCtx } from "./_generated/server";
 import { requireActiveMembership } from "./helpers";
-import { Doc } from "./_generated/dataModel";
+import { Doc, Id } from "./_generated/dataModel";
+import { CACHE_TTL_MS } from "./dashboardCache";
 
 /**
  * Dashboard Stats — aggregated stats from all modules for the home dashboard.
- * Library-related data is intentionally omitted so schools that don't use
- * the library module can see a clean KPI grid. Expenditure data is included
- * instead.
+ * Uses a read-through cache: serves from cache if fresh (<1 hour),
+ * otherwise computes live and returns. The cron job refreshes the cache
+ * hourly so subsequent page loads are fast (1 read vs 100+).
  */
 
-/** Get all dashboard stats in one call */
 export const getDashboardStats = query({
   args: { schoolId: v.id("schools") },
   handler: async (ctx, { schoolId }) => {
-    // P0: tenant isolation + active-status gate.
     await requireActiveMembership(ctx, schoolId);
-    
+
+    // ── Read-through cache: read directly from DB (avoids ctx.runQuery circular types) ──
+    const cacheEntry = await ctx.db
+      .query("dashboard_cache")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .first();
+    if (cacheEntry && (Date.now() - cacheEntry.computedAt) < CACHE_TTL_MS && cacheEntry.stats) {
+      return cacheEntry.stats;
+    }
+
+    // ── Cache miss — compute live ───────────────────────────────────
+    return computeStats(ctx, schoolId);
+  },
+});
+
+async function computeStats(ctx: QueryCtx, schoolId: Id<"schools">) {
     const DAY = 86_400_000;
     const now = Date.now();
     const todayStart = new Date();
@@ -24,11 +38,8 @@ export const getDashboardStats = query({
     const todayTs = todayStart.getTime();
     const endOfDay = todayTs + DAY - 1;
 
-    // ── Student count: deferred to studentsPerClass fetch below ──────
-    // (avoids a redundant 5000-doc query)
     let totalStudentsCount = 0;
 
-    // ── Academics ──────────────────────────────────────────────
     const classes = await ctx.db
       .query("classes")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
@@ -49,8 +60,6 @@ export const getDashboardStats = query({
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
       .take(200);
 
-    // ── Library ────────────────────────────────────────────────
-    // Fines: use by_status to only get unpaid fines (capped small)
     const unpaidFines = await ctx.db
       .query("fines")
       .withIndex("by_status", (q) => q.eq("schoolId", schoolId).eq("status", "unpaid"))
@@ -58,7 +67,6 @@ export const getDashboardStats = query({
 
     const totalUnpaidFines = unpaidFines.reduce((s, f) => s + (f.amount - f.paidAmount), 0);
 
-    // ── Finance ────────────────────────────────────────────────
     const terms = await ctx.db
       .query("terms")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
@@ -78,21 +86,17 @@ export const getDashboardStats = query({
         .withIndex("by_term", (q) => q.eq("schoolId", schoolId).eq("termId", currentTerm._id))
         .take(200);
       
-      // OPTIMIZATION: Only fetch students for classes that have a fee structure this term
       const classesWithFees = new Set(termStructures.map(s => s.classId));
-      const studentsWithFees: Doc<"students">[] = [];
-      for (const cid of classesWithFees) {
-        const classStudents = await ctx.db
-          .query("students")
-          .withIndex("by_classId", q => q.eq("classId", cid))
-          .collect();
-        studentsWithFees.push(...classStudents.filter(s => s.schoolId === schoolId));
-      }
+      // OPTIMIZATION: Single query via by_schoolId instead of per-class loop
+      const allStudentsForSchool = await ctx.db
+        .query("students")
+        .withIndex("by_schoolId", q => q.eq("schoolId", schoolId))
+        .take(5000);
+      const studentsWithFees = allStudentsForSchool.filter(s => classesWithFees.has(s.classId));
 
       const totalExpected = termStructures.reduce((s, st) => s + st.amount * studentsWithFees.filter((st2) => st2.classId === st.classId).length, 0);
       const totalCollected = termPayments.reduce((s, p) => s + p.amount, 0);
 
-      // Simple debtor count
       const studentPaidMap = new Map<string, number>();
       for (const p of termPayments) {
         studentPaidMap.set(p.studentId, (studentPaidMap.get(p.studentId) ?? 0) + p.amount);
@@ -120,7 +124,6 @@ export const getDashboardStats = query({
 
     const totalExpenditures = expenditures.reduce((s, e) => s + e.amount, 0);
 
-    // ── Attendance (today) - OPTIMIZED: use by_date index ─────────────
     const todayRecords = await ctx.db
       .query("attendance")
       .withIndex("by_date", (q) =>
@@ -128,13 +131,11 @@ export const getDashboardStats = query({
           .gte("date", todayTs)
           .lte("date", endOfDay)
       )
-      .collect();
+      .take(5000);
 
     const presentToday = todayRecords.filter((r) => r.status === "present" || r.status === "late").length;
     const attendanceRate = totalStudentsCount > 0 ? Math.round((presentToday / totalStudentsCount) * 100) : 0;
 
-    // ── Health ─────────────────────────────────────────────────
-    // Clinic visits: use date-bounded index to only fetch recent docs
     const recentClinicVisits = await ctx.db
       .query("clinic_visits")
       .withIndex("by_schoolId_date", (q) => 
@@ -143,15 +144,10 @@ export const getDashboardStats = query({
       )
       .take(200);
 
-    const clinicVisitsLength = recentClinicVisits.length;
-
-    // ── Discipline ─────────────────────────────────────────────
-    // Use by_status index to fetch ONLY open incidents (avoids reading all)
     const openIncidents = await ctx.db
       .query("discipline_incidents")
       .withIndex("by_status", (q) => q.eq("schoolId", schoolId).eq("resolutionStatus", "open"))
       .take(100);
-    // Total incidents — cap at 500 for dashboard display
     const disciplineIncidentsCount = (
       await ctx.db
         .query("discipline_incidents")
@@ -159,8 +155,6 @@ export const getDashboardStats = query({
         .take(500)
     ).length;
 
-    // ── Admissions ─────────────────────────────────────────────
-    // Use by_status index to fetch ONLY pending admissions
     const pendingAdmissions = await ctx.db
       .query("admission_applications")
       .withIndex("by_status", (q) => q.eq("schoolId", schoolId).eq("status", "pending"))
@@ -172,8 +166,6 @@ export const getDashboardStats = query({
         .take(200)
     ).length;
 
-    // ── Staff ──────────────────────────────────────────────────
-    // Use by_schoolId_date index for today's staff attendance (bounded)
     const staffAttendanceToday = await ctx.db
       .query("staff_attendance")
       .withIndex("by_schoolId_date", (q) =>
@@ -181,31 +173,25 @@ export const getDashboardStats = query({
           .gte("date", todayTs)
           .lte("date", endOfDay)
       )
-      .collect();
+      .take(1000);
 
     const staffPresentToday = staffAttendanceToday.filter((a) => a.status === "present").length;
 
-    // Use by_status index to fetch ONLY pending leaves
     const pendingLeaves = await ctx.db
       .query("leave_requests")
       .withIndex("by_status", (q) => q.eq("schoolId", schoolId).eq("status", "pending"))
       .take(100);
 
-    // ── Notifications ──────────────────────────────────────────
-    // Use by_schoolId_status index to fetch ONLY unread notifications
     const unreadNotifications = await ctx.db
       .query("notifications")
       .withIndex("by_schoolId_status", (q) => q.eq("schoolId", schoolId).eq("status", "unread"))
       .take(100);
 
-    // ── Guardians ──────────────────────────────────────────────
     const guardians = await ctx.db
       .query("guardians")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
       .take(500);
 
-    // ── Compliance ─────────────────────────────────────────────
-    // Use by_status index to fetch ONLY expired docs
     const expiredDocs = await ctx.db
       .query("compliance_documents")
       .withIndex("by_status", (q) => q.eq("schoolId", schoolId).eq("status", "expired"))
@@ -217,21 +203,16 @@ export const getDashboardStats = query({
         .take(100)
     ).length;
 
-    // ── Announcements ──────────────────────────────────────────
-    // Use by_published index to fetch ONLY published announcements
     const publishedAnnouncements = await ctx.db
       .query("announcements")
       .withIndex("by_published", (q) => q.eq("schoolId", schoolId).eq("isPublished", true))
       .take(100);
 
-    // ── Transport ──────────────────────────────────────────────
     const transportRoutes = await ctx.db
       .query("transport_routes")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
       .take(50);
 
-    // ── Maintenance ────────────────────────────────────────────
-    // Use by_status index to fetch ONLY pending + in_progress tasks
     const pendingMaintenance = await ctx.db
       .query("maintenance_tasks")
       .withIndex("by_status", (q) => q.eq("schoolId", schoolId).eq("status", "pending"))
@@ -241,9 +222,6 @@ export const getDashboardStats = query({
       .withIndex("by_status", (q) => q.eq("schoolId", schoolId).eq("status", "in_progress"))
       .take(100);
 
-    // ── Borrowings Over Time (last 7 days) ───────────────────
-    // Note: borrowings table has by_status index but no date index,
-    // so we must filter in-memory. Cap at 500 for safety.
     const sevenDaysAgo = now - 7 * DAY;
     const recentBorrowings = await ctx.db
       .query("borrowings")
@@ -267,8 +245,6 @@ export const getDashboardStats = query({
       borrowingsOverTime.push({ date: key, borrowings: borrowedCount, returns: returnedCount });
     }
 
-    // ── Students Per Class ────────────────────────────────────
-    // Single fetch serves both studentsPerClass AND totalStudentsCount
     const allStudents = await ctx.db.query(
       "students"
     ).withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId)).take(5000);
@@ -278,7 +254,6 @@ export const getDashboardStats = query({
       return { className: c.name, count };
     });
     
-    // ── Assemble ───────────────────────────────────────────────
     return {
       academics: {
         students: totalStudentsCount,
@@ -297,7 +272,7 @@ export const getDashboardStats = query({
         attendanceRate,
       },
       health: {
-        clinicVisits: clinicVisitsLength,
+        clinicVisits: recentClinicVisits.length,
         recentVisits: recentClinicVisits.length,
       },
       discipline: {
@@ -324,12 +299,10 @@ export const getDashboardStats = query({
       announcements: publishedAnnouncements.length,
       transport: transportRoutes.length,
       maintenance: {
-        total: pendingMaintenance.length + inProgressMaintenance.length, // pending+in_progress shown on dashboard
+        total: pendingMaintenance.length + inProgressMaintenance.length,
         pending: pendingMaintenance.length + inProgressMaintenance.length,
       },
-      // Aggregates for charts (replaces full-list queries on client)
       borrowingsOverTime,
       studentsPerClass,
     };
-  },
-});
+}

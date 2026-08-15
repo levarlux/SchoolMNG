@@ -30,7 +30,7 @@ export const handleOrganizationEvent = mutation({
         .withIndex("by_clerkOrgId", (q) => q.eq("clerkOrgId", data.id))
         .first();
       if (!existing) {
-        await ctx.db.insert("schools", {
+        const schoolId = await ctx.db.insert("schools", {
           clerkOrgId: data.id,
           name: data.name ?? "",
           slug: data.slug ?? "",
@@ -38,6 +38,20 @@ export const handleOrganizationEvent = mutation({
           secondaryColor: "#64748b",
         });
         log("info", "webhooks", "School created from webhook", { orgId: data.id, name: data.name });
+
+        // Auto-create a 7-day trial subscription
+        const now = Date.now();
+        const TRIAL_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
+        await ctx.db.insert("subscriptions", {
+          schoolId,
+          planType: "monthly",
+          status: "trial",
+          trialStartedAt: now,
+          trialEndsAt: now + TRIAL_DURATION_MS,
+          currency: "KES",
+          amount: 2500,
+        });
+        log("info", "webhooks", "Trial subscription created", { orgId: data.id, trialEndsAt: now + TRIAL_DURATION_MS });
       }
     }
 
@@ -121,8 +135,24 @@ export const handleMembershipEvent = mutation({
     }
 
     if (event === "organizationMembership.created") {
+      // Resolve the invited role from the app-role metadata (set on the org
+      // invitation by the head). Fall back to "teacher"; never trust an
+      // arbitrary string — validate it against the school's roles table.
       const appRole = data.publicMetadata?.appRole;
-      const role = appRole === "principal" ? "principal" : "teacher";
+      let role = "teacher";
+      let exactRoleMatch = false;
+      if (typeof appRole === "string") {
+        const roleDoc = await ctx.db
+          .query("roles")
+          .withIndex("by_schoolId_key", (q) =>
+            q.eq("schoolId", school._id).eq("key", appRole)
+          )
+          .first();
+        if (roleDoc) {
+          role = roleDoc.key;
+          exactRoleMatch = true;
+        }
+      }
 
       await ctx.runMutation(internal.members.addFromWebhook, {
         userId: data.userId,
@@ -131,9 +161,29 @@ export const handleMembershipEvent = mutation({
         role,
       });
 
+      // Track the invitation as accepted + notify the head who invited them.
+      // Only when the invited role still exists (exact match); if the role was
+      // deleted meanwhile, don't mark accepted so the head can re-invite.
+      if (data.email && exactRoleMatch) {
+        const invite = await ctx.db
+          .query("invitations")
+          .withIndex("by_email_schoolId", (q) =>
+            q.eq("email", (data.email as string).toLowerCase()).eq("schoolId", school._id)
+          )
+          .filter((q) => q.eq(q.field("status"), "pending"))
+          .first();
+        if (invite) {
+          await ctx.runMutation(internal.invitations.markAccepted, {
+            id: invite._id,
+            acceptedAt: Date.now(),
+          });
+        }
+      }
+
       log("info", "webhooks", "Membership created", {
         orgId: data.orgId,
         userId: data.userId,
+        role,
       });
       return { ok: true };
     }

@@ -1,16 +1,238 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: var(--school-primary, #2563eb);
+  --font-sans: var(--font-inter, 'Inter', system-ui, sans-serif);
+  --color-primary: var(--school-primary, #0ea5e9);
   --color-primary-foreground: var(--school-primary-foreground, #ffffff);
-  --color-secondary: var(--school-secondary, #64748b);
+  --color-secondary: var(--school-secondary, #f97316);
   --color-secondary-foreground: var(--school-secondary-foreground, #ffffff);
   --color-background: var(--school-background, #ffffff);
   --color-foreground: var(--school-foreground, #0f172a);
   --color-muted: var(--school-muted, #f1f5f9);
   --color-muted-foreground: var(--school-muted-foreground, #64748b);
   --color-border: var(--school-border, #e2e8f0);
+  --color-input: var(--school-input, #cbd5e1);
   --color-card: var(--school-card, #ffffff);
   --color-card-foreground: var(--school-card-foreground, #0f172a);
-  --color-ring: var(--school-primary, #2563eb);
+  --color-ring: var(--school-primary, #0ea5e9);
+}
+
+/* Theme-tinted scrollbars (WebKit/Blink). Thumb follows the school's chosen
+   theme color at ~50% opacity so it stays subtle; falls back to the default
+   blue before a theme is set. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(37, 99, 235, 0.5);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(37, 99, 235, 0.65);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox: match the same theme-tinted treatment where supported. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(37, 99, 235, 0.5) transparent;
+}
+
+/* Prevent body scrolling on fullscreen pages like onboarding */
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Flowy gradient animation for auth pages */
+@keyframes flowGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-flow-gradient {
+  background-size: 200% 200%;
+  animation: flowGradient 8s ease infinite;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ── Page transitions ────────────────────────────────────────────── */
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-fade {
+  animation: pageFadeIn 0.3s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fade {
+    animation: none;
+  }
+}
+
+/* ── Brand loader ──────────────────────────────────────────────── */
+
+/* The three bouncing dots (used inline in buttons / small loaders) */
+@keyframes brand-bounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  40% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+/* Gentle "breathing" pulse for the book mark */
+@keyframes brand-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.82;
+  }
+}
+
+/* Soft glow behind the book */
+@keyframes brand-glow {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.15);
+  }
+}
+
+/* Shimmer sweep across the wordmark / block */
+@keyframes brand-shimmer {
+  0% {
+    background-position: -200% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.brand-bounce {
+  animation: brand-bounce 1.2s ease-in-out infinite;
+}
+
+.brand-book {
+  animation: brand-pulse 1.6s ease-in-out infinite;
+}
+
+.brand-loader-glow {
+  animation: brand-glow 1.6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.brand-glow {
+  background: radial-gradient(
+    circle,
+    var(--school-primary, #0ea5e9) 0%,
+    var(--school-secondary, #f97316) 60%,
+    transparent 100%
+  );
+}
+
+.brand-wordmark {
+  background: linear-gradient(
+    90deg,
+    var(--school-primary, #0ea5e9),
+    var(--school-secondary, #f97316),
+    var(--school-primary, #0ea5e9)
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: brand-shimmer 3s linear infinite;
+}
+
+/* ── Skeleton ──────────────────────────────────────────────────── */
+
+/* Shimmering placeholder block used by Skeleton components */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: var(--school-muted, #e2e8f0);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  background-size: 400px 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after,
+  [class*="brand-"] {
+    animation: none !important;
+  }
 }

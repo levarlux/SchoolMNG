@@ -5,12 +5,13 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useSchool } from "@/lib/use-school";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search, CircleDollarSign, CheckCircle2, XCircle, Download, Loader2 } from "lucide-react";
+import { Plus, Search, CircleDollarSign, CheckCircle2, XCircle, Download } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -25,7 +26,7 @@ export default function FinesPage() {
   if (fines === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <BrandLoader variant="book" size="md" />
       </div>
     );
   }

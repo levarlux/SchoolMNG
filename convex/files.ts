@@ -4,6 +4,8 @@ import {
   requireAuth,
   requirePrincipal,
   requireSchoolFromJwt,
+  requireStudentMembership,
+  logAuditEntry,
 } from "./helpers";
 
 export const generateUploadUrl = mutation({
@@ -25,6 +27,24 @@ export const setMyLogo = mutation({
     const url = await ctx.storage.getUrl(storageId);
     if (!url) throw new Error("Upload not found");
     await ctx.db.patch(school._id, { logoUrl: url });
+    return url;
+  },
+});
+
+// Set a student's photo (Student 360). Stores the storage URL, same
+// pattern as school logos.
+export const setStudentPhoto = mutation({
+  args: {
+    studentId: v.id("students"),
+    storageId: v.id("_storage"),
+  },
+  handler: async (ctx, { studentId, storageId }) => {
+    const student = await requireStudentMembership(ctx, studentId);
+    await requirePrincipal(ctx, student.schoolId);
+    const url = await ctx.storage.getUrl(storageId);
+    if (!url) throw new Error("Upload not found");
+    await ctx.db.patch(student._id, { photoUrl: url });
+    await logAuditEntry(ctx, student.schoolId, "student.setPhoto", { studentId });
     return url;
   },
 });

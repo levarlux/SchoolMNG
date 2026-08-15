@@ -1,24 +1,20 @@
 /**
- * Client-side CSV export utility.
- * Converts an array of objects to a CSV file and triggers a download.
+ * Convert an array of objects to CSV and trigger a browser download.
+ * Keys become column headers, values become cell values.
  */
+export function exportToCsv(rows: Record<string, unknown>[], filename: string) {
+  if (rows.length === 0) return;
 
-export function exportToCsv(data: Record<string, unknown>[], filename: string) {
-  if (data.length === 0) {
-    console.warn(`[CSV Export] No data to export for "${filename}"`);
-    return;
-  }
-
-  const headers = Object.keys(data[0]);
+  const headers = Object.keys(rows[0]);
   const csvRows = [
     headers.join(","),
-    ...data.map((row) =>
+    ...rows.map((row) =>
       headers
         .map((h) => {
           const val = row[h];
           const str = val === null || val === undefined ? "" : String(val);
-          // Escape quotes and wrap in quotes if needed
-          if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+          // Escape quotes and wrap in quotes if contains comma/newline/quote
+          if (str.includes(",") || str.includes("\n") || str.includes('"')) {
             return `"${str.replace(/"/g, '""')}"`;
           }
           return str;
@@ -27,37 +23,26 @@ export function exportToCsv(data: Record<string, unknown>[], filename: string) {
     ),
   ];
 
-  const csvContent = csvRows.join("\n");
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const csv = csvRows.join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
-  link.setAttribute("href", url);
-  link.setAttribute("download", `${filename}.csv`);
-  link.style.visibility = "hidden";
-  document.body.appendChild(link);
+  link.href = url;
+  link.download = `${filename}_${new Date().toISOString().slice(0, 10)}.csv`;
   link.click();
-  document.body.removeChild(link);
   URL.revokeObjectURL(url);
-
-  console.log(`[CSV Export] Exported ${data.length} rows to "${filename}.csv"`);
 }
 
 /**
- * Multi-sheet CSV export: creates separate CSV files for each dataset.
- * Each entry is { name: string, data: Record<string, unknown>[] }.
+ * Export multiple data sets as separate CSV files (one per sheet).
+ * Each sheet is downloaded as a separate file.
  */
 export function exportMultiSheetCsv(
   sheets: { name: string; data: Record<string, unknown>[] }[],
-  baseFilename: string
+  filename: string
 ) {
-  if (sheets.length === 0) {
-    console.warn(`[CSV Export] No sheets to export for "${baseFilename}"`);
-    return;
-  }
-
   for (const sheet of sheets) {
-    if (sheet.data.length > 0) {
-      exportToCsv(sheet.data, `${baseFilename}_${sheet.name}`);
-    }
+    if (sheet.data.length === 0) continue;
+    exportToCsv(sheet.data, `${filename}_${sheet.name}`);
   }
 }

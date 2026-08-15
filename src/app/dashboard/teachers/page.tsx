@@ -1,46 +1,54 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
-import { useRole } from "@/lib/use-role";
+import { useRole, isLeadershipRole } from "@/lib/use-role";
+import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search, Loader2 } from "lucide-react";
+import { Plus, Search, Upload, Download } from "lucide-react";
 import { toast } from "sonner";
+import { exportToCsv } from "@/lib/csv-export";
+import { ImportStudio } from "@/components/import-studio";
 
 export default function TeachersPage() {
   const school = useSchool();
   const role = useRole();
-  const isPrincipal = role === "principal";
+  const isLeadership = isLeadershipRole(role);
   const teachers = useQuery(api.teachers.listBySchool, school ? { schoolId: school._id } : "skip");
   const createTeacher = useMutation(api.teachers.create);
   const deleteTeacher = useMutation(api.teachers.remove);
 
   const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState<"all" | "teaching" | "non_teaching">("all");
   const [showModal, setShowModal] = useState(false);
+  const [showImport, setShowImport] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [staffNo, setStaffNo] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [department, setDepartment] = useState("");
+  const [category, setCategory] = useState<"teaching" | "non_teaching">("teaching");
 
   if (teachers === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <BrandLoader variant="book" size="md" />
       </div>
     );
   }
 
   const filtered = teachers.filter((t) => {
+    if (categoryFilter !== "all" && (t.category ?? "teaching") !== categoryFilter) return false;
     if (!search) return true;
     const q = search.toLowerCase();
     return (
@@ -65,6 +73,7 @@ export default function TeachersPage() {
         email: email.trim() || undefined,
         phone: phone.trim() || undefined,
         department: department.trim() || undefined,
+        category,
       });
       toast.success("Teacher added");
       setShowModal(false);
@@ -74,6 +83,7 @@ export default function TeachersPage() {
       setEmail("");
       setPhone("");
       setDepartment("");
+      setCategory("teaching");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to add teacher");
     }
@@ -93,14 +103,57 @@ export default function TeachersPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Teachers</h1>
-          <p className="text-muted-foreground mt-1">{teachers.length} total teachers</p>
+          <h1 className="text-3xl font-bold">Teachers & Staff</h1>
+          <p className="text-muted-foreground mt-1">
+            {teachers.length} total ·{" "}
+            {teachers.filter((t) => (t.category ?? "teaching") === "teaching").length} teachers ·{" "}
+            {teachers.filter((t) => t.category === "non_teaching").length} staff
+          </p>
         </div>
-        {isPrincipal && (
-          <Button onClick={() => setShowModal(true)}>
-            <Plus className="h-4 w-4 mr-2" /> Add Teacher
-          </Button>
+        {isLeadership && (
+          <div className="flex gap-2">
+            {teachers.length > 0 && (
+              <Button
+                variant="outline"
+                onClick={() =>
+                  exportToCsv(
+                    teachers.map((t) => ({
+                      "First Name": t.firstName,
+                      "Last Name": t.lastName,
+                      "Staff No": t.staffNo,
+                      Category: (t.category ?? "teaching") === "teaching" ? "Teacher" : "Staff",
+                      Department: t.department ?? "",
+                      Email: t.email ?? "",
+                      Phone: t.phone ?? "",
+                    })),
+                    "teachers"
+                  )
+                }
+              >
+                <Download className="h-4 w-4 mr-2" /> Export
+              </Button>
+            )}
+            <Button variant="outline" onClick={() => setShowImport(true)}>
+              <Upload className="h-4 w-4 mr-2" /> Import
+            </Button>
+            <Button onClick={() => setShowModal(true)}>
+              <Plus className="h-4 w-4 mr-2" /> Add Teacher
+            </Button>
+          </div>
         )}
+      </div>
+
+      <div className="flex items-center gap-2">
+        {(["all", "teaching", "non_teaching"] as const).map((c) => (
+          <Button
+            key={c}
+            variant={categoryFilter === c ? "default" : "outline"}
+            size="sm"
+            onClick={() => setCategoryFilter(c)}
+          >
+            {c === "all" ? "All" : c === "teaching" ? "Teachers" : "Staff"}
+          </Button>
+        ))}
       </div>
 
       <div className="relative">
@@ -119,6 +172,7 @@ export default function TeachersPage() {
             <thead className="bg-secondary/5">
               <tr>
                 <th className="text-left p-3 font-medium">Name</th>
+                <th className="text-left p-3 font-medium">Category</th>
                 <th className="text-left p-3 font-medium">Staff No</th>
                 <th className="text-left p-3 font-medium">Department</th>
                 <th className="text-left p-3 font-medium">Email</th>
@@ -130,12 +184,24 @@ export default function TeachersPage() {
               {filtered.map((t) => (
                 <tr key={t._id} className="border-t border-border hover:bg-secondary/5">
                   <td className="p-3 font-medium">{t.firstName} {t.lastName}</td>
+                  <td className="p-3">
+                    <span
+                      className={cn(
+                        "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
+                        (t.category ?? "teaching") === "teaching"
+                          ? "bg-primary/10 text-primary"
+                          : "bg-muted text-muted-foreground"
+                      )}
+                    >
+                      {(t.category ?? "teaching") === "teaching" ? "Teacher" : "Staff"}
+                    </span>
+                  </td>
                   <td className="p-3 font-mono text-muted-foreground">{t.staffNo}</td>
                   <td className="p-3">{t.department || "—"}</td>
                   <td className="p-3 text-muted-foreground">{t.email || "—"}</td>
                   <td className="p-3 text-muted-foreground">{t.phone || "—"}</td>
                   <td className="p-3 text-right">
-                    {isPrincipal && (
+                    {isLeadership && (
                       <Button
                         variant="ghost"
                         size="sm"
@@ -150,8 +216,8 @@ export default function TeachersPage() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="p-6 text-center text-muted-foreground">
-                    No teachers found
+                  <td colSpan={7} className="p-6 text-center text-muted-foreground">
+                    No teachers or staff found
                   </td>
                 </tr>
               )}
@@ -160,7 +226,7 @@ export default function TeachersPage() {
         </CardContent>
       </Card>
 
-      <Modal open={showModal} onClose={() => setShowModal(false)} title="Add Teacher">
+      <Modal open={showModal} onClose={() => setShowModal(false)} title="Add Teacher / Staff">
         <form onSubmit={handleCreate} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -172,9 +238,18 @@ export default function TeachersPage() {
               <Input id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
             </div>
           </div>
-          <div>
-            <Label htmlFor="staffNo">Staff Number</Label>
-            <Input id="staffNo" value={staffNo} onChange={(e) => setStaffNo(e.target.value)} required />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <Label htmlFor="staffNo">Staff Number</Label>
+              <Input id="staffNo" value={staffNo} onChange={(e) => setStaffNo(e.target.value)} required />
+            </div>
+            <div>
+              <Label htmlFor="category">Category</Label>
+              <Select id="category" value={category} onChange={(e) => setCategory(e.target.value as "teaching" | "non_teaching")}>
+                <option value="teaching">Teacher</option>
+                <option value="non_teaching">Staff (non-teaching)</option>
+              </Select>
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -196,6 +271,9 @@ export default function TeachersPage() {
           </div>
         </form>
       </Modal>
+
+      <ImportStudio open={showImport} onClose={() => setShowImport(false)} />
     </div>
   );
 }
+

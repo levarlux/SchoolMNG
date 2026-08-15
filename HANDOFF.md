@@ -1,7 +1,7 @@
-# Handoff — Member Invitations & Multi-Tenancy (v0.2.0)
+# Handoff — Member Invitations & Multi-Tenancy (v0.2.0 → v0.2.1)
 
-**Date:** 2026-07-19
-**Status:** Code deployed to prod Convex, v0.2.0 tagged on GitHub. Pending: dual-role manual test pass, then patch release cycle.
+**Date:** 2026-07-21 (updated)
+**Status:** v0.2.1 deployed to prod Convex, tagged on GitHub, debug build complete. Pending: dual-role manual test pass, prerelease cycle.
 
 ---
 

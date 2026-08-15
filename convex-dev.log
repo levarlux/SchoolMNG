@@ -1,0 +1,873 @@
+npm notice run school-library-mng@0.2.1 npx
+npm notice run convex dev
+▌ Developing against deployment:
+▌ [Development] moses-psitito:schoolmng:dev/moses-psitito (dev) (dashboard: https://dashboard.convex.dev/t/moses-psitito/schoolmng/hip-crab-756)
+▌ └─ https://hip-crab-756.convex.cloud
+- Preparing Convex functions...
+
+[36mA minor update is available for Convex[39m [2m(1.42.3 → 1.43.0)[22m
+[2mChangelog:[22m [4mhttps://github.com/get-convex/convex-js/blob/main/CHANGELOG.md#changelog[24m
+[32m✔[39m 06:47:38 Convex functions ready! (13.08s)
+- Preparing Convex functions...
+
+[32m✔[39m 06:48:41 Convex functions ready! (13.28s)
+09/08/2026, 06:50:21 [CONVEX A(aiAssistant:chat)] [ERROR] 'Mistral agent error:' Error: API error occurred: {"detail":[{"loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","type":"value_error","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\n\nThis session is strictly bound to levarux. Never use or reference any other school's data.\n\nSession: entered from \"chat\". Asking user role: principal.\n\nOperating rules (must always follow):\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\n2. Never invent fields, modules or records that are not present in the school context below.\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\n5. If there is no data, say so plainly — never fabricate a plausible answer.\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\n8. Keep replies concise, plain-language, under 200 words.\n\n--- Live school data ---\n\nSchool: levarux (levarlux, status: active)\nCurrent term: Term 2 2026 (unknown)\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\nSample students: Hugo Boss (657345tgrjh)\n\nUser question:\nhey","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{}}],"request$":{},"response$":{},"body$":"{\"object\":\"Error\",\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\"],\"msg\":\"Value error, Conversation with an 'agent' can't contain the following fields completion_args\",\"input\":{\"inputs\":[{\"object\":\"entry\",\"type\":\"message.input\",\"role\":\"user\",\"content\":\"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\\"chat\\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nhey\",\"prefix\":false}],\"stream\":false,\"completion_args\":{\"temperature\":0.7,\"max_tokens\":1200},\"agent_id\":\"ag_019fe478484b749e8b16916db2bc08f7\",\"agent_version\":0},\"ctx\":{\"error\":{}}}],\"message\":[{\"type\":\"value_error\",\"loc\":[\"body\"],\"msg\":\"Value error, Conversation with an 'agent' can't contain the following fields completion_args\",\"input\":{\"inputs\":[{\"object\":\"entry\",\"type\":\"message.input\",\"role\":\"user\",\"content\":\"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\\"chat\\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nhey\",\"prefix\":false}],\"stream\":false,\"completion_args\":{\"temperature\":0.7,\"max_tokens\":1200},\"agent_id\":\"ag_019fe478484b749e8b16916db2bc08f7\",\"agent_version\":0},\"ctx\":{\"error\":{}}}],\"type\":\"invalid_request_error\",\"code\":3001}"}
+    at transform (convex:/user/aiAssistant.js:9575:21)
+    at t._zod.parse (convex:/user/_deps/node/LZNZRF4E.js:10916:15)
+    at handlePipeResult (convex:/user/_deps/node/LZNZRF4E.js:3058:57)
+    at t._zod.parse (convex:/user/_deps/node/LZNZRF4E.js:3054:68)
+    at convex:/user/_deps/node/LZNZRF4E.js:1284:63
+    at t.parse (convex:/user/_deps/node/LZNZRF4E.js:10111:129)
+    at tm.request (convex:/user/aiAssistant.js:1178:37)
+    at safeParseResponse (convex:/user/aiAssistant.js:1198:15)
+    at matchFunc (convex:/user/aiAssistant.js:1178:15)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  statusCode: 422,
+  body: `{"object":"Error","detail":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nhey","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"message":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nhey","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"type":"invalid_request_error","code":3001}`,
+  headers: Headers {
+    date: 'Sun, 09 Aug 2026 03:50:21 GMT',
+    'content-type': 'application/json',
+    'content-length': '3608',
+    connection: 'keep-alive',
+    'mistral-correlation-id': '019fe4a4-9d36-78aa-9771-f3252cb8fbd6',
+    'x-kong-request-id': '019fe4a4-9d36-78aa-9771-f3252cb8fbd6',
+    'x-envoy-upstream-service-time': '3',
+    server: 'cloudflare',
+    'access-control-allow-origin': '*',
+    'x-kong-upstream-latency': '5',
+    'x-kong-proxy-latency': '11',
+    'cf-cache-status': 'DYNAMIC',
+    'set-cookie': '__cf_bm=p4FYwZQCa6NtOqzikGHENcOJE.1cdBUpHh3r6__PVVM-1786247421.1848798-1.0.1.1-UfFhMsSTbCyMcPUzCTyv9aUQ3exOSginUR6PXkBmeo1msA.xtxGb4j9S8ZejvlWw05Zq_.k5EvgBufRm7LBKUQoP8Fri3WcfH3atWqNGA1_8e4W5RHxsTs60t_gOA3_d; HttpOnly; SameSite=None; Secure; Path=/; Domain=mistral.ai; Expires=Sun, 09 Aug 2026 04:20:21 GMT',
+    'strict-transport-security': 'max-age=15552000; includeSubDomains; preload',
+    'x-content-type-options': 'nosniff',
+    'cf-ray': 'a283cbce6ef34f46-IAD',
+    'alt-svc': 'h3=":443"; ma=86400'
+  },
+  contentType: 'application/json',
+  rawResponse: Response {
+    status: 422,
+    statusText: 'Unprocessable Entity',
+    headers: Headers {
+      date: 'Sun, 09 Aug 2026 03:50:21 GMT',
+      'content-type': 'application/json',
+      'content-length': '3608',
+      connection: 'keep-alive',
+      'mistral-correlation-id': '019fe4a4-9d36-78aa-9771-f3252cb8fbd6',
+      'x-kong-request-id': '019fe4a4-9d36-78aa-9771-f3252cb8fbd6',
+      'x-envoy-upstream-service-time': '3',
+      server: 'cloudflare',
+      'access-control-allow-origin': '*',
+      'x-kong-upstream-latency': '5',
+      'x-kong-proxy-latency': '11',
+      'cf-cache-status': 'DYNAMIC',
+      'set-cookie': '__cf_bm=p4FYwZQCa6NtOqzikGHENcOJE.1cdBUpHh3r6__PVVM-1786247421.1848798-1.0.1.1-UfFhMsSTbCyMcPUzCTyv9aUQ3exOSginUR6PXkBmeo1msA.xtxGb4j9S8ZejvlWw05Zq_.k5EvgBufRm7LBKUQoP8Fri3WcfH3atWqNGA1_8e4W5RHxsTs60t_gOA3_d; HttpOnly; SameSite=None; Secure; Path=/; Domain=mistral.ai; Expires=Sun, 09 Aug 2026 04:20:21 GMT',
+      'strict-transport-security': 'max-age=15552000; includeSubDomains; preload',
+      'x-content-type-options': 'nosniff',
+      'cf-ray': 'a283cbce6ef34f46-IAD',
+      'alt-svc': 'h3=":443"; ma=86400'
+    },
+    body: ReadableStream { locked: true, state: 'closed', supportsBYOB: true },
+    bodyUsed: true,
+    ok: false,
+    redirected: false,
+    type: 'basic',
+    url: 'https://api.mistral.ai/v1/conversations'
+  },
+  name: 'HTTPValidationError',
+  detail: [
+    {
+      loc: [Array],
+      msg: "Value error, Conversation with an 'agent' can't contain the following fields completion_args",
+      type: 'value_error',
+      input: [Object],
+      ctx: {}
+    }
+  ],
+  'data$': {
+    detail: [ [Object] ],
+    'request$': Request {
+      method: 'POST',
+      url: 'https://api.mistral.ai/v1/conversations',
+      headers: Headers {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: 'Bearer Oz8vnP0WbAy1WU7gDKwhfSWGNjlqGr8t',
+        cookie: '',
+        'user-agent': 'speakeasy-sdk/typescript 2.6.1 2.884.13 1.0.0 @mistralai/mistralai'
+      },
+      destination: '',
+      referrer: 'about:client',
+      referrerPolicy: '',
+      mode: 'cors',
+      credentials: 'same-origin',
+      cache: 'default',
+      redirect: 'follow',
+      integrity: '',
+      keepalive: false,
+      isReloadNavigation: false,
+      isHistoryNavigation: false,
+      signal: AbortSignal { aborted: false }
+    },
+    'response$': Response {
+      status: 422,
+      statusText: 'Unprocessable Entity',
+      headers: Headers {
+        date: 'Sun, 09 Aug 2026 03:50:21 GMT',
+        'content-type': 'application/json',
+        'content-length': '3608',
+        connection: 'keep-alive',
+        'mistral-correlation-id': '019fe4a4-9d36-78aa-9771-f3252cb8fbd6',
+        'x-kong-request-id': '019fe4a4-9d36-78aa-9771-f3252cb8fbd6',
+        'x-envoy-upstream-service-time': '3',
+        server: 'cloudflare',
+        'access-control-allow-origin': '*',
+        'x-kong-upstream-latency': '5',
+        'x-kong-proxy-latency': '11',
+        'cf-cache-status': 'DYNAMIC',
+        'set-cookie': '__cf_bm=p4FYwZQCa6NtOqzikGHENcOJE.1cdBUpHh3r6__PVVM-1786247421.1848798-1.0.1.1-UfFhMsSTbCyMcPUzCTyv9aUQ3exOSginUR6PXkBmeo1msA.xtxGb4j9S8ZejvlWw05Zq_.k5EvgBufRm7LBKUQoP8Fri3WcfH3atWqNGA1_8e4W5RHxsTs60t_gOA3_d; HttpOnly; SameSite=None; Secure; Path=/; Domain=mistral.ai; Expires=Sun, 09 Aug 2026 04:20:21 GMT',
+        'strict-transport-security': 'max-age=15552000; includeSubDomains; preload',
+        'x-content-type-options': 'nosniff',
+        'cf-ray': 'a283cbce6ef34f46-IAD',
+        'alt-svc': 'h3=":443"; ma=86400'
+      },
+      body: ReadableStream { locked: true, state: 'closed', supportsBYOB: true },
+      bodyUsed: true,
+      ok: false,
+      redirected: false,
+      type: 'basic',
+      url: 'https://api.mistral.ai/v1/conversations'
+    },
+    'body$': `{"object":"Error","detail":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nhey","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"message":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nhey","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"type":"invalid_request_error","code":3001}`
+  }
+}
+09/08/2026, 06:50:34 [CONVEX A(aiAssistant:chat)] [ERROR] 'Mistral agent error:' Error: API error occurred: {"detail":[{"loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","type":"value_error","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"hey","prefix":false},{"object":"entry","type":"message.input","role":"assistant","content":"I encountered an error contacting the AI assistant. Please try again in a moment.","prefix":false},{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\n\nThis session is strictly bound to levarux. Never use or reference any other school's data.\n\nSession: entered from \"chat\". Asking user role: principal.\n\nOperating rules (must always follow):\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\n2. Never invent fields, modules or records that are not present in the school context below.\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\n5. If there is no data, say so plainly — never fabricate a plausible answer.\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\n8. Keep replies concise, plain-language, under 200 words.\n\n--- Live school data ---\n\nSchool: levarux (levarlux, status: active)\nCurrent term: Term 2 2026 (unknown)\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\nSample students: Hugo Boss (657345tgrjh)\n\nUser question:\nheyy","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{}}],"request$":{},"response$":{},"body$":"{\"object\":\"Error\",\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\"],\"msg\":\"Value error, Conversation with an 'agent' can't contain the following fields completion_args\",\"input\":{\"inputs\":[{\"object\":\"entry\",\"type\":\"message.input\",\"role\":\"user\",\"content\":\"hey\",\"prefix\":false},{\"object\":\"entry\",\"type\":\"message.input\",\"role\":\"assistant\",\"content\":\"I encountered an error contacting the AI assistant. Please try again in a moment.\",\"prefix\":false},{\"object\":\"entry\",\"type\":\"message.input\",\"role\":\"user\",\"content\":\"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\\"chat\\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy\",\"prefix\":false}],\"stream\":false,\"completion_args\":{\"temperature\":0.7,\"max_tokens\":1200},\"agent_id\":\"ag_019fe478484b749e8b16916db2bc08f7\",\"agent_version\":0},\"ctx\":{\"error\":{}}}],\"message\":[{\"type\":\"value_error\",\"loc\":[\"body\"],\"msg\":\"Value error, Conversation with an 'agent' can't contain the following fields completion_args\",\"input\":{\"inputs\":[{\"object\":\"entry\",\"type\":\"message.input\",\"role\":\"user\",\"content\":\"hey\",\"prefix\":false},{\"object\":\"entry\",\"type\":\"message.input\",\"role\":\"assistant\",\"content\":\"I encountered an error contacting the AI assistant. Please try again in a moment.\",\"prefix\":false},{\"object\":\"entry\",\"type\":\"message.input\",\"role\":\"user\",\"content\":\"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\\"chat\\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy\",\"prefix\":false}],\"stream\":false,\"completion_args\":{\"temperature\":0.7,\"max_tokens\":1200},\"agent_id\":\"ag_019fe478484b749e8b16916db2bc08f7\",\"agent_version\":0},\"ctx\":{\"error\":{}}}],\"type\":\"invalid_request_error\",\"code\":3001}"}
+    at transform (convex:/user/aiAssistant.js:9575:21)
+    at t._zod.parse (convex:/user/_deps/node/LZNZRF4E.js:10916:15)
+    at handlePipeResult (convex:/user/_deps/node/LZNZRF4E.js:3058:57)
+    at t._zod.parse (convex:/user/_deps/node/LZNZRF4E.js:3054:68)
+    at convex:/user/_deps/node/LZNZRF4E.js:1284:63
+    at t.parse (convex:/user/_deps/node/LZNZRF4E.js:10111:129)
+    at tm.request (convex:/user/aiAssistant.js:1178:37)
+    at safeParseResponse (convex:/user/aiAssistant.js:1198:15)
+    at matchFunc (convex:/user/aiAssistant.js:1178:15)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  statusCode: 422,
+  body: `{"object":"Error","detail":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"hey","prefix":false},{"object":"entry","type":"message.input","role":"assistant","content":"I encountered an error contacting the AI assistant. Please try again in a moment.","prefix":false},{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"message":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"hey","prefix":false},{"object":"entry","type":"message.input","role":"assistant","content":"I encountered an error contacting the AI assistant. Please try again in a moment.","prefix":false},{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"type":"invalid_request_error","code":3001}`,
+  headers: Headers {
+    date: 'Sun, 09 Aug 2026 03:50:34 GMT',
+    'content-type': 'application/json',
+    'content-length': '4124',
+    connection: 'keep-alive',
+    'set-cookie': '__cf_bm=oy4BO0JW30HWv3OnlA.Xmg18qe0DDy47b8hgiwI1rN0-1786247434.8051178-1.0.1.1-3hq3SnceiO.hU874zJRa.Bu_bmaIYb0RljfhijCBrkc_e.PLMrnTTGGVc22gP6bliejRJa59gsVU1phr3FzA6sDGuNUOOQkozySnW.R2nxF72CeLbs.blG8TXFZK6i5E; HttpOnly; SameSite=None; Secure; Path=/; Domain=mistral.ai; Expires=Sun, 09 Aug 2026 04:20:34 GMT',
+    'mistral-correlation-id': '019fe4a4-d272-74fd-8ec5-cac1ba2dbdd5',
+    'x-kong-request-id': '019fe4a4-d272-74fd-8ec5-cac1ba2dbdd5',
+    'x-envoy-upstream-service-time': '4',
+    server: 'cloudflare',
+    'access-control-allow-origin': '*',
+    'x-kong-upstream-latency': '6',
+    'x-kong-proxy-latency': '12',
+    'x-content-type-options': 'nosniff',
+    'cf-cache-status': 'DYNAMIC',
+    'strict-transport-security': 'max-age=15552000; includeSubDomains; preload',
+    'cf-ray': 'a283cc23882dd649-IAD',
+    'alt-svc': 'h3=":443"; ma=86400'
+  },
+  contentType: 'application/json',
+  rawResponse: Response {
+    status: 422,
+    statusText: 'Unprocessable Entity',
+    headers: Headers {
+      date: 'Sun, 09 Aug 2026 03:50:34 GMT',
+      'content-type': 'application/json',
+      'content-length': '4124',
+      connection: 'keep-alive',
+      'set-cookie': '__cf_bm=oy4BO0JW30HWv3OnlA.Xmg18qe0DDy47b8hgiwI1rN0-1786247434.8051178-1.0.1.1-3hq3SnceiO.hU874zJRa.Bu_bmaIYb0RljfhijCBrkc_e.PLMrnTTGGVc22gP6bliejRJa59gsVU1phr3FzA6sDGuNUOOQkozySnW.R2nxF72CeLbs.blG8TXFZK6i5E; HttpOnly; SameSite=None; Secure; Path=/; Domain=mistral.ai; Expires=Sun, 09 Aug 2026 04:20:34 GMT',
+      'mistral-correlation-id': '019fe4a4-d272-74fd-8ec5-cac1ba2dbdd5',
+      'x-kong-request-id': '019fe4a4-d272-74fd-8ec5-cac1ba2dbdd5',
+      'x-envoy-upstream-service-time': '4',
+      server: 'cloudflare',
+      'access-control-allow-origin': '*',
+      'x-kong-upstream-latency': '6',
+      'x-kong-proxy-latency': '12',
+      'x-content-type-options': 'nosniff',
+      'cf-cache-status': 'DYNAMIC',
+      'strict-transport-security': 'max-age=15552000; includeSubDomains; preload',
+      'cf-ray': 'a283cc23882dd649-IAD',
+      'alt-svc': 'h3=":443"; ma=86400'
+    },
+    body: ReadableStream { locked: true, state: 'closed', supportsBYOB: true },
+    bodyUsed: true,
+    ok: false,
+    redirected: false,
+    type: 'basic',
+    url: 'https://api.mistral.ai/v1/conversations'
+  },
+  name: 'HTTPValidationError',
+  detail: [
+    {
+      loc: [Array],
+      msg: "Value error, Conversation with an 'agent' can't contain the following fields completion_args",
+      type: 'value_error',
+      input: [Object],
+      ctx: {}
+    }
+  ],
+  'data$': {
+    detail: [ [Object] ],
+    'request$': Request {
+      method: 'POST',
+      url: 'https://api.mistral.ai/v1/conversations',
+      headers: Headers {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: 'Bearer Oz8vnP0WbAy1WU7gDKwhfSWGNjlqGr8t',
+        cookie: '',
+        'user-agent': 'speakeasy-sdk/typescript 2.6.1 2.884.13 1.0.0 @mistralai/mistralai'
+      },
+      destination: '',
+      referrer: 'about:client',
+      referrerPolicy: '',
+      mode: 'cors',
+      credentials: 'same-origin',
+      cache: 'default',
+      redirect: 'follow',
+      integrity: '',
+      keepalive: false,
+      isReloadNavigation: false,
+      isHistoryNavigation: false,
+      signal: AbortSignal { aborted: false }
+    },
+    'response$': Response {
+      status: 422,
+      statusText: 'Unprocessable Entity',
+      headers: Headers {
+        date: 'Sun, 09 Aug 2026 03:50:34 GMT',
+        'content-type': 'application/json',
+        'content-length': '4124',
+        connection: 'keep-alive',
+        'set-cookie': '__cf_bm=oy4BO0JW30HWv3OnlA.Xmg18qe0DDy47b8hgiwI1rN0-1786247434.8051178-1.0.1.1-3hq3SnceiO.hU874zJRa.Bu_bmaIYb0RljfhijCBrkc_e.PLMrnTTGGVc22gP6bliejRJa59gsVU1phr3FzA6sDGuNUOOQkozySnW.R2nxF72CeLbs.blG8TXFZK6i5E; HttpOnly; SameSite=None; Secure; Path=/; Domain=mistral.ai; Expires=Sun, 09 Aug 2026 04:20:34 GMT',
+        'mistral-correlation-id': '019fe4a4-d272-74fd-8ec5-cac1ba2dbdd5',
+        'x-kong-request-id': '019fe4a4-d272-74fd-8ec5-cac1ba2dbdd5',
+        'x-envoy-upstream-service-time': '4',
+        server: 'cloudflare',
+        'access-control-allow-origin': '*',
+        'x-kong-upstream-latency': '6',
+        'x-kong-proxy-latency': '12',
+        'x-content-type-options': 'nosniff',
+        'cf-cache-status': 'DYNAMIC',
+        'strict-transport-security': 'max-age=15552000; includeSubDomains; preload',
+        'cf-ray': 'a283cc23882dd649-IAD',
+        'alt-svc': 'h3=":443"; ma=86400'
+      },
+      body: ReadableStream { locked: true, state: 'closed', supportsBYOB: true },
+      bodyUsed: true,
+      ok: false,
+      redirected: false,
+      type: 'basic',
+      url: 'https://api.mistral.ai/v1/conversations'
+    },
+    'body$': `{"object":"Error","detail":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"hey","prefix":false},{"object":"entry","type":"message.input","role":"assistant","content":"I encountered an error contacting the AI assistant. Please try again in a moment.","prefix":false},{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"message":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"hey","prefix":false},{"object":"entry","type":"message.input","role":"assistant","content":"I encountered an error contacting the AI assistant. Please try again in a moment.","prefix":false},{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"type":"invalid_request_error","code":3001}`
+  }
+}
+- Preparing Convex functions...
+
+[32m✔[39m 06:51:35 Convex functions ready! (14s)
+09/08/2026, 06:53:44 [CONVEX A(aiAssistant:chat)] [ERROR] 'Mistral agent error:' Error: API error occurred: {"detail":[{"loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","type":"value_error","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\n\nThis session is strictly bound to levarux. Never use or reference any other school's data.\n\nSession: entered from \"chat\". Asking user role: principal.\n\nOperating rules (must always follow):\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\n2. Never invent fields, modules or records that are not present in the school context below.\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\n5. If there is no data, say so plainly — never fabricate a plausible answer.\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\n8. Keep replies concise, plain-language, under 200 words.\n\n--- Live school data ---\n\nSchool: levarux (levarlux, status: active)\nCurrent term: Term 2 2026 (unknown)\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\nSample students: Hugo Boss (657345tgrjh)\n\nUser question:\nheyy","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{}}],"request$":{},"response$":{},"body$":"{\"object\":\"Error\",\"detail\":[{\"type\":\"value_error\",\"loc\":[\"body\"],\"msg\":\"Value error, Conversation with an 'agent' can't contain the following fields completion_args\",\"input\":{\"inputs\":[{\"object\":\"entry\",\"type\":\"message.input\",\"role\":\"user\",\"content\":\"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\\"chat\\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy\",\"prefix\":false}],\"stream\":false,\"completion_args\":{\"temperature\":0.7,\"max_tokens\":1200},\"agent_id\":\"ag_019fe478484b749e8b16916db2bc08f7\",\"agent_version\":0},\"ctx\":{\"error\":{}}}],\"message\":[{\"type\":\"value_error\",\"loc\":[\"body\"],\"msg\":\"Value error, Conversation with an 'agent' can't contain the following fields completion_args\",\"input\":{\"inputs\":[{\"object\":\"entry\",\"type\":\"message.input\",\"role\":\"user\",\"content\":\"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\\"chat\\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy\",\"prefix\":false}],\"stream\":false,\"completion_args\":{\"temperature\":0.7,\"max_tokens\":1200},\"agent_id\":\"ag_019fe478484b749e8b16916db2bc08f7\",\"agent_version\":0},\"ctx\":{\"error\":{}}}],\"type\":\"invalid_request_error\",\"code\":3001}"}
+    at transform (convex:/user/aiAssistant.js:9575:21)
+    at t._zod.parse (convex:/user/_deps/node/LZNZRF4E.js:10916:15)
+    at handlePipeResult (convex:/user/_deps/node/LZNZRF4E.js:3058:57)
+    at t._zod.parse (convex:/user/_deps/node/LZNZRF4E.js:3054:68)
+    at convex:/user/_deps/node/LZNZRF4E.js:1284:63
+    at t.parse (convex:/user/_deps/node/LZNZRF4E.js:10111:129)
+    at tm.request (convex:/user/aiAssistant.js:1178:37)
+    at safeParseResponse (convex:/user/aiAssistant.js:1198:15)
+    at matchFunc (convex:/user/aiAssistant.js:1178:15)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  statusCode: 422,
+  body: `{"object":"Error","detail":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"message":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"type":"invalid_request_error","code":3001}`,
+  headers: Headers {
+    date: 'Sun, 09 Aug 2026 03:53:44 GMT',
+    'content-type': 'application/json',
+    'content-length': '3610',
+    connection: 'keep-alive',
+    'mistral-correlation-id': '019fe4a7-b722-7098-bde8-abfea44bf299',
+    'x-kong-request-id': '019fe4a7-b722-7098-bde8-abfea44bf299',
+    'x-envoy-upstream-service-time': '3',
+    server: 'cloudflare',
+    'access-control-allow-origin': '*',
+    'x-kong-upstream-latency': '5',
+    'x-kong-proxy-latency': '14',
+    'cf-cache-status': 'DYNAMIC',
+    'set-cookie': '__cf_bm=OW0vCL1nuII9S6zsosR4w0hs5N2kwtSuYTJqyOdMMuU-1786247624.4254642-1.0.1.1-X6qkssvbxG5j1BIAq1qBByAIft.sHTDcmpRMgYpSHZ3p6hu9G1vb_NlZPwxfaqJodIrH1sFBYgSnUXXsg6LMMZiRFfUNlLithiL7aSTUa3axqs70FS1wp8RKhW4njFpt; HttpOnly; SameSite=None; Secure; Path=/; Domain=mistral.ai; Expires=Sun, 09 Aug 2026 04:23:44 GMT',
+    'strict-transport-security': 'max-age=15552000; includeSubDomains; preload',
+    'x-content-type-options': 'nosniff',
+    'cf-ray': 'a283d0c4ab785707-IAD',
+    'alt-svc': 'h3=":443"; ma=86400'
+  },
+  contentType: 'application/json',
+  rawResponse: Response {
+    status: 422,
+    statusText: 'Unprocessable Entity',
+    headers: Headers {
+      date: 'Sun, 09 Aug 2026 03:53:44 GMT',
+      'content-type': 'application/json',
+      'content-length': '3610',
+      connection: 'keep-alive',
+      'mistral-correlation-id': '019fe4a7-b722-7098-bde8-abfea44bf299',
+      'x-kong-request-id': '019fe4a7-b722-7098-bde8-abfea44bf299',
+      'x-envoy-upstream-service-time': '3',
+      server: 'cloudflare',
+      'access-control-allow-origin': '*',
+      'x-kong-upstream-latency': '5',
+      'x-kong-proxy-latency': '14',
+      'cf-cache-status': 'DYNAMIC',
+      'set-cookie': '__cf_bm=OW0vCL1nuII9S6zsosR4w0hs5N2kwtSuYTJqyOdMMuU-1786247624.4254642-1.0.1.1-X6qkssvbxG5j1BIAq1qBByAIft.sHTDcmpRMgYpSHZ3p6hu9G1vb_NlZPwxfaqJodIrH1sFBYgSnUXXsg6LMMZiRFfUNlLithiL7aSTUa3axqs70FS1wp8RKhW4njFpt; HttpOnly; SameSite=None; Secure; Path=/; Domain=mistral.ai; Expires=Sun, 09 Aug 2026 04:23:44 GMT',
+      'strict-transport-security': 'max-age=15552000; includeSubDomains; preload',
+      'x-content-type-options': 'nosniff',
+      'cf-ray': 'a283d0c4ab785707-IAD',
+      'alt-svc': 'h3=":443"; ma=86400'
+    },
+    body: ReadableStream { locked: true, state: 'closed', supportsBYOB: true },
+    bodyUsed: true,
+    ok: false,
+    redirected: false,
+    type: 'basic',
+    url: 'https://api.mistral.ai/v1/conversations'
+  },
+  name: 'HTTPValidationError',
+  detail: [
+    {
+      loc: [Array],
+      msg: "Value error, Conversation with an 'agent' can't contain the following fields completion_args",
+      type: 'value_error',
+      input: [Object],
+      ctx: {}
+    }
+  ],
+  'data$': {
+    detail: [ [Object] ],
+    'request$': Request {
+      method: 'POST',
+      url: 'https://api.mistral.ai/v1/conversations',
+      headers: Headers {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        authorization: 'Bearer Oz8vnP0WbAy1WU7gDKwhfSWGNjlqGr8t',
+        cookie: '',
+        'user-agent': 'speakeasy-sdk/typescript 2.6.1 2.884.13 1.0.0 @mistralai/mistralai'
+      },
+      destination: '',
+      referrer: 'about:client',
+      referrerPolicy: '',
+      mode: 'cors',
+      credentials: 'same-origin',
+      cache: 'default',
+      redirect: 'follow',
+      integrity: '',
+      keepalive: false,
+      isReloadNavigation: false,
+      isHistoryNavigation: false,
+      signal: AbortSignal { aborted: false }
+    },
+    'response$': Response {
+      status: 422,
+      statusText: 'Unprocessable Entity',
+      headers: Headers {
+        date: 'Sun, 09 Aug 2026 03:53:44 GMT',
+        'content-type': 'application/json',
+        'content-length': '3610',
+        connection: 'keep-alive',
+        'mistral-correlation-id': '019fe4a7-b722-7098-bde8-abfea44bf299',
+        'x-kong-request-id': '019fe4a7-b722-7098-bde8-abfea44bf299',
+        'x-envoy-upstream-service-time': '3',
+        server: 'cloudflare',
+        'access-control-allow-origin': '*',
+        'x-kong-upstream-latency': '5',
+        'x-kong-proxy-latency': '14',
+        'cf-cache-status': 'DYNAMIC',
+        'set-cookie': '__cf_bm=OW0vCL1nuII9S6zsosR4w0hs5N2kwtSuYTJqyOdMMuU-1786247624.4254642-1.0.1.1-X6qkssvbxG5j1BIAq1qBByAIft.sHTDcmpRMgYpSHZ3p6hu9G1vb_NlZPwxfaqJodIrH1sFBYgSnUXXsg6LMMZiRFfUNlLithiL7aSTUa3axqs70FS1wp8RKhW4njFpt; HttpOnly; SameSite=None; Secure; Path=/; Domain=mistral.ai; Expires=Sun, 09 Aug 2026 04:23:44 GMT',
+        'strict-transport-security': 'max-age=15552000; includeSubDomains; preload',
+        'x-content-type-options': 'nosniff',
+        'cf-ray': 'a283d0c4ab785707-IAD',
+        'alt-svc': 'h3=":443"; ma=86400'
+      },
+      body: ReadableStream { locked: true, state: 'closed', supportsBYOB: true },
+      bodyUsed: true,
+      ok: false,
+      redirected: false,
+      type: 'basic',
+      url: 'https://api.mistral.ai/v1/conversations'
+    },
+    'body$': `{"object":"Error","detail":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"message":[{"type":"value_error","loc":["body"],"msg":"Value error, Conversation with an 'agent' can't contain the following fields completion_args","input":{"inputs":[{"object":"entry","type":"message.input","role":"user","content":"You are the AI assistant of levarux, a school on SchoolMNG.\\n\\nThis session is strictly bound to levarux. Never use or reference any other school's data.\\n\\nSession: entered from \\"chat\\". Asking user role: principal.\\n\\nOperating rules (must always follow):\\n1. Never state a number, date, name or status about a school record unless it comes from data given to you in this session or a tool you actually called in this turn.\\n2. Never invent fields, modules or records that are not present in the school context below.\\n3. Never assume a student/staff member exists — if you don't have their record, say you couldn't find them.\\n4. If the request is ambiguous, ask one clarifying question instead of guessing.\\n5. If there is no data, say so plainly — never fabricate a plausible answer.\\n6. Never perform arithmetic yourself: if a real calculation is needed, say which school data would answer it and that it must be computed from the records.\\n7. You are bound to ONE school per session — never mention or draw on any other school's data.\\n8. Keep replies concise, plain-language, under 200 words.\\n\\n--- Live school data ---\\n\\nSchool: levarux (levarlux, status: active)\\nCurrent term: Term 2 2026 (unknown)\\nLive totals: 1 students, 1 classes, 0 teachers, 4 books, 0 active borrowings\\nSample students: Hugo Boss (657345tgrjh)\\n\\nUser question:\\nheyy","prefix":false}],"stream":false,"completion_args":{"temperature":0.7,"max_tokens":1200},"agent_id":"ag_019fe478484b749e8b16916db2bc08f7","agent_version":0},"ctx":{"error":{}}}],"type":"invalid_request_error","code":3001}`
+  }
+}
+- Preparing Convex functions...
+
+[32m✔[39m 06:54:44 Convex functions ready! (15.5s)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 06:54:57 Convex functions ready! (13.04s)
+- Preparing Convex functions...
+
+[32m✔[39m 07:02:51 Convex functions ready! (12.85s)
+- Preparing Convex functions...
+
+[32m✔[39m 07:03:16 Convex functions ready! (12.58s)
+- Preparing Convex functions...
+
+[32m✔[39m 07:10:59 Convex functions ready! (13.75s)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 07:11:11 Convex functions ready! (12.31s)
+- Preparing Convex functions...
+
+[32m✔[39m 07:13:37 Convex functions ready! (13.78s)
+09/08/2026, 07:15:58 [CONVEX A(aiAssistant:chat)] [ERROR] 'Conversation append failed; starting fresh:' Error: API error occurred: Status 404
+Body: {"object":"Error","message":"Conversation with id conv_019fe4bbbdf973f5a7977f5d0072d525 was not found","type":"invalid_request_error","code":3000}
+    at matchFunc (convex:/user/aiAssistant.js:1159:16)
+    at processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async $do (convex:/user/aiAssistant.js:15310:12) {
+  statusCode: 404,
+  body: '{"object":"Error","message":"Conversation with id conv_019fe4bbbdf973f5a7977f5d0072d525 was not found","type":"invalid_request_error","code":3000}',
+  headers: Headers {
+    date: 'Sun, 09 Aug 2026 04:15:58 GMT',
+    'content-type': 'application/json',
+    'transfer-encoding': 'chunked',
+    connection: 'keep-alive',
+    'mistral-correlation-id': '019fe4bc-11c1-768c-becb-86014e519420',
+    'x-kong-request-id': '019fe4bc-11c1-768c-becb-86014e519420',
+    'x-envoy-upstream-service-time': '34',
+    server: 'cloudflare',
+    'access-control-allow-origin': '*',
+    'x-kong-upstream-latency': '35',
+    'x-kong-proxy-latency': '11',
+    'cf-cache-status': 'DYNAMIC',
+    'set-cookie': '__cf_bm=9ZC9CZpVXPRB84CnJwn2VYp7SMd78LGheLmdr4yznPI-1786248958.3464084-1.0.1.1-kb_E8Qm2MX.6ynXJqwWCrQOQbqTAmYgbgz1E67zGb01zcApw47L.vP2xCyRE7oRYCKCzHb44rCBWw05dgM6Z0rbK5dPXtF0.UDKa2XVC5aDkNiLiY142YggSI3cEFKdT; HttpOnly; SameSite=None; Secure; Path=/; Domain=mistral.ai; Expires=Sun, 09 Aug 2026 04:45:58 GMT',
+    'strict-transport-security': 'max-age=15552000; includeSubDomains; preload',
+    'x-content-type-options': 'nosniff',
+    'content-encoding': 'br',
+    'cf-ray': 'a283f155ac582c7f-IAD',
+    'alt-svc': 'h3=":443"; ma=86400'
+  },
+  contentType: 'application/json',
+  rawResponse: Response {
+    status: 404,
+    statusText: 'Not Found',
+    headers: Headers {
+      date: 'Sun, 09 Aug 2026 04:15:58 GMT',
+      'content-type': 'application/json',
+      'transfer-encoding': 'chunked',
+      connection: 'keep-alive',
+      'mistral-correlation-id': '019fe4bc-11c1-768c-becb-86014e519420',
+      'x-kong-request-id': '019fe4bc-11c1-768c-becb-86014e519420',
+      'x-envoy-upstream-service-time': '34',
+      server: 'cloudflare',
+      'access-control-allow-origin': '*',
+      'x-kong-upstream-latency': '35',
+      'x-kong-proxy-latency': '11',
+      'cf-cache-status': 'DYNAMIC',
+      'set-cookie': '__cf_bm=9ZC9CZpVXPRB84CnJwn2VYp7SMd78LGheLmdr4yznPI-1786248958.3464084-1.0.1.1-kb_E8Qm2MX.6ynXJqwWCrQOQbqTAmYgbgz1E67zGb01zcApw47L.vP2xCyRE7oRYCKCzHb44rCBWw05dgM6Z0rbK5dPXtF0.UDKa2XVC5aDkNiLiY142YggSI3cEFKdT; HttpOnly; SameSite=None; Secure; Path=/; Domain=mistral.ai; Expires=Sun, 09 Aug 2026 04:45:58 GMT',
+      'strict-transport-security': 'max-age=15552000; includeSubDomains; preload',
+      'x-content-type-options': 'nosniff',
+      'content-encoding': 'br',
+      'cf-ray': 'a283f155ac582c7f-IAD',
+      'alt-svc': 'h3=":443"; ma=86400'
+    },
+    body: ReadableStream { locked: true, state: 'closed', supportsBYOB: true },
+    bodyUsed: true,
+    ok: false,
+    redirected: false,
+    type: 'basic',
+    url: 'https://api.mistral.ai/v1/conversations/conv_019fe4bbbdf973f5a7977f5d0072d525'
+  },
+  name: 'SDKError'
+}
+- Preparing Convex functions...
+
+[32m✔[39m 07:28:26 Convex functions ready! (14.57s)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m Added table indexes:
+  [+] webhook_events.by_schoolId   schoolId, _creationTime
+✔ 07:28:40 Convex functions ready! (13.85s)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 07:28:53 Convex functions ready! (13.21s)
+- Preparing Convex functions...
+
+[32m✔[39m 07:31:06 Convex functions ready! (13.74s)
+- Preparing Convex functions...
+
+[32m✔[39m 07:35:44 Convex functions ready! (15.2s)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 07:35:59 Convex functions ready! (14.48s)
+- Preparing Convex functions...
+
+[32m✔[39m 07:54:33 Convex functions ready! (19.29s)
+- Preparing Convex functions...
+
+[31m✖[39m TypeScript typecheck via `tsc` failed.
+To ignore failing typecheck, use `--typecheck=disable`.
+- Collecting TypeScript errors
+
+[96mconvex/schools.ts[0m:[93m285[0m:[93m40[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'TableNamesInDataModel<{ fields: { document: { _id: Id<"fields">; _creationTime: number; options?: string[] | undefined; createdBy?: string | undefined; name: string; schoolId: Id<"schools">; order: number; ... 4 more ...; aliases: string[]; }; fieldPaths: ExtractFieldPaths<...> | "_id"; indexes: { ...; }; searchInde...'.
+
+[7m285[0m       const rows = await (ctx.db.query(table) as never)
+[7m   [0m [91m                                       ~~~~~[0m
+[96mconvex/schools.ts[0m:[93m286[0m:[93m10[0m - [91merror[0m[90m TS2339: [0mProperty 'withIndex' does not exist on type 'never'.
+
+[7m286[0m         .withIndex(index, (q: never) => q.eq("schoolId", school._id))
+[7m   [0m [91m         ~~~~~~~~~[0m
+
+[96mconvex/schools.ts[0m:[93m286[0m:[93m43[0m - [91merror[0m[90m TS2339: [0mProperty 'eq' does not exist on type 'never'.
+
+[7m286[0m         .withIndex(index, (q: never) => q.eq("schoolId", school._id))
+[7m   [0m [91m                                          ~~[0m
+[96mconvex/schools.ts[0m:[93m329[0m:[93m10[0m - [91merror[0m[90m TS2339: [0mProperty 'withIndex' does not exist on type 'never'.
+
+[7m329[0m         .withIndex("by_schoolId", (q: never) => q.eq("schoolId", schoolId))
+[7m   [0m [91m         ~~~~~~~~~[0m
+[96mconvex/schools.ts[0m:[93m329[0m:[93m51[0m - [91merror[0m[90m TS2339: [0mProperty 'eq' does not exist on type 'never'.
+
+[7m329[0m         .withIndex("by_schoolId", (q: never) => q.eq("schoolId", schoolId))
+[7m   [0m [91m                                                  ~~[0m
+
+Found 5 errors in the same file, starting at: convex/schools.ts[90m:285[0m
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[31m✖[39m TypeScript typecheck via `tsc` failed.
+To ignore failing typecheck, use `--typecheck=disable`.
+- Collecting TypeScript errors
+
+[96mconvex/schools.ts[0m:[93m285[0m:[93m40[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'TableNamesInDataModel<{ fields: { document: { _id: Id<"fields">; _creationTime: number; options?: string[] | undefined; createdBy?: string | undefined; name: string; schoolId: Id<"schools">; order: number; ... 4 more ...; aliases: string[]; }; fieldPaths: ExtractFieldPaths<...> | "_id"; indexes: { ...; }; searchInde...'.
+
+[7m285[0m       const rows = await (ctx.db.query(table) as never)
+[7m   [0m [91m                                       ~~~~~[0m
+[96mconvex/schools.ts[0m:[93m286[0m:[93m10[0m - [91merror[0m[90m TS2339: [0mProperty 'withIndex' does not exist on type 'never'.
+
+[7m286[0m         .withIndex(index, (q: never) => q.eq("schoolId", school._id))
+[7m   [0m [91m         ~~~~~~~~~[0m
+[96mconvex/schools.ts[0m:[93m286[0m:[93m43[0m - [91merror[0m[90m TS2339: [0mProperty 'eq' does not exist on type 'never'.
+
+[7m286[0m         .withIndex(index, (q: never) => q.eq("schoolId", school._id))
+[7m   [0m [91m                                          ~~[0m
+[96mconvex/schools.ts[0m:[93m329[0m:[93m10[0m - [91merror[0m[90m TS2339: [0mProperty 'withIndex' does not exist on type 'never'.
+
+[7m329[0m         .withIndex("by_schoolId", (q: never) => q.eq("schoolId", schoolId))
+[7m   [0m [91m         ~~~~~~~~~[0m
+[96mconvex/schools.ts[0m:[93m329[0m:[93m51[0m - [91merror[0m[90m TS2339: [0mProperty 'eq' does not exist on type 'never'.
+
+[7m329[0m         .withIndex("by_schoolId", (q: never) => q.eq("schoolId", schoolId))
+[7m   [0m [91m                                                  ~~[0m
+
+Found 5 errors in the same file, starting at: convex/schools.ts[90m:285[0m
+- Preparing Convex functions...
+
+[31m✖[39m TypeScript typecheck via `tsc` failed.
+To ignore failing typecheck, use `--typecheck=disable`.
+- Collecting TypeScript errors
+
+[96mconvex/schools.ts[0m:[93m286[0m:[93m40[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'TableNamesInDataModel<{ fields: { document: { _id: Id<"fields">; _creationTime: number; options?: string[] | undefined; createdBy?: string | undefined; name: string; schoolId: Id<"schools">; order: number; ... 4 more ...; aliases: string[]; }; fieldPaths: ExtractFieldPaths<...> | "_id"; indexes: { ...; }; searchInde...'.
+
+[7m286[0m       const rows = await (ctx.db.query(table) as any)
+[7m   [0m [91m                                       ~~~~~[0m
+
+Found 1 error in convex/schools.ts[90m:286[0m
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[31m✖[39m TypeScript typecheck via `tsc` failed.
+To ignore failing typecheck, use `--typecheck=disable`.
+- Collecting TypeScript errors
+
+[96mconvex/schools.ts[0m:[93m286[0m:[93m40[0m - [91merror[0m[90m TS2345: [0mArgument of type 'string' is not assignable to parameter of type 'TableNamesInDataModel<{ fields: { document: { _id: Id<"fields">; _creationTime: number; options?: string[] | undefined; createdBy?: string | undefined; name: string; schoolId: Id<"schools">; order: number; ... 4 more ...; aliases: string[]; }; fieldPaths: ExtractFieldPaths<...> | "_id"; indexes: { ...; }; searchInde...'.
+
+[7m286[0m       const rows = await (ctx.db.query(table) as any)
+[7m   [0m [91m                                       ~~~~~[0m
+
+Found 1 error in convex/schools.ts[90m:286[0m
+- Preparing Convex functions...
+
+[32m✔[39m 07:59:51 Convex functions ready! (14.94s)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 08:00:03 Convex functions ready! (12.12s)
+09/08/2026, 08:01:08 [CONVEX Q(schools:getDeleteImpact)] Uncaught Error: You are not a member of this school
+    at async handler (../convex/schools.ts:282:4)
+
+- Preparing Convex functions...
+
+[31m✖[39m TypeScript typecheck via `tsc` failed.
+To ignore failing typecheck, use `--typecheck=disable`.
+- Collecting TypeScript errors
+
+[32m✔[39m 08:05:10 Convex functions ready! (25.64s)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 08:05:23 Convex functions ready! (13.03s)
+- Preparing Convex functions...
+
+[31m✖[39m TypeScript typecheck via `tsc` failed.
+To ignore failing typecheck, use `--typecheck=disable`.
+- Collecting TypeScript errors
+
+[96mconvex/schools.ts[0m:[93m418[0m:[93m66[0m - [91merror[0m[90m TS2339: [0mProperty 'deleteSchoolDataBatch' does not exist on type '{ getById: FunctionReference<"query", "internal", { id: Id<"schools">; }, { _id: Id<"schools">; _creationTime: number; logoUrl?: string | undefined; accentColor?: string | undefined; tagline?: string | undefined; ... 7 more ...; secondaryColor: string; } | null, string | undefined>; verifyPrincipalForDeletion: Funct...'.
+
+[7m418[0m       const { deleted } = await ctx.runMutation(internal.schools.deleteSchoolDataBatch, {
+[7m   [0m [91m                                                                 ~~~~~~~~~~~~~~~~~~~~~[0m
+
+Found 1 error in convex/schools.ts[90m:418[0m
+- Preparing Convex functions...
+
+[32m✔[39m 08:06:16 Convex functions ready! (13.9s)
+09/08/2026, 08:06:38 [CONVEX M(schools:deleteSchoolDataBatch)] ArgumentValidationError: Value does not match validator.
+Path: .schoolId
+Value: "zz0000000000000000000000000000zz"
+Validator: v.id("schools")
+
+
+09/08/2026, 08:06:52 [CONVEX M(schools:deleteSchoolDataBatch)] ArgumentValidationError: Value does not match validator.
+Path: .schoolId
+Value: "jd726jts2c32mhhp8a3ysb949x8aac8k"
+Validator: v.id("schools")
+
+
+09/08/2026, 08:07:05 [CONVEX M(schools:deleteSchoolDataBatch)] ArgumentValidationError: Value does not match validator.
+Path: .schoolId
+Value: "jd726jts2c32mhhp8a3ysb949x8aac8a"
+Validator: v.id("schools")
+
+
+- Preparing Convex functions...
+
+[32m✔[39m 08:07:34 Convex functions ready! (14.15s)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 08:07:50 Convex functions ready! (15.9s)
+09/08/2026, 08:10:03 [CONVEX Q(schools:getDeleteImpact)] Uncaught Error: You are not a member of this school
+    at async handler (../convex/schools.ts:304:4)
+
+09/08/2026, 08:10:03 [CONVEX Q(members:getMyMembership)] Uncaught Error: Not authorised for this school
+    at async handler (../convex/members.ts:37:17)
+
+09/08/2026, 08:10:03 [CONVEX Q(schools:getDeleteImpact)] Uncaught Error: School not found for this organisation
+    at async handler (../convex/schools.ts:302:27)
+
+09/08/2026, 08:10:03 [CONVEX Q(feature_configurations:featureFlags)] Uncaught Error: Not authorised for this school
+    at async handler (../convex/feature_configurations.ts:84:4)
+
+09/08/2026, 08:10:03 [CONVEX Q(students:listBySchool)] Uncaught Error: Not authorised for this school
+    at async handler (../convex/students.ts:72:33)
+
+09/08/2026, 08:10:03 [CONVEX M(billing:ensureTrialSubscription)] Uncaught Error: School not found for this organisation
+    at async handler (../convex/billing.ts:143:18)
+
+- Preparing Convex functions...
+
+[32m✔[39m 08:11:39 Convex functions ready! (14.41s)
+09/08/2026, 08:17:03 [CONVEX A(paystack:initializeCheckout)] Uncaught Error: Unauthorized
+    at handler (../convex/paystack.ts:43:21)
+
+- Preparing Convex functions...
+
+[32m✔[39m 08:30:04 Convex functions ready! (1.45m)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 08:31:21 Convex functions ready! (1.29m)
+09/08/2026, 09:09:24 [CONVEX Q(onboarding:getSession)] ArgumentValidationError: Value does not match validator.
+Path: .schoolId
+Value: "PLACEHOLDER"
+Validator: v.id("schools")
+
+
+09/08/2026, 09:30:30 [CONVEX M(paystack:processWebhookEvent)] [LOG] '[paystack-webhook] Processing event: subscription.create (ID: 1263052)'
+09/08/2026, 09:30:30 [CONVEX M(paystack:processWebhookEvent)] [LOG] '[paystack-webhook] Processing event: charge.success (ID: 6439789042)'
+09/08/2026, 09:30:30 [CONVEX M(paystack:processWebhookEvent)] [ERROR] '[paystack-webhook] Failed to validate amount:' [Error: Can't use fetch() in queries and mutations. Please consider using an action. See https://docs.convex.dev/functions/actions for more details.]
+09/08/2026, 09:30:30 [CONVEX M(paystack:processWebhookEvent)] [LOG] '[paystack] Subscription activated for school jd755hpsqr0dzv1mcd10xz8tz58c4s23'
+- Preparing Convex functions...
+
+[32m✔[39m 10:09:19 Convex functions ready! (1.25m)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 10:09:39 Convex functions ready! (19.91s)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 10:09:51 Convex functions ready! (11.95s)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 10:10:03 Convex functions ready! (11.89s)
+- Preparing Convex functions...
+
+[31m✖[39m TypeScript typecheck via `tsc` failed.
+To ignore failing typecheck, use `--typecheck=disable`.
+- Collecting TypeScript errors
+
+[96mconvex/onboarding.ts[0m:[93m273[0m:[93m14[0m - [91merror[0m[90m TS7022: [0m'completeAndAssignTier' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+
+[7m273[0m export const completeAndAssignTier = action({
+[7m   [0m [91m             ~~~~~~~~~~~~~~~~~~~~~[0m
+[96mconvex/onboarding.ts[0m:[93m275[0m:[93m3[0m - [91merror[0m[90m TS7023: [0m'handler' implicitly has return type 'any' because it does not have a return type annotation and is referenced directly or indirectly in one of its return expressions.
+
+[7m275[0m   handler: async (ctx, args) => {
+[7m   [0m [91m  ~~~~~~~[0m
+
+[96mconvex/onboarding.ts[0m:[93m283[0m:[93m13[0m - [91merror[0m[90m TS7022: [0m'result' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+
+[7m283[0m       const result = await ctx.runAction(api.tierAssignment.analyzeAndAssignTier, {
+[7m   [0m [91m            ~~~~~~[0m
+
+
+Found 3 errors in the same file, starting at: convex/onboarding.ts[90m:273[0m
+- Preparing Convex functions...
+
+[32m✔[39m 10:17:44 Convex functions ready! (13.52s)
+- Preparing Convex functions...
+
+[32m✔[39m 10:21:46 Convex functions ready! (14.99s)
+- Preparing Convex functions...
+
+[32m✔[39m 10:29:45 Convex functions ready! (42.67s)
+09/08/2026, 10:31:17 [CONVEX A(invitations:sendInvitation)] Uncaught Error: Clerk invite failed (404): {"errors":[{"message":"not found","long_message":"Resource not found","code":"resource_not_found"}],"clerk_trace_id":"5e82150ab702dae5972f33797e628f56"}
+    at async handler (../convex/invitations.ts:31:13)
+
+- Preparing Convex functions...
+
+[32m✔[39m 10:31:31 Convex functions ready! (12.94s)
+- Preparing Convex functions...
+
+[32m✔[39m 10:32:06 Convex functions ready! (14.49s)
+- Preparing Convex functions...
+
+[31m✖[39m Error: Unable to start push to https://hip-crab-756.convex.cloud
+✖ Error fetching POST  https://hip-crab-756.convex.cloud/api/deploy2/start_push 400 Bad Request: IndexFieldsContainCreationTime: Hit an error while pushing:
+Hit an error while evaluating your schema:
+`_creationTime` is automatically added to the end of each index. It should not be added explicitly in the index definition. See https://docs.convex.dev/using/indexes for more details.
+- Preparing Convex functions...
+
+[31m✖[39m Error: Unable to start push to https://hip-crab-756.convex.cloud
+✖ Error fetching POST  https://hip-crab-756.convex.cloud/api/deploy2/start_push 400 Bad Request: IndexFieldsContainCreationTime: Hit an error while pushing:
+Hit an error while evaluating your schema:
+`_creationTime` is automatically added to the end of each index. It should not be added explicitly in the index definition. See https://docs.convex.dev/using/indexes for more details.
+- Preparing Convex functions...
+
+[31m✖[39m Error: Unable to start push to https://hip-crab-756.convex.cloud
+✖ Error fetching POST  https://hip-crab-756.convex.cloud/api/deploy2/start_push 400 Bad Request: IndexFieldsContainCreationTime: Hit an error while pushing:
+Hit an error while evaluating your schema:
+`_creationTime` is automatically added to the end of each index. It should not be added explicitly in the index definition. See https://docs.convex.dev/using/indexes for more details.
+- Preparing Convex functions...
+
+[31m✖[39m Error: Unable to start push to https://hip-crab-756.convex.cloud
+✖ Error fetching POST  https://hip-crab-756.convex.cloud/api/deploy2/start_push 400 Bad Request: IndexFieldsContainCreationTime: Hit an error while pushing:
+Hit an error while evaluating your schema:
+`_creationTime` is automatically added to the end of each index. It should not be added explicitly in the index definition. See https://docs.convex.dev/using/indexes for more details.
+- Preparing Convex functions...
+
+[32m✔[39m Added table indexes:
+  [+] tier_history.by_changeType   changeType, _creationTime
+  [+] tier_history.by_schoolId   schoolId, _creationTime
+✔ 10:37:40 Convex functions ready! (14.67s)
+- Preparing Convex functions...
+
+[32m✔[39m 10:40:59 Convex functions ready! (13.82s)
+- Preparing Convex functions...
+
+[32m✔[39m 10:43:17 Convex functions ready! (16.19s)
+- Preparing Convex functions...
+
+[32m✔[39m 10:47:42 Convex functions ready! (13.74s)
+- Preparing Convex functions...
+
+[32m✔[39m 10:49:56 Convex functions ready! (15.54s)
+- Preparing Convex functions...
+
+[32m✔[39m 10:50:12 Convex functions ready! (14.98s)
+- Preparing Convex functions...
+
+[32m✔[39m 10:54:22 Convex functions ready! (13.89s)
+09/08/2026, 10:58:36 [CONVEX A(invitations:sendInvitation)] Uncaught Error: Clerk organization not found (ID: org_3HfIIIZczeGROHeKq5lFrF5w9jt). The school's organization may have been deleted. Please contact a superadmin to re-provision this school.
+    at async handler (../convex/invitations.ts:31:13)
+
+Retrying request (attempt 3/6)...
+09/08/2026, 11:21:34 [CONVEX A(invitations:sendInvitation)] Uncaught Error: Clerk organization not found (ID: org_3HfIIIZczeGROHeKq5lFrF5w9jt). The school's organization may have been deleted. Please contact a superadmin to re-provision this school.
+    at async handler (../convex/invitations.ts:31:13)
+
+09/08/2026, 11:22:40 [CONVEX Q(schools:list)] Uncaught Error: Not authenticated
+    at async handler (../convex/schools.ts:25:31)
+
+09/08/2026, 11:24:27 [CONVEX Q(onboarding:getSession)] Uncaught Error: You are not a member of this school
+    at async handler (../convex/onboarding.ts:142:30)
+
+09/08/2026, 11:24:27 [CONVEX Q(schools:getDeleteImpact)] Uncaught Error: You are not a member of this school
+    at async handler (../convex/schools.ts:304:4)
+
+09/08/2026, 11:24:27 [CONVEX Q(members:getMyMembership)] Uncaught Error: Not authorised for this school
+    at async handler (../convex/members.ts:37:17)
+
+09/08/2026, 11:24:27 [CONVEX Q(feature_configurations:featureFlags)] Uncaught Error: Not authorised for this school
+    at async handler (../convex/feature_configurations.ts:84:4)
+
+09/08/2026, 11:24:27 [CONVEX Q(schools:getDeleteImpact)] Uncaught Error: School not found for this organisation
+    at async handler (../convex/schools.ts:302:27)
+
+09/08/2026, 11:24:27 [CONVEX Q(students:listBySchool)] Uncaught Error: Not authorised for this school
+    at async handler (../convex/students.ts:72:33)
+
+09/08/2026, 11:49:09 [CONVEX A(paystack:initializeCheckout)] [ERROR] '[paystack] Failed to fetch plan details:' [Error: Paystack API error: Plan ID/code specified is invalid]
+09/08/2026, 11:49:09 [CONVEX A(paystack:initializeCheckout)] Uncaught Error: Invalid plan code or unable to fetch plan details
+    at handler (../convex/paystack.ts:55:4)
+
+09/08/2026, 11:49:32 [CONVEX M(paystack:processWebhookEvent)] [LOG] '[paystack-webhook] Processing event: charge.success (ID: 6440224572)'
+09/08/2026, 11:49:32 [CONVEX M(paystack:processWebhookEvent)] [ERROR] '[paystack-webhook] Failed to validate amount:' [Error: Can't use fetch() in queries and mutations. Please consider using an action. See https://docs.convex.dev/functions/actions for more details.]
+09/08/2026, 11:49:32 [CONVEX M(paystack:processWebhookEvent)] [LOG] '[paystack] Subscription activated for school jd72336e6gpkda1zjgsw18cyg98c4d7f'
+09/08/2026, 11:49:32 [CONVEX M(paystack:processWebhookEvent)] [LOG] '[paystack-webhook] Processing event: subscription.create (ID: 1263096)'
+- Preparing Convex functions...
+
+[32m✔[39m 11:54:28 Convex functions ready! (36.7s)
+Filesystem changed during push, retrying...
+- Preparing Convex functions...
+
+[32m✔[39m 11:54:42 Convex functions ready! (14.02s)
+- Preparing Convex functions...
+
+[32m✔[39m 11:55:05 Convex functions ready! (12.88s)
+09/08/2026, 12:16:46 [CONVEX Q(onboarding:getSession)] Uncaught Error: You are not a member of this school
+    at async handler (../convex/onboarding.ts:142:30)
+
+09/08/2026, 12:16:46 [CONVEX Q(schools:getDeleteImpact)] Uncaught Error: You are not a member of this school
+    at async handler (../convex/schools.ts:304:4)
+
+09/08/2026, 12:16:47 [CONVEX Q(members:getMyMembership)] Uncaught Error: Not authorised for this school
+    at async handler (../convex/members.ts:37:17)
+
+09/08/2026, 12:16:47 [CONVEX Q(schools:getDeleteImpact)] Uncaught Error: School not found for this organisation
+    at async handler (../convex/schools.ts:302:27)
+
+09/08/2026, 12:16:47 [CONVEX Q(feature_configurations:featureFlags)] Uncaught Error: Not authorised for this school
+    at async handler (../convex/feature_configurations.ts:84:4)
+
+09/08/2026, 12:16:47 [CONVEX Q(students:listBySchool)] Uncaught Error: Not authorised for this school
+    at async handler (../convex/students.ts:72:33)
+
+09/08/2026, 12:16:48 [CONVEX Q(onboarding:getSession)] Uncaught Error: Not authenticated
+    at async handler (../convex/onboarding.ts:142:30)
+
+09/08/2026, 12:16:48 [CONVEX Q(schools:getByClerkOrgId)] Uncaught Error: Not authenticated
+    at async handler (../convex/schools.ts:59:20)
+
+09/08/2026, 12:16:48 [CONVEX M(onboarding:provisionSchool)] Uncaught Error: Not authenticated
+    at async handler (../convex/onboarding.ts:51:9)
+

@@ -1,16 +1,17 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery, useMutation, usePaginatedQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useSchool } from "@/lib/use-school";
-import { useRole } from "@/lib/use-role";
+import { useRole, isLeadershipRole } from "@/lib/use-role";
 import { Card, CardContent } from "@/components/ui/card";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search, BookOpen, Trash2, Download, Loader2 } from "lucide-react";
+import { Plus, Search, BookOpen, Trash2, Download } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -18,8 +19,15 @@ import { checkRateLimit } from "@/lib/rate-limit";
 export default function BooksPage() {
   const school = useSchool();
   const role = useRole();
-  const isPrincipal = role === "principal";
-  const books = useQuery(api.books.listBySchool, school ? { schoolId: school._id } : "skip");
+  const isLeadership = isLeadershipRole(role);
+  const { results: paginatedBooks, status: paginationStatus, loadMore: loadMoreBooks } = usePaginatedQuery(
+    api.books.listBySchoolPaginated,
+    school ? { schoolId: school._id } : "skip",
+    { initialNumItems: 20 }
+  );
+  const books = paginatedBooks ?? [];
+  const isLoadingMore = paginationStatus === "LoadingMore";
+  const isDone = paginationStatus === "Exhausted";
   const createBook = useMutation(api.books.create);
   const deleteBook = useMutation(api.books.remove);
 
@@ -32,7 +40,7 @@ export default function BooksPage() {
   if (books === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <BrandLoader variant="book" size="md" />
       </div>
     );
   }
@@ -89,10 +97,10 @@ export default function BooksPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Books</h1>
-          <p className="text-muted-foreground mt-1">{books?.length ?? 0} books in inventory</p>
+          <p className="text-muted-foreground mt-1">{books.length} books loaded</p>
         </div>
         <div className="flex items-center gap-2">
-          {books && books.length > 0 && (
+          {books.length > 0 && (
             <Button
               variant="outline"
               onClick={() =>
@@ -110,7 +118,7 @@ export default function BooksPage() {
               <Download className="h-4 w-4 mr-2" /> Export
             </Button>
           )}
-          {isPrincipal && (
+          {isLeadership && (
             <Button onClick={() => setShowModal(true)}>
               <Plus className="h-4 w-4 mr-2" /> Add Book
             </Button>
@@ -143,7 +151,7 @@ export default function BooksPage() {
                     {book.availableCopies === 1 ? "1 copy" : `${book.availableCopies} copies`} available
                   </p>
                 </div>
-                {isPrincipal && (
+                {isLeadership && (
                   <Button variant="ghost" size="icon" onClick={() => handleDelete(book._id)} className="shrink-0 ml-2">
                     <Trash2 className="h-4 w-4 text-red-500" />
                   </Button>
@@ -159,6 +167,18 @@ export default function BooksPage() {
           </div>
         )}
       </div>
+
+      {!isDone && !search && (
+        <div className="flex justify-center">
+          <Button
+            variant="outline"
+            onClick={() => loadMoreBooks(20)}
+            disabled={isLoadingMore}
+          >
+            {isLoadingMore ? "Loading..." : "Load more books..."}
+          </Button>
+        </div>
+      )}
 
       <Modal open={showModal} onClose={() => setShowModal(false)} title="Add Book">
         <form onSubmit={handleCreate} className="space-y-4">
@@ -183,3 +203,4 @@ export default function BooksPage() {
     </div>
   );
 }
+

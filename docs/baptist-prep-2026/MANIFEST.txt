@@ -1,0 +1,22 @@
+00-README.md                                         Dataset guide & stress-test scenarios
+01-school-profile.csv                                School master profile
+02-classes.csv                                       20 classes
+03-students.csv                                      560 learners (import-template headers)
+04-staff.csv                                         30 staff (20 teaching + 10 non-teaching)
+05-subjects.csv                                      Grade-based CBC subject sets
+06-fee-structure.csv                                 3 terms x classes fee schedule
+07-fee-payments.csv                                  3,031 payment transactions
+08-marks-term-1.csv                                  4,820 exam scores
+09-marks-term-2.csv                                  4,820 exam scores
+10-attendance-summary.csv                            1,120 term attendance summaries
+11-attendance-register-week-1.csv                    2,800 daily register entries (Week 1)
+12-terms.csv                                         Term dates & fee deadlines
+13-students-import.json                              Import-ready JSON (camelCase rows)
+14-fee-payments-import.json                          Import-ready fee payments JSON
+15-Baptist-Preparatory-Master-Data-2026.xlsx         Master Excel workbook (9 sheets)
+16-Enrolment-Register-2026.docx                      Word enrolment register (all 20 classes)
+17-Staff-Roster-2026.docx                            Word staff roster
+18-School-Fees-Policy-2026.docx                      Word fees policy document
+19-School-Profile-Report-2026.pdf                    Profile + enrolment + fees + class teachers
+20-Sample-Report-Card-Grade-9A.pdf                   Sample CBC report card (Term 2)
+21-Fee-Arrears-Statement-Term-2.pdf                  Top-40 debtors + sample statements

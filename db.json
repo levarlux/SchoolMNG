@@ -1,0 +1,419 @@
+{
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NjA1NzIyMCwic3NvTG9naW4iOmZhbHNlLCJqdGkiOiI2YTdjOTdjOTk4ODA3NjUzMTIxZGY1Y2YiLCJpYXQiOjE3ODY1NTAyMTcsIm5iZiI6MTc4NjU1MDIxNywiZXhwIjoxNzg2NjM2NjE3fQ.yy506GPAMzFOASgmRpk9ZYemfuZWeX45FX0ROzAUL5I",
+  "user": {
+    "integrations": [
+      {
+        "business_name": "flozzy",
+        "business_type": "starter",
+        "short_name": null,
+        "id": 1542693,
+        "logged_in_user_role": {
+          "id": 34,
+          "name": "admin",
+          "description": "This role grants users the permissions to manage everything on the dashboard"
+        },
+        "country_code": "KE",
+        "country": 4,
+        "sso_enabled": false,
+        "mfa": {
+          "is_required": false,
+          "enforcement_deadline": null
+        }
+      }
+    ],
+    "email": "mosespsitito@gmail.com",
+    "first_name": "tito",
+    "last_name": "moses",
+    "phone": "117068020",
+    "area_code": "0",
+    "calling_code": "+254",
+    "registration_complete": true,
+    "last_login": "2026-08-12T15:56:44.000Z",
+    "wt_access": "none",
+    "is_developer": true,
+    "job_title": "",
+    "truecaller_verified": false,
+    "drip_tag": "merchant - kenya",
+    "created_from": null,
+    "mfa_enabled": true,
+    "email_verified": true,
+    "id": 6057220,
+    "invited_by": null,
+    "current_integration": 1542693,
+    "passwordLastResetAt": "2026-07-25T11:51:31.000Z",
+    "createdAt": "2025-08-10T13:56:01.000Z",
+    "updatedAt": "2026-08-12T15:56:44.000Z",
+    "ssoLogin": false,
+    "dashboard_preferences": {
+      "pagination": {
+        "use_cursor": true
+      },
+      "timezone": "UTC"
+    },
+    "display_state": "test",
+    "role": {
+      "value": 1829587348619263,
+      "name": "admin",
+      "description": "This role grants users the permissions to manage everything on the dashboard",
+      "integration": 0,
+      "service": "dashboard",
+      "id": 34,
+      "organization": 1,
+      "createdAt": "2018-05-10T23:40:26.000Z",
+      "updatedAt": "2018-09-12T17:28:31.000Z",
+      "is_custom": false
+    },
+    "permissions": [
+      "api-key-*",
+      "api-key-view",
+      "user-view",
+      "user-*",
+      "metrics-*",
+      "settings-*",
+      "settings-view",
+      "transaction-view",
+      "transaction-export",
+      "transaction-dispute",
+      "customer-view",
+      "customer-add",
+      "customer-*",
+      "transfer-view",
+      "transfer-*",
+      "transfer-export",
+      "balance-view",
+      "balance-export",
+      "page-view",
+      "page-*",
+      "plan-view",
+      "plan-*",
+      "settlement-view",
+      "settlement-export",
+      "paymentrequest-view",
+      "paymentrequest-*",
+      "subaccount-*",
+      "subaccount-view",
+      "user-add",
+      "customer-insights",
+      "accounts-*",
+      "accounts-view",
+      "directdebit-*",
+      "charge-*",
+      "request-payout",
+      "product-view",
+      "product-*",
+      "pos-terminal-*",
+      "applepay-*",
+      "refund-pwt",
+      "corporate-cards-*",
+      "corporate-cards-view",
+      "issuing-*",
+      "issuing-view",
+      "connect-*",
+      "directdebit-view"
+    ],
+    "show_mfa_feature": true
+  },
+  "selected_integration": {
+    "business_name": "flozzy",
+    "description": "This AI-powered web app helps real estate agents create professional property\ndescriptions quickly. Features include user authentication with Clerk, input\nforms for property details, AI-generated descriptions highlighting emotional\nappeal and local flavor, tone options, and future photo analysis. It offers a\n$49/month subscription with a 3-day free trial (2 free generations/day). Built\nwith Next.js, Node.js, and PostgreSQL, it’s scalable and designed for easy\ndeployment on cost-effective platforms.",
+    "rc_number": null,
+    "phone": "714745448",
+    "email": "mosespsitito@gmail.com",
+    "address": "",
+    "product_name": null,
+    "registration_document_number": null,
+    "registration_document_type": null,
+    "primary_contact_name": null,
+    "primary_contact_email": "flozzyai@proton.me",
+    "primary_contact_phone": null,
+    "support_email": "flozzyai@proton.me",
+    "chargeback_email": "flozzyai@proton.me",
+    "logo_path": "https://public-files-paystack-prod.s3.eu-west-1.amazonaws.com/integration-logos/6z6e5vggizl7wnfdxa1m.png",
+    "integration_agreement_path": null,
+    "settlement_bank": null,
+    "account_number": null,
+    "registration_document_path": null,
+    "risk_level": "high",
+    "isw_category": 3,
+    "mcc_category": "5817",
+    "flat_rate": 100,
+    "charge_percentage": 2.9,
+    "international_flat_rate": 100,
+    "international_charge_percentage": 3.8,
+    "flat_threshhold": 2500,
+    "transfer_charge": 5000,
+    "settlement_schedule": "T2",
+    "test_redirect_url": "",
+    "test_webhook_endpoint": "https://hip-crab-756.convex.site/api/paystack/webhook",
+    "live_redirect_url": "",
+    "live_webhook_endpoint": "https://hip-crab-756.convex.site/api/paystack/webhook",
+    "test_integration_url": null,
+    "test_integration_instruction": null,
+    "email_notification": "instant",
+    "pwc_id": 102501,
+    "is_live": true,
+    "go_live_requested": false,
+    "go_live_requested_at": null,
+    "live_keys_requested": false,
+    "live_keys_requested_at": null,
+    "reviewed_at": null,
+    "setup_complete": false,
+    "receipts": true,
+    "display_state": "live",
+    "active": true,
+    "short_name": null,
+    "international_toggle_disabled": true,
+    "allow_international_cards": false,
+    "active_channels": [
+      "bank_transfer",
+      "card",
+      "mobile_money"
+    ],
+    "allowed_currencies": [
+      "KES",
+      "USD"
+    ],
+    "allow_whitelist": false,
+    "charge_from_dashboard": false,
+    "can_transfer": false,
+    "transfer_using_otp": true,
+    "payouts_on_hold": false,
+    "go_live_date": "2025-11-24T14:21:10.000Z",
+    "payments_session_timeout": 0,
+    "metadata": {
+      "new_checkout_enabled": true
+    },
+    "transfer_notification": "instant",
+    "business_category": null,
+    "business_size": "small",
+    "business_type": "starter",
+    "website_url": null,
+    "social_urls": {
+      "instagram": "https://www.instagram.com/levarlux"
+    },
+    "is_under_investigation": false,
+    "is_disabled": false,
+    "disable_reason": null,
+    "disable_at": null,
+    "identity_evidence_path": null,
+    "director_identity_evidence_path": null,
+    "bvn": null,
+    "bvn_date_of_birth": null,
+    "go_live_status": "confirmed",
+    "registration_packet_path": null,
+    "default_currency": "USD",
+    "transfer_notification_to_recipient": "instant",
+    "send_transfer_email_otp": true,
+    "fast_checkout_enabled": false,
+    "id": 1542693,
+    "primary_user": 6057220,
+    "organization": 1,
+    "createdAt": "2025-08-10T13:56:01.000Z",
+    "updatedAt": "2026-08-08T08:42:13.000Z",
+    "transfer_fees": [
+      {
+        "fee": 650,
+        "currency": "USD"
+      }
+    ],
+    "consent_received": true,
+    "consent_data": {
+      "given_by": "mosespsitito@gmail.com",
+      "given_at": "2025-08-10T13:56:02.000Z"
+    },
+    "attributes": {
+      "id": 1442237,
+      "integration": 1542693,
+      "country": {
+        "id": 4,
+        "active_for_dashboard_onboarding": true,
+        "name": "Kenya",
+        "iso_code": "KE",
+        "default_currency_code": "KES",
+        "calling_code": "+254",
+        "integration_defaults": {},
+        "pilot_mode": false,
+        "relationships": {
+          "currency": {
+            "type": "currency",
+            "data": [
+              "KES"
+            ],
+            "supported_currencies": {
+              "KES": {
+                "bank": {
+                  "bank_type": "kepss",
+                  "account_verification_required": true,
+                  "account_number_label": "accountNumber",
+                  "branch_code": false,
+                  "branch_code_type": "text",
+                  "account_name": true,
+                  "account_number_pattern": {
+                    "exact_match": false,
+                    "pattern": "[0-9]{9,16}"
+                  },
+                  "documents": [],
+                  "show_account_number_tooltip": false
+                },
+                "mobile_money": {
+                  "bank_type": "mobile_money",
+                  "account_verification_required": true,
+                  "phone_number_label": "phoneNumber",
+                  "placeholder": "070 123 456",
+                  "account_number_pattern": {
+                    "exact_match": false,
+                    "pattern": "^[0-9]{10}$"
+                  }
+                },
+                "mobile_money_business": {
+                  "bank_type": "mobile_money_business",
+                  "account_verification_required": true,
+                  "phone_number_label": "accountNumber",
+                  "account_number_pattern": {
+                    "exact_match": false,
+                    "pattern": "^[0-9]{5,7}$"
+                  }
+                }
+              },
+              "USD": {
+                "bank": {
+                  "bank_type": "kepss",
+                  "account_verification_required": false,
+                  "required_fields": [
+                    "bank",
+                    "account_number",
+                    "account_name"
+                  ],
+                  "account_number_label": "accountNumber",
+                  "branch_code": false,
+                  "branch_code_type": "text",
+                  "account_name": false,
+                  "account_number_pattern": {
+                    "exact_match": false,
+                    "pattern": "[0-9]{7,16}"
+                  },
+                  "notices": [
+                    "You'll receive USD settlements 7 working days after payment has been made.",
+                    "In case of fraudulent transactions involving international payments, Paystack will reverse the transaction and deduct the amount from your next payout."
+                  ],
+                  "show_account_number_tooltip": false
+                }
+              }
+            }
+          },
+          "integration_feature": {
+            "type": "integration_feature",
+            "data": []
+          },
+          "integration_type": {
+            "type": "integration_type",
+            "data": [
+              "ITYPE_008",
+              "ITYPE_009"
+            ]
+          },
+          "payment_method": {
+            "type": "payment_method",
+            "data": [
+              "PAYM_001"
+            ]
+          }
+        }
+      },
+      "industry": null,
+      "integration_type": {
+        "id": 9,
+        "code": "ITYPE_009",
+        "label": "starter",
+        "display_name": "Starter Business",
+        "description": "Choose this if your business is not registered yet",
+        "is_active": true,
+        "relationships": {
+          "kyc_requirement": {
+            "type": "kyc_requirement",
+            "data": []
+          }
+        },
+        "upgradable_to": [
+          "ITYPE_008"
+        ]
+      },
+      "legal_business_name": null,
+      "duplicated_from_integration": null,
+      "compliance_status": "APPROVED",
+      "compliance_due_date": "2025-09-09T00:00:00.000Z",
+      "incorporation_date": null,
+      "country_code": "KE",
+      "industry_code": "GOODS-DIGITAL",
+      "registration_number": null,
+      "registration_type": null,
+      "ownership_type": null,
+      "industry_categories": "DIGITAL-SOFTWARE",
+      "area_code": "0",
+      "calling_code": "+254",
+      "form_three_evidence_path": null,
+      "settlement_account_type": "bank_account",
+      "international_requested": false,
+      "email_rules": null,
+      "compliance_documents_submitted": true,
+      "incorporated_before_2017": 0,
+      "has_refreshed_incorporation_documents": true,
+      "process_amex_cards": true,
+      "is_terminal_integration": false,
+      "mfa_is_required": false,
+      "mfa_enforcement_deadline": null,
+      "legal_agreements": null,
+      "has_saved_cards": true,
+      "saved_cards_enabled": true,
+      "passes_fees": null,
+      "passes_dva_fees": null,
+      "direct_debit_enabled": true,
+      "settlement_days": null,
+      "can_refund": 1,
+      "createdAt": "2025-08-10T13:56:01.000Z",
+      "updatedAt": "2026-08-12T08:40:42.000Z"
+    },
+    "terminal_integration_attribute": null,
+    "is_terminal_active": false,
+    "is_dormant": false,
+    "is_registration_type_supported_for_terminal": false,
+    "office_address": {
+      "id": 838512,
+      "street_line_one": "134",
+      "street_line_two": "3f",
+      "post_code": "00100",
+      "model": "integration",
+      "model_row": 1542693,
+      "locality": null,
+      "city": "Karen",
+      "state": "Nairobi",
+      "country": "Kenya",
+      "country_iso_code": "KE",
+      "type": "office",
+      "lga": null
+    },
+    "registered_address": {},
+    "available_channels": [
+      "card",
+      "mobile_money",
+      "bank_transfer"
+    ],
+    "blacklisted_channels": [],
+    "agreements": {
+      "settlement_managed_account": {
+        "agreements": [],
+        "visible": false
+      }
+    },
+    "payouts_on_hold_reason": null,
+    "chargeback_emails": [
+      "flozzyai@proton.me"
+    ],
+    "logged_in_user_role": {
+      "id": 34,
+      "name": "admin",
+      "description": "This role grants users the permissions to manage everything on the dashboard"
+    }
+  },
+  "token_expiry": 1786636617
+}

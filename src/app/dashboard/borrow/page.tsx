@@ -5,12 +5,13 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { useSchool } from "@/lib/use-school";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Search, BookMarked, UserPlus, BookOpen, Download, AlertTriangle, Loader2 } from "lucide-react";
+import { Search, BookMarked, UserPlus, BookOpen, Download, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -66,7 +67,7 @@ export default function BorrowPage() {
   if (classes === undefined || books === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <BrandLoader variant="book" size="md" />
       </div>
     );
   }
@@ -174,7 +175,7 @@ export default function BorrowPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="w-full space-y-6 max-w-2xl mx-auto px-6 lg:px-8">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Borrow a Book</h1>

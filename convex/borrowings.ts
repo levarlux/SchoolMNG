@@ -5,8 +5,10 @@ import {
   requireSchoolMembership,
   requireStudentMembership,
   requireBorrowingMembership,
+  requireModuleAccessByName,
   logAuditEntry,
 } from "./helpers";
+import { checkRateLimit } from "./rateLimit";
 import { log } from "./lib/logger";
 
 export const listBySchool = query({
@@ -36,6 +38,7 @@ export const listByStudent = query({
   args: { studentId: v.id("students") },
   handler: async (ctx, { studentId }) => {
     const student = await requireStudentMembership(ctx, studentId);
+    await requireModuleAccessByName(ctx, student.schoolId, "Library");
     return await ctx.db
       .query("borrowings")
       .withIndex("by_studentId", (q) => q.eq("studentId", studentId))
@@ -56,6 +59,8 @@ export const create = mutation({
   handler: async (ctx, args) => {
     await requireSchoolMembership(ctx, args.schoolId);
     await requireStudentMembership(ctx, args.studentId);
+    // Rate limit: max 15 borrowings per school per minute
+    await checkRateLimit(ctx, `borrowing-create:${args.schoolId}`, 15, 60_000);
 
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);

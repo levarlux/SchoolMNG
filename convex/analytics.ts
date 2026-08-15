@@ -11,12 +11,13 @@ export const systemOverview = query({
     await requireSuperadmin(ctx);
 
     // Use indexed queries with reasonable limits to avoid full-table pulls
+    // For superadmin overview, we read across all schools but with bounded limits
     const [allStudents, allBooks, allBorrowingsList, allFines, allSubscriptions, allSchools] =
       await Promise.all([
-        ctx.db.query("students").take(50000),
-        ctx.db.query("books").take(50000),
-        ctx.db.query("borrowings").take(50000),
-        ctx.db.query("fines").take(50000),
+        ctx.db.query("students").take(10000),
+        ctx.db.query("books").take(10000),
+        ctx.db.query("borrowings").take(10000),
+        ctx.db.query("fines").take(10000),
         ctx.db.query("subscriptions").take(1000),
         ctx.db.query("schools").take(1000),
       ]);
@@ -61,9 +62,9 @@ export const schoolComparison = query({
     // Use indexed queries with take() instead of collect() to avoid OOM
     const [allStudents, allBooks, allBorrowingsList, allFeatures] =
       await Promise.all([
-        ctx.db.query("students").take(50000),
-        ctx.db.query("books").take(50000),
-        ctx.db.query("borrowings").take(50000),
+        ctx.db.query("students").take(10000),
+        ctx.db.query("books").take(10000),
+        ctx.db.query("borrowings").take(10000),
         ctx.db.query("feature_configurations").take(5000),
       ]);
 

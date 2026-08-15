@@ -1,18 +1,19 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 import { useSchool } from "@/lib/use-school";
-import { useRole } from "@/lib/use-role";
+import { useRole, isLeadershipRole } from "@/lib/use-role";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search, Loader2, Package, Trash2 } from "lucide-react";
+import { Plus, Search, Package, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 const CATEGORIES = [
@@ -34,7 +35,7 @@ function formatCurrency(amount: number) {
 export default function InventoryPage() {
   const school = useSchool();
   const role = useRole();
-  const isPrincipal = role === "principal";
+  const isLeadership = isLeadershipRole(role);
   const items = useQuery(api.inventory.listBySchool, school ? { schoolId: school._id } : "skip");
   const summary = useQuery(api.inventory.getSummary, school ? { schoolId: school._id } : "skip");
   const createItem = useMutation(api.inventory.create);
@@ -55,7 +56,7 @@ export default function InventoryPage() {
   if (items === undefined || summary === undefined) {
     return (
       <div className="flex items-center justify-center p-8">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <BrandLoader variant="book" size="md" />
       </div>
     );
   }
@@ -115,7 +116,7 @@ export default function InventoryPage() {
           <h1 className="text-3xl font-bold">Inventory</h1>
           <p className="text-muted-foreground mt-1">School supplies and equipment</p>
         </div>
-        {isPrincipal && (
+        {isLeadership && (
           <Button onClick={() => setShowModal(true)}>
             <Plus className="h-4 w-4 mr-2" /> Add Item
           </Button>
@@ -209,12 +210,12 @@ export default function InventoryPage() {
                     <td className="p-3">
                       <span className={`font-medium ${condInfo?.color}`}>{condInfo?.label}</span>
                     </td>
-                    <td className="p-3 text-muted-foreground">{item.location || "—"}</td>
+                    <td className="p-3 text-muted-foreground">{item.location || ""}</td>
                     <td className="p-3 text-right text-muted-foreground">
-                      {item.purchasePrice ? formatCurrency(item.purchasePrice) : "—"}
+                      {item.purchasePrice ? formatCurrency(item.purchasePrice) : ""}
                     </td>
                     <td className="p-3 text-right">
-                      {isPrincipal && (
+                      {isLeadership && (
                         <Button
                           variant="ghost"
                           size="sm"
@@ -291,3 +292,4 @@ export default function InventoryPage() {
     </div>
   );
 }
+

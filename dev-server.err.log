@@ -1,0 +1,8 @@
+npm notice run school-library-mng@0.2.1 dev
+npm notice run next dev
+⚠ Slow filesystem detected. The benchmark took 349ms. If D:\proograms\mine\projects\Commercial\SchoolMNG\.next/dev is a network drive, consider moving it to a local folder.
+See more: https://nextjs.org/docs/app/guides/local-development
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (https://calm-macaque-6.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (https://calm-macaque-6.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (https://calm-macaque-6.clerk.accounts.dev/npm/@clerk/clerk-js@5/dist/clerk.browser.js:19:7048)
+[browser] Failed to authenticate: "Could not verify OIDC token claim. Check that the token signature is valid and the token hasn't expired.", check your server auth config 

@@ -1,0 +1,1121 @@
+﻿Admission No,Student Name,Class,Term,Year,Days Open,Days Present,Days Absent,Times Late,Attendance Rate (%),Main Absence Reason
+ADM-1001,Gideon Waweru,Grade 1 A,Term 1,2026,65,62,3,2,0.95,FAMILY MATTER
+ADM-1002,George Ndolo,Grade 1 A,Term 1,2026,65,65,0,0,1,
+ADM-1003,John Njuguna,Grade 1 A,Term 1,2026,65,57,8,1,0.88,OTHER
+ADM-1004,Samuel Hassan,Grade 1 A,Term 1,2026,65,62,3,6,0.95,OTHER
+ADM-1005,Alice Farah,Grade 1 A,Term 1,2026,65,64,1,5,0.98,SCHOOL_BUS_MISSED
+ADM-1006,Anthony Omar,Grade 1 A,Term 1,2026,65,65,0,0,1,
+ADM-1007,Abigail Mutuku,Grade 1 A,Term 1,2026,65,65,0,6,1,
+ADM-1008,Eric Odera,Grade 1 A,Term 1,2026,65,65,0,2,1,
+ADM-1009,Dorcas Bakari,Grade 1 A,Term 1,2026,65,60,5,0,0.92,OTHER
+ADM-1010,Kevin Pashua,Grade 1 A,Term 1,2026,65,63,2,0,0.97,FAMILY MATTER
+ADM-1011,Winfred Bakari,Grade 1 A,Term 1,2026,65,64,1,0,0.98,MEDICAL APPOINTMENT
+ADM-1012,Diana Khaemba,Grade 1 A,Term 1,2026,65,65,0,2,1,
+ADM-1013,Purity Nzioka,Grade 1 A,Term 1,2026,65,65,0,2,1,
+ADM-1014,Eric Mutoro,Grade 1 A,Term 1,2026,65,65,0,0,1,
+ADM-1015,Yvonne Kariuki,Grade 1 A,Term 1,2026,65,65,0,2,1,
+ADM-1016,John Lugalia,Grade 1 A,Term 1,2026,65,65,0,0,1,
+ADM-1017,Fridah Oluoch,Grade 1 A,Term 1,2026,65,59,6,5,0.91,LATENESS
+ADM-1018,Charity Sichangi,Grade 1 A,Term 1,2026,65,65,0,0,1,
+ADM-1019,Stephen Kinyua,Grade 1 A,Term 1,2026,65,65,0,5,1,
+ADM-1020,James Mganga,Grade 1 A,Term 1,2026,65,65,0,0,1,
+ADM-1021,Brenda Oduor,Grade 1 A,Term 1,2026,65,64,1,4,0.98,MEDICAL APPOINTMENT
+ADM-1022,Kiplangat Wafula,Grade 1 A,Term 1,2026,65,63,2,0,0.97,LATENESS
+ADM-1023,Karen Makokha,Grade 1 A,Term 1,2026,65,57,8,1,0.88,MEDICAL APPOINTMENT
+ADM-1024,Tabitha Ndungu,Grade 1 A,Term 1,2026,65,65,0,0,1,
+ADM-1025,Mark Kioko,Grade 1 A,Term 1,2026,65,65,0,4,1,
+ADM-1026,Eric Obiero,Grade 1 A,Term 1,2026,65,62,3,3,0.95,FUNERAL
+ADM-1027,Michael Ndolo,Grade 1 A,Term 1,2026,65,62,3,5,0.95,FUNERAL
+ADM-1028,Lawrence Chemtai,Grade 1 A,Term 1,2026,65,58,7,0,0.89,OTHER
+ADM-1029,Emmanuel Njenga,Grade 1 A,Term 1,2026,65,60,5,0,0.92,OTHER
+ADM-1030,Yvonne Karanja,Grade 1 A,Term 1,2026,65,65,0,0,1,
+ADM-1031,Yvonne Njeri,Grade 1 A,Term 1,2026,65,57,8,0,0.88,MEDICAL APPOINTMENT
+ADM-1032,Esther Mutiso,Grade 1 A,Term 1,2026,65,61,4,4,0.94,MEDICAL APPOINTMENT
+ADM-1033,Daniel Noor,Grade 1 A,Term 1,2026,65,59,6,0,0.91,FUNERAL
+ADM-1034,Alice Metto,Grade 1 A,Term 1,2026,65,65,0,2,1,
+ADM-1035,Maureen Muthoka,Grade 1 B,Term 1,2026,65,65,0,1,1,
+ADM-1036,Alice Abdi,Grade 1 B,Term 1,2026,65,61,4,6,0.94,SICKNESS
+ADM-1037,Kipchoge Akoth,Grade 1 B,Term 1,2026,65,64,1,6,0.98,MEDICAL APPOINTMENT
+ADM-1038,Abigail Yusuf,Grade 1 B,Term 1,2026,65,65,0,4,1,
+ADM-1039,Peter Choge,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1040,Joshua Nzioka,Grade 1 B,Term 1,2026,65,61,4,0,0.94,FUNERAL
+ADM-1041,Winnie Suleiman,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1042,John Pekeri,Grade 1 B,Term 1,2026,65,62,3,0,0.95,SCHOOL_BUS_MISSED
+ADM-1043,Judith Njuguna,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1044,Joyce Mutoro,Grade 1 B,Term 1,2026,65,65,0,5,1,
+ADM-1045,Yvonne Choge,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1046,Timothy Khisa,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1047,Charles Njeru,Grade 1 B,Term 1,2026,65,65,0,3,1,
+ADM-1048,Vincent Wamalwa,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1049,Isaac Mwirigi,Grade 1 B,Term 1,2026,65,57,8,1,0.88,SICKNESS
+ADM-1050,David Kaelo,Grade 1 B,Term 1,2026,65,61,4,4,0.94,SCHOOL_BUS_MISSED
+ADM-1051,Purity Kioko,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1052,Thomas Korir,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1053,Zachary Omollo,Grade 1 B,Term 1,2026,65,65,0,4,1,
+ADM-1054,Sharon Kombo,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1055,Luke Bunoro,Grade 1 B,Term 1,2026,65,62,3,2,0.95,FAMILY MATTER
+ADM-1056,Dorcas Nassor,Grade 1 B,Term 1,2026,65,63,2,5,0.97,FAMILY MATTER
+ADM-1057,Wesley Bakari,Grade 1 B,Term 1,2026,65,57,8,0,0.88,FUNERAL
+ADM-1058,Winfred Odera,Grade 1 B,Term 1,2026,65,61,4,0,0.94,MEDICAL APPOINTMENT
+ADM-1059,Trevor Syombua,Grade 1 B,Term 1,2026,65,60,5,0,0.92,FUNERAL
+ADM-1060,Nancy Musalia,Grade 1 B,Term 1,2026,65,57,8,5,0.88,SICKNESS
+ADM-1061,Eric Chepkirui,Grade 1 B,Term 1,2026,65,58,7,0,0.89,FUNERAL
+ADM-1062,Faith Owino,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1063,Julia Kaelo,Grade 1 B,Term 1,2026,65,60,5,6,0.92,SICKNESS
+ADM-1064,Andrew Suleiman,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1065,Julius Mutiso,Grade 1 B,Term 1,2026,65,65,0,0,1,
+ADM-1066,Nancy Abdi,Grade 1 B,Term 1,2026,65,48,17,4,0.74,LATENESS
+ADM-1067,Joyce Kitonga,Grade 1 B,Term 1,2026,65,61,4,0,0.94,SICKNESS
+ADM-1068,Brenda Adan,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1069,Purity Mwende,Grade 1 C,Term 1,2026,65,61,4,1,0.94,SICKNESS
+ADM-1070,Judith Khisa,Grade 1 C,Term 1,2026,65,59,6,2,0.91,FUNERAL
+ADM-1071,Stephen Wekesa,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1072,Martin Bunoro,Grade 1 C,Term 1,2026,65,59,6,0,0.91,SICKNESS
+ADM-1073,Cynthia Zawadi,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1074,Hillary Njenga,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1075,Amara Mugambi,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1076,Charles Kigen,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1077,David Wanjala,Grade 1 C,Term 1,2026,65,59,6,4,0.91,MEDICAL APPOINTMENT
+ADM-1078,Lawrence Ciawi,Grade 1 C,Term 1,2026,65,59,6,0,0.91,MEDICAL APPOINTMENT
+ADM-1079,Benjamin Okello,Grade 1 C,Term 1,2026,65,64,1,0,0.98,FUNERAL
+ADM-1080,Samuel Sironka,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1081,Nicholas Makokha,Grade 1 C,Term 1,2026,65,62,3,5,0.95,FUNERAL
+ADM-1082,Rebecca Ndolo,Grade 1 C,Term 1,2026,65,61,4,5,0.94,FUNERAL
+ADM-1083,William Masinde,Grade 1 C,Term 1,2026,65,65,0,3,1,
+ADM-1084,Victor Maina,Grade 1 C,Term 1,2026,65,65,0,2,1,
+ADM-1085,Mercy Mburu,Grade 1 C,Term 1,2026,65,62,3,0,0.95,LATENESS
+ADM-1086,Timothy Kaelo,Grade 1 C,Term 1,2026,65,57,8,0,0.88,LATENESS
+ADM-1087,Dorcas Mwinyi,Grade 1 C,Term 1,2026,65,60,5,0,0.92,SCHOOL_BUS_MISSED
+ADM-1088,Frank Ndungu,Grade 1 C,Term 1,2026,65,65,0,3,1,
+ADM-1089,Faith Githinji,Grade 1 C,Term 1,2026,65,58,7,0,0.89,SICKNESS
+ADM-1090,Alex Akoth,Grade 1 C,Term 1,2026,65,58,7,0,0.89,LATENESS
+ADM-1091,Nathaniel Wekesa,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1092,Olivia Pekeri,Grade 1 C,Term 1,2026,65,59,6,0,0.91,OTHER
+ADM-1093,Winfred Muthoka,Grade 1 C,Term 1,2026,65,65,0,3,1,
+ADM-1094,Nicholas Namukuru,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1095,Faith Mutua,Grade 1 C,Term 1,2026,65,63,2,6,0.97,FUNERAL
+ADM-1096,Nancy Nandwa,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1097,Judith Kosgei,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1098,John Metto,Grade 1 C,Term 1,2026,65,59,6,0,0.91,FUNERAL
+ADM-1099,Dorcas Karanja,Grade 1 C,Term 1,2026,65,65,0,0,1,
+ADM-1100,Faith Choge,Grade 1 C,Term 1,2026,65,65,0,3,1,
+ADM-1101,Eric Musyoka,Grade 2 A,Term 1,2026,65,64,1,0,0.98,FUNERAL
+ADM-1102,Elijah Natepo,Grade 2 A,Term 1,2026,65,62,3,1,0.95,OTHER
+ADM-1103,Alex Tanui,Grade 2 A,Term 1,2026,65,64,1,0,0.98,OTHER
+ADM-1104,Emmanuel Ndolo,Grade 2 A,Term 1,2026,65,65,0,5,1,
+ADM-1105,Magdalene Mpaine,Grade 2 A,Term 1,2026,65,65,0,1,1,
+ADM-1106,Gideon Tanui,Grade 2 A,Term 1,2026,65,60,5,0,0.92,FAMILY MATTER
+ADM-1107,Rachael Kiprop,Grade 2 A,Term 1,2026,65,65,0,3,1,
+ADM-1108,Harrison Kioko,Grade 2 A,Term 1,2026,65,58,7,0,0.89,SICKNESS
+ADM-1109,Tabitha Bunoro,Grade 2 A,Term 1,2026,65,60,5,2,0.92,OTHER
+ADM-1110,Andrew Leshan,Grade 2 A,Term 1,2026,65,65,0,1,1,
+ADM-1111,Samuel Nzioka,Grade 2 A,Term 1,2026,65,65,0,3,1,
+ADM-1112,Diana Njeri,Grade 2 A,Term 1,2026,65,65,0,0,1,
+ADM-1113,Joyce Njoroge,Grade 2 A,Term 1,2026,65,65,0,5,1,
+ADM-1114,Fridah Kimeu,Grade 2 A,Term 1,2026,65,58,7,2,0.89,SICKNESS
+ADM-1115,Caleb Kioko,Grade 2 A,Term 1,2026,65,65,0,4,1,
+ADM-1116,Hillary Odhiambo,Grade 2 A,Term 1,2026,65,65,0,0,1,
+ADM-1117,Martin Zawadi,Grade 2 A,Term 1,2026,65,65,0,6,1,
+ADM-1118,Alex Mwangi,Grade 2 A,Term 1,2026,65,65,0,0,1,
+ADM-1119,Sharon Githinji,Grade 2 A,Term 1,2026,65,64,1,4,0.98,OTHER
+ADM-1120,Shalom Syombua,Grade 2 A,Term 1,2026,65,60,5,4,0.92,SICKNESS
+ADM-1121,Faith Omar,Grade 2 A,Term 1,2026,65,62,3,0,0.95,SICKNESS
+ADM-1122,Charles Mutoro,Grade 2 A,Term 1,2026,65,65,0,1,1,
+ADM-1123,Joshua Gatwiri,Grade 2 A,Term 1,2026,65,59,6,5,0.91,FAMILY MATTER
+ADM-1124,Peter Mutoro,Grade 2 A,Term 1,2026,65,57,8,0,0.88,SCHOOL_BUS_MISSED
+ADM-1125,Donald Kiprop,Grade 2 A,Term 1,2026,65,65,0,4,1,
+ADM-1126,Rachael Mbithi,Grade 2 A,Term 1,2026,65,65,0,5,1,
+ADM-1127,James Natepo,Grade 2 A,Term 1,2026,65,57,8,1,0.88,OTHER
+ADM-1128,Amos Langat,Grade 2 A,Term 1,2026,65,65,0,5,1,
+ADM-1129,Olivia Suleiman,Grade 2 A,Term 1,2026,65,65,0,0,1,
+ADM-1130,Isaac Mpaine,Grade 2 A,Term 1,2026,65,65,0,0,1,
+ADM-1131,Joshua Sichangi,Grade 2 A,Term 1,2026,65,64,1,0,0.98,FUNERAL
+ADM-1132,Ian Abdi,Grade 2 A,Term 1,2026,65,62,3,0,0.95,FAMILY MATTER
+ADM-1133,Timothy Maundu,Grade 2 B,Term 1,2026,65,59,6,0,0.91,OTHER
+ADM-1134,Eric Kosgei,Grade 2 B,Term 1,2026,65,65,0,2,1,
+ADM-1135,Amara Abdalla,Grade 2 B,Term 1,2026,65,62,3,0,0.95,LATENESS
+ADM-1136,Hillary Adhiambo,Grade 2 B,Term 1,2026,65,65,0,2,1,
+ADM-1137,Patrick Hassan,Grade 2 B,Term 1,2026,65,58,7,4,0.89,FUNERAL
+ADM-1138,Alex Juma,Grade 2 B,Term 1,2026,65,61,4,2,0.94,SICKNESS
+ADM-1139,Trevor Kinyua,Grade 2 B,Term 1,2026,65,65,0,5,1,
+ADM-1140,Judith Farah,Grade 2 B,Term 1,2026,65,65,0,6,1,
+ADM-1141,Purity Maundu,Grade 2 B,Term 1,2026,65,65,0,1,1,
+ADM-1142,Kiplangat Syombua,Grade 2 B,Term 1,2026,65,65,0,6,1,
+ADM-1143,Esther Sironka,Grade 2 B,Term 1,2026,65,57,8,2,0.88,FUNERAL
+ADM-1144,Harrison Njoroge,Grade 2 B,Term 1,2026,65,62,3,0,0.95,SICKNESS
+ADM-1145,Wesley Mwende,Grade 2 B,Term 1,2026,65,59,6,4,0.91,OTHER
+ADM-1146,Gloria Khisa,Grade 2 B,Term 1,2026,65,59,6,0,0.91,OTHER
+ADM-1147,Francis Khamis,Grade 2 B,Term 1,2026,65,65,0,0,1,
+ADM-1148,Moses Omondi,Grade 2 B,Term 1,2026,65,65,0,4,1,
+ADM-1149,Anthony Igweta,Grade 2 B,Term 1,2026,65,58,7,0,0.89,SCHOOL_BUS_MISSED
+ADM-1150,Michael Mwangi,Grade 2 B,Term 1,2026,65,65,0,0,1,
+ADM-1151,Grace Juma,Grade 2 B,Term 1,2026,65,65,0,3,1,
+ADM-1152,Dorcas Khisa,Grade 2 B,Term 1,2026,65,65,0,3,1,
+ADM-1153,Hellen Langat,Grade 2 B,Term 1,2026,65,57,8,0,0.88,SICKNESS
+ADM-1154,Naomi Kiptum,Grade 2 B,Term 1,2026,65,65,0,0,1,
+ADM-1155,Wesley Njoroge,Grade 2 B,Term 1,2026,65,57,8,0,0.88,MEDICAL APPOINTMENT
+ADM-1156,Susan Nthiga,Grade 2 B,Term 1,2026,65,65,0,0,1,
+ADM-1157,Alex Hassan,Grade 2 B,Term 1,2026,65,63,2,2,0.97,SCHOOL_BUS_MISSED
+ADM-1158,David Kimeu,Grade 2 B,Term 1,2026,65,60,5,2,0.92,SCHOOL_BUS_MISSED
+ADM-1159,Francis Wamalwa,Grade 2 B,Term 1,2026,65,65,0,3,1,
+ADM-1160,Sonia Chemtai,Grade 2 B,Term 1,2026,65,65,0,0,1,
+ADM-1161,Gladys Onyango,Grade 2 B,Term 1,2026,65,65,0,0,1,
+ADM-1162,Monica Njenga,Grade 2 B,Term 1,2026,65,65,0,0,1,
+ADM-1163,Harrison Muthoka,Grade 2 B,Term 1,2026,65,57,8,0,0.88,OTHER
+ADM-1164,Janet Maina,Grade 2 B,Term 1,2026,65,65,0,3,1,
+ADM-1165,Vincent Chemtai,Grade 3 A,Term 1,2026,65,65,0,6,1,
+ADM-1166,Kennedy Leshan,Grade 3 A,Term 1,2026,65,65,0,0,1,
+ADM-1167,Dennis Mganga,Grade 3 A,Term 1,2026,65,65,0,3,1,
+ADM-1168,Wesley Baariu,Grade 3 A,Term 1,2026,65,65,0,0,1,
+ADM-1169,Edna Igweta,Grade 3 A,Term 1,2026,65,63,2,0,0.97,LATENESS
+ADM-1170,Thomas Oduor,Grade 3 A,Term 1,2026,65,59,6,2,0.91,SICKNESS
+ADM-1171,Julia Mwangi,Grade 3 A,Term 1,2026,65,65,0,4,1,
+ADM-1172,Judith Khamis,Grade 3 A,Term 1,2026,65,57,8,0,0.88,SICKNESS
+ADM-1173,Fridah Mutua,Grade 3 A,Term 1,2026,65,58,7,1,0.89,FAMILY MATTER
+ADM-1174,Frank Kinyua,Grade 3 A,Term 1,2026,65,61,4,1,0.94,OTHER
+ADM-1175,George Auma,Grade 3 A,Term 1,2026,65,62,3,0,0.95,SICKNESS
+ADM-1176,Anthony Wekesa,Grade 3 A,Term 1,2026,65,59,6,0,0.91,FUNERAL
+ADM-1177,Emmanuel Anyango,Grade 3 A,Term 1,2026,65,65,0,5,1,
+ADM-1178,Abigail Wanjala,Grade 3 A,Term 1,2026,65,61,4,0,0.94,OTHER
+ADM-1179,Patrick Ruto,Grade 3 A,Term 1,2026,65,57,8,0,0.88,LATENESS
+ADM-1180,Beatrice Mpaine,Grade 3 A,Term 1,2026,65,59,6,0,0.91,OTHER
+ADM-1181,Meshack Hassan,Grade 3 A,Term 1,2026,65,65,0,0,1,
+ADM-1182,Dennis Barasa,Grade 3 A,Term 1,2026,65,59,6,0,0.91,MEDICAL APPOINTMENT
+ADM-1183,Martha Oluoch,Grade 3 A,Term 1,2026,65,65,0,2,1,
+ADM-1184,Kennedy Oluoch,Grade 3 A,Term 1,2026,65,60,5,0,0.92,FAMILY MATTER
+ADM-1185,Priscilla Mwangi,Grade 3 A,Term 1,2026,65,60,5,4,0.92,SICKNESS
+ADM-1186,Julia Wanjala,Grade 3 A,Term 1,2026,65,65,0,0,1,
+ADM-1187,Donald Mutoro,Grade 3 A,Term 1,2026,65,65,0,5,1,
+ADM-1188,Eric Nandwa,Grade 3 A,Term 1,2026,65,65,0,5,1,
+ADM-1189,Faith Adan,Grade 3 A,Term 1,2026,65,59,6,3,0.91,SICKNESS
+ADM-1190,Karen Okoth,Grade 3 A,Term 1,2026,65,65,0,0,1,
+ADM-1191,Winfred Mwirigi,Grade 3 A,Term 1,2026,65,65,0,0,1,
+ADM-1192,James Akoth,Grade 3 A,Term 1,2026,65,58,7,0,0.89,FAMILY MATTER
+ADM-1193,George Kiprop,Grade 3 A,Term 1,2026,65,65,0,6,1,
+ADM-1194,Winnie Kinyua,Grade 3 A,Term 1,2026,65,65,0,6,1,
+ADM-1195,Esther Choge,Grade 3 A,Term 1,2026,65,63,2,5,0.97,SICKNESS
+ADM-1196,Grace Nassor,Grade 3 A,Term 1,2026,65,65,0,6,1,
+ADM-1197,Trevor Njuguna,Grade 3 B,Term 1,2026,65,65,0,3,1,
+ADM-1198,James Mutuku,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1199,Peninah Achieng,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1200,Karen Maina,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1201,Brenda Wambui,Grade 3 B,Term 1,2026,65,62,3,0,0.95,FUNERAL
+ADM-1202,Doreen Njeri,Grade 3 B,Term 1,2026,65,65,0,5,1,
+ADM-1203,Julius Onyango,Grade 3 B,Term 1,2026,65,61,4,6,0.94,OTHER
+ADM-1204,Irene Pashua,Grade 3 B,Term 1,2026,65,57,8,0,0.88,SICKNESS
+ADM-1205,Kennedy Kitonga,Grade 3 B,Term 1,2026,65,60,5,0,0.92,SICKNESS
+ADM-1206,Faith Kathambi,Grade 3 B,Term 1,2026,65,61,4,0,0.94,SICKNESS
+ADM-1207,Teresia Baariu,Grade 3 B,Term 1,2026,65,65,0,1,1,
+ADM-1208,Edwin Abdalla,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1209,Meshack Wafula,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1210,Kipchoge Mwinyi,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1211,Mark Pashua,Grade 3 B,Term 1,2026,65,61,4,4,0.94,FAMILY MATTER
+ADM-1212,Grace Langat,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1213,Julia Njuguna,Grade 3 B,Term 1,2026,65,65,0,4,1,
+ADM-1214,Thomas Mwende,Grade 3 B,Term 1,2026,65,60,5,4,0.92,FAMILY MATTER
+ADM-1215,Edwin Namukuru,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1216,Joseph Kirimi,Grade 3 B,Term 1,2026,65,64,1,2,0.98,SICKNESS
+ADM-1217,Elijah Odera,Grade 3 B,Term 1,2026,65,65,0,5,1,
+ADM-1218,Gideon Kitonga,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1219,Francis Okoth,Grade 3 B,Term 1,2026,65,65,0,6,1,
+ADM-1220,Gloria Odhiambo,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1221,Monica Kombo,Grade 3 B,Term 1,2026,65,64,1,1,0.98,FUNERAL
+ADM-1222,Abigail Khisa,Grade 3 B,Term 1,2026,65,63,2,0,0.97,SICKNESS
+ADM-1223,Simon Gitau,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1224,Frank Abdalla,Grade 3 B,Term 1,2026,65,61,4,0,0.94,FUNERAL
+ADM-1225,Zachary Oluoch,Grade 3 B,Term 1,2026,65,65,0,4,1,
+ADM-1226,Vincent Ciawi,Grade 3 B,Term 1,2026,65,58,7,4,0.89,OTHER
+ADM-1227,Susan Wamalwa,Grade 3 B,Term 1,2026,65,65,0,0,1,
+ADM-1228,Michael Wambua,Grade 3 B,Term 1,2026,65,60,5,0,0.92,OTHER
+ADM-1229,Wesley Noor,Grade 4 A,Term 1,2026,65,59,6,0,0.91,SCHOOL_BUS_MISSED
+ADM-1230,Felix Masinde,Grade 4 A,Term 1,2026,65,65,0,2,1,
+ADM-1231,Caleb Maundu,Grade 4 A,Term 1,2026,65,65,0,0,1,
+ADM-1232,Naomi Wambua,Grade 4 A,Term 1,2026,65,65,0,0,1,
+ADM-1233,Michael Syombua,Grade 4 A,Term 1,2026,65,63,2,3,0.97,SICKNESS
+ADM-1234,William Omollo,Grade 4 A,Term 1,2026,65,65,0,0,1,
+ADM-1235,Kennedy Chemtai,Grade 4 A,Term 1,2026,65,63,2,5,0.97,SCHOOL_BUS_MISSED
+ADM-1236,Harrison Kitonga,Grade 4 A,Term 1,2026,65,65,0,2,1,
+ADM-1237,Teresia Kinyua,Grade 4 A,Term 1,2026,65,57,8,0,0.88,SICKNESS
+ADM-1238,Kiplangat Sichangi,Grade 4 A,Term 1,2026,65,65,0,0,1,
+ADM-1239,Kiplangat Pekeri,Grade 4 A,Term 1,2026,65,65,0,3,1,
+ADM-1240,Joshua Ciawi,Grade 4 A,Term 1,2026,65,58,7,0,0.89,OTHER
+ADM-1241,Trevor Igweta,Grade 4 A,Term 1,2026,65,65,0,5,1,
+ADM-1242,Emily Gatwiri,Grade 4 A,Term 1,2026,65,65,0,1,1,
+ADM-1243,Anthony Muthoka,Grade 4 A,Term 1,2026,65,61,4,2,0.94,MEDICAL APPOINTMENT
+ADM-1244,Magdalene Nzomo,Grade 4 A,Term 1,2026,65,65,0,0,1,
+ADM-1245,Michael Wamalwa,Grade 4 A,Term 1,2026,65,58,7,6,0.89,FAMILY MATTER
+ADM-1246,Brian Anyango,Grade 4 A,Term 1,2026,65,65,0,5,1,
+ADM-1247,Florence Farah,Grade 4 A,Term 1,2026,65,62,3,0,0.95,MEDICAL APPOINTMENT
+ADM-1248,Kevin Mutoro,Grade 4 A,Term 1,2026,65,65,0,3,1,
+ADM-1249,Teresia Kimeu,Grade 4 A,Term 1,2026,65,60,5,5,0.92,MEDICAL APPOINTMENT
+ADM-1250,Anthony Khisa,Grade 4 A,Term 1,2026,65,61,4,0,0.94,FAMILY MATTER
+ADM-1251,Hellen Omondi,Grade 4 A,Term 1,2026,65,60,5,2,0.92,SCHOOL_BUS_MISSED
+ADM-1252,Lilian Suleiman,Grade 4 A,Term 1,2026,65,63,2,0,0.97,FAMILY MATTER
+ADM-1253,Martha Kimutai,Grade 4 A,Term 1,2026,65,65,0,0,1,
+ADM-1254,Kipchoge Kinyua,Grade 4 A,Term 1,2026,65,65,0,0,1,
+ADM-1255,Sophia Kithinji,Grade 4 A,Term 1,2026,65,65,0,3,1,
+ADM-1256,Lilian Ambani,Grade 4 A,Term 1,2026,65,64,1,0,0.98,FAMILY MATTER
+ADM-1257,Thomas Adan,Grade 4 A,Term 1,2026,65,59,6,6,0.91,SCHOOL_BUS_MISSED
+ADM-1258,Samuel Mugambi,Grade 4 A,Term 1,2026,65,65,0,0,1,
+ADM-1259,Lawrence Tianai,Grade 4 A,Term 1,2026,65,65,0,4,1,
+ADM-1260,Gloria Omollo,Grade 4 A,Term 1,2026,65,65,0,0,1,
+ADM-1261,Vincent Suleiman,Grade 4 B,Term 1,2026,65,64,1,2,0.98,FUNERAL
+ADM-1262,Cynthia Kithinji,Grade 4 B,Term 1,2026,65,62,3,6,0.95,FAMILY MATTER
+ADM-1263,Sharon Kariuki,Grade 4 B,Term 1,2026,65,57,8,2,0.88,MEDICAL APPOINTMENT
+ADM-1264,Peninah Kimeu,Grade 4 B,Term 1,2026,65,65,0,0,1,
+ADM-1265,Magdalene Kaelo,Grade 4 B,Term 1,2026,65,65,0,3,1,
+ADM-1266,Kipchoge Wamalwa,Grade 4 B,Term 1,2026,65,65,0,0,1,
+ADM-1267,Charles Hassan,Grade 4 B,Term 1,2026,65,60,5,3,0.92,MEDICAL APPOINTMENT
+ADM-1268,Sarah Maina,Grade 4 B,Term 1,2026,65,57,8,6,0.88,FAMILY MATTER
+ADM-1269,Doreen Kariuki,Grade 4 B,Term 1,2026,65,65,0,2,1,
+ADM-1270,Moses Kimutai,Grade 4 B,Term 1,2026,65,57,8,0,0.88,LATENESS
+ADM-1271,Charity Chepkirui,Grade 4 B,Term 1,2026,65,64,1,0,0.98,SICKNESS
+ADM-1272,Catherine Mbithi,Grade 4 B,Term 1,2026,65,57,8,3,0.88,LATENESS
+ADM-1273,Kiplangat Oduor,Grade 4 B,Term 1,2026,65,65,0,2,1,
+ADM-1274,Zipporah Kigen,Grade 4 B,Term 1,2026,65,65,0,0,1,
+ADM-1275,Florence Obiero,Grade 4 B,Term 1,2026,65,65,0,0,1,
+ADM-1276,Rachael Githinji,Grade 4 B,Term 1,2026,65,65,0,4,1,
+ADM-1277,Anthony Njoroge,Grade 4 B,Term 1,2026,65,65,0,0,1,
+ADM-1278,Mark Pekeri,Grade 4 B,Term 1,2026,65,65,0,6,1,
+ADM-1279,Joyce Lugalia,Grade 4 B,Term 1,2026,65,65,0,1,1,
+ADM-1280,Samuel Nandwa,Grade 4 B,Term 1,2026,65,65,0,5,1,
+ADM-1281,Collins Kipchumba,Grade 4 B,Term 1,2026,65,59,6,5,0.91,SICKNESS
+ADM-1282,Timothy Chebet,Grade 4 B,Term 1,2026,65,61,4,0,0.94,FUNERAL
+ADM-1283,Timothy Kamau,Grade 4 B,Term 1,2026,65,60,5,0,0.92,SICKNESS
+ADM-1284,Caleb Kamau,Grade 4 B,Term 1,2026,65,59,6,4,0.91,MEDICAL APPOINTMENT
+ADM-1285,Tabitha Oluoch,Grade 4 B,Term 1,2026,65,58,7,0,0.89,FUNERAL
+ADM-1286,Kipchoge Anyango,Grade 4 B,Term 1,2026,65,65,0,5,1,
+ADM-1287,Zachary Namukuru,Grade 4 B,Term 1,2026,65,64,1,3,0.98,LATENESS
+ADM-1288,Caleb Wanjala,Grade 4 B,Term 1,2026,65,61,4,0,0.94,SICKNESS
+ADM-1289,Hellen Odhiambo,Grade 4 B,Term 1,2026,65,65,0,0,1,
+ADM-1290,Moses Omollo,Grade 4 B,Term 1,2026,65,65,0,0,1,
+ADM-1291,Dorcas Ruto,Grade 4 B,Term 1,2026,65,65,0,2,1,
+ADM-1292,Dorcas Suleiman,Grade 4 B,Term 1,2026,65,65,0,0,1,
+ADM-1293,Vincent Makokha,Grade 5 A,Term 1,2026,65,65,0,0,1,
+ADM-1294,Edna Juma,Grade 5 A,Term 1,2026,65,65,0,6,1,
+ADM-1295,Mercy Karanja,Grade 5 A,Term 1,2026,65,62,3,2,0.95,LATENESS
+ADM-1296,Hannah Njuguna,Grade 5 A,Term 1,2026,65,65,0,0,1,
+ADM-1297,John Leshan,Grade 5 A,Term 1,2026,65,65,0,2,1,
+ADM-1298,Joyce Noor,Grade 5 A,Term 1,2026,65,65,0,0,1,
+ADM-1299,Alex Korir,Grade 5 A,Term 1,2026,65,59,6,0,0.91,FUNERAL
+ADM-1300,Lawrence Musalia,Grade 5 A,Term 1,2026,65,64,1,0,0.98,OTHER
+ADM-1301,Veronica Mutiso,Grade 5 A,Term 1,2026,65,65,0,0,1,
+ADM-1302,Dorcas Syombua,Grade 5 A,Term 1,2026,65,65,0,0,1,
+ADM-1303,Brian Omondi,Grade 5 A,Term 1,2026,65,57,8,3,0.88,FAMILY MATTER
+ADM-1304,Priscilla Wafula,Grade 5 A,Term 1,2026,65,57,8,4,0.88,SICKNESS
+ADM-1305,Patrick Tanui,Grade 5 A,Term 1,2026,65,63,2,0,0.97,FUNERAL
+ADM-1306,Anthony Kimeu,Grade 5 A,Term 1,2026,65,58,7,6,0.89,SICKNESS
+ADM-1307,Kennedy Achieng,Grade 5 A,Term 1,2026,65,65,0,0,1,
+ADM-1308,Doreen Makokha,Grade 5 A,Term 1,2026,65,60,5,0,0.92,LATENESS
+ADM-1309,Ibrahim Natepo,Grade 5 A,Term 1,2026,65,60,5,0,0.92,SCHOOL_BUS_MISSED
+ADM-1310,Kipchoge Adhiambo,Grade 5 A,Term 1,2026,65,57,8,6,0.88,FAMILY MATTER
+ADM-1311,Amos Chepkirui,Grade 5 A,Term 1,2026,65,60,5,6,0.92,FUNERAL
+ADM-1312,Esther Kipsang,Grade 5 A,Term 1,2026,65,59,6,0,0.91,MEDICAL APPOINTMENT
+ADM-1313,Shalom Kimutai,Grade 5 A,Term 1,2026,65,65,0,1,1,
+ADM-1314,Donald Njenga,Grade 5 A,Term 1,2026,65,65,0,3,1,
+ADM-1315,Abigail Kinyua,Grade 5 A,Term 1,2026,65,59,6,0,0.91,SICKNESS
+ADM-1316,Winfred Kariuki,Grade 5 A,Term 1,2026,65,65,0,0,1,
+ADM-1317,Ian Omar,Grade 5 A,Term 1,2026,65,65,0,5,1,
+ADM-1318,Teresia Mutuku,Grade 5 A,Term 1,2026,65,65,0,0,1,
+ADM-1319,Trevor Adhiambo,Grade 5 A,Term 1,2026,65,65,0,0,1,
+ADM-1320,George Okello,Grade 5 A,Term 1,2026,65,65,0,4,1,
+ADM-1321,Dorcas Maina,Grade 5 A,Term 1,2026,65,65,0,2,1,
+ADM-1322,Sonia Simiyu,Grade 5 A,Term 1,2026,65,58,7,0,0.89,FAMILY MATTER
+ADM-1323,Daniel Maina,Grade 5 A,Term 1,2026,65,65,0,0,1,
+ADM-1324,Tabitha Sironka,Grade 5 A,Term 1,2026,65,65,0,4,1,
+ADM-1325,Veronica Pekeri,Grade 5 B,Term 1,2026,65,65,0,0,1,
+ADM-1326,Peter Mwakisha,Grade 5 B,Term 1,2026,65,65,0,0,1,
+ADM-1327,Florence Kipsang,Grade 5 B,Term 1,2026,65,61,4,0,0.94,SCHOOL_BUS_MISSED
+ADM-1328,Anthony Namukuru,Grade 5 B,Term 1,2026,65,58,7,0,0.89,SCHOOL_BUS_MISSED
+ADM-1329,Sophia Wekesa,Grade 5 B,Term 1,2026,65,62,3,0,0.95,SICKNESS
+ADM-1330,Edna Nzioka,Grade 5 B,Term 1,2026,65,65,0,6,1,
+ADM-1331,Samuel Anyango,Grade 5 B,Term 1,2026,65,65,0,0,1,
+ADM-1332,Stephen Nzioka,Grade 5 B,Term 1,2026,65,57,8,0,0.88,SICKNESS
+ADM-1333,Rebecca Muthoka,Grade 5 B,Term 1,2026,65,62,3,5,0.95,MEDICAL APPOINTMENT
+ADM-1334,Alice Kirimi,Grade 5 B,Term 1,2026,65,59,6,0,0.91,OTHER
+ADM-1335,Lawrence Mugambi,Grade 5 B,Term 1,2026,65,65,0,6,1,
+ADM-1336,Mark Kinyua,Grade 5 B,Term 1,2026,65,65,0,1,1,
+ADM-1337,Rebecca Sichangi,Grade 5 B,Term 1,2026,65,65,0,0,1,
+ADM-1338,Sophia Mwinyi,Grade 5 B,Term 1,2026,65,65,0,0,1,
+ADM-1339,Wesley Pekeri,Grade 5 B,Term 1,2026,65,65,0,5,1,
+ADM-1340,Beatrice Mutua,Grade 5 B,Term 1,2026,65,65,0,6,1,
+ADM-1341,Gideon Farah,Grade 5 B,Term 1,2026,65,65,0,0,1,
+ADM-1342,Doreen Obiero,Grade 5 B,Term 1,2026,65,65,0,0,1,
+ADM-1343,Esther Wanjala,Grade 5 B,Term 1,2026,65,59,6,0,0.91,FUNERAL
+ADM-1344,Joshua Ambani,Grade 5 B,Term 1,2026,65,58,7,5,0.89,FUNERAL
+ADM-1345,Brian Chepkoech,Grade 5 B,Term 1,2026,65,63,2,4,0.97,SICKNESS
+ADM-1346,Rachael Gitau,Grade 5 B,Term 1,2026,65,59,6,0,0.91,SICKNESS
+ADM-1347,Olivia Wanjala,Grade 5 B,Term 1,2026,65,60,5,0,0.92,FUNERAL
+ADM-1348,Amos Nzioka,Grade 5 B,Term 1,2026,65,62,3,0,0.95,SICKNESS
+ADM-1349,Anthony Kirimi,Grade 5 B,Term 1,2026,65,60,5,4,0.92,LATENESS
+ADM-1350,Wesley Bii,Grade 5 B,Term 1,2026,65,65,0,6,1,
+ADM-1351,Godfrey Lugalia,Grade 5 B,Term 1,2026,65,60,5,0,0.92,MEDICAL APPOINTMENT
+ADM-1352,Joyce Chebet,Grade 5 B,Term 1,2026,65,62,3,0,0.95,LATENESS
+ADM-1353,Stephen Tianai,Grade 5 B,Term 1,2026,65,64,1,2,0.98,LATENESS
+ADM-1354,Patrick Barasa,Grade 5 B,Term 1,2026,65,65,0,1,1,
+ADM-1355,Meshack Wamalwa,Grade 5 B,Term 1,2026,65,65,0,2,1,
+ADM-1356,Kipchoge Kamau,Grade 5 B,Term 1,2026,65,60,5,0,0.92,SICKNESS
+ADM-1357,Dorcas Mugo,Grade 6 A,Term 1,2026,65,60,5,0,0.92,FUNERAL
+ADM-1358,Karen Korir,Grade 6 A,Term 1,2026,65,65,0,0,1,
+ADM-1359,Andrew Juma,Grade 6 A,Term 1,2026,65,62,3,5,0.95,FAMILY MATTER
+ADM-1360,Gideon Mburu,Grade 6 A,Term 1,2026,65,65,0,3,1,
+ADM-1361,Ian Ali,Grade 6 A,Term 1,2026,65,65,0,6,1,
+ADM-1362,Monica Odhiambo,Grade 6 A,Term 1,2026,65,62,3,0,0.95,LATENESS
+ADM-1363,John Barasa,Grade 6 A,Term 1,2026,65,65,0,0,1,
+ADM-1364,Winfred Ambani,Grade 6 A,Term 1,2026,65,65,0,4,1,
+ADM-1365,Edwin Tianai,Grade 6 A,Term 1,2026,65,60,5,0,0.92,SICKNESS
+ADM-1366,Harrison Kimutai,Grade 6 A,Term 1,2026,65,65,0,5,1,
+ADM-1367,Charity Tuwei,Grade 6 A,Term 1,2026,65,63,2,0,0.97,SCHOOL_BUS_MISSED
+ADM-1368,Stephen Wanjiku,Grade 6 A,Term 1,2026,65,65,0,6,1,
+ADM-1369,Catherine Igweta,Grade 6 A,Term 1,2026,65,65,0,6,1,
+ADM-1370,Joyce Ndungu,Grade 6 A,Term 1,2026,65,65,0,6,1,
+ADM-1371,Agnes Igweta,Grade 6 A,Term 1,2026,65,65,0,2,1,
+ADM-1372,Tabitha Owino,Grade 6 A,Term 1,2026,65,60,5,5,0.92,LATENESS
+ADM-1373,Donald Auma,Grade 6 A,Term 1,2026,65,65,0,6,1,
+ADM-1374,Luke Gitau,Grade 6 A,Term 1,2026,65,60,5,1,0.92,SCHOOL_BUS_MISSED
+ADM-1375,James Kathambi,Grade 6 A,Term 1,2026,65,62,3,3,0.95,LATENESS
+ADM-1376,Diana Njuguna,Grade 6 A,Term 1,2026,65,58,7,1,0.89,OTHER
+ADM-1377,Winnie Odhiambo,Grade 6 A,Term 1,2026,65,64,1,6,0.98,MEDICAL APPOINTMENT
+ADM-1378,Abigail Mganga,Grade 6 A,Term 1,2026,65,65,0,4,1,
+ADM-1379,Peninah Korir,Grade 6 A,Term 1,2026,65,65,0,0,1,
+ADM-1380,Nathaniel Kimeu,Grade 6 A,Term 1,2026,65,41,24,5,0.63,SICKNESS
+ADM-1381,Gladys Ali,Grade 6 A,Term 1,2026,65,58,7,5,0.89,LATENESS
+ADM-1382,Esther Suleiman,Grade 6 A,Term 1,2026,65,65,0,5,1,
+ADM-1383,Emmanuel Mutiso,Grade 6 A,Term 1,2026,65,59,6,0,0.91,OTHER
+ADM-1384,Francis Omar,Grade 6 A,Term 1,2026,65,60,5,4,0.92,SCHOOL_BUS_MISSED
+ADM-1385,Tabitha Mugambi,Grade 6 A,Term 1,2026,65,65,0,3,1,
+ADM-1386,Brian Namukuru,Grade 6 A,Term 1,2026,65,63,2,5,0.97,MEDICAL APPOINTMENT
+ADM-1387,Yvonne Kinyua,Grade 6 A,Term 1,2026,65,65,0,0,1,
+ADM-1388,Maureen Akoth,Grade 6 B,Term 1,2026,65,63,2,0,0.97,FAMILY MATTER
+ADM-1389,Damaris Mwirigi,Grade 6 B,Term 1,2026,65,57,8,2,0.88,LATENESS
+ADM-1390,Alex Sein,Grade 6 B,Term 1,2026,65,62,3,4,0.95,FUNERAL
+ADM-1391,Dennis Otieno,Grade 6 B,Term 1,2026,65,65,0,5,1,
+ADM-1392,George Gatwiri,Grade 6 B,Term 1,2026,65,59,6,2,0.91,FUNERAL
+ADM-1393,Grace Otieno,Grade 6 B,Term 1,2026,65,65,0,0,1,
+ADM-1394,Mark Korir,Grade 6 B,Term 1,2026,65,64,1,0,0.98,SICKNESS
+ADM-1395,Lilian Muthoka,Grade 6 B,Term 1,2026,65,64,1,0,0.98,SCHOOL_BUS_MISSED
+ADM-1396,Wesley Onyango,Grade 6 B,Term 1,2026,65,59,6,4,0.91,MEDICAL APPOINTMENT
+ADM-1397,Donald Obiero,Grade 6 B,Term 1,2026,65,65,0,0,1,
+ADM-1398,Daniel Nandwa,Grade 6 B,Term 1,2026,65,60,5,0,0.92,SCHOOL_BUS_MISSED
+ADM-1399,Ibrahim Wambua,Grade 6 B,Term 1,2026,65,51,14,0,0.78,SICKNESS
+ADM-1400,Grace Khisa,Grade 6 B,Term 1,2026,65,58,7,0,0.89,OTHER
+ADM-1401,Nancy Anyango,Grade 6 B,Term 1,2026,65,65,0,0,1,
+ADM-1402,Amos Kithinji,Grade 6 B,Term 1,2026,65,63,2,3,0.97,FUNERAL
+ADM-1403,Kevin Barasa,Grade 6 B,Term 1,2026,65,62,3,5,0.95,SICKNESS
+ADM-1404,Felix Owuor,Grade 6 B,Term 1,2026,65,58,7,0,0.89,MEDICAL APPOINTMENT
+ADM-1405,Patrick Kombo,Grade 6 B,Term 1,2026,65,65,0,6,1,
+ADM-1406,Beth Kilonzo,Grade 6 B,Term 1,2026,65,65,0,0,1,
+ADM-1407,Karen Adhiambo,Grade 6 B,Term 1,2026,65,59,6,0,0.91,FUNERAL
+ADM-1408,Joshua Leshan,Grade 6 B,Term 1,2026,65,57,8,2,0.88,FUNERAL
+ADM-1409,Eunice Bunoro,Grade 6 B,Term 1,2026,65,61,4,2,0.94,SICKNESS
+ADM-1410,Karen Choge,Grade 6 B,Term 1,2026,65,65,0,0,1,
+ADM-1411,Priscilla Owino,Grade 6 B,Term 1,2026,65,58,7,3,0.89,FAMILY MATTER
+ADM-1412,Moses Khaemba,Grade 6 B,Term 1,2026,65,51,14,0,0.78,LATENESS
+ADM-1413,Beth Kimutai,Grade 6 B,Term 1,2026,65,62,3,0,0.95,SICKNESS
+ADM-1414,Timothy Kioko,Grade 6 B,Term 1,2026,65,61,4,5,0.94,LATENESS
+ADM-1415,Winnie Ruto,Grade 6 B,Term 1,2026,65,65,0,2,1,
+ADM-1416,Daniel Omondi,Grade 6 B,Term 1,2026,65,65,0,2,1,
+ADM-1417,Hannah Muthoka,Grade 6 B,Term 1,2026,65,61,4,0,0.94,OTHER
+ADM-1418,Gideon Omollo,Grade 6 B,Term 1,2026,65,65,0,0,1,
+ADM-1419,Catherine Zawadi,Grade 7 A,Term 1,2026,65,65,0,6,1,
+ADM-1420,Nancy Maundu,Grade 7 A,Term 1,2026,65,65,0,3,1,
+ADM-1421,Nicholas Njeru,Grade 7 A,Term 1,2026,65,61,4,0,0.94,SICKNESS
+ADM-1422,Godfrey Nzioka,Grade 7 A,Term 1,2026,65,65,0,5,1,
+ADM-1423,Sophia Ruto,Grade 7 A,Term 1,2026,65,65,0,1,1,
+ADM-1424,Olivia Chemtai,Grade 7 A,Term 1,2026,65,64,1,4,0.98,SCHOOL_BUS_MISSED
+ADM-1425,Amara Odera,Grade 7 A,Term 1,2026,65,63,2,5,0.97,SICKNESS
+ADM-1426,Hellen Sichangi,Grade 7 A,Term 1,2026,65,65,0,0,1,
+ADM-1427,David Omollo,Grade 7 A,Term 1,2026,65,65,0,0,1,
+ADM-1428,Kennedy Kaelo,Grade 7 A,Term 1,2026,65,64,1,1,0.98,FUNERAL
+ADM-1429,Kevin Chemtai,Grade 7 A,Term 1,2026,65,65,0,0,1,
+ADM-1430,Francis Okello,Grade 7 A,Term 1,2026,65,62,3,0,0.95,OTHER
+ADM-1431,Charity Owino,Grade 7 A,Term 1,2026,65,65,0,3,1,
+ADM-1432,Elijah Ochieng,Grade 7 A,Term 1,2026,65,65,0,0,1,
+ADM-1433,Olivia Pashua,Grade 7 A,Term 1,2026,65,65,0,2,1,
+ADM-1434,Fridah Obiero,Grade 7 A,Term 1,2026,65,63,2,1,0.97,OTHER
+ADM-1435,Julia Wanjiku,Grade 7 A,Term 1,2026,65,65,0,6,1,
+ADM-1436,Felix Odhiambo,Grade 7 A,Term 1,2026,65,65,0,0,1,
+ADM-1437,Karen Chemtai,Grade 7 B,Term 1,2026,65,65,0,0,1,
+ADM-1438,Kipchoge Omar,Grade 7 B,Term 1,2026,65,65,0,0,1,
+ADM-1439,James Kosgei,Grade 7 B,Term 1,2026,65,62,3,0,0.95,SCHOOL_BUS_MISSED
+ADM-1440,Andrew Syombua,Grade 7 B,Term 1,2026,65,65,0,3,1,
+ADM-1441,Damaris Kinyua,Grade 7 B,Term 1,2026,65,57,8,0,0.88,MEDICAL APPOINTMENT
+ADM-1442,Felix Tuwei,Grade 7 B,Term 1,2026,65,65,0,2,1,
+ADM-1443,Teresia Tanui,Grade 7 B,Term 1,2026,65,62,3,0,0.95,FUNERAL
+ADM-1444,Benjamin Wafula,Grade 7 B,Term 1,2026,65,65,0,0,1,
+ADM-1445,John Mwakisha,Grade 7 B,Term 1,2026,65,65,0,0,1,
+ADM-1446,Julius Bunoro,Grade 7 B,Term 1,2026,65,65,0,1,1,
+ADM-1447,Kipchoge Khisa,Grade 7 B,Term 1,2026,65,61,4,1,0.94,MEDICAL APPOINTMENT
+ADM-1448,George Anyango,Grade 7 B,Term 1,2026,65,61,4,6,0.94,OTHER
+ADM-1449,James Choge,Grade 7 B,Term 1,2026,65,57,8,4,0.88,SICKNESS
+ADM-1450,Irene Njenga,Grade 7 B,Term 1,2026,65,65,0,0,1,
+ADM-1451,Mercy Auma,Grade 7 B,Term 1,2026,65,65,0,0,1,
+ADM-1452,Victor Barasa,Grade 7 B,Term 1,2026,65,65,0,0,1,
+ADM-1453,Zipporah Nzomo,Grade 7 B,Term 1,2026,65,64,1,0,0.98,FAMILY MATTER
+ADM-1454,Eric Salim,Grade 7 B,Term 1,2026,65,65,0,1,1,
+ADM-1455,Mercy Wafula,Grade 7 C,Term 1,2026,65,65,0,5,1,
+ADM-1456,Damaris Wanjiku,Grade 7 C,Term 1,2026,65,60,5,0,0.92,SICKNESS
+ADM-1457,Maureen Kipsang,Grade 7 C,Term 1,2026,65,62,3,2,0.95,LATENESS
+ADM-1458,Tabitha Metto,Grade 7 C,Term 1,2026,65,58,7,3,0.89,MEDICAL APPOINTMENT
+ADM-1459,Felix Kamau,Grade 7 C,Term 1,2026,65,61,4,4,0.94,MEDICAL APPOINTMENT
+ADM-1460,Caleb Nzioka,Grade 7 C,Term 1,2026,65,65,0,2,1,
+ADM-1461,Frank Tianai,Grade 7 C,Term 1,2026,65,65,0,0,1,
+ADM-1462,Sarah Ciawi,Grade 7 C,Term 1,2026,65,59,6,0,0.91,OTHER
+ADM-1463,Joyce Owino,Grade 7 C,Term 1,2026,65,64,1,0,0.98,LATENESS
+ADM-1464,Edna Auma,Grade 7 C,Term 1,2026,65,59,6,5,0.91,SICKNESS
+ADM-1465,Harrison Kinyua,Grade 7 C,Term 1,2026,65,65,0,1,1,
+ADM-1466,Julius Kithinji,Grade 7 C,Term 1,2026,65,47,18,0,0.72,FAMILY MATTER
+ADM-1467,Hillary Kariuki,Grade 7 C,Term 1,2026,65,65,0,3,1,
+ADM-1468,Lawrence Auma,Grade 7 C,Term 1,2026,65,59,6,0,0.91,OTHER
+ADM-1469,William Kinyua,Grade 7 C,Term 1,2026,65,65,0,0,1,
+ADM-1470,Gloria Tanui,Grade 7 C,Term 1,2026,65,65,0,6,1,
+ADM-1471,Susan Kimutai,Grade 7 C,Term 1,2026,65,65,0,0,1,
+ADM-1472,Fridah Zawadi,Grade 7 C,Term 1,2026,65,65,0,1,1,
+ADM-1473,Charity Simiyu,Grade 8 A,Term 1,2026,65,65,0,0,1,
+ADM-1474,Brian Abdi,Grade 8 A,Term 1,2026,65,65,0,3,1,
+ADM-1475,Amos Mwirigi,Grade 8 A,Term 1,2026,65,63,2,4,0.97,FAMILY MATTER
+ADM-1476,Samuel Owuor,Grade 8 A,Term 1,2026,65,63,2,5,0.97,MEDICAL APPOINTMENT
+ADM-1477,Tabitha Muthoka,Grade 8 A,Term 1,2026,65,64,1,0,0.98,OTHER
+ADM-1478,Beatrice Ruto,Grade 8 A,Term 1,2026,65,65,0,5,1,
+ADM-1479,Olivia Kosgei,Grade 8 A,Term 1,2026,65,61,4,0,0.94,SICKNESS
+ADM-1480,Florence Musalia,Grade 8 A,Term 1,2026,65,59,6,5,0.91,SICKNESS
+ADM-1481,Veronica Kithinji,Grade 8 A,Term 1,2026,65,65,0,5,1,
+ADM-1482,Mercy Kinyua,Grade 8 A,Term 1,2026,65,61,4,0,0.94,FUNERAL
+ADM-1483,Sharon Mburu,Grade 8 A,Term 1,2026,65,59,6,5,0.91,OTHER
+ADM-1484,Amos Bii,Grade 8 A,Term 1,2026,65,62,3,6,0.95,OTHER
+ADM-1485,Edna Sironka,Grade 8 A,Term 1,2026,65,65,0,6,1,
+ADM-1486,Yvonne Mwende,Grade 8 A,Term 1,2026,65,61,4,0,0.94,MEDICAL APPOINTMENT
+ADM-1487,Harrison Gatwiri,Grade 8 A,Term 1,2026,65,65,0,0,1,
+ADM-1488,Nancy Kioko,Grade 8 A,Term 1,2026,65,58,7,3,0.89,MEDICAL APPOINTMENT
+ADM-1489,Winnie Kigen,Grade 8 A,Term 1,2026,65,65,0,3,1,
+ADM-1490,Andrew Kiptum,Grade 8 A,Term 1,2026,65,65,0,0,1,
+ADM-1491,Damaris Njeri,Grade 8 A,Term 1,2026,65,65,0,0,1,
+ADM-1492,Benjamin Ruto,Grade 8 A,Term 1,2026,65,65,0,3,1,
+ADM-1493,Michael Nasimiyu,Grade 8 A,Term 1,2026,65,65,0,0,1,
+ADM-1494,Moses Mwirigi,Grade 8 A,Term 1,2026,65,65,0,5,1,
+ADM-1495,Hannah Naisoi,Grade 8 B,Term 1,2026,65,65,0,1,1,
+ADM-1496,Winnie Wafula,Grade 8 B,Term 1,2026,65,65,0,0,1,
+ADM-1497,Godfrey Githinji,Grade 8 B,Term 1,2026,65,60,5,0,0.92,SICKNESS
+ADM-1498,Michael Musalia,Grade 8 B,Term 1,2026,65,65,0,2,1,
+ADM-1499,Eric Mwanzia,Grade 8 B,Term 1,2026,65,64,1,0,0.98,SICKNESS
+ADM-1500,Grace Obiero,Grade 8 B,Term 1,2026,65,59,6,6,0.91,SCHOOL_BUS_MISSED
+ADM-1501,Faith Akoth,Grade 8 B,Term 1,2026,65,60,5,6,0.92,SCHOOL_BUS_MISSED
+ADM-1502,Patrick Ndungu,Grade 8 B,Term 1,2026,65,65,0,0,1,
+ADM-1503,Amara Igweta,Grade 8 B,Term 1,2026,65,58,7,0,0.89,FAMILY MATTER
+ADM-1504,Victor Mwinyi,Grade 8 B,Term 1,2026,65,57,8,1,0.88,SICKNESS
+ADM-1505,Thomas Chepkoech,Grade 8 B,Term 1,2026,65,64,1,2,0.98,FUNERAL
+ADM-1506,Patrick Lugalia,Grade 8 B,Term 1,2026,65,65,0,0,1,
+ADM-1507,Diana Kipchumba,Grade 8 B,Term 1,2026,65,60,5,2,0.92,LATENESS
+ADM-1508,Anthony Wafula,Grade 8 B,Term 1,2026,65,65,0,0,1,
+ADM-1509,Veronica Sironka,Grade 8 B,Term 1,2026,65,62,3,0,0.95,SICKNESS
+ADM-1510,Caroline Chemtai,Grade 8 B,Term 1,2026,65,61,4,4,0.94,SICKNESS
+ADM-1511,Julius Kimeu,Grade 8 B,Term 1,2026,65,59,6,0,0.91,LATENESS
+ADM-1512,Beth Wambui,Grade 8 B,Term 1,2026,65,64,1,3,0.98,SCHOOL_BUS_MISSED
+ADM-1513,William Chepkirui,Grade 8 B,Term 1,2026,65,62,3,0,0.95,MEDICAL APPOINTMENT
+ADM-1514,Patrick Kilonzo,Grade 8 B,Term 1,2026,65,65,0,1,1,
+ADM-1515,Sophia Kimutai,Grade 8 B,Term 1,2026,65,65,0,6,1,
+ADM-1516,Frank Wamalwa,Grade 8 B,Term 1,2026,65,65,0,0,1,
+ADM-1517,Sarah Hassan,Grade 9 A,Term 1,2026,65,65,0,0,1,
+ADM-1518,Peninah Khaemba,Grade 9 A,Term 1,2026,65,59,6,0,0.91,MEDICAL APPOINTMENT
+ADM-1519,Gideon Chepkirui,Grade 9 A,Term 1,2026,65,65,0,3,1,
+ADM-1520,Kiplangat Mwangi,Grade 9 A,Term 1,2026,65,65,0,0,1,
+ADM-1521,Cynthia Kitonga,Grade 9 A,Term 1,2026,65,64,1,5,0.98,SICKNESS
+ADM-1522,Edwin Nassor,Grade 9 A,Term 1,2026,65,65,0,0,1,
+ADM-1523,Dorcas Mwanzia,Grade 9 A,Term 1,2026,65,65,0,0,1,
+ADM-1524,Vincent Otieno,Grade 9 A,Term 1,2026,65,64,1,4,0.98,SICKNESS
+ADM-1525,Brian Muthoka,Grade 9 A,Term 1,2026,65,65,0,5,1,
+ADM-1526,Yvonne Kiprop,Grade 9 A,Term 1,2026,65,64,1,0,0.98,FUNERAL
+ADM-1527,Peter Ali,Grade 9 A,Term 1,2026,65,57,8,2,0.88,MEDICAL APPOINTMENT
+ADM-1528,Simon Obiero,Grade 9 A,Term 1,2026,65,63,2,0,0.97,SICKNESS
+ADM-1529,Beatrice Gatwiri,Grade 9 A,Term 1,2026,65,65,0,3,1,
+ADM-1530,Ibrahim Ali,Grade 9 A,Term 1,2026,65,65,0,0,1,
+ADM-1531,Winnie Gatwiri,Grade 9 A,Term 1,2026,65,60,5,3,0.92,SICKNESS
+ADM-1532,Gladys Kamau,Grade 9 A,Term 1,2026,65,65,0,6,1,
+ADM-1533,Kevin Mbithe,Grade 9 A,Term 1,2026,65,65,0,0,1,
+ADM-1534,Lilian Mburu,Grade 9 A,Term 1,2026,65,65,0,3,1,
+ADM-1535,Hillary Owino,Grade 9 A,Term 1,2026,65,65,0,6,1,
+ADM-1536,Caleb Hassan,Grade 9 A,Term 1,2026,65,65,0,0,1,
+ADM-1537,Trevor Maina,Grade 9 A,Term 1,2026,65,65,0,3,1,
+ADM-1538,Grace Waweru,Grade 9 A,Term 1,2026,65,58,7,0,0.89,SCHOOL_BUS_MISSED
+ADM-1539,Simon Mwirigi,Grade 9 B,Term 1,2026,65,65,0,4,1,
+ADM-1540,Emmanuel Abdalla,Grade 9 B,Term 1,2026,65,61,4,4,0.94,MEDICAL APPOINTMENT
+ADM-1541,Sarah Kithinji,Grade 9 B,Term 1,2026,65,57,8,5,0.88,SCHOOL_BUS_MISSED
+ADM-1542,Patrick Sironka,Grade 9 B,Term 1,2026,65,65,0,1,1,
+ADM-1543,Susan Mutoro,Grade 9 B,Term 1,2026,65,65,0,6,1,
+ADM-1544,Joseph Maina,Grade 9 B,Term 1,2026,65,65,0,0,1,
+ADM-1545,Brenda Kariuki,Grade 9 B,Term 1,2026,65,65,0,0,1,
+ADM-1546,Nathaniel Njeri,Grade 9 B,Term 1,2026,65,65,0,2,1,
+ADM-1547,Benjamin Langat,Grade 9 B,Term 1,2026,65,65,0,1,1,
+ADM-1548,Tabitha Mutua,Grade 9 B,Term 1,2026,65,58,7,3,0.89,FUNERAL
+ADM-1549,Moses Syombua,Grade 9 B,Term 1,2026,65,65,0,3,1,
+ADM-1550,Godfrey Wambua,Grade 9 B,Term 1,2026,65,65,0,0,1,
+ADM-1551,Charity Kimeu,Grade 9 B,Term 1,2026,65,65,0,3,1,
+ADM-1552,Gloria Chemtai,Grade 9 B,Term 1,2026,65,64,1,0,0.98,FAMILY MATTER
+ADM-1553,Godfrey Makhoha,Grade 9 B,Term 1,2026,65,61,4,0,0.94,SCHOOL_BUS_MISSED
+ADM-1554,Lawrence Wafula,Grade 9 B,Term 1,2026,65,59,6,0,0.91,SCHOOL_BUS_MISSED
+ADM-1555,Benjamin Juma,Grade 9 B,Term 1,2026,65,60,5,0,0.92,FUNERAL
+ADM-1556,Veronica Mugo,Grade 9 B,Term 1,2026,65,64,1,2,0.98,SCHOOL_BUS_MISSED
+ADM-1557,Harrison Odera,Grade 9 B,Term 1,2026,65,60,5,6,0.92,MEDICAL APPOINTMENT
+ADM-1558,Peter Igweta,Grade 9 B,Term 1,2026,65,63,2,6,0.97,OTHER
+ADM-1559,Monica Anyango,Grade 9 B,Term 1,2026,65,61,4,2,0.94,SICKNESS
+ADM-1560,Daniel Kamau,Grade 9 B,Term 1,2026,65,65,0,0,1,
+ADM-1001,Gideon Waweru,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1002,George Ndolo,Grade 1 A,Term 2,2026,65,57,8,5,0.88,SICKNESS
+ADM-1003,John Njuguna,Grade 1 A,Term 2,2026,65,64,1,5,0.98,MEDICAL APPOINTMENT
+ADM-1004,Samuel Hassan,Grade 1 A,Term 2,2026,65,65,0,2,1,
+ADM-1005,Alice Farah,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1006,Anthony Omar,Grade 1 A,Term 2,2026,65,60,5,0,0.92,SICKNESS
+ADM-1007,Abigail Mutuku,Grade 1 A,Term 2,2026,65,65,0,4,1,
+ADM-1008,Eric Odera,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1009,Dorcas Bakari,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1010,Kevin Pashua,Grade 1 A,Term 2,2026,65,65,0,1,1,
+ADM-1011,Winfred Bakari,Grade 1 A,Term 2,2026,65,65,0,6,1,
+ADM-1012,Diana Khaemba,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1013,Purity Nzioka,Grade 1 A,Term 2,2026,65,64,1,6,0.98,SICKNESS
+ADM-1014,Eric Mutoro,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1015,Yvonne Kariuki,Grade 1 A,Term 2,2026,65,62,3,0,0.95,OTHER
+ADM-1016,John Lugalia,Grade 1 A,Term 2,2026,65,62,3,2,0.95,FUNERAL
+ADM-1017,Fridah Oluoch,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1018,Charity Sichangi,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1019,Stephen Kinyua,Grade 1 A,Term 2,2026,65,65,0,5,1,
+ADM-1020,James Mganga,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1021,Brenda Oduor,Grade 1 A,Term 2,2026,65,60,5,0,0.92,SICKNESS
+ADM-1022,Kiplangat Wafula,Grade 1 A,Term 2,2026,65,64,1,1,0.98,OTHER
+ADM-1023,Karen Makokha,Grade 1 A,Term 2,2026,65,63,2,0,0.97,FUNERAL
+ADM-1024,Tabitha Ndungu,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1025,Mark Kioko,Grade 1 A,Term 2,2026,65,65,0,4,1,
+ADM-1026,Eric Obiero,Grade 1 A,Term 2,2026,65,58,7,0,0.89,SCHOOL_BUS_MISSED
+ADM-1027,Michael Ndolo,Grade 1 A,Term 2,2026,65,65,0,4,1,
+ADM-1028,Lawrence Chemtai,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1029,Emmanuel Njenga,Grade 1 A,Term 2,2026,65,58,7,5,0.89,SICKNESS
+ADM-1030,Yvonne Karanja,Grade 1 A,Term 2,2026,65,65,0,0,1,
+ADM-1031,Yvonne Njeri,Grade 1 A,Term 2,2026,65,61,4,0,0.94,LATENESS
+ADM-1032,Esther Mutiso,Grade 1 A,Term 2,2026,65,65,0,1,1,
+ADM-1033,Daniel Noor,Grade 1 A,Term 2,2026,65,65,0,2,1,
+ADM-1034,Alice Metto,Grade 1 A,Term 2,2026,65,57,8,0,0.88,SICKNESS
+ADM-1035,Maureen Muthoka,Grade 1 B,Term 2,2026,65,62,3,5,0.95,SICKNESS
+ADM-1036,Alice Abdi,Grade 1 B,Term 2,2026,65,64,1,0,0.98,FUNERAL
+ADM-1037,Kipchoge Akoth,Grade 1 B,Term 2,2026,65,63,2,0,0.97,LATENESS
+ADM-1038,Abigail Yusuf,Grade 1 B,Term 2,2026,65,65,0,0,1,
+ADM-1039,Peter Choge,Grade 1 B,Term 2,2026,65,65,0,0,1,
+ADM-1040,Joshua Nzioka,Grade 1 B,Term 2,2026,65,65,0,4,1,
+ADM-1041,Winnie Suleiman,Grade 1 B,Term 2,2026,65,65,0,0,1,
+ADM-1042,John Pekeri,Grade 1 B,Term 2,2026,65,65,0,0,1,
+ADM-1043,Judith Njuguna,Grade 1 B,Term 2,2026,65,65,0,0,1,
+ADM-1044,Joyce Mutoro,Grade 1 B,Term 2,2026,65,63,2,2,0.97,OTHER
+ADM-1045,Yvonne Choge,Grade 1 B,Term 2,2026,65,59,6,4,0.91,FAMILY MATTER
+ADM-1046,Timothy Khisa,Grade 1 B,Term 2,2026,65,58,7,4,0.89,FUNERAL
+ADM-1047,Charles Njeru,Grade 1 B,Term 2,2026,65,57,8,0,0.88,MEDICAL APPOINTMENT
+ADM-1048,Vincent Wamalwa,Grade 1 B,Term 2,2026,65,64,1,6,0.98,FAMILY MATTER
+ADM-1049,Isaac Mwirigi,Grade 1 B,Term 2,2026,65,58,7,0,0.89,MEDICAL APPOINTMENT
+ADM-1050,David Kaelo,Grade 1 B,Term 2,2026,65,59,6,0,0.91,SICKNESS
+ADM-1051,Purity Kioko,Grade 1 B,Term 2,2026,65,65,0,4,1,
+ADM-1052,Thomas Korir,Grade 1 B,Term 2,2026,65,65,0,0,1,
+ADM-1053,Zachary Omollo,Grade 1 B,Term 2,2026,65,62,3,0,0.95,MEDICAL APPOINTMENT
+ADM-1054,Sharon Kombo,Grade 1 B,Term 2,2026,65,60,5,3,0.92,FAMILY MATTER
+ADM-1055,Luke Bunoro,Grade 1 B,Term 2,2026,65,65,0,0,1,
+ADM-1056,Dorcas Nassor,Grade 1 B,Term 2,2026,65,64,1,0,0.98,SICKNESS
+ADM-1057,Wesley Bakari,Grade 1 B,Term 2,2026,65,58,7,3,0.89,SICKNESS
+ADM-1058,Winfred Odera,Grade 1 B,Term 2,2026,65,65,0,0,1,
+ADM-1059,Trevor Syombua,Grade 1 B,Term 2,2026,65,65,0,3,1,
+ADM-1060,Nancy Musalia,Grade 1 B,Term 2,2026,65,65,0,0,1,
+ADM-1061,Eric Chepkirui,Grade 1 B,Term 2,2026,65,61,4,6,0.94,SICKNESS
+ADM-1062,Faith Owino,Grade 1 B,Term 2,2026,65,65,0,4,1,
+ADM-1063,Julia Kaelo,Grade 1 B,Term 2,2026,65,64,1,0,0.98,OTHER
+ADM-1064,Andrew Suleiman,Grade 1 B,Term 2,2026,65,61,4,0,0.94,MEDICAL APPOINTMENT
+ADM-1065,Julius Mutiso,Grade 1 B,Term 2,2026,65,57,8,2,0.88,FAMILY MATTER
+ADM-1066,Nancy Abdi,Grade 1 B,Term 2,2026,65,65,0,6,1,
+ADM-1067,Joyce Kitonga,Grade 1 B,Term 2,2026,65,65,0,1,1,
+ADM-1068,Brenda Adan,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1069,Purity Mwende,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1070,Judith Khisa,Grade 1 C,Term 2,2026,65,65,0,4,1,
+ADM-1071,Stephen Wekesa,Grade 1 C,Term 2,2026,65,65,0,4,1,
+ADM-1072,Martin Bunoro,Grade 1 C,Term 2,2026,65,58,7,4,0.89,MEDICAL APPOINTMENT
+ADM-1073,Cynthia Zawadi,Grade 1 C,Term 2,2026,65,65,0,6,1,
+ADM-1074,Hillary Njenga,Grade 1 C,Term 2,2026,65,59,6,0,0.91,SCHOOL_BUS_MISSED
+ADM-1075,Amara Mugambi,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1076,Charles Kigen,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1077,David Wanjala,Grade 1 C,Term 2,2026,65,65,0,6,1,
+ADM-1078,Lawrence Ciawi,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1079,Benjamin Okello,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1080,Samuel Sironka,Grade 1 C,Term 2,2026,65,64,1,0,0.98,SCHOOL_BUS_MISSED
+ADM-1081,Nicholas Makokha,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1082,Rebecca Ndolo,Grade 1 C,Term 2,2026,65,63,2,0,0.97,FUNERAL
+ADM-1083,William Masinde,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1084,Victor Maina,Grade 1 C,Term 2,2026,65,65,0,4,1,
+ADM-1085,Mercy Mburu,Grade 1 C,Term 2,2026,65,58,7,0,0.89,LATENESS
+ADM-1086,Timothy Kaelo,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1087,Dorcas Mwinyi,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1088,Frank Ndungu,Grade 1 C,Term 2,2026,65,65,0,1,1,
+ADM-1089,Faith Githinji,Grade 1 C,Term 2,2026,65,64,1,5,0.98,SICKNESS
+ADM-1090,Alex Akoth,Grade 1 C,Term 2,2026,65,59,6,0,0.91,OTHER
+ADM-1091,Nathaniel Wekesa,Grade 1 C,Term 2,2026,65,65,0,5,1,
+ADM-1092,Olivia Pekeri,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1093,Winfred Muthoka,Grade 1 C,Term 2,2026,65,57,8,1,0.88,MEDICAL APPOINTMENT
+ADM-1094,Nicholas Namukuru,Grade 1 C,Term 2,2026,65,65,0,5,1,
+ADM-1095,Faith Mutua,Grade 1 C,Term 2,2026,65,58,7,0,0.89,OTHER
+ADM-1096,Nancy Nandwa,Grade 1 C,Term 2,2026,65,64,1,0,0.98,MEDICAL APPOINTMENT
+ADM-1097,Judith Kosgei,Grade 1 C,Term 2,2026,65,65,0,0,1,
+ADM-1098,John Metto,Grade 1 C,Term 2,2026,65,65,0,4,1,
+ADM-1099,Dorcas Karanja,Grade 1 C,Term 2,2026,65,63,2,0,0.97,SICKNESS
+ADM-1100,Faith Choge,Grade 1 C,Term 2,2026,65,63,2,2,0.97,LATENESS
+ADM-1101,Eric Musyoka,Grade 2 A,Term 2,2026,65,65,0,2,1,
+ADM-1102,Elijah Natepo,Grade 2 A,Term 2,2026,65,65,0,0,1,
+ADM-1103,Alex Tanui,Grade 2 A,Term 2,2026,65,61,4,0,0.94,FUNERAL
+ADM-1104,Emmanuel Ndolo,Grade 2 A,Term 2,2026,65,62,3,0,0.95,SICKNESS
+ADM-1105,Magdalene Mpaine,Grade 2 A,Term 2,2026,65,63,2,5,0.97,FAMILY MATTER
+ADM-1106,Gideon Tanui,Grade 2 A,Term 2,2026,65,62,3,6,0.95,SICKNESS
+ADM-1107,Rachael Kiprop,Grade 2 A,Term 2,2026,65,65,0,5,1,
+ADM-1108,Harrison Kioko,Grade 2 A,Term 2,2026,65,65,0,2,1,
+ADM-1109,Tabitha Bunoro,Grade 2 A,Term 2,2026,65,65,0,4,1,
+ADM-1110,Andrew Leshan,Grade 2 A,Term 2,2026,65,65,0,0,1,
+ADM-1111,Samuel Nzioka,Grade 2 A,Term 2,2026,65,65,0,6,1,
+ADM-1112,Diana Njeri,Grade 2 A,Term 2,2026,65,64,1,5,0.98,SICKNESS
+ADM-1113,Joyce Njoroge,Grade 2 A,Term 2,2026,65,65,0,0,1,
+ADM-1114,Fridah Kimeu,Grade 2 A,Term 2,2026,65,60,5,0,0.92,MEDICAL APPOINTMENT
+ADM-1115,Caleb Kioko,Grade 2 A,Term 2,2026,65,60,5,2,0.92,OTHER
+ADM-1116,Hillary Odhiambo,Grade 2 A,Term 2,2026,65,65,0,1,1,
+ADM-1117,Martin Zawadi,Grade 2 A,Term 2,2026,65,57,8,1,0.88,SICKNESS
+ADM-1118,Alex Mwangi,Grade 2 A,Term 2,2026,65,59,6,0,0.91,MEDICAL APPOINTMENT
+ADM-1119,Sharon Githinji,Grade 2 A,Term 2,2026,65,65,0,0,1,
+ADM-1120,Shalom Syombua,Grade 2 A,Term 2,2026,65,65,0,4,1,
+ADM-1121,Faith Omar,Grade 2 A,Term 2,2026,65,65,0,0,1,
+ADM-1122,Charles Mutoro,Grade 2 A,Term 2,2026,65,64,1,0,0.98,SICKNESS
+ADM-1123,Joshua Gatwiri,Grade 2 A,Term 2,2026,65,61,4,2,0.94,SICKNESS
+ADM-1124,Peter Mutoro,Grade 2 A,Term 2,2026,65,65,0,0,1,
+ADM-1125,Donald Kiprop,Grade 2 A,Term 2,2026,65,62,3,0,0.95,MEDICAL APPOINTMENT
+ADM-1126,Rachael Mbithi,Grade 2 A,Term 2,2026,65,59,6,0,0.91,LATENESS
+ADM-1127,James Natepo,Grade 2 A,Term 2,2026,65,57,8,2,0.88,SICKNESS
+ADM-1128,Amos Langat,Grade 2 A,Term 2,2026,65,61,4,2,0.94,LATENESS
+ADM-1129,Olivia Suleiman,Grade 2 A,Term 2,2026,65,65,0,0,1,
+ADM-1130,Isaac Mpaine,Grade 2 A,Term 2,2026,65,65,0,3,1,
+ADM-1131,Joshua Sichangi,Grade 2 A,Term 2,2026,65,65,0,0,1,
+ADM-1132,Ian Abdi,Grade 2 A,Term 2,2026,65,62,3,5,0.95,OTHER
+ADM-1133,Timothy Maundu,Grade 2 B,Term 2,2026,65,65,0,0,1,
+ADM-1134,Eric Kosgei,Grade 2 B,Term 2,2026,65,64,1,0,0.98,MEDICAL APPOINTMENT
+ADM-1135,Amara Abdalla,Grade 2 B,Term 2,2026,65,65,0,0,1,
+ADM-1136,Hillary Adhiambo,Grade 2 B,Term 2,2026,65,65,0,0,1,
+ADM-1137,Patrick Hassan,Grade 2 B,Term 2,2026,65,65,0,1,1,
+ADM-1138,Alex Juma,Grade 2 B,Term 2,2026,65,64,1,3,0.98,SICKNESS
+ADM-1139,Trevor Kinyua,Grade 2 B,Term 2,2026,65,65,0,3,1,
+ADM-1140,Judith Farah,Grade 2 B,Term 2,2026,65,62,3,0,0.95,OTHER
+ADM-1141,Purity Maundu,Grade 2 B,Term 2,2026,65,60,5,5,0.92,MEDICAL APPOINTMENT
+ADM-1142,Kiplangat Syombua,Grade 2 B,Term 2,2026,65,59,6,0,0.91,MEDICAL APPOINTMENT
+ADM-1143,Esther Sironka,Grade 2 B,Term 2,2026,65,62,3,4,0.95,SCHOOL_BUS_MISSED
+ADM-1144,Harrison Njoroge,Grade 2 B,Term 2,2026,65,65,0,6,1,
+ADM-1145,Wesley Mwende,Grade 2 B,Term 2,2026,65,57,8,5,0.88,FAMILY MATTER
+ADM-1146,Gloria Khisa,Grade 2 B,Term 2,2026,65,65,0,2,1,
+ADM-1147,Francis Khamis,Grade 2 B,Term 2,2026,65,58,7,1,0.89,SICKNESS
+ADM-1148,Moses Omondi,Grade 2 B,Term 2,2026,65,58,7,0,0.89,LATENESS
+ADM-1149,Anthony Igweta,Grade 2 B,Term 2,2026,65,65,0,0,1,
+ADM-1150,Michael Mwangi,Grade 2 B,Term 2,2026,65,58,7,1,0.89,SICKNESS
+ADM-1151,Grace Juma,Grade 2 B,Term 2,2026,65,63,2,0,0.97,FUNERAL
+ADM-1152,Dorcas Khisa,Grade 2 B,Term 2,2026,65,61,4,0,0.94,SICKNESS
+ADM-1153,Hellen Langat,Grade 2 B,Term 2,2026,65,60,5,0,0.92,OTHER
+ADM-1154,Naomi Kiptum,Grade 2 B,Term 2,2026,65,65,0,3,1,
+ADM-1155,Wesley Njoroge,Grade 2 B,Term 2,2026,65,62,3,0,0.95,FUNERAL
+ADM-1156,Susan Nthiga,Grade 2 B,Term 2,2026,65,65,0,0,1,
+ADM-1157,Alex Hassan,Grade 2 B,Term 2,2026,65,65,0,0,1,
+ADM-1158,David Kimeu,Grade 2 B,Term 2,2026,65,58,7,0,0.89,LATENESS
+ADM-1159,Francis Wamalwa,Grade 2 B,Term 2,2026,65,65,0,0,1,
+ADM-1160,Sonia Chemtai,Grade 2 B,Term 2,2026,65,65,0,1,1,
+ADM-1161,Gladys Onyango,Grade 2 B,Term 2,2026,65,61,4,2,0.94,LATENESS
+ADM-1162,Monica Njenga,Grade 2 B,Term 2,2026,65,58,7,0,0.89,LATENESS
+ADM-1163,Harrison Muthoka,Grade 2 B,Term 2,2026,65,64,1,0,0.98,LATENESS
+ADM-1164,Janet Maina,Grade 2 B,Term 2,2026,65,58,7,0,0.89,SICKNESS
+ADM-1165,Vincent Chemtai,Grade 3 A,Term 2,2026,65,64,1,1,0.98,FAMILY MATTER
+ADM-1166,Kennedy Leshan,Grade 3 A,Term 2,2026,65,64,1,1,0.98,SICKNESS
+ADM-1167,Dennis Mganga,Grade 3 A,Term 2,2026,65,65,0,4,1,
+ADM-1168,Wesley Baariu,Grade 3 A,Term 2,2026,65,65,0,0,1,
+ADM-1169,Edna Igweta,Grade 3 A,Term 2,2026,65,58,7,0,0.89,OTHER
+ADM-1170,Thomas Oduor,Grade 3 A,Term 2,2026,65,63,2,0,0.97,FUNERAL
+ADM-1171,Julia Mwangi,Grade 3 A,Term 2,2026,65,58,7,4,0.89,OTHER
+ADM-1172,Judith Khamis,Grade 3 A,Term 2,2026,65,61,4,0,0.94,SCHOOL_BUS_MISSED
+ADM-1173,Fridah Mutua,Grade 3 A,Term 2,2026,65,61,4,3,0.94,LATENESS
+ADM-1174,Frank Kinyua,Grade 3 A,Term 2,2026,65,59,6,0,0.91,LATENESS
+ADM-1175,George Auma,Grade 3 A,Term 2,2026,65,45,20,3,0.69,MEDICAL APPOINTMENT
+ADM-1176,Anthony Wekesa,Grade 3 A,Term 2,2026,65,61,4,0,0.94,FAMILY MATTER
+ADM-1177,Emmanuel Anyango,Grade 3 A,Term 2,2026,65,59,6,0,0.91,SCHOOL_BUS_MISSED
+ADM-1178,Abigail Wanjala,Grade 3 A,Term 2,2026,65,65,0,5,1,
+ADM-1179,Patrick Ruto,Grade 3 A,Term 2,2026,65,58,7,6,0.89,OTHER
+ADM-1180,Beatrice Mpaine,Grade 3 A,Term 2,2026,65,61,4,1,0.94,SICKNESS
+ADM-1181,Meshack Hassan,Grade 3 A,Term 2,2026,65,59,6,6,0.91,SICKNESS
+ADM-1182,Dennis Barasa,Grade 3 A,Term 2,2026,65,62,3,0,0.95,MEDICAL APPOINTMENT
+ADM-1183,Martha Oluoch,Grade 3 A,Term 2,2026,65,65,0,3,1,
+ADM-1184,Kennedy Oluoch,Grade 3 A,Term 2,2026,65,65,0,0,1,
+ADM-1185,Priscilla Mwangi,Grade 3 A,Term 2,2026,65,63,2,0,0.97,FUNERAL
+ADM-1186,Julia Wanjala,Grade 3 A,Term 2,2026,65,57,8,0,0.88,SICKNESS
+ADM-1187,Donald Mutoro,Grade 3 A,Term 2,2026,65,65,0,0,1,
+ADM-1188,Eric Nandwa,Grade 3 A,Term 2,2026,65,65,0,0,1,
+ADM-1189,Faith Adan,Grade 3 A,Term 2,2026,65,65,0,2,1,
+ADM-1190,Karen Okoth,Grade 3 A,Term 2,2026,65,65,0,4,1,
+ADM-1191,Winfred Mwirigi,Grade 3 A,Term 2,2026,65,65,0,0,1,
+ADM-1192,James Akoth,Grade 3 A,Term 2,2026,65,65,0,3,1,
+ADM-1193,George Kiprop,Grade 3 A,Term 2,2026,65,65,0,0,1,
+ADM-1194,Winnie Kinyua,Grade 3 A,Term 2,2026,65,57,8,0,0.88,FAMILY MATTER
+ADM-1195,Esther Choge,Grade 3 A,Term 2,2026,65,58,7,0,0.89,FUNERAL
+ADM-1196,Grace Nassor,Grade 3 A,Term 2,2026,65,52,13,0,0.8,SICKNESS
+ADM-1197,Trevor Njuguna,Grade 3 B,Term 2,2026,65,65,0,0,1,
+ADM-1198,James Mutuku,Grade 3 B,Term 2,2026,65,65,0,0,1,
+ADM-1199,Peninah Achieng,Grade 3 B,Term 2,2026,65,63,2,0,0.97,MEDICAL APPOINTMENT
+ADM-1200,Karen Maina,Grade 3 B,Term 2,2026,65,57,8,2,0.88,LATENESS
+ADM-1201,Brenda Wambui,Grade 3 B,Term 2,2026,65,65,0,1,1,
+ADM-1202,Doreen Njeri,Grade 3 B,Term 2,2026,65,62,3,5,0.95,LATENESS
+ADM-1203,Julius Onyango,Grade 3 B,Term 2,2026,65,59,6,2,0.91,FUNERAL
+ADM-1204,Irene Pashua,Grade 3 B,Term 2,2026,65,65,0,5,1,
+ADM-1205,Kennedy Kitonga,Grade 3 B,Term 2,2026,65,60,5,0,0.92,MEDICAL APPOINTMENT
+ADM-1206,Faith Kathambi,Grade 3 B,Term 2,2026,65,61,4,6,0.94,MEDICAL APPOINTMENT
+ADM-1207,Teresia Baariu,Grade 3 B,Term 2,2026,65,59,6,1,0.91,OTHER
+ADM-1208,Edwin Abdalla,Grade 3 B,Term 2,2026,65,65,0,1,1,
+ADM-1209,Meshack Wafula,Grade 3 B,Term 2,2026,65,65,0,3,1,
+ADM-1210,Kipchoge Mwinyi,Grade 3 B,Term 2,2026,65,62,3,2,0.95,MEDICAL APPOINTMENT
+ADM-1211,Mark Pashua,Grade 3 B,Term 2,2026,65,65,0,0,1,
+ADM-1212,Grace Langat,Grade 3 B,Term 2,2026,65,61,4,0,0.94,FUNERAL
+ADM-1213,Julia Njuguna,Grade 3 B,Term 2,2026,65,65,0,1,1,
+ADM-1214,Thomas Mwende,Grade 3 B,Term 2,2026,65,65,0,4,1,
+ADM-1215,Edwin Namukuru,Grade 3 B,Term 2,2026,65,65,0,6,1,
+ADM-1216,Joseph Kirimi,Grade 3 B,Term 2,2026,65,61,4,5,0.94,FAMILY MATTER
+ADM-1217,Elijah Odera,Grade 3 B,Term 2,2026,65,63,2,6,0.97,SICKNESS
+ADM-1218,Gideon Kitonga,Grade 3 B,Term 2,2026,65,59,6,0,0.91,OTHER
+ADM-1219,Francis Okoth,Grade 3 B,Term 2,2026,65,59,6,3,0.91,SICKNESS
+ADM-1220,Gloria Odhiambo,Grade 3 B,Term 2,2026,65,64,1,0,0.98,SICKNESS
+ADM-1221,Monica Kombo,Grade 3 B,Term 2,2026,65,64,1,0,0.98,SICKNESS
+ADM-1222,Abigail Khisa,Grade 3 B,Term 2,2026,65,61,4,6,0.94,SCHOOL_BUS_MISSED
+ADM-1223,Simon Gitau,Grade 3 B,Term 2,2026,65,65,0,1,1,
+ADM-1224,Frank Abdalla,Grade 3 B,Term 2,2026,65,65,0,0,1,
+ADM-1225,Zachary Oluoch,Grade 3 B,Term 2,2026,65,65,0,0,1,
+ADM-1226,Vincent Ciawi,Grade 3 B,Term 2,2026,65,65,0,5,1,
+ADM-1227,Susan Wamalwa,Grade 3 B,Term 2,2026,65,64,1,1,0.98,OTHER
+ADM-1228,Michael Wambua,Grade 3 B,Term 2,2026,65,59,6,4,0.91,OTHER
+ADM-1229,Wesley Noor,Grade 4 A,Term 2,2026,65,65,0,4,1,
+ADM-1230,Felix Masinde,Grade 4 A,Term 2,2026,65,59,6,0,0.91,OTHER
+ADM-1231,Caleb Maundu,Grade 4 A,Term 2,2026,65,65,0,2,1,
+ADM-1232,Naomi Wambua,Grade 4 A,Term 2,2026,65,65,0,6,1,
+ADM-1233,Michael Syombua,Grade 4 A,Term 2,2026,65,62,3,0,0.95,SCHOOL_BUS_MISSED
+ADM-1234,William Omollo,Grade 4 A,Term 2,2026,65,65,0,5,1,
+ADM-1235,Kennedy Chemtai,Grade 4 A,Term 2,2026,65,65,0,5,1,
+ADM-1236,Harrison Kitonga,Grade 4 A,Term 2,2026,65,65,0,4,1,
+ADM-1237,Teresia Kinyua,Grade 4 A,Term 2,2026,65,61,4,2,0.94,SICKNESS
+ADM-1238,Kiplangat Sichangi,Grade 4 A,Term 2,2026,65,58,7,0,0.89,SICKNESS
+ADM-1239,Kiplangat Pekeri,Grade 4 A,Term 2,2026,65,65,0,4,1,
+ADM-1240,Joshua Ciawi,Grade 4 A,Term 2,2026,65,65,0,0,1,
+ADM-1241,Trevor Igweta,Grade 4 A,Term 2,2026,65,65,0,6,1,
+ADM-1242,Emily Gatwiri,Grade 4 A,Term 2,2026,65,65,0,2,1,
+ADM-1243,Anthony Muthoka,Grade 4 A,Term 2,2026,65,58,7,0,0.89,SICKNESS
+ADM-1244,Magdalene Nzomo,Grade 4 A,Term 2,2026,65,60,5,3,0.92,SICKNESS
+ADM-1245,Michael Wamalwa,Grade 4 A,Term 2,2026,65,60,5,5,0.92,FAMILY MATTER
+ADM-1246,Brian Anyango,Grade 4 A,Term 2,2026,65,65,0,0,1,
+ADM-1247,Florence Farah,Grade 4 A,Term 2,2026,65,65,0,0,1,
+ADM-1248,Kevin Mutoro,Grade 4 A,Term 2,2026,65,65,0,2,1,
+ADM-1249,Teresia Kimeu,Grade 4 A,Term 2,2026,65,65,0,0,1,
+ADM-1250,Anthony Khisa,Grade 4 A,Term 2,2026,65,65,0,4,1,
+ADM-1251,Hellen Omondi,Grade 4 A,Term 2,2026,65,59,6,0,0.91,SCHOOL_BUS_MISSED
+ADM-1252,Lilian Suleiman,Grade 4 A,Term 2,2026,65,65,0,0,1,
+ADM-1253,Martha Kimutai,Grade 4 A,Term 2,2026,65,65,0,2,1,
+ADM-1254,Kipchoge Kinyua,Grade 4 A,Term 2,2026,65,65,0,2,1,
+ADM-1255,Sophia Kithinji,Grade 4 A,Term 2,2026,65,60,5,6,0.92,LATENESS
+ADM-1256,Lilian Ambani,Grade 4 A,Term 2,2026,65,57,8,0,0.88,FAMILY MATTER
+ADM-1257,Thomas Adan,Grade 4 A,Term 2,2026,65,60,5,0,0.92,LATENESS
+ADM-1258,Samuel Mugambi,Grade 4 A,Term 2,2026,65,63,2,0,0.97,FUNERAL
+ADM-1259,Lawrence Tianai,Grade 4 A,Term 2,2026,65,63,2,0,0.97,LATENESS
+ADM-1260,Gloria Omollo,Grade 4 A,Term 2,2026,65,58,7,0,0.89,FAMILY MATTER
+ADM-1261,Vincent Suleiman,Grade 4 B,Term 2,2026,65,57,8,0,0.88,FUNERAL
+ADM-1262,Cynthia Kithinji,Grade 4 B,Term 2,2026,65,62,3,1,0.95,OTHER
+ADM-1263,Sharon Kariuki,Grade 4 B,Term 2,2026,65,63,2,1,0.97,SICKNESS
+ADM-1264,Peninah Kimeu,Grade 4 B,Term 2,2026,65,58,7,0,0.89,OTHER
+ADM-1265,Magdalene Kaelo,Grade 4 B,Term 2,2026,65,65,0,0,1,
+ADM-1266,Kipchoge Wamalwa,Grade 4 B,Term 2,2026,65,62,3,4,0.95,SICKNESS
+ADM-1267,Charles Hassan,Grade 4 B,Term 2,2026,65,65,0,0,1,
+ADM-1268,Sarah Maina,Grade 4 B,Term 2,2026,65,60,5,6,0.92,OTHER
+ADM-1269,Doreen Kariuki,Grade 4 B,Term 2,2026,65,65,0,0,1,
+ADM-1270,Moses Kimutai,Grade 4 B,Term 2,2026,65,65,0,0,1,
+ADM-1271,Charity Chepkirui,Grade 4 B,Term 2,2026,65,60,5,1,0.92,OTHER
+ADM-1272,Catherine Mbithi,Grade 4 B,Term 2,2026,65,65,0,0,1,
+ADM-1273,Kiplangat Oduor,Grade 4 B,Term 2,2026,65,59,6,1,0.91,FAMILY MATTER
+ADM-1274,Zipporah Kigen,Grade 4 B,Term 2,2026,65,61,4,1,0.94,LATENESS
+ADM-1275,Florence Obiero,Grade 4 B,Term 2,2026,65,65,0,6,1,
+ADM-1276,Rachael Githinji,Grade 4 B,Term 2,2026,65,65,0,0,1,
+ADM-1277,Anthony Njoroge,Grade 4 B,Term 2,2026,65,65,0,0,1,
+ADM-1278,Mark Pekeri,Grade 4 B,Term 2,2026,65,65,0,5,1,
+ADM-1279,Joyce Lugalia,Grade 4 B,Term 2,2026,65,65,0,0,1,
+ADM-1280,Samuel Nandwa,Grade 4 B,Term 2,2026,65,62,3,0,0.95,FAMILY MATTER
+ADM-1281,Collins Kipchumba,Grade 4 B,Term 2,2026,65,65,0,0,1,
+ADM-1282,Timothy Chebet,Grade 4 B,Term 2,2026,65,65,0,3,1,
+ADM-1283,Timothy Kamau,Grade 4 B,Term 2,2026,65,65,0,3,1,
+ADM-1284,Caleb Kamau,Grade 4 B,Term 2,2026,65,65,0,2,1,
+ADM-1285,Tabitha Oluoch,Grade 4 B,Term 2,2026,65,65,0,3,1,
+ADM-1286,Kipchoge Anyango,Grade 4 B,Term 2,2026,65,61,4,6,0.94,OTHER
+ADM-1287,Zachary Namukuru,Grade 4 B,Term 2,2026,65,65,0,0,1,
+ADM-1288,Caleb Wanjala,Grade 4 B,Term 2,2026,65,62,3,0,0.95,SCHOOL_BUS_MISSED
+ADM-1289,Hellen Odhiambo,Grade 4 B,Term 2,2026,65,57,8,5,0.88,FAMILY MATTER
+ADM-1290,Moses Omollo,Grade 4 B,Term 2,2026,65,60,5,0,0.92,SCHOOL_BUS_MISSED
+ADM-1291,Dorcas Ruto,Grade 4 B,Term 2,2026,65,65,0,3,1,
+ADM-1292,Dorcas Suleiman,Grade 4 B,Term 2,2026,65,61,4,0,0.94,OTHER
+ADM-1293,Vincent Makokha,Grade 5 A,Term 2,2026,65,65,0,3,1,
+ADM-1294,Edna Juma,Grade 5 A,Term 2,2026,65,62,3,5,0.95,LATENESS
+ADM-1295,Mercy Karanja,Grade 5 A,Term 2,2026,65,62,3,0,0.95,SICKNESS
+ADM-1296,Hannah Njuguna,Grade 5 A,Term 2,2026,65,62,3,6,0.95,LATENESS
+ADM-1297,John Leshan,Grade 5 A,Term 2,2026,65,65,0,3,1,
+ADM-1298,Joyce Noor,Grade 5 A,Term 2,2026,65,65,0,0,1,
+ADM-1299,Alex Korir,Grade 5 A,Term 2,2026,65,65,0,0,1,
+ADM-1300,Lawrence Musalia,Grade 5 A,Term 2,2026,65,65,0,0,1,
+ADM-1301,Veronica Mutiso,Grade 5 A,Term 2,2026,65,63,2,1,0.97,SICKNESS
+ADM-1302,Dorcas Syombua,Grade 5 A,Term 2,2026,65,65,0,3,1,
+ADM-1303,Brian Omondi,Grade 5 A,Term 2,2026,65,57,8,3,0.88,SICKNESS
+ADM-1304,Priscilla Wafula,Grade 5 A,Term 2,2026,65,65,0,6,1,
+ADM-1305,Patrick Tanui,Grade 5 A,Term 2,2026,65,65,0,0,1,
+ADM-1306,Anthony Kimeu,Grade 5 A,Term 2,2026,65,57,8,3,0.88,SICKNESS
+ADM-1307,Kennedy Achieng,Grade 5 A,Term 2,2026,65,64,1,0,0.98,FUNERAL
+ADM-1308,Doreen Makokha,Grade 5 A,Term 2,2026,65,64,1,0,0.98,SICKNESS
+ADM-1309,Ibrahim Natepo,Grade 5 A,Term 2,2026,65,46,19,0,0.71,SICKNESS
+ADM-1310,Kipchoge Adhiambo,Grade 5 A,Term 2,2026,65,59,6,1,0.91,MEDICAL APPOINTMENT
+ADM-1311,Amos Chepkirui,Grade 5 A,Term 2,2026,65,63,2,0,0.97,MEDICAL APPOINTMENT
+ADM-1312,Esther Kipsang,Grade 5 A,Term 2,2026,65,60,5,0,0.92,FAMILY MATTER
+ADM-1313,Shalom Kimutai,Grade 5 A,Term 2,2026,65,65,0,1,1,
+ADM-1314,Donald Njenga,Grade 5 A,Term 2,2026,65,65,0,3,1,
+ADM-1315,Abigail Kinyua,Grade 5 A,Term 2,2026,65,64,1,0,0.98,FAMILY MATTER
+ADM-1316,Winfred Kariuki,Grade 5 A,Term 2,2026,65,65,0,6,1,
+ADM-1317,Ian Omar,Grade 5 A,Term 2,2026,65,62,3,0,0.95,SICKNESS
+ADM-1318,Teresia Mutuku,Grade 5 A,Term 2,2026,65,62,3,3,0.95,SICKNESS
+ADM-1319,Trevor Adhiambo,Grade 5 A,Term 2,2026,65,65,0,0,1,
+ADM-1320,George Okello,Grade 5 A,Term 2,2026,65,61,4,1,0.94,SCHOOL_BUS_MISSED
+ADM-1321,Dorcas Maina,Grade 5 A,Term 2,2026,65,65,0,0,1,
+ADM-1322,Sonia Simiyu,Grade 5 A,Term 2,2026,65,58,7,2,0.89,OTHER
+ADM-1323,Daniel Maina,Grade 5 A,Term 2,2026,65,57,8,0,0.88,SICKNESS
+ADM-1324,Tabitha Sironka,Grade 5 A,Term 2,2026,65,63,2,1,0.97,FUNERAL
+ADM-1325,Veronica Pekeri,Grade 5 B,Term 2,2026,65,65,0,4,1,
+ADM-1326,Peter Mwakisha,Grade 5 B,Term 2,2026,65,58,7,3,0.89,FUNERAL
+ADM-1327,Florence Kipsang,Grade 5 B,Term 2,2026,65,65,0,0,1,
+ADM-1328,Anthony Namukuru,Grade 5 B,Term 2,2026,65,65,0,2,1,
+ADM-1329,Sophia Wekesa,Grade 5 B,Term 2,2026,65,59,6,5,0.91,FAMILY MATTER
+ADM-1330,Edna Nzioka,Grade 5 B,Term 2,2026,65,57,8,0,0.88,FAMILY MATTER
+ADM-1331,Samuel Anyango,Grade 5 B,Term 2,2026,65,61,4,4,0.94,FAMILY MATTER
+ADM-1332,Stephen Nzioka,Grade 5 B,Term 2,2026,65,65,0,0,1,
+ADM-1333,Rebecca Muthoka,Grade 5 B,Term 2,2026,65,58,7,0,0.89,SICKNESS
+ADM-1334,Alice Kirimi,Grade 5 B,Term 2,2026,65,65,0,0,1,
+ADM-1335,Lawrence Mugambi,Grade 5 B,Term 2,2026,65,61,4,1,0.94,SICKNESS
+ADM-1336,Mark Kinyua,Grade 5 B,Term 2,2026,65,65,0,2,1,
+ADM-1337,Rebecca Sichangi,Grade 5 B,Term 2,2026,65,65,0,0,1,
+ADM-1338,Sophia Mwinyi,Grade 5 B,Term 2,2026,65,58,7,0,0.89,OTHER
+ADM-1339,Wesley Pekeri,Grade 5 B,Term 2,2026,65,58,7,1,0.89,SCHOOL_BUS_MISSED
+ADM-1340,Beatrice Mutua,Grade 5 B,Term 2,2026,65,65,0,6,1,
+ADM-1341,Gideon Farah,Grade 5 B,Term 2,2026,65,62,3,1,0.95,SICKNESS
+ADM-1342,Doreen Obiero,Grade 5 B,Term 2,2026,65,65,0,0,1,
+ADM-1343,Esther Wanjala,Grade 5 B,Term 2,2026,65,65,0,5,1,
+ADM-1344,Joshua Ambani,Grade 5 B,Term 2,2026,65,58,7,3,0.89,MEDICAL APPOINTMENT
+ADM-1345,Brian Chepkoech,Grade 5 B,Term 2,2026,65,65,0,0,1,
+ADM-1346,Rachael Gitau,Grade 5 B,Term 2,2026,65,57,8,5,0.88,FUNERAL
+ADM-1347,Olivia Wanjala,Grade 5 B,Term 2,2026,65,65,0,0,1,
+ADM-1348,Amos Nzioka,Grade 5 B,Term 2,2026,65,65,0,0,1,
+ADM-1349,Anthony Kirimi,Grade 5 B,Term 2,2026,65,65,0,0,1,
+ADM-1350,Wesley Bii,Grade 5 B,Term 2,2026,65,65,0,4,1,
+ADM-1351,Godfrey Lugalia,Grade 5 B,Term 2,2026,65,46,19,5,0.71,SICKNESS
+ADM-1352,Joyce Chebet,Grade 5 B,Term 2,2026,65,58,7,0,0.89,SICKNESS
+ADM-1353,Stephen Tianai,Grade 5 B,Term 2,2026,65,65,0,5,1,
+ADM-1354,Patrick Barasa,Grade 5 B,Term 2,2026,65,65,0,0,1,
+ADM-1355,Meshack Wamalwa,Grade 5 B,Term 2,2026,65,65,0,0,1,
+ADM-1356,Kipchoge Kamau,Grade 5 B,Term 2,2026,65,60,5,0,0.92,OTHER
+ADM-1357,Dorcas Mugo,Grade 6 A,Term 2,2026,65,65,0,0,1,
+ADM-1358,Karen Korir,Grade 6 A,Term 2,2026,65,63,2,0,0.97,SICKNESS
+ADM-1359,Andrew Juma,Grade 6 A,Term 2,2026,65,59,6,0,0.91,OTHER
+ADM-1360,Gideon Mburu,Grade 6 A,Term 2,2026,65,64,1,2,0.98,LATENESS
+ADM-1361,Ian Ali,Grade 6 A,Term 2,2026,65,65,0,0,1,
+ADM-1362,Monica Odhiambo,Grade 6 A,Term 2,2026,65,59,6,0,0.91,SCHOOL_BUS_MISSED
+ADM-1363,John Barasa,Grade 6 A,Term 2,2026,65,65,0,1,1,
+ADM-1364,Winfred Ambani,Grade 6 A,Term 2,2026,65,65,0,3,1,
+ADM-1365,Edwin Tianai,Grade 6 A,Term 2,2026,65,65,0,3,1,
+ADM-1366,Harrison Kimutai,Grade 6 A,Term 2,2026,65,63,2,2,0.97,SICKNESS
+ADM-1367,Charity Tuwei,Grade 6 A,Term 2,2026,65,64,1,3,0.98,LATENESS
+ADM-1368,Stephen Wanjiku,Grade 6 A,Term 2,2026,65,63,2,0,0.97,SCHOOL_BUS_MISSED
+ADM-1369,Catherine Igweta,Grade 6 A,Term 2,2026,65,65,0,2,1,
+ADM-1370,Joyce Ndungu,Grade 6 A,Term 2,2026,65,65,0,3,1,
+ADM-1371,Agnes Igweta,Grade 6 A,Term 2,2026,65,59,6,4,0.91,FAMILY MATTER
+ADM-1372,Tabitha Owino,Grade 6 A,Term 2,2026,65,61,4,0,0.94,MEDICAL APPOINTMENT
+ADM-1373,Donald Auma,Grade 6 A,Term 2,2026,65,57,8,1,0.88,FUNERAL
+ADM-1374,Luke Gitau,Grade 6 A,Term 2,2026,65,64,1,3,0.98,LATENESS
+ADM-1375,James Kathambi,Grade 6 A,Term 2,2026,65,65,0,0,1,
+ADM-1376,Diana Njuguna,Grade 6 A,Term 2,2026,65,65,0,5,1,
+ADM-1377,Winnie Odhiambo,Grade 6 A,Term 2,2026,65,58,7,0,0.89,OTHER
+ADM-1378,Abigail Mganga,Grade 6 A,Term 2,2026,65,65,0,0,1,
+ADM-1379,Peninah Korir,Grade 6 A,Term 2,2026,65,59,6,0,0.91,SICKNESS
+ADM-1380,Nathaniel Kimeu,Grade 6 A,Term 2,2026,65,59,6,4,0.91,SICKNESS
+ADM-1381,Gladys Ali,Grade 6 A,Term 2,2026,65,62,3,0,0.95,SICKNESS
+ADM-1382,Esther Suleiman,Grade 6 A,Term 2,2026,65,65,0,0,1,
+ADM-1383,Emmanuel Mutiso,Grade 6 A,Term 2,2026,65,65,0,0,1,
+ADM-1384,Francis Omar,Grade 6 A,Term 2,2026,65,60,5,0,0.92,LATENESS
+ADM-1385,Tabitha Mugambi,Grade 6 A,Term 2,2026,65,65,0,0,1,
+ADM-1386,Brian Namukuru,Grade 6 A,Term 2,2026,65,59,6,0,0.91,FAMILY MATTER
+ADM-1387,Yvonne Kinyua,Grade 6 A,Term 2,2026,65,65,0,0,1,
+ADM-1388,Maureen Akoth,Grade 6 B,Term 2,2026,65,65,0,1,1,
+ADM-1389,Damaris Mwirigi,Grade 6 B,Term 2,2026,65,61,4,4,0.94,OTHER
+ADM-1390,Alex Sein,Grade 6 B,Term 2,2026,65,64,1,0,0.98,SICKNESS
+ADM-1391,Dennis Otieno,Grade 6 B,Term 2,2026,65,62,3,0,0.95,OTHER
+ADM-1392,George Gatwiri,Grade 6 B,Term 2,2026,65,63,2,0,0.97,SICKNESS
+ADM-1393,Grace Otieno,Grade 6 B,Term 2,2026,65,60,5,2,0.92,OTHER
+ADM-1394,Mark Korir,Grade 6 B,Term 2,2026,65,65,0,3,1,
+ADM-1395,Lilian Muthoka,Grade 6 B,Term 2,2026,65,58,7,0,0.89,SICKNESS
+ADM-1396,Wesley Onyango,Grade 6 B,Term 2,2026,65,65,0,2,1,
+ADM-1397,Donald Obiero,Grade 6 B,Term 2,2026,65,57,8,0,0.88,MEDICAL APPOINTMENT
+ADM-1398,Daniel Nandwa,Grade 6 B,Term 2,2026,65,59,6,0,0.91,SICKNESS
+ADM-1399,Ibrahim Wambua,Grade 6 B,Term 2,2026,65,62,3,0,0.95,SICKNESS
+ADM-1400,Grace Khisa,Grade 6 B,Term 2,2026,65,65,0,4,1,
+ADM-1401,Nancy Anyango,Grade 6 B,Term 2,2026,65,63,2,6,0.97,LATENESS
+ADM-1402,Amos Kithinji,Grade 6 B,Term 2,2026,65,65,0,0,1,
+ADM-1403,Kevin Barasa,Grade 6 B,Term 2,2026,65,58,7,3,0.89,FUNERAL
+ADM-1404,Felix Owuor,Grade 6 B,Term 2,2026,65,60,5,0,0.92,SICKNESS
+ADM-1405,Patrick Kombo,Grade 6 B,Term 2,2026,65,57,8,6,0.88,SICKNESS
+ADM-1406,Beth Kilonzo,Grade 6 B,Term 2,2026,65,65,0,2,1,
+ADM-1407,Karen Adhiambo,Grade 6 B,Term 2,2026,65,59,6,1,0.91,MEDICAL APPOINTMENT
+ADM-1408,Joshua Leshan,Grade 6 B,Term 2,2026,65,63,2,3,0.97,LATENESS
+ADM-1409,Eunice Bunoro,Grade 6 B,Term 2,2026,65,65,0,1,1,
+ADM-1410,Karen Choge,Grade 6 B,Term 2,2026,65,65,0,0,1,
+ADM-1411,Priscilla Owino,Grade 6 B,Term 2,2026,65,42,23,5,0.65,MEDICAL APPOINTMENT
+ADM-1412,Moses Khaemba,Grade 6 B,Term 2,2026,65,65,0,0,1,
+ADM-1413,Beth Kimutai,Grade 6 B,Term 2,2026,65,65,0,3,1,
+ADM-1414,Timothy Kioko,Grade 6 B,Term 2,2026,65,65,0,2,1,
+ADM-1415,Winnie Ruto,Grade 6 B,Term 2,2026,65,65,0,3,1,
+ADM-1416,Daniel Omondi,Grade 6 B,Term 2,2026,65,59,6,1,0.91,SICKNESS
+ADM-1417,Hannah Muthoka,Grade 6 B,Term 2,2026,65,62,3,0,0.95,OTHER
+ADM-1418,Gideon Omollo,Grade 6 B,Term 2,2026,65,65,0,0,1,
+ADM-1419,Catherine Zawadi,Grade 7 A,Term 2,2026,65,65,0,3,1,
+ADM-1420,Nancy Maundu,Grade 7 A,Term 2,2026,65,65,0,0,1,
+ADM-1421,Nicholas Njeru,Grade 7 A,Term 2,2026,65,58,7,0,0.89,OTHER
+ADM-1422,Godfrey Nzioka,Grade 7 A,Term 2,2026,65,65,0,0,1,
+ADM-1423,Sophia Ruto,Grade 7 A,Term 2,2026,65,65,0,0,1,
+ADM-1424,Olivia Chemtai,Grade 7 A,Term 2,2026,65,61,4,0,0.94,SICKNESS
+ADM-1425,Amara Odera,Grade 7 A,Term 2,2026,65,65,0,5,1,
+ADM-1426,Hellen Sichangi,Grade 7 A,Term 2,2026,65,65,0,0,1,
+ADM-1427,David Omollo,Grade 7 A,Term 2,2026,65,65,0,0,1,
+ADM-1428,Kennedy Kaelo,Grade 7 A,Term 2,2026,65,60,5,0,0.92,FAMILY MATTER
+ADM-1429,Kevin Chemtai,Grade 7 A,Term 2,2026,65,61,4,3,0.94,SICKNESS
+ADM-1430,Francis Okello,Grade 7 A,Term 2,2026,65,62,3,0,0.95,LATENESS
+ADM-1431,Charity Owino,Grade 7 A,Term 2,2026,65,58,7,3,0.89,FAMILY MATTER
+ADM-1432,Elijah Ochieng,Grade 7 A,Term 2,2026,65,65,0,5,1,
+ADM-1433,Olivia Pashua,Grade 7 A,Term 2,2026,65,60,5,4,0.92,LATENESS
+ADM-1434,Fridah Obiero,Grade 7 A,Term 2,2026,65,65,0,3,1,
+ADM-1435,Julia Wanjiku,Grade 7 A,Term 2,2026,65,46,19,3,0.71,SICKNESS
+ADM-1436,Felix Odhiambo,Grade 7 A,Term 2,2026,65,65,0,0,1,
+ADM-1437,Karen Chemtai,Grade 7 B,Term 2,2026,65,65,0,0,1,
+ADM-1438,Kipchoge Omar,Grade 7 B,Term 2,2026,65,65,0,0,1,
+ADM-1439,James Kosgei,Grade 7 B,Term 2,2026,65,65,0,0,1,
+ADM-1440,Andrew Syombua,Grade 7 B,Term 2,2026,65,58,7,0,0.89,LATENESS
+ADM-1441,Damaris Kinyua,Grade 7 B,Term 2,2026,65,58,7,0,0.89,SICKNESS
+ADM-1442,Felix Tuwei,Grade 7 B,Term 2,2026,65,63,2,0,0.97,SICKNESS
+ADM-1443,Teresia Tanui,Grade 7 B,Term 2,2026,65,65,0,0,1,
+ADM-1444,Benjamin Wafula,Grade 7 B,Term 2,2026,65,59,6,0,0.91,OTHER
+ADM-1445,John Mwakisha,Grade 7 B,Term 2,2026,65,57,8,0,0.88,SICKNESS
+ADM-1446,Julius Bunoro,Grade 7 B,Term 2,2026,65,63,2,4,0.97,FAMILY MATTER
+ADM-1447,Kipchoge Khisa,Grade 7 B,Term 2,2026,65,65,0,0,1,
+ADM-1448,George Anyango,Grade 7 B,Term 2,2026,65,65,0,4,1,
+ADM-1449,James Choge,Grade 7 B,Term 2,2026,65,62,3,0,0.95,SCHOOL_BUS_MISSED
+ADM-1450,Irene Njenga,Grade 7 B,Term 2,2026,65,65,0,0,1,
+ADM-1451,Mercy Auma,Grade 7 B,Term 2,2026,65,65,0,6,1,
+ADM-1452,Victor Barasa,Grade 7 B,Term 2,2026,65,63,2,0,0.97,LATENESS
+ADM-1453,Zipporah Nzomo,Grade 7 B,Term 2,2026,65,63,2,2,0.97,SICKNESS
+ADM-1454,Eric Salim,Grade 7 B,Term 2,2026,65,63,2,0,0.97,SICKNESS
+ADM-1455,Mercy Wafula,Grade 7 C,Term 2,2026,65,59,6,5,0.91,SICKNESS
+ADM-1456,Damaris Wanjiku,Grade 7 C,Term 2,2026,65,57,8,6,0.88,OTHER
+ADM-1457,Maureen Kipsang,Grade 7 C,Term 2,2026,65,65,0,0,1,
+ADM-1458,Tabitha Metto,Grade 7 C,Term 2,2026,65,64,1,4,0.98,SCHOOL_BUS_MISSED
+ADM-1459,Felix Kamau,Grade 7 C,Term 2,2026,65,65,0,5,1,
+ADM-1460,Caleb Nzioka,Grade 7 C,Term 2,2026,65,65,0,0,1,
+ADM-1461,Frank Tianai,Grade 7 C,Term 2,2026,65,59,6,6,0.91,SCHOOL_BUS_MISSED
+ADM-1462,Sarah Ciawi,Grade 7 C,Term 2,2026,65,59,6,0,0.91,MEDICAL APPOINTMENT
+ADM-1463,Joyce Owino,Grade 7 C,Term 2,2026,65,63,2,3,0.97,OTHER
+ADM-1464,Edna Auma,Grade 7 C,Term 2,2026,65,65,0,0,1,
+ADM-1465,Harrison Kinyua,Grade 7 C,Term 2,2026,65,62,3,0,0.95,FAMILY MATTER
+ADM-1466,Julius Kithinji,Grade 7 C,Term 2,2026,65,57,8,0,0.88,FAMILY MATTER
+ADM-1467,Hillary Kariuki,Grade 7 C,Term 2,2026,65,62,3,5,0.95,SCHOOL_BUS_MISSED
+ADM-1468,Lawrence Auma,Grade 7 C,Term 2,2026,65,65,0,0,1,
+ADM-1469,William Kinyua,Grade 7 C,Term 2,2026,65,62,3,0,0.95,FAMILY MATTER
+ADM-1470,Gloria Tanui,Grade 7 C,Term 2,2026,65,65,0,5,1,
+ADM-1471,Susan Kimutai,Grade 7 C,Term 2,2026,65,65,0,6,1,
+ADM-1472,Fridah Zawadi,Grade 7 C,Term 2,2026,65,57,8,3,0.88,SICKNESS
+ADM-1473,Charity Simiyu,Grade 8 A,Term 2,2026,65,65,0,0,1,
+ADM-1474,Brian Abdi,Grade 8 A,Term 2,2026,65,64,1,0,0.98,FAMILY MATTER
+ADM-1475,Amos Mwirigi,Grade 8 A,Term 2,2026,65,65,0,6,1,
+ADM-1476,Samuel Owuor,Grade 8 A,Term 2,2026,65,59,6,6,0.91,SCHOOL_BUS_MISSED
+ADM-1477,Tabitha Muthoka,Grade 8 A,Term 2,2026,65,65,0,1,1,
+ADM-1478,Beatrice Ruto,Grade 8 A,Term 2,2026,65,65,0,6,1,
+ADM-1479,Olivia Kosgei,Grade 8 A,Term 2,2026,65,65,0,0,1,
+ADM-1480,Florence Musalia,Grade 8 A,Term 2,2026,65,65,0,4,1,
+ADM-1481,Veronica Kithinji,Grade 8 A,Term 2,2026,65,57,8,1,0.88,FUNERAL
+ADM-1482,Mercy Kinyua,Grade 8 A,Term 2,2026,65,58,7,0,0.89,LATENESS
+ADM-1483,Sharon Mburu,Grade 8 A,Term 2,2026,65,58,7,0,0.89,LATENESS
+ADM-1484,Amos Bii,Grade 8 A,Term 2,2026,65,64,1,4,0.98,MEDICAL APPOINTMENT
+ADM-1485,Edna Sironka,Grade 8 A,Term 2,2026,65,65,0,5,1,
+ADM-1486,Yvonne Mwende,Grade 8 A,Term 2,2026,65,60,5,3,0.92,FUNERAL
+ADM-1487,Harrison Gatwiri,Grade 8 A,Term 2,2026,65,65,0,1,1,
+ADM-1488,Nancy Kioko,Grade 8 A,Term 2,2026,65,65,0,2,1,
+ADM-1489,Winnie Kigen,Grade 8 A,Term 2,2026,65,65,0,0,1,
+ADM-1490,Andrew Kiptum,Grade 8 A,Term 2,2026,65,65,0,6,1,
+ADM-1491,Damaris Njeri,Grade 8 A,Term 2,2026,65,58,7,1,0.89,SICKNESS
+ADM-1492,Benjamin Ruto,Grade 8 A,Term 2,2026,65,65,0,0,1,
+ADM-1493,Michael Nasimiyu,Grade 8 A,Term 2,2026,65,60,5,2,0.92,OTHER
+ADM-1494,Moses Mwirigi,Grade 8 A,Term 2,2026,65,60,5,5,0.92,SICKNESS
+ADM-1495,Hannah Naisoi,Grade 8 B,Term 2,2026,65,65,0,1,1,
+ADM-1496,Winnie Wafula,Grade 8 B,Term 2,2026,65,65,0,0,1,
+ADM-1497,Godfrey Githinji,Grade 8 B,Term 2,2026,65,65,0,0,1,
+ADM-1498,Michael Musalia,Grade 8 B,Term 2,2026,65,65,0,1,1,
+ADM-1499,Eric Mwanzia,Grade 8 B,Term 2,2026,65,63,2,0,0.97,SCHOOL_BUS_MISSED
+ADM-1500,Grace Obiero,Grade 8 B,Term 2,2026,65,65,0,0,1,
+ADM-1501,Faith Akoth,Grade 8 B,Term 2,2026,65,65,0,0,1,
+ADM-1502,Patrick Ndungu,Grade 8 B,Term 2,2026,65,65,0,1,1,
+ADM-1503,Amara Igweta,Grade 8 B,Term 2,2026,65,65,0,2,1,
+ADM-1504,Victor Mwinyi,Grade 8 B,Term 2,2026,65,65,0,0,1,
+ADM-1505,Thomas Chepkoech,Grade 8 B,Term 2,2026,65,65,0,0,1,
+ADM-1506,Patrick Lugalia,Grade 8 B,Term 2,2026,65,65,0,0,1,
+ADM-1507,Diana Kipchumba,Grade 8 B,Term 2,2026,65,64,1,2,0.98,OTHER
+ADM-1508,Anthony Wafula,Grade 8 B,Term 2,2026,65,57,8,0,0.88,OTHER
+ADM-1509,Veronica Sironka,Grade 8 B,Term 2,2026,65,64,1,0,0.98,LATENESS
+ADM-1510,Caroline Chemtai,Grade 8 B,Term 2,2026,65,65,0,0,1,
+ADM-1511,Julius Kimeu,Grade 8 B,Term 2,2026,65,65,0,0,1,
+ADM-1512,Beth Wambui,Grade 8 B,Term 2,2026,65,60,5,0,0.92,SICKNESS
+ADM-1513,William Chepkirui,Grade 8 B,Term 2,2026,65,62,3,3,0.95,OTHER
+ADM-1514,Patrick Kilonzo,Grade 8 B,Term 2,2026,65,57,8,0,0.88,SCHOOL_BUS_MISSED
+ADM-1515,Sophia Kimutai,Grade 8 B,Term 2,2026,65,65,0,0,1,
+ADM-1516,Frank Wamalwa,Grade 8 B,Term 2,2026,65,65,0,2,1,
+ADM-1517,Sarah Hassan,Grade 9 A,Term 2,2026,65,65,0,0,1,
+ADM-1518,Peninah Khaemba,Grade 9 A,Term 2,2026,65,62,3,3,0.95,SICKNESS
+ADM-1519,Gideon Chepkirui,Grade 9 A,Term 2,2026,65,65,0,3,1,
+ADM-1520,Kiplangat Mwangi,Grade 9 A,Term 2,2026,65,65,0,0,1,
+ADM-1521,Cynthia Kitonga,Grade 9 A,Term 2,2026,65,62,3,5,0.95,FAMILY MATTER
+ADM-1522,Edwin Nassor,Grade 9 A,Term 2,2026,65,61,4,0,0.94,FAMILY MATTER
+ADM-1523,Dorcas Mwanzia,Grade 9 A,Term 2,2026,65,59,6,0,0.91,SICKNESS
+ADM-1524,Vincent Otieno,Grade 9 A,Term 2,2026,65,64,1,0,0.98,SICKNESS
+ADM-1525,Brian Muthoka,Grade 9 A,Term 2,2026,65,63,2,0,0.97,SCHOOL_BUS_MISSED
+ADM-1526,Yvonne Kiprop,Grade 9 A,Term 2,2026,65,65,0,1,1,
+ADM-1527,Peter Ali,Grade 9 A,Term 2,2026,65,65,0,1,1,
+ADM-1528,Simon Obiero,Grade 9 A,Term 2,2026,65,59,6,1,0.91,SICKNESS
+ADM-1529,Beatrice Gatwiri,Grade 9 A,Term 2,2026,65,65,0,0,1,
+ADM-1530,Ibrahim Ali,Grade 9 A,Term 2,2026,65,58,7,0,0.89,OTHER
+ADM-1531,Winnie Gatwiri,Grade 9 A,Term 2,2026,65,65,0,0,1,
+ADM-1532,Gladys Kamau,Grade 9 A,Term 2,2026,65,57,8,0,0.88,FUNERAL
+ADM-1533,Kevin Mbithe,Grade 9 A,Term 2,2026,65,58,7,0,0.89,SICKNESS
+ADM-1534,Lilian Mburu,Grade 9 A,Term 2,2026,65,59,6,0,0.91,MEDICAL APPOINTMENT
+ADM-1535,Hillary Owino,Grade 9 A,Term 2,2026,65,65,0,0,1,
+ADM-1536,Caleb Hassan,Grade 9 A,Term 2,2026,65,65,0,0,1,
+ADM-1537,Trevor Maina,Grade 9 A,Term 2,2026,65,60,5,3,0.92,SICKNESS
+ADM-1538,Grace Waweru,Grade 9 A,Term 2,2026,65,65,0,0,1,
+ADM-1539,Simon Mwirigi,Grade 9 B,Term 2,2026,65,65,0,0,1,
+ADM-1540,Emmanuel Abdalla,Grade 9 B,Term 2,2026,65,65,0,4,1,
+ADM-1541,Sarah Kithinji,Grade 9 B,Term 2,2026,65,62,3,0,0.95,SICKNESS
+ADM-1542,Patrick Sironka,Grade 9 B,Term 2,2026,65,65,0,2,1,
+ADM-1543,Susan Mutoro,Grade 9 B,Term 2,2026,65,65,0,6,1,
+ADM-1544,Joseph Maina,Grade 9 B,Term 2,2026,65,65,0,0,1,
+ADM-1545,Brenda Kariuki,Grade 9 B,Term 2,2026,65,65,0,5,1,
+ADM-1546,Nathaniel Njeri,Grade 9 B,Term 2,2026,65,65,0,5,1,
+ADM-1547,Benjamin Langat,Grade 9 B,Term 2,2026,65,65,0,1,1,
+ADM-1548,Tabitha Mutua,Grade 9 B,Term 2,2026,65,65,0,3,1,
+ADM-1549,Moses Syombua,Grade 9 B,Term 2,2026,65,64,1,5,0.98,FUNERAL
+ADM-1550,Godfrey Wambua,Grade 9 B,Term 2,2026,65,65,0,4,1,
+ADM-1551,Charity Kimeu,Grade 9 B,Term 2,2026,65,65,0,1,1,
+ADM-1552,Gloria Chemtai,Grade 9 B,Term 2,2026,65,58,7,5,0.89,FUNERAL
+ADM-1553,Godfrey Makhoha,Grade 9 B,Term 2,2026,65,63,2,2,0.97,FAMILY MATTER
+ADM-1554,Lawrence Wafula,Grade 9 B,Term 2,2026,65,65,0,6,1,
+ADM-1555,Benjamin Juma,Grade 9 B,Term 2,2026,65,65,0,3,1,
+ADM-1556,Veronica Mugo,Grade 9 B,Term 2,2026,65,65,0,5,1,
+ADM-1557,Harrison Odera,Grade 9 B,Term 2,2026,65,65,0,2,1,
+ADM-1558,Peter Igweta,Grade 9 B,Term 2,2026,65,61,4,0,0.94,MEDICAL APPOINTMENT
+ADM-1559,Monica Anyango,Grade 9 B,Term 2,2026,65,64,1,0,0.98,FAMILY MATTER
+ADM-1560,Daniel Kamau,Grade 9 B,Term 2,2026,65,65,0,0,1,
