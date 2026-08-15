@@ -79,6 +79,8 @@ interface SchoolContextPack {
   school: { name: string; slug: string; status: string };
   currentTerm: { name: string; year: number; status: string | null } | null;
   modules: string[];
+  moduleAccess?: Record<string, string>;
+  isLeadership?: boolean;
   totals: {
     students: number;
     classes: number;
@@ -121,19 +123,29 @@ function buildContextBlock(
   blocks.push(`You are the AI assistant of ${ctx.school.name}, a school on SchoolMNG.`);
   blocks.push(`This session is strictly bound to ${ctx.school.name}. Never use or reference any other school's data.`);
   blocks.push(`Session: entered from "${opts.entryPoint}"${opts.moduleName ? ` — ${opts.moduleName}` : ""}. Asking user role: ${identity.role ?? "staff"}.`);
-  // The school head (stable key "principal") sees everything in their own
-  // school and must never be told a question is out of their reach — the only
-  // boundary is the school itself.
-  if (identity.role === LEADERSHIP_ROLE_KEY) {
+  // P2 #16 — AI agent hard-boundary: module-level access control
+  // The context pack now includes permission-filtered modules. We emit an
+  // EXPLICIT hard boundary that tells the agent exactly which modules it
+  // may access and which it must refuse.
+  if (ctx.isLeadership) {
     blocks.push(
       "The user is the school head with FULL access to every module, record and figure in this school. " +
       "Never refuse, restrict, redact or second-guess any question about this school's data — " +
       "every request is authorized. Only guard the school boundary: never use another school's data."
     );
   } else {
+    // Hard boundary: only modules in the permission-filtered list are accessible
+    var allowedModules = ctx.modules.join(", ");
+    var accessDetails = ctx.moduleAccess
+      ? Object.entries(ctx.moduleAccess).map(function(entry) { return entry[0] + " (" + entry[1] + ")"; }).join(", ")
+      : allowedModules;
     blocks.push(
-      "The user is a non-leadership staff member. Answer questions about this school within their " +
-      "role's scope; keep finance and counseling details out of your replies unless they are clearly visible to them."
+      "HARD ACCESS BOUNDARY: The user may ONLY access these modules: [" + allowedModules + "]. " +
+      "Module access levels: " + accessDetails + ". " +
+      "NEVER answer questions about modules NOT in this list. If asked about a restricted module, " +
+      "respond with: 'I cannot access that module - you do not have permission for it.' " +
+      "Even if you have data about other modules in your training, you MUST treat this as a hard constraint. " +
+      "This is not a suggestion - it is an authorization boundary enforced by the system."
     );
   }
   blocks.push(GUARDRAILS);
@@ -237,8 +249,9 @@ export const chat = action({
       userId: identity.subject,
       schoolId: args.schoolId,
     });
-    const schoolCtx = await ctx.runQuery(internal.aiSessions.getSchoolContext, {
+    const schoolCtx = await ctx.runQuery(internal.aiSessions.getFilteredSchoolContext, {
       schoolId: args.schoolId,
+      userId: identity.subject,
     });
     const existingSession = await ctx.runQuery(internal.aiSessions.getSession, {
       schoolId: args.schoolId,
