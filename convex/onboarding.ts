@@ -464,7 +464,79 @@ export const completeOnboarding = mutation({
       }
     }
 
-    // 4) Store fee configuration
+    // 4) Grant section-level permissions for enabled modules (P2 #17)
+    // The leadership role gets edit access on every enabled module and its sections.
+    const leadershipRole = await ctx.db
+      .query("roles")
+      .withIndex("by_schoolId_key", (q) =>
+        q.eq("schoolId", schoolId).eq("key", "principal")
+      )
+      .first();
+
+    if (leadershipRole) {
+      for (const mod of allModules) {
+        if (!mod.isSystem) continue;
+        const shouldBeEnabled = modulesToEnable.has(mod.name);
+        if (!shouldBeEnabled) continue;
+
+        // Grant edit access on the module
+        const existingPerm = await ctx.db
+          .query("permissions")
+          .withIndex("by_roleId", (q) => q.eq("roleId", leadershipRole._id))
+          .filter((q) =>
+            q.and(
+              q.eq(q.field("nodeType"), "module"),
+              q.eq(q.field("nodeId"), mod._id),
+            ),
+          )
+          .first();
+
+        if (existingPerm) {
+          if (existingPerm.access !== "edit") {
+            await ctx.db.patch(existingPerm._id, { access: "edit" });
+          }
+        } else {
+          await ctx.db.insert("permissions", {
+            schoolId,
+            roleId: leadershipRole._id,
+            nodeType: "module",
+            nodeId: mod._id as string,
+            access: "edit",
+          });
+        }
+
+        // Also grant edit access on all sections within this module
+        const sections = await ctx.db
+          .query("sections")
+          .withIndex("by_moduleId", (q) => q.eq("moduleId", mod._id))
+          .collect();
+
+        for (const section of sections) {
+          const existingSectionPerm = await ctx.db
+            .query("permissions")
+            .withIndex("by_roleId", (q) => q.eq("roleId", leadershipRole._id))
+            .filter((q) =>
+              q.and(
+                q.eq(q.field("nodeType"), "section"),
+                q.eq(q.field("nodeId"), section._id),
+              ),
+            )
+            .first();
+
+          if (!existingSectionPerm) {
+            await ctx.db.insert("permissions", {
+              schoolId,
+              roleId: leadershipRole._id,
+              nodeType: "section",
+              nodeId: section._id as string,
+              access: "edit",
+            });
+          }
+        }
+      }
+    }
+
+    // 5) Store fee configuration
     if (answers?.feePerStudent || answers?.feePerTerm) {
       const feeConfig: Record<string, unknown> = {
         feeSameForAllTerms: answers.feeSameForAllTerms ?? true,
