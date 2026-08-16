@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
 import { Wallet, Users, Briefcase, Banknote, PlayCircle, Save, TrendingUp } from "lucide-react";
 import { toast } from "sonner";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 function fmtKES(n: number) {
   return `KES ${n.toLocaleString("en-KE")}`;
@@ -100,6 +101,7 @@ export default function PayrollPage() {
   }
 
   return (
+    <EavRouteWrapper moduleName="Payroll" bucket="learner">
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
@@ -264,5 +266,6 @@ export default function PayrollPage() {
         </div>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }

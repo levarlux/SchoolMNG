@@ -15,6 +15,7 @@ import { Plus, Search, BookOpen, Trash2, Download } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 export default function BooksPage() {
   const school = useSchool();
@@ -93,6 +94,7 @@ export default function BooksPage() {
   }
 
   return (
+    <EavRouteWrapper moduleName="Library" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
@@ -201,6 +203,7 @@ export default function BooksPage() {
         </form>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }
 

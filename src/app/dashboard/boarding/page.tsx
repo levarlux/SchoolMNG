@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Home, Users, Bed, Search, Plus, MapPin } from "lucide-react";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 export default function BoardingPage() {
   const school = useSchool();
@@ -45,6 +46,7 @@ export default function BoardingPage() {
   }
 
   return (
+    <EavRouteWrapper moduleName="Boarding" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
@@ -150,5 +152,6 @@ export default function BoardingPage() {
         </div>
       )}
     </div>
+    </EavRouteWrapper>
   );
 }

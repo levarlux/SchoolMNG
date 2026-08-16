@@ -13,6 +13,7 @@ import { Modal } from "@/components/ui/modal";
 import { toast } from "sonner";
 import { ClipboardList, Plus, Calendar, Users, Trash2 } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 const statusColors: Record<string, string> = {
   scheduled: "bg-blue-100 text-blue-800",
@@ -81,6 +82,7 @@ export default function BoardMeetingsPage() {
   const upcoming = stats?.upcoming ?? [];
 
   return (
+    <EavRouteWrapper moduleName="Board Meetings" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -290,5 +292,6 @@ export default function BoardMeetingsPage() {
         </div>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }

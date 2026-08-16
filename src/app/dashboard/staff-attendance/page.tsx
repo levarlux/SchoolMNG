@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
 import { CheckCircle2, XCircle, Clock, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 const STATUS_CONFIG: Record<string, { label: string; variant: string; icon: typeof CheckCircle2 }> = {
   present: { label: "Present", variant: "success", icon: CheckCircle2 },
@@ -81,6 +82,7 @@ export default function StaffAttendancePage() {
   const totalCount = teachers?.length ?? 0;
 
   return (
+    <EavRouteWrapper moduleName="Staff Attendance" bucket="learner">
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
@@ -200,6 +202,7 @@ export default function StaffAttendancePage() {
         </form>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }
 

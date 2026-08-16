@@ -15,6 +15,7 @@ import { Modal } from "@/components/ui/modal";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Clock, Shield, Utensils, MapPin, BookOpen } from "lucide-react";
 import { toast } from "sonner";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 const DUTY_CONFIG: Record<string, { label: string; icon: typeof Shield; color: string }> = {
   gate: { label: "Gate Duty", icon: Shield, color: "text-blue-600" },
@@ -84,6 +85,7 @@ export default function DutyRosterPage() {
   }
 
   return (
+    <EavRouteWrapper moduleName="Duty Roster" bucket="learner">
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
@@ -206,6 +208,7 @@ export default function DutyRosterPage() {
         </form>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }
 

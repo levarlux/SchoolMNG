@@ -15,6 +15,7 @@ import { Search, BookMarked, UserPlus, BookOpen, Download, AlertTriangle } from 
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 export default function BorrowPage() {
   const school = useSchool();
@@ -175,6 +176,7 @@ export default function BorrowPage() {
   }
 
   return (
+    <EavRouteWrapper moduleName="Borrow" bucket="learner">
     <div className="w-full space-y-6 max-w-2xl mx-auto px-6 lg:px-8">
       <div className="flex items-center justify-between">
         <div>
@@ -388,5 +390,6 @@ export default function BorrowPage() {
         </Card>
       )}
     </div>
+    </EavRouteWrapper>
   );
 }

@@ -14,6 +14,7 @@ import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
 import { Plus, Trash2, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const TIME_SLOTS = [
@@ -131,6 +132,7 @@ export default function TimetablePage() {
   const conflictClass = conflictingEntry ? classMap.get(conflictingEntry.classId) : null;
 
   return (
+    <EavRouteWrapper moduleName="Timetable" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
@@ -253,5 +255,6 @@ export default function TimetablePage() {
         </form>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }

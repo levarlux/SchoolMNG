@@ -15,6 +15,7 @@ import { Modal } from "@/components/ui/modal";
 import { Badge } from "@/components/ui/badge";
 import { Plus, BookOpenCheck, FileText, CheckCircle2, Clock } from "lucide-react";
 import { toast } from "sonner";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 function formatDate(ts: number) {
   return new Date(ts).toLocaleDateString("en-KE", { year: "numeric", month: "short", day: "numeric" });
@@ -101,6 +102,7 @@ export default function LessonPlanningPage() {
   }
 
   return (
+    <EavRouteWrapper moduleName="Lesson Planning" bucket="learner">
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
@@ -254,6 +256,7 @@ export default function LessonPlanningPage() {
         </form>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }
 

@@ -14,6 +14,7 @@ import { BrandLoader } from "@/components/ui/brand-loader";
 import { DoughnutChart, HorizontalBarChart, EmptyChart } from "@/components/charts";
 import { Plus, TrendingDown, Receipt, Wallet, Search, Trash2, Download } from "lucide-react";
 import { toast } from "sonner";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 function fmtKES(n: number) {
   return `KES ${n.toLocaleString("en-KE")}`;
@@ -105,6 +106,7 @@ export default function ExpendituresPage() {
   if (!school) return null;
 
   return (
+    <EavRouteWrapper moduleName="Expenditures" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
@@ -309,5 +311,6 @@ export default function ExpendituresPage() {
         </div>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }

@@ -13,6 +13,7 @@ import { Modal } from "@/components/ui/modal";
 import { toast } from "sonner";
 import { Megaphone, Plus, AlertTriangle, Info, PartyPopper, Trash2, Clock } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 const priorities = ["low", "normal", "high", "urgent"] as const;
 const audiences = ["all", "staff_only", "teachers_only", "parents_only", "students_only"] as const;
@@ -81,6 +82,7 @@ export default function AnnouncementsPage() {
   if (!school) return <div className="p-8 text-muted-foreground">Loading...</div>;
 
   return (
+    <EavRouteWrapper moduleName="Announcements" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -239,5 +241,6 @@ export default function AnnouncementsPage() {
         </div>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }

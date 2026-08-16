@@ -13,6 +13,7 @@ import { Modal } from "@/components/ui/modal";
 import { toast } from "sonner";
 import { Users, Plus, Search, Phone, Mail, Trash2, Link as LinkIcon, UserCheck } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 const relationships = ["father", "mother", "guardian", "grandparent", "sibling", "other"] as const;
 const comms = ["sms", "call", "email", "app"] as const;
@@ -127,6 +128,7 @@ export default function GuardiansPage() {
   const displayGuardians = searchQuery.length >= 2 ? searchGuardians : guardians;
 
   return (
+    <EavRouteWrapper moduleName="Guardians" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -433,5 +435,6 @@ export default function GuardiansPage() {
         </div>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }

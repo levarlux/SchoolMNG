@@ -15,6 +15,7 @@ import { Plus, Search, CircleDollarSign, CheckCircle2, XCircle, Download } from 
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 export default function FinesPage() {
   const school = useSchool();
@@ -55,6 +56,7 @@ export default function FinesPage() {
     .reduce((sum, f) => sum + (f.amount - f.paidAmount), 0);
 
   return (
+    <EavRouteWrapper moduleName="Fines" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
@@ -152,5 +154,6 @@ export default function FinesPage() {
         )}
       </div>
     </div>
+    </EavRouteWrapper>
   );
 }

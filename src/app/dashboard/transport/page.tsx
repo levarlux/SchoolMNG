@@ -14,6 +14,7 @@ import { Modal } from "@/components/ui/modal";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Bus, MapPin, Wrench } from "lucide-react";
 import { toast } from "sonner";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 export default function TransportPage() {
   const school = useSchool();
@@ -70,6 +71,7 @@ export default function TransportPage() {
   }
 
   return (
+    <EavRouteWrapper moduleName="Transport" bucket="learner">
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
@@ -194,5 +196,6 @@ export default function TransportPage() {
         </form>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }

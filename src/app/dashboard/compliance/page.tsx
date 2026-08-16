@@ -13,6 +13,7 @@ import { Modal } from "@/components/ui/modal";
 import { toast } from "sonner";
 import { ShieldCheck, Plus, FileText, AlertTriangle, CheckCircle, Clock, Trash2 } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 const docTypes = ["registration", "inspection", "policy", "certificate", "other"] as const;
 
@@ -71,6 +72,7 @@ export default function CompliancePage() {
   if (!school) return <div className="p-8 text-muted-foreground">Loading...</div>;
 
   return (
+    <EavRouteWrapper moduleName="Compliance" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -234,5 +236,6 @@ export default function CompliancePage() {
         </div>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }

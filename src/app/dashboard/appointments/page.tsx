@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 const statusColors: Record<string, string> = {
   scheduled: "bg-blue-100 text-blue-800",
@@ -77,6 +78,7 @@ export default function AppointmentsPage() {
   };
 
   return (
+    <EavRouteWrapper moduleName="Appointments" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Appointments</h1>
@@ -272,5 +274,6 @@ export default function AppointmentsPage() {
         </div>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }

@@ -15,6 +15,7 @@ import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
 import { Plus, Search, Calendar, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { EavRouteWrapper } from "@/components/generic/EavRouteWrapper";
 
 const EVENT_TYPES = [
   { value: "academic", label: "Academic", color: "bg-blue-100 text-blue-800" },
@@ -104,6 +105,7 @@ export default function EventsPage() {
   const past = filtered.filter((e) => e.endDate < now);
 
   return (
+    <EavRouteWrapper moduleName="Events" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
@@ -262,6 +264,7 @@ export default function EventsPage() {
         </form>
       </Modal>
     </div>
+    </EavRouteWrapper>
   );
 }
 
