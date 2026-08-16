@@ -103,21 +103,28 @@ export const provisionSchool = mutation({
       });
     }
 
-    // ── Seed default roles (Phase 17A.2) ──────────────────────────
-    // Only on first provisioning so re-runs stay idempotent.
-    // The EAV module/section/field tree is NO LONGER auto-seeded here —
-    // it is created during completeOnboarding based on the school's
-    // actual module selections (spec §0: blank canvas).
     if (created) {
-      await ctx.runMutation(internal.roles.seedDefaults, {
+      // Blank canvas: only seed the leadership role (required for the
+      // initial principal). Schools define all other roles themselves in
+      // Settings → Roles. Replaces old seedDefaults() which pre-created
+      // principal/teacher/librarian/bursar/nurse.
+      const title = leadershipTitle?.trim() || "Principal";
+      await ctx.db.insert("roles", {
         schoolId: school._id,
+        key: LEADERSHIP_ROLE_KEY,
+        name: title,
+        description: "Full access to all modules and data across the school",
+        baseBucket: "leadership",
+        isDefault: true,
+        isLeadership: true,
       });
+      // Cache on school row for fast lookup
+      await ctx.db.patch(school._id, { leadershipTitle: title });
     }
 
-    // ── Apply leadership title if provided ─────────────────────────
+    // Apply leadership title if provided (also updates on re-provisioning)
     const trimmedTitle = leadershipTitle?.trim();
     if (trimmedTitle && trimmedTitle !== "__custom__") {
-      // Update the roles table display name for the leadership key
       const leadershipRole = await ctx.db
         .query("roles")
         .withIndex("by_schoolId_key", (q) =>
@@ -131,7 +138,7 @@ export const provisionSchool = mutation({
       await ctx.db.patch(school._id, { leadershipTitle: trimmedTitle });
     }
 
-    // Ensure a trial subscription exists so the paywall never traps a
+    // Ensure a trial subscription exists so the paywall never traps a    // Ensure a trial subscription exists    // Ensure a trial subscription exists so the paywall never traps a
     // freshly-provisioned school.
     const subscription = await ctx.db
       .query("subscriptions")
@@ -430,10 +437,12 @@ export const completeOnboarding = mutation({
       }
     }
 
-    // 2b) Seed EAV tree for SELECTED modules only (spec §0: blank canvas).
-    // Previously the full tree was seeded during provisioning; now it is
-    // created here based on the school's actual module selections.
-    // Always-on system modules are always seeded.
+    // 2b) Seed EAV module shells for SELECTED modules only (spec §0: blank canvas).
+    // Previously the full section/field tree was auto-seeded at provisioning;
+    // now only module shells are created here (bare = no sections/fields).
+    // The school defines its own sections/fields in the Structure Builder.
+    // Always-on system modules always get a shell so the nav never empties
+    // out and hardcoded dashboard pages keep their sidebar entries.
     const alwaysOn = new Set([
       "Student Record", "Academics", "Attendance", "Documents",
       "Communication", "Finance", "Promotion/Progression",
@@ -443,6 +452,7 @@ export const completeOnboarding = mutation({
     await ctx.runMutation(internal.seedFullTree.seedFullTree, {
       schoolId,
       modulesToSeed: Array.from(seedFilter),
+      bare: true,
     });
 
     // 3) Store custom facilities as a feature configuration so the AI
@@ -562,6 +572,9 @@ export const completeOnboarding = mutation({
         });
       }
     }
+
+    // 6) Seed default document templates (P2#11)
+    await ctx.runMutation(internal.templateSeed.ensureTemplatesInternal, { schoolId });
 
     return {
       sessionId: session._id,

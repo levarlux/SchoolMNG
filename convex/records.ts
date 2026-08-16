@@ -2,6 +2,7 @@ import { query, mutation, QueryCtx } from "./_generated/server";
 import { v } from "convex/values";
 import { requireSchoolMembership, logAuditEntry } from "./helpers";
 import { Id, Doc } from "./_generated/dataModel";
+import { accessFor } from "./accessResolver";
 
 export const listBySchoolAndBucket = query({
   args: {
@@ -22,13 +23,18 @@ export const listBySchoolAndBucket = query({
   },
   handler: async (ctx, args) => {
     await requireSchoolMembership(ctx, args.schoolId);
-    return await ctx.db
+    // P0#3 §7: fail-closed bucket scope — a role with no scope rule for this
+    // bucket sees nothing here (leadership/all bypass).
+    const access = await accessFor(ctx, args.schoolId);
+    access.requireBucketScope(args.bucket);
+    const records = await ctx.db
       .query("records")
       .withIndex("by_schoolId_bucket", (q) =>
         q.eq("schoolId", args.schoolId).eq("bucket", args.bucket)
       )
       .order("asc")
       .take(500);
+    return records.filter((r) => !r.deletedAt);
   },
 });
 
@@ -48,17 +54,28 @@ export const searchByName = query({
   },
   handler: async (ctx, args) => {
     await requireSchoolMembership(ctx, args.schoolId);
+    // P0#3 §7: search is scoped to the buckets the caller can view. An explicit
+    // bucket arg is required to be visible; otherwise results are filtered to
+    // the caller's accessible buckets (fail-closed when none are accessible).
+    const access = await accessFor(ctx, args.schoolId);
+    const visibleBuckets = new Set(
+      ["learner", "teaching_staff", "non_teaching_staff", "admin_staff", "leadership"].filter((b) =>
+        access.canViewBucket(b)
+      )
+    );
+    if (visibleBuckets.size === 0) return [];
     const q = ctx.db
       .query("records")
       .withSearchIndex("search_displayName", (q) =>
         q.search("displayName", args.query).eq("schoolId", args.schoolId)
       );
-    if (args.bucket) {
-      // searchIndex doesn't support filtering on bucket, so filter after
-      const results = await q.take(20);
-      return results.filter((r) => r.bucket === args.bucket);
-    }
-    return await q.take(20);
+    const results = await q.take(20);
+    return results.filter(
+      (r) =>
+        !r.deletedAt &&
+        visibleBuckets.has(r.bucket) &&
+        (!args.bucket || r.bucket === args.bucket)
+    );
   },
 });
 
@@ -68,6 +85,8 @@ export const get = query({
     const record = await ctx.db.get(args.id);
     if (!record) throw new Error("Record not found");
     await requireSchoolMembership(ctx, record.schoolId);
+    const access = await accessFor(ctx, record.schoolId);
+    access.requireBucketScope(record.bucket);
     return record;
   },
 });
@@ -85,12 +104,13 @@ export const create = mutation({
     displayName: v.string(),
     photoUrl: v.optional(v.string()),
     status: v.optional(v.string()),
-    // Direct link to a student (learner bucket) so the EAV Modules tab can
-    // resolve a student's record without a name-based search.
     studentId: v.optional(v.id("students")),
+    teacherId: v.optional(v.id("teachers")),
   },
   handler: async (ctx, args) => {
     await requireSchoolMembership(ctx, args.schoolId);
+    const access = await accessFor(ctx, args.schoolId);
+    access.requireBucketScope(args.bucket);
     const id = await ctx.db.insert("records", {
       schoolId: args.schoolId,
       bucket: args.bucket,
@@ -98,6 +118,7 @@ export const create = mutation({
       photoUrl: args.photoUrl,
       status: args.status,
       studentId: args.studentId,
+      teacherId: args.teacherId,
     });
     await logAuditEntry(ctx, args.schoolId, "record.create", {
       recordId: id,
@@ -105,6 +126,67 @@ export const create = mutation({
       displayName: args.displayName,
     });
     return id;
+  },
+});
+
+export const bulkCreate = mutation({
+  args: {
+    schoolId: v.id("schools"),
+    bucket: v.union(
+      v.literal("learner"),
+      v.literal("teaching_staff"),
+      v.literal("non_teaching_staff"),
+      v.literal("admin_staff"),
+      v.literal("leadership"),
+    ),
+    records: v.array(
+      v.object({
+        displayName: v.string(),
+        photoUrl: v.optional(v.string()),
+        status: v.optional(v.string()),
+        studentId: v.optional(v.id("students")),
+        teacherId: v.optional(v.id("teachers")),
+      })
+    ),
+  },
+  handler: async (ctx, args) => {
+    await requireSchoolMembership(ctx, args.schoolId);
+    const access = await accessFor(ctx, args.schoolId);
+    access.requireBucketScope(args.bucket);
+
+    let created = 0;
+    let skipped = 0;
+
+    for (const rec of args.records) {
+      const doc: {
+        schoolId: Id<"schools">;
+        bucket: "learner" | "teaching_staff" | "non_teaching_staff" | "admin_staff" | "leadership";
+        displayName: string;
+        photoUrl?: string;
+        status?: string;
+        studentId?: Id<"students">;
+        teacherId?: Id<"teachers">;
+        deletedAt?: number;
+      } = {
+        schoolId: args.schoolId,
+        bucket: args.bucket,
+        displayName: rec.displayName,
+      };
+      if (rec.photoUrl !== undefined) doc.photoUrl = rec.photoUrl;
+      if (rec.status !== undefined) doc.status = rec.status;
+      if (rec.studentId !== undefined) doc.studentId = rec.studentId;
+      if (rec.teacherId !== undefined) doc.teacherId = rec.teacherId;
+
+      await ctx.db.insert("records", doc);
+      created++;
+    }
+
+    await logAuditEntry(ctx, args.schoolId, "record.bulkCreate", {
+      bucket: args.bucket,
+      count: created,
+      skipped,
+    });
+    return { created, skipped };
   },
 });
 
@@ -119,6 +201,8 @@ export const update = mutation({
     const record = await ctx.db.get(args.id);
     if (!record) throw new Error("Record not found");
     await requireSchoolMembership(ctx, record.schoolId);
+    const access = await accessFor(ctx, record.schoolId);
+    access.requireBucketScope(record.bucket);
     const { id, ...fields } = args;
     const updates: Record<string, unknown> = {};
     if (fields.displayName !== undefined) updates.displayName = fields.displayName;
@@ -141,8 +225,45 @@ export const remove = mutation({
     const record = await ctx.db.get(args.id);
     if (!record) throw new Error("Record not found");
     await requireSchoolMembership(ctx, record.schoolId);
+    const access = await accessFor(ctx, record.schoolId);
+    access.requireBucketScope(record.bucket);
 
-    // Remove all field values for this record
+    // Soft-delete: archive instead of permanent delete. The record disappears
+    // from lists/search but its fieldValues are retained for history.
+    await ctx.db.patch(args.id, { deletedAt: Date.now() });
+    await logAuditEntry(ctx, record.schoolId, "record.remove", {
+      recordId: args.id,
+      displayName: record.displayName,
+    });
+  },
+});
+
+export const restore = mutation({
+  args: { id: v.id("records") },
+  handler: async (ctx, args) => {
+    const record = await ctx.db.get(args.id);
+    if (!record) throw new Error("Record not found");
+    await requireSchoolMembership(ctx, record.schoolId);
+    const access = await accessFor(ctx, record.schoolId);
+    access.requireBucketScope(record.bucket);
+    await ctx.db.patch(args.id, { deletedAt: undefined });
+    await logAuditEntry(ctx, record.schoolId, "record.restore", {
+      recordId: args.id,
+      displayName: record.displayName,
+    });
+  },
+});
+
+export const hardDelete = mutation({
+  args: { id: v.id("records") },
+  handler: async (ctx, args) => {
+    const record = await ctx.db.get(args.id);
+    if (!record) throw new Error("Record not found");
+    await requireSchoolMembership(ctx, record.schoolId);
+    const access = await accessFor(ctx, record.schoolId);
+    access.requireBucketScope(record.bucket);
+
+    // Permanent delete: remove all field values, then the record itself.
     const values = await ctx.db
       .query("fieldValues")
       .withIndex("by_recordId", (q) => q.eq("recordId", args.id))
@@ -152,7 +273,7 @@ export const remove = mutation({
     }
 
     await ctx.db.delete(args.id);
-    await logAuditEntry(ctx, record.schoolId, "record.remove", {
+    await logAuditEntry(ctx, record.schoolId, "record.hardDelete", {
       recordId: args.id,
       displayName: record.displayName,
     });
@@ -286,6 +407,9 @@ export const getStudentEavModules = query({
     const student = await ctx.db.get(studentId);
     if (!student) return null;
     await requireSchoolMembership(ctx, student.schoolId);
+    // P0#3 §7: the modules a caller sees are the modules they have
+    // permission to view. Fields/sections cascade down the same tree.
+    const access = await accessFor(ctx, student.schoolId);
 
     // Find the EAV record (may not exist yet — modules still render so the
     // school sees its structure and pre-filled values; saving creates it).
@@ -333,6 +457,10 @@ export const getStudentEavModules = query({
 
     const modulesWithData = await Promise.all(
       enabledModules.map(async (mod) => {
+        access.noteNode(mod);
+        // Hide modules the caller has no permission to view (fail-closed).
+        if ((await access.resolve("module", mod._id as string)) === "none") return null;
+
         const sections = await ctx.db
           .query("sections")
           .withIndex("by_moduleId", (q) => q.eq("moduleId", mod._id))
@@ -343,22 +471,24 @@ export const getStudentEavModules = query({
 
         const sectionsWithData = await Promise.all(
           enabledSections.map(async (sec) => {
+            access.noteNode(sec);
+            if ((await access.resolve("section", sec._id as string)) === "none") return null;
+
             const fields = await ctx.db
               .query("fields")
               .withIndex("by_sectionId", (q) => q.eq("sectionId", sec._id))
               .order("asc")
               .take(100);
 
-            const enabledFields = fields.filter((f) => f.isEnabled !== false);
+            const enabledFields = fields.filter((f) => f.isEnabled !== false && !f.deletedAt);
 
-            return {
-              sectionId: sec._id,
-              name: sec.name,
-              description: sec.description,
-              order: sec.order,
-              isRepeatable: sec.isRepeatable === true,
-              isSensitive: sec.isSensitive === true,
-              fields: enabledFields.map((f) => {
+            const visibleFields = await Promise.all(
+              enabledFields.map(async (f) => {
+                access.noteNode(f);
+                // Hide fields the caller can't view, but never prefill/hide
+                // based on sensitivity alone — access is permission-driven.
+                if ((await access.resolve("field", f._id as string)) === "none") return null;
+
                 const stored = storedByFieldId.get(f._id);
                 const derived = deriveFieldPrefill(f, sources);
                 return {
@@ -372,10 +502,27 @@ export const getStudentEavModules = query({
                   // value so the tab is never blank when the data exists.
                   value: stored ?? derived,
                 };
-              }),
+              })
+            );
+
+            if (visibleFields.every((f) => f === null)) return null;
+
+            return {
+              sectionId: sec._id,
+              name: sec.name,
+              description: sec.description,
+              order: sec.order,
+              isRepeatable: sec.isRepeatable === true,
+              isSensitive: sec.isSensitive === true,
+              // The odd `as any` is a TS narrowing stopgap — nullable entries
+              // were already excluded above.
+              fields: visibleFields.filter(Boolean) as NonNullable<(typeof visibleFields)[number]>[],
             };
           })
         );
+
+        const visibleSections = sectionsWithData.filter((s) => s !== null);
+        if (visibleSections.length === 0) return null;
 
         return {
           moduleId: mod._id,
@@ -383,14 +530,154 @@ export const getStudentEavModules = query({
           description: mod.description,
           order: mod.order,
           icon: mod.icon,
-          sections: sectionsWithData,
+          sections: visibleSections,
         };
       })
     );
 
     return {
       recordId: record?._id ?? null,
-      modules: modulesWithData,
+      modules: modulesWithData.filter((m) => m !== null),
     };
   },
 });
+
+/**
+ * Student 360° symmetric treatment for teachers (§1.4) — returns all EAV
+ * modules for a teacher's linked staff record, mirroring getStudentEavModules.
+ * If no EAV record exists for the teacher yet, creates one automatically.
+ */
+export const getTeacherEavModules = query({
+  args: {
+    teacherId: v.id("teachers"),
+  },
+  handler: async (ctx, { teacherId }) => {
+    const teacher = await ctx.db.get(teacherId);
+    if (!teacher) return null;
+    await requireSchoolMembership(ctx, teacher.schoolId);
+    // P0#3 §7: same fail-closed permission cascade as the learner surface.
+    const access = await accessFor(ctx, teacher.schoolId);
+
+    // Find the staff EAV record (may not exist yet — modules still render).
+    const record = await ctx.db
+      .query("records")
+      .withIndex("by_teacherId", (q) => q.eq("teacherId", teacherId))
+      .first();
+
+    const fieldValues = record
+      ? await ctx.db
+          .query("fieldValues")
+          .withIndex("by_recordId", (q) => q.eq("recordId", record._id))
+          .take(2000)
+      : [];
+    const storedByFieldId = new Map(
+      fieldValues.filter((fv) => !fv.instanceId).map((fv) => [fv.fieldId, fv.value])
+    );
+
+    const modules = await ctx.db
+      .query("modules")
+      .withIndex("by_schoolId_bucket", (q) =>
+        q.eq("schoolId", teacher.schoolId).eq("bucket", "teaching_staff")
+      )
+      .order("asc")
+      .take(100);
+
+    const enabledModules = modules.filter((m) => m.isEnabled);
+
+    const modulesWithData = await Promise.all(
+      enabledModules.map(async (mod) => {
+        access.noteNode(mod);
+        if ((await access.resolve("module", mod._id as string)) === "none") return null;
+
+        const sections = await ctx.db
+          .query("sections")
+          .withIndex("by_moduleId", (q) => q.eq("moduleId", mod._id))
+          .order("asc")
+          .take(100);
+
+        const enabledSections = sections.filter((s) => s.isEnabled);
+
+        const sectionsWithData = await Promise.all(
+          enabledSections.map(async (sec) => {
+            access.noteNode(sec);
+            if ((await access.resolve("section", sec._id as string)) === "none") return null;
+
+            const fields = await ctx.db
+              .query("fields")
+              .withIndex("by_sectionId", (q) => q.eq("sectionId", sec._id))
+              .order("asc")
+              .take(100);
+
+            const enabledFields = fields.filter((f) => f.isEnabled !== false && !f.deletedAt);
+
+            const visibleFields = await Promise.all(
+              enabledFields.map(async (f) => {
+                access.noteNode(f);
+                if ((await access.resolve("field", f._id as string)) === "none") return null;
+
+                const stored = storedByFieldId.get(f._id);
+                const derived = deriveStaffFieldPrefill(f, teacher);
+                return {
+                  fieldId: f._id,
+                  name: f.name,
+                  inputType: f.inputType,
+                  isRequired: f.isRequired,
+                  isSensitive: f.isSensitive === true,
+                  options: f.options,
+                  value: stored ?? derived,
+                };
+              })
+            );
+
+            if (visibleFields.every((f) => f === null)) return null;
+
+            return {
+              sectionId: sec._id,
+              name: sec.name,
+              description: sec.description,
+              order: sec.order,
+              isRepeatable: sec.isRepeatable === true,
+              isSensitive: sec.isSensitive === true,
+              fields: visibleFields.filter(Boolean) as NonNullable<(typeof visibleFields)[number]>[],
+            };
+          })
+        );
+
+        const visibleSections = sectionsWithData.filter((s) => s !== null);
+        if (visibleSections.length === 0) return null;
+
+        return {
+          moduleId: mod._id,
+          name: mod.name,
+          description: mod.description,
+          order: mod.order,
+          icon: mod.icon,
+          sections: visibleSections,
+        };
+      })
+    );
+
+    return {
+      recordId: record?._id ?? null,
+      modules: modulesWithData.filter((m) => m !== null),
+    };
+  },
+});
+
+/**
+ * Derive the engine-known value for a staff field from the teacher's typed
+ * core (name, staffNo, department, category, email, phone). Mirrors
+ * deriveFieldPrefill on the learner side.
+ */
+function deriveStaffFieldPrefill(field: Doc<"fields">, teacher: Doc<"teachers">): string {
+  if (field.semantic === "name") return `${teacher.firstName} ${teacher.lastName}`.trim();
+  const lowerAliases = new Set((field.aliases ?? []).map((a) => a.toLowerCase().trim()));
+  const hasAlias = (...keys: string[]) => keys.some((k) => lowerAliases.has(k));
+  if (hasAlias("staffno", "staffid", "staffnumber", "employeeid")) return teacher.staffNo;
+  if (hasAlias("email", "workemail")) return teacher.email ?? "";
+  if (hasAlias("phone", "mobile", "tel")) return teacher.phone ?? "";
+  if (hasAlias("department", "dept")) return teacher.department ?? "";
+  if (hasAlias("firstname", "givenname")) return teacher.firstName;
+  if (hasAlias("lastname", "surname", "familyname")) return teacher.lastName;
+  return "";
+}

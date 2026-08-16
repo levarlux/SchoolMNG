@@ -1,5 +1,6 @@
 import { internalMutation } from "./_generated/server";
 import { internal } from "./_generated/api";
+import { isLeadershipRoleKey } from "./helpers";
 
 /**
  * Refresh the dashboard cache for all active schools.
@@ -188,9 +189,8 @@ async function computeAnalyticsForSchool(ctx: any, schoolId: any, termId?: any) 
   const identity = await ctx.db.query("members").withIndex("by_schoolId", (q: any) => q.eq("schoolId", schoolId)).first();
   const memberRole = identity?.role ?? null;
 
-  // Import the role key — match schoolAnalytics.ts
-  const LEADERSHIP_ROLE_KEY = "principal";
-  const isLeadership = memberRole === LEADERSHIP_ROLE_KEY;
+  // Per-school leadership resolution (P0#4) — matches schoolAnalytics.ts
+  const isLeadership = await isLeadershipRoleKey(ctx, schoolId, memberRole);
 
   // Fee analytics (leadership only)
   let finance: any = null;

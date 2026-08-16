@@ -14,11 +14,11 @@ async function assertHead(
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) throw new Error("Not authenticated");
 
-  const callerRole = await ctx.runQuery(internal.members.getRoleInternal, {
+  const isLeader = await ctx.runQuery(internal.members.isLeaderInternal, {
     userId: identity.subject,
     schoolId,
   });
-  if (callerRole !== LEADERSHIP_ROLE_KEY) {
+  if (!isLeader) {
     throw new Error("Only the school head can invite or manage members");
   }
   return { userId: identity.subject, email: identity.email ?? "" };
@@ -133,6 +133,15 @@ export const sendInvitation = action({
       throw new Error("Invite someone with another role — the leadership role cannot be invited");
     }
 
+    // Also block per-school promoted leadership roles (P0#4).
+    const targetIsLeader = await ctx.runQuery(internal.roles.isLeadershipByKey, {
+      schoolId,
+      key: role,
+    });
+    if (targetIsLeader) {
+      throw new Error("Invite someone with another role — the leadership role cannot be invited");
+    }
+
     const school = await ctx.runQuery(internal.schools.getById, { id: schoolId });
     if (!school) throw new Error("School not found");
 
@@ -186,11 +195,11 @@ export const listInvitations = query({
   handler: async (ctx, { schoolId }) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
-    const callerRole = await ctx.runQuery(internal.members.getRoleInternal, {
+    const isLeader = await ctx.runQuery(internal.members.isLeaderInternal, {
       userId: identity.subject,
       schoolId,
     });
-    if (callerRole !== LEADERSHIP_ROLE_KEY) {
+    if (!isLeader) {
       throw new Error("Only the school head can view invitations");
     }
     return await ctx.db

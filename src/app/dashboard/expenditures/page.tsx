@@ -88,11 +88,11 @@ export default function ExpendituresPage() {
   // Chart data
   const categoryData = useMemo(() => {
     if (!stats?.byCategory) return null;
-    const entries = Object.entries(stats.byCategory).sort((a, b) => b[1] - a[1]);
+    const entries = Object.entries(stats.byCategory as Record<string, number>).sort((a, b) => b[1] - a[1]);
     if (entries.length === 0) return null;
     return {
       labels: entries.map(([k]) => k),
-      data: entries.map(([, v]) => v),
+      data: entries.map(([, v]) => v as number),
       colors: entries.map((_, i) => CATEGORY_COLORS[i % CATEGORY_COLORS.length]),
     };
   }, [stats]);

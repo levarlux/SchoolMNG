@@ -23,7 +23,6 @@ import type { ConversationResponse } from "@mistralai/mistralai/models/component
  * narrate results — never to compute or invent facts from memory.
  */
 
-const LEADERSHIP_ROLE_KEY = "principal"; // stable key — matches convex/roles.ts
 const DEFAULT_AGENT_ID = "ag_019fe478484b749e8b16916db2bc08f7";
 const AGENT_VERSION = 0;
 const MAX_INPUT_HISTORY = 20;

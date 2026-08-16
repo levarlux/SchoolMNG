@@ -22,6 +22,7 @@ import {
   BarChart, LineChart, DoughnutChart, HorizontalBarChart, RadialProgress,
   EmptyChart, ChartCard,
 } from "@/components/charts";
+import { ChartConfigPanel } from "@/components/chart-config-panel";
 
 function fmtKES(n: number) {
   return `KES ${n.toLocaleString("en-KE")}`;
@@ -67,8 +68,40 @@ export default function AnalyticsPage() {
       : "skip"
   );
 
+  // Chart configurations
+  const chartConfigsAttendance = useQuery(
+    api.chartConfigs.listByPage,
+    school ? { schoolId: school._id, page: "attendance" } : "skip"
+  );
+  const chartConfigsAcademic = useQuery(
+    api.chartConfigs.listByPage,
+    school ? { schoolId: school._id, page: "academic" } : "skip"
+  );
+  const chartConfigsFinancial = useQuery(
+    api.chartConfigs.listByPage,
+    school ? { schoolId: school._id, page: "financial" } : "skip"
+  );
+
+  function isChartVisible(configs: typeof chartConfigsAttendance | undefined, chartKey: string): boolean {
+    if (!configs) return true;
+    const config = configs.find((c) => c.chartKey === chartKey);
+    return config ? config.isVisible : true;
+  }
+
   const finance = analytics?.finance;
   const academic = analytics?.academic;
+
+  // Pre-compute chart visibility to avoid inline function calls in JSX
+  const showAttendanceTrend = isChartVisible(chartConfigsAttendance, "attendance_rate_trend");
+  const showAttendanceStatus = isChartVisible(chartConfigsAttendance, "attendance_status_breakdown");
+  const showAttendanceByClass = isChartVisible(chartConfigsAttendance, "attendance_by_class");
+  const showExamTrend = isChartVisible(chartConfigsAcademic, "exam_mean_trend");
+  const showPerformanceByClass = isChartVisible(chartConfigsAcademic, "performance_by_class");
+  const showSubjectAverages = isChartVisible(chartConfigsAcademic, "subject_averages");
+  const showCollectionRate = isChartVisible(chartConfigsFinancial, "collection_rate");
+  const showFeeTrend = isChartVisible(chartConfigsFinancial, "fee_collection_trend");
+  const showFeeByClass = isChartVisible(chartConfigsFinancial, "fee_by_class");
+  const showPaymentMethods = isChartVisible(chartConfigsFinancial, "payment_methods");
 
   const selectedTermLabel = useMemo(() => {
     if (!termId || !terms) return "All terms";
@@ -139,6 +172,19 @@ export default function AnalyticsPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {isLeadership ? (
+            <ChartConfigPanel
+              schoolId={school._id}
+              page={tab === "attendance" ? "attendance" : tab === "academic" ? "academic" : "financial"}
+              configs={
+                tab === "attendance"
+                  ? chartConfigsAttendance ?? []
+                  : tab === "academic"
+                  ? chartConfigsAcademic ?? []
+                  : chartConfigsFinancial ?? []
+              }
+            />
+          ) : null}
           <Link href="/dashboard/reports">
             <Button variant="outline">
               <FileText className="h-4 w-4 mr-2" /> Reports
@@ -199,7 +245,7 @@ export default function AnalyticsPage() {
       </div>
 
       {/* ══ Attendance tab ═══════════════════════════════════════════ */}
-      {tab === "attendance" && attendanceAnalytics && (
+      {tab === "attendance" && attendanceAnalytics ? (
         <div className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* KPI: today */}
@@ -243,122 +289,147 @@ export default function AnalyticsPage() {
             </Card>
 
             {/* Trend */}
-            <Card className="lg:col-span-2">
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-base">Attendance Rate Trend</CardTitle>
-                    <CardDescription>Daily since {dateFrom}</CardDescription>
+            {isChartVisible(chartConfigsAttendance, "attendance_rate_trend") ? (
+              <Card className="lg:col-span-2">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-base">Attendance Rate Trend</CardTitle>
+                      <CardDescription>Daily since {dateFrom}</CardDescription>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={exportAttendanceCSV}>
+                      <Download className="h-3.5 w-3.5 mr-1" /> Export
+                    </Button>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={exportAttendanceCSV}>
-                    <Download className="h-3.5 w-3.5 mr-1" /> Export
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {attendanceAnalytics.trend.some((t) => t.total > 0) ? (
-                  <LineChart
-                    labels={attendanceAnalytics.trend.map((t) => t.label)}
-                    datasets={[{ label: "Attendance %", data: attendanceAnalytics.trend.map((t) => t.rate), color: "#10b981" }]}
-                    height={260}
-                    showArea
-                  />
-                ) : (
-                  <EmptyChart message="No attendance data in this range" />
-                )}
-              </CardContent>
-            </Card>
+                </CardHeader>
+                <CardContent>
+                  {attendanceAnalytics.trend.some((t) => t.total > 0) ? (
+                    <LineChart
+                      labels={attendanceAnalytics.trend.map((t) => t.label)}
+                      datasets={[{ label: "Attendance %", data: attendanceAnalytics.trend.map((t) => t.rate), color: "#10b981" }]}
+                      height={260}
+                      showArea
+                    />
+                  ) : (
+                    <EmptyChart message="No attendance data in this range" />
+                  )}
+                </CardContent>
+              </Card>
+            ) : null}
+
+            {isChartVisible(chartConfigsAttendance, "attendance_status_breakdown") ? (
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Today&apos;s Status</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {attendanceAnalytics.today.total > 0 ? (
+                    <DoughnutChart
+                      labels={["Present", "Absent", "Late", "Excused"]}
+                      data={[attendanceAnalytics.today.present, attendanceAnalytics.today.absent, attendanceAnalytics.today.late, attendanceAnalytics.today.excused]}
+                      height={200}
+                    />
+                  ) : (
+                    <EmptyChart message="No attendance taken today" />
+                  )}
+                </CardContent>
+              </Card>
+            ) : null}
           </div>
 
-          {/* Per-class */}
-          {attendanceAnalytics.byClass.length > 0 && (
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base">Attendance by Class</CardTitle>
-                <CardDescription>{selectedTermLabel} — lowest first</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <HorizontalBarChart
-                  labels={attendanceAnalytics.byClass.map((c) => c.className)}
-                  datasets={[{ label: "Attendance %", data: attendanceAnalytics.byClass.map((c) => c.rate), color: "#10b981" }]}
-                  height={Math.max(160, attendanceAnalytics.byClass.length * 34)}
-                />
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      )}
+           {/* Per-class */}
+           {showAttendanceByClass && attendanceAnalytics.byClass.length > 0 ? (
+             <Card>
+               <CardHeader className="pb-2">
+                 <CardTitle className="text-base">Attendance by Class</CardTitle>
+                 <CardDescription>{selectedTermLabel} — lowest first</CardDescription>
+               </CardHeader>
+               <CardContent>
+                 <HorizontalBarChart
+                   labels={attendanceAnalytics.byClass.map((c) => c.className)}
+                   datasets={[{ label: "Attendance %", data: attendanceAnalytics.byClass.map((c) => c.rate), color: "#10b981" }]}
+                   height={Math.max(160, attendanceAnalytics.byClass.length * 34)}
+                 />
+               </CardContent>
+             </Card>
+           ) : null}
+         </div>
+       ) : null}
 
-      {/* ══ Academic tab ════════════════════════════════════════════ */}
-      {tab === "academic" && academic && (
-        <div className="space-y-4">
-          {/* Exam trend */}
-          {academic.examTrend.length > 0 && (
-            <Card>
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-base">Exam Mean Trend</CardTitle>
-                    <CardDescription>Average marks across exams</CardDescription>
-                  </div>
-                  <Button variant="ghost" size="sm" onClick={exportAcademicCSV}>
-                    <Download className="h-3.5 w-3.5 mr-1" /> Export
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <LineChart
-                  labels={academic.examTrend.map((e) => e.label)}
-                  datasets={[{ label: "Mean marks", data: academic.examTrend.map((e) => e.meanMarks), color: "#8b5cf6" }]}
-                  height={280}
-                  showArea
-                />
-              </CardContent>
-            </Card>
-          )}
+       {/* ══ Academic tab ════════════════════════════════════════════ */}
+       {tab === "academic" && academic ? (
+         <div className="space-y-4">
+           {/* Exam trend */}
+           {showExamTrend && academic.examTrend.length > 0 ? (
+             <Card>
+               <CardHeader className="pb-2">
+                 <div className="flex items-center justify-between">
+                   <div>
+                     <CardTitle className="text-base">Exam Mean Trend</CardTitle>
+                     <CardDescription>Average marks across exams</CardDescription>
+                   </div>
+                   <Button variant="ghost" size="sm" onClick={exportAcademicCSV}>
+                     <Download className="h-3.5 w-3.5 mr-1" /> Export
+                   </Button>
+                 </div>
+               </CardHeader>
+               <CardContent>
+                 <LineChart
+                   labels={academic.examTrend.map((e) => e.label)}
+                   datasets={[{ label: "Mean marks", data: academic.examTrend.map((e) => e.meanMarks), color: "#8b5cf6" }]}
+                   height={280}
+                   showArea
+                 />
+               </CardContent>
+             </Card>
+           ) : null}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Per-class */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base">Performance by Class</CardTitle>
-                <CardDescription>Mean marks on the latest exam</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {academic.byClass.length > 0 ? (
-                  <BarChart
-                    labels={academic.byClass.map((c) => c.className)}
-                    datasets={[{ label: "Mean marks", data: academic.byClass.map((c) => c.meanMarks), color: "#6366f1" }]}
-                    height={260}
-                  />
-                ) : (
-                  <EmptyChart message="No class results yet" />
-                )}
-              </CardContent>
-            </Card>
+            {showPerformanceByClass ? (
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Performance by Class</CardTitle>
+                  <CardDescription>Mean marks on the latest exam</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {academic.byClass.length > 0 ? (
+                    <BarChart
+                      labels={academic.byClass.map((c) => c.className)}
+                      datasets={[{ label: "Mean marks", data: academic.byClass.map((c) => c.meanMarks), color: "#6366f1" }]}
+                      height={260}
+                    />
+                  ) : (
+                    <EmptyChart message="No class results yet" />
+                  )}
+                </CardContent>
+                  </Card>
+              ) : null}
 
             {/* Subjects */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base">Subject Averages</CardTitle>
-                <CardDescription>Mean marks per subject</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {academic.bySubject.length > 0 ? (
-                  <HorizontalBarChart
-                    labels={academic.bySubject.map((s) => s.subjectName)}
-                    datasets={[{ label: "Mean marks", data: academic.bySubject.map((s) => s.meanMarks), color: "#8b5cf6" }]}
-                    height={260}
-                  />
-                ) : (
-                  <EmptyChart message="No subject results yet" />
-                )}
-              </CardContent>
-            </Card>
+            {showSubjectAverages ? (
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Subject Averages</CardTitle>
+                  <CardDescription>Mean marks per subject</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {academic.bySubject.length > 0 ? (
+                    <HorizontalBarChart
+                      labels={academic.bySubject.map((s) => s.subjectName)}
+                      datasets={[{ label: "Mean marks", data: academic.bySubject.map((s) => s.meanMarks), color: "#8b5cf6" }]}
+                      height={260}
+                    />
+                  ) : (
+                    <EmptyChart message="No subject results yet" />
+                  )}
+                </CardContent>
+              </Card>
+            ) : null}
           </div>
 
           {/* Top students */}
-          {academic.topStudents.length > 0 && (
+          {academic.topStudents.length > 0 ? (
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-base">
@@ -383,119 +454,126 @@ export default function AnalyticsPage() {
                 </div>
               </CardContent>
             </Card>
-          )}
+          ) : null}
         </div>
-      )}
+      ) : null}
 
       {/* ══ Financial tab (leadership only) ═════════════════════════ */}
-      {tab === "financial" && isLeadership && finance && (
+      {tab === "financial" && isLeadership && finance ? (
         <div className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {/* Collection rate */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base">Collection Rate</CardTitle>
-                <CardDescription>{finance.termName} · {finance.paymentCount} payments</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center">
-                <RadialProgress
-                  value={finance.collectionRate}
-                  size={130}
-                  stroke={13}
-                  color={finance.collectionRate >= 80 ? "#22c55e" : finance.collectionRate >= 50 ? "#f59e0b" : "#ef4444"}
-                  label="of expected fees"
-                />
-                <div className="grid grid-cols-3 gap-3 w-full mt-4 text-center">
-                  <div>
-                    <p className="text-[11px] text-muted-foreground">Expected</p>
-                    <p className="text-sm font-bold">{fmtKES(finance.expected)}</p>
+            {showCollectionRate ? (
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Collection Rate</CardTitle>
+                  <CardDescription>{finance.termName} · {finance.paymentCount} payments</CardDescription>
+                </CardHeader>
+                <CardContent className="flex flex-col items-center">
+                  <RadialProgress
+                    value={finance.collectionRate}
+                    size={130}
+                    stroke={13}
+                    color={finance.collectionRate >= 80 ? "#22c55e" : finance.collectionRate >= 50 ? "#f59e0b" : "#ef4444"}
+                    label="of expected fees"
+                  />
+                  <div className="grid grid-cols-3 gap-3 w-full mt-4 text-center">
+                    <div>
+                      <p className="text-[11px] text-muted-foreground">Expected</p>
+                      <p className="text-sm font-bold">{fmtKES(finance.expected)}</p>
+                    </div>
+                    <div>
+                      <p className="text-[11px] text-muted-foreground">Collected</p>
+                      <p className="text-sm font-bold text-green-600">{fmtKES(finance.collected)}</p>
+                    </div>
+                    <div>
+                      <p className="text-[11px] text-muted-foreground">Outstanding</p>
+                      <p className={`text-sm font-bold ${finance.outstanding > 0 ? "text-red-600" : "text-green-600"}`}>
+                        {fmtKES(finance.outstanding)}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-[11px] text-muted-foreground">Collected</p>
-                    <p className="text-sm font-bold text-green-600">{fmtKES(finance.collected)}</p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] text-muted-foreground">Outstanding</p>
-                    <p className={`text-sm font-bold ${finance.outstanding > 0 ? "text-red-600" : "text-green-600"}`}>
-                      {fmtKES(finance.outstanding)}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : null}
 
             {/* Collection trend */}
-            <Card className="lg:col-span-2">
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-base">Fee Collection Trend</CardTitle>
-                    <CardDescription>Weekly collections, last 12 weeks</CardDescription>
+            {showFeeTrend ? (
+              <Card className="lg:col-span-2">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-base">Fee Collection Trend</CardTitle>
+                      <CardDescription>Weekly collections, last 12 weeks</CardDescription>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={exportFinanceCSV}>
+                      <Download className="h-3.5 w-3.5 mr-1" /> Export
+                    </Button>
                   </div>
-                  <Button variant="ghost" size="sm" onClick={exportFinanceCSV}>
-                    <Download className="h-3.5 w-3.5 mr-1" /> Export
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {finance.trend.some((t) => t.collected > 0) ? (
-                  <LineChart
-                    labels={finance.trend.map((t) => t.label)}
-                    datasets={[{ label: "Collected", data: finance.trend.map((t) => t.collected), color: "#22c55e" }]}
-                    height={260}
-                    showArea
-                  />
-                ) : (
-                  <EmptyChart message="No payments recorded this term" />
-                )}
-              </CardContent>
-            </Card>
+                </CardHeader>
+                <CardContent>
+                  {finance.trend.some((t) => t.collected > 0) ? (
+                    <LineChart
+                      labels={finance.trend.map((t) => t.label)}
+                      datasets={[{ label: "Collected", data: finance.trend.map((t) => t.collected), color: "#22c55e" }]}
+                      height={260}
+                      showArea
+                    />
+                  ) : (
+                    <EmptyChart message="No payments recorded this term" />
+                  )}
+                </CardContent>
+              </Card>
+            ) : null}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* Per-class */}
-            <Card className="lg:col-span-2">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base">Fee Collection by Class</CardTitle>
-                <CardDescription>Expected vs collected</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {finance.byClass.length > 0 ? (
-                  <HorizontalBarChart
-                    labels={finance.byClass.map((c) => c.className)}
-                    datasets={[
-                      { label: "Expected", data: finance.byClass.map((c) => c.expected), color: "#94a3b8" },
-                      { label: "Collected", data: finance.byClass.map((c) => c.collected), color: "#2563eb" },
-                    ]}
-                    height={280}
-                  />
-                ) : (
-                  <EmptyChart message="No fee structures for this term" />
-                )}
-              </CardContent>
-            </Card>
+            {showFeeByClass ? (
+              <Card className="lg:col-span-2">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Fee Collection by Class</CardTitle>
+                  <CardDescription>Expected vs collected</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {finance.byClass.length > 0 ? (
+                    <HorizontalBarChart
+                      labels={finance.byClass.map((c) => c.className)}
+                      datasets={[
+                        { label: "Expected", data: finance.byClass.map((c) => c.expected), color: "#94a3b8" },
+                        { label: "Collected", data: finance.byClass.map((c) => c.collected), color: "#2563eb" },
+                      ]}
+                      height={280}
+                    />
+                  ) : (
+                    <EmptyChart message="No fee structures for this term" />
+                  )}
+                </CardContent>
+              </Card>
+              ) : null}
 
             {/* Payment methods */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-base">Payment Methods</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {finance.byMethod.length > 0 ? (
-                  <DoughnutChart
-                    labels={finance.byMethod.map((m) => METHOD_LABELS[m.method] ?? m.method)}
-                    data={finance.byMethod.map((m) => m.amount)}
-                    height={240}
-                  />
-                ) : (
-                  <EmptyChart message="No payments yet" />
-                )}
-              </CardContent>
-            </Card>
+            {showPaymentMethods ? (
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base">Payment Methods</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {finance.byMethod.length > 0 ? (
+                    <DoughnutChart
+                      labels={finance.byMethod.map((m) => METHOD_LABELS[m.method] ?? m.method)}
+                      data={finance.byMethod.map((m) => m.amount)}
+                      height={240}
+                    />
+                  ) : (
+                    <EmptyChart message="No payments yet" />
+                  )}
+                </CardContent>
+              </Card>
+            ) : null}
           </div>
 
           {/* Top debtors */}
-          {finance.topDebtors.length > 0 && (
+          {finance.topDebtors.length > 0 ? (
             <Card>
               <CardHeader className="pb-2">
                 <CardTitle className="text-base">Top Debtors</CardTitle>
@@ -528,19 +606,19 @@ export default function AnalyticsPage() {
                 </div>
               </CardContent>
             </Card>
-          )}
+             ) : null}
         </div>
-      )}
+      ) : null}
 
       {/* Financial tab — non-leadership */}
-      {tab === "financial" && !isLeadership && (
+      {tab === "financial" && !isLeadership ? (
         <Card>
           <CardContent className="p-8 text-center">
             <CircleDollarSign className="h-10 w-10 mx-auto text-muted-foreground/50 mb-3" />
             <p className="text-muted-foreground">Financial analytics are available to the school head only.</p>
           </CardContent>
         </Card>
-      )}
+      ) : null}
     </div>
   );
 }

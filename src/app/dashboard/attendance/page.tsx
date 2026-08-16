@@ -16,6 +16,7 @@ import { exportToCsv } from "@/lib/csv-export";
 import { useRole, isLeadershipRole } from "@/lib/use-role";
 import { ImportStudio } from "@/components/import-studio";
 import { LineChart, DoughnutChart, HorizontalBarChart, EmptyChart } from "@/components/charts";
+import { ChartConfigPanel } from "@/components/chart-config-panel";
 
 const STATUS_OPTIONS = [
   { value: "present", label: "Present", icon: CheckCircle2, color: "text-green-600" },
@@ -39,6 +40,18 @@ export default function AttendancePage() {
     api.schoolAnalytics.getAttendanceAnalytics,
     school ? { schoolId: school._id } : "skip"
   );
+
+  // Chart configuration for this page
+  const chartConfigs = useQuery(
+    api.chartConfigs.listByPage,
+    school ? { schoolId: school._id, page: "attendance" } : "skip"
+  );
+
+  function isChartVisible(chartKey: string): boolean {
+    if (!chartConfigs) return true;
+    const config = chartConfigs.find((c) => c.chartKey === chartKey);
+    return config ? config.isVisible : true;
+  }
 
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedDate, setSelectedDate] = useState(todayString());
@@ -119,53 +132,62 @@ export default function AttendancePage() {
           <h1 className="text-3xl font-bold">Attendance</h1>
           <p className="text-muted-foreground mt-1">Mark daily class attendance</p>
         </div>
-        {isLeadership && (
-          <Button variant="outline" onClick={() => setShowImport(true)}>
-            <Upload className="h-4 w-4 mr-2" /> Import
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {isLeadership && (
+            <Button variant="outline" onClick={() => setShowImport(true)}>
+              <Upload className="h-4 w-4 mr-2" /> Import
+            </Button>
+          )}
+          {isLeadership && school && (
+            <ChartConfigPanel schoolId={school._id} page="attendance" configs={chartConfigs ?? []} />
+          )}
+        </div>
       </div>
 
       {/* ── Analytics ── */}
-      {(attAnalytics.trend.some((t) => t.total > 0) || attAnalytics.today.total > 0) && (
+      {isChartVisible("attendance_rate_trend") && isChartVisible("attendance_status_breakdown") && (attAnalytics.trend.some((t) => t.total > 0) || attAnalytics.today.total > 0) && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <Card className="lg:col-span-2">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">Attendance Rate Trend</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {attAnalytics.trend.some((t) => t.total > 0) ? (
-                <LineChart
-                  labels={attAnalytics.trend.map((t) => t.label)}
-                  datasets={[{ label: "Attendance %", data: attAnalytics.trend.map((t) => t.rate), color: "#10b981" }]}
-                  height={200}
-                  showArea
-                />
-              ) : (
-                <EmptyChart message="No attendance recorded yet" />
-              )}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">Today&apos;s Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {attAnalytics.today.total > 0 ? (
-                <DoughnutChart
-                  labels={["Present", "Absent", "Late", "Excused"]}
-                  data={[attAnalytics.today.present, attAnalytics.today.absent, attAnalytics.today.late, attAnalytics.today.excused]}
-                  height={200}
-                />
-              ) : (
-                <EmptyChart message="No attendance taken today" />
-              )}
-            </CardContent>
-          </Card>
+          {isChartVisible("attendance_rate_trend") && (
+            <Card className="lg:col-span-2">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Attendance Rate Trend</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {attAnalytics.trend.some((t) => t.total > 0) ? (
+                  <LineChart
+                    labels={attAnalytics.trend.map((t) => t.label)}
+                    datasets={[{ label: "Attendance %", data: attAnalytics.trend.map((t) => t.rate), color: "#10b981" }]}
+                    height={200}
+                    showArea
+                  />
+                ) : (
+                  <EmptyChart message="No attendance recorded yet" />
+                )}
+              </CardContent>
+            </Card>
+          )}
+          {isChartVisible("attendance_status_breakdown") && (
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Today&apos;s Status</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {attAnalytics.today.total > 0 ? (
+                  <DoughnutChart
+                    labels={["Present", "Absent", "Late", "Excused"]}
+                    data={[attAnalytics.today.present, attAnalytics.today.absent, attAnalytics.today.late, attAnalytics.today.excused]}
+                    height={200}
+                  />
+                ) : (
+                  <EmptyChart message="No attendance taken today" />
+                )}
+              </CardContent>
+            </Card>
+          )}
         </div>
       )}
 
-      {attAnalytics.byClass.length > 0 && (
+      {isChartVisible("attendance_by_class") && attAnalytics.byClass.length > 0 && (
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Attendance by Class</CardTitle>

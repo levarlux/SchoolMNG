@@ -5,8 +5,8 @@ import {
   requireActiveMembership,
   requireSchoolMembership,
   requirePrincipal,
+  isLeadershipRoleKey,
 } from "./helpers";
-import { LEADERSHIP_ROLE_KEY } from "./roles";
 import { Doc, Id } from "./_generated/dataModel";
 import { CACHE_TTL_MS } from "./dashboardCache";
 
@@ -481,20 +481,85 @@ export const getAttendanceAnalytics = query({
 // ── Bundled, role-aware dashboard analytics (with lazy cache) ───
 
 /** The actual computation, extracted so it can be called from the cache path. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function computeDashboardAnalytics(ctx: QueryCtx, schoolId: Id<"schools">, termId?: Id<"terms">): Promise<any> {
-    const role = await resolveRole(ctx, schoolId);
-    const isLeadership = role === LEADERSHIP_ROLE_KEY;
+async function enrollmentAnalytics(ctx: QueryCtx, schoolId: Id<"schools">) {
+    const terms = await ctx.db
+      .query("terms")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(50);
 
-    const [finance, academic, attendance] = await Promise.all([
+    // Sort terms chronologically
+    const sortedTerms = [...terms].sort((a, b) => a.startDate - b.startDate);
+
+    // Fetch all enrollments for this school
+    const enrollments = await ctx.db
+      .query("enrollments")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(5000);
+
+    // Group enrollments by term
+    const enrollmentsByTerm = new Map<string, { active: number; graduated: number; withdrawn: number; suspended: number; total: number }>();
+    for (const e of enrollments) {
+      const termId = e.termId as string;
+      if (!enrollmentsByTerm.has(termId)) {
+        enrollmentsByTerm.set(termId, { active: 0, graduated: 0, withdrawn: 0, suspended: 0, total: 0 });
+      }
+      const bucket = enrollmentsByTerm.get(termId)!;
+      bucket[e.status]++;
+      bucket.total++;
+    }
+
+    // Build trend data
+    const trend = sortedTerms.map((t) => {
+      const data = enrollmentsByTerm.get(t._id as string);
+      return {
+        termId: t._id,
+        label: `${t.name} ${t.year}`,
+        active: data?.active ?? 0,
+        graduated: data?.graduated ?? 0,
+        withdrawn: data?.withdrawn ?? 0,
+        suspended: data?.suspended ?? 0,
+        total: data?.total ?? 0,
+      };
+    });
+
+    // Summary stats
+    const totalEnrolled = enrollments.length;
+    const activeCount = enrollments.filter((e) => e.status === "active").length;
+    const withdrawnCount = enrollments.filter((e) => e.status === "withdrawn").length;
+    const graduatedCount = enrollments.filter((e) => e.status === "graduated").length;
+    const currentTerm = terms.find((t) => t.status === "active");
+    const currentTermEnrollments = currentTerm
+      ? enrollments.filter((e) => e.termId === currentTerm._id)
+      : [];
+    const currentActive = currentTermEnrollments.filter((e) => e.status === "active").length;
+
+    return {
+      trend,
+      summary: {
+        totalEnrolled,
+        activeCount,
+        withdrawnCount,
+        graduatedCount,
+        currentTermActive: currentActive,
+        currentTermName: currentTerm ? `${currentTerm.name} ${currentTerm.year}` : null,
+      },
+    };
+  }
+
+  async function computeDashboardAnalytics(ctx: QueryCtx, schoolId: Id<"schools">, termId?: Id<"terms">): Promise<any> {
+    const role = await resolveRole(ctx, schoolId);
+    const isLeadership = await isLeadershipRoleKey(ctx, schoolId, role);
+
+    const [finance, academic, attendance, enrollment] = await Promise.all([
       // Finance is leadership-only; skip entirely otherwise.
       isLeadership ? feeAnalytics(ctx, schoolId, termId) : Promise.resolve(null),
       academicAnalytics(ctx, schoolId, termId),
       attendanceAnalytics(ctx, schoolId),
+      enrollmentAnalytics(ctx, schoolId),
     ]);
 
-    return { role, isLeadership, finance, academic, attendance };
-}
+    return { role, isLeadership, finance, academic, attendance, enrollment };
+  }
 
 export const getDashboardAnalytics = query({
   args: {

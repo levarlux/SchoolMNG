@@ -318,7 +318,7 @@ export default function AdminTiersPage() {
               }`}
             >
               <config.icon className={`h-4 w-4 ${config.color}`} />
-              <span className="font-medium">{count}</span>
+              <span className="font-medium">{String(count)}</span>
               <span className="text-muted-foreground">{config.label}</span>
             </button>
           );

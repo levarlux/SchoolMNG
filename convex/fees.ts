@@ -3,6 +3,7 @@ import { mutation, query, type QueryCtx } from "./_generated/server";
 import { Doc, Id } from "./_generated/dataModel";
 import { requireStudentMembership, requireModuleAccessByName, requireModuleEditAccessByName, logAuditEntry } from "./helpers";
 import { checkRateLimit } from "./rateLimit";
+import { internal } from "./_generated/api";
 
 // ── School Fees (Phase 2) ───────────────────────────────────────────
 // A school is a business, but the language stays school-first: fee
@@ -44,6 +45,68 @@ function structureAmountFor(
   return classMatch?.amount ?? 0;
 }
 
+// ── P2#14: EAV-aware fee resolution ───────────────────────────────
+// When a school has useEavForFees configured, fee amounts are read
+// from EAV fieldValues (the school's own "Tuition Fee" field tagged
+// with semantic: "amount") instead of the hardcoded fee_structures table.
+
+/**
+ * Build a Map<studentId, amount> of EAV fee amounts for a batch of students.
+ * Returns null if the school hasn't configured useEavForFees.
+ */
+async function buildEavFeeMap(
+  ctx: QueryCtx,
+  schoolId: Id<"schools">,
+  studentIds: Id<"students">[],
+): Promise<Map<string, number> | null> {
+  const config = await ctx.db
+    .query("fee_config")
+    .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+    .first();
+  if (!config || !config.useEavForFees || !config.amountFieldId) return null;
+
+  const eavMap = new Map<string, number>();
+  for (const studentId of studentIds) {
+    const record = await ctx.db
+      .query("records")
+      .withIndex("by_studentId", (q) => q.eq("studentId", studentId))
+      .first();
+    if (!record) continue;
+    const fv = await ctx.db
+      .query("fieldValues")
+      .withIndex("by_recordId_fieldId", (q) =>
+        q.eq("recordId", record._id).eq("fieldId", config.amountFieldId!)
+      )
+      .first();
+    if (fv) {
+      const amt = parseFloat(fv.value);
+      if (!isNaN(amt) && amt > 0) eavMap.set(studentId, amt);
+    }
+  }
+  return eavMap;
+}
+
+/**
+ * Resolve the fee amount for a student: EAV first (if configured), then
+ * fallback to the hardcoded fee_structures table.
+ */
+function resolveFeeAmount(
+  eavMap: Map<string, number> | null,
+  studentId: string,
+  structures: Doc<"fee_structures">[],
+  classId: Id<"classes">,
+  streamId: Id<"streams"> | undefined,
+  termId: Id<"terms">
+): number {
+  // EAV takes precedence when configured
+  if (eavMap) {
+    const eavAmount = eavMap.get(studentId);
+    if (eavAmount !== undefined) return eavAmount;
+  }
+  // Fallback to hardcoded fee_structures
+  return structureAmountFor(structures, classId, streamId, termId);
+}
+
 // ── Shared multi-term engine ────────────────────────────────────────
 // Builds a per-term fee position for every student with credit
 // carry-over: overpayments in earlier terms reduce what later terms owe,
@@ -80,6 +143,10 @@ async function buildMultiTermRows(
   allStructures: Doc<"fee_structures">[]
 ): Promise<MultiTermRow[]> {
   terms = sortTermsByDate(terms);
+
+  // P2#14: Build EAV fee map if configured
+  const eavFeeMap = await buildEavFeeMap(ctx, schoolId, students.map((s) => s._id));
+
   const allPayments = await ctx.db
     .query("fee_payments")
     .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
@@ -99,7 +166,8 @@ async function buildMultiTermRows(
     let totalPaid = 0;
 
     for (const term of terms) {
-      const expected = structureAmountFor(allStructures, student.classId, student.streamId, term._id);
+      // P2#14: EAV-aware fee resolution — EAV first, then fee_structures
+      const expected = resolveFeeAmount(eavFeeMap, student._id, allStructures, student.classId, student.streamId, term._id);
       const paid = paymentMap.get(`${student._id}:${term._id}`) ?? 0;
       const creditFromPrior = Math.min(expected, carryOver);
       const effectiveExpected = expected - creditFromPrior;
@@ -254,12 +322,15 @@ export const getTermSummary = query({
       const key = `${p.studentId}:${p.termId}`;
       priorPaymentMap.set(key, (priorPaymentMap.get(key) ?? 0) + p.amount);
     }
+    // P2#14: Build EAV fee map if configured
+    const eavFeeMap = await buildEavFeeMap(ctx, schoolId, students.map((s) => s._id));
+
     const priorCreditByStudent = new Map<string, number>();
     for (const s of students) {
       let credit = 0;
       for (const t of priorTerms) {
         if (t._id === termId) break;
-        const expected = structureAmountFor(priorStructures, s.classId, s.streamId, t._id);
+        const expected = resolveFeeAmount(eavFeeMap, s._id, priorStructures, s.classId, s.streamId, t._id);
         const paid = priorPaymentMap.get(`${s._id}:${t._id}`) ?? 0;
         credit = Math.max(0, credit + paid - expected);
       }
@@ -273,7 +344,7 @@ export const getTermSummary = query({
     let creditApplied = 0;
     let overpaidAmount = 0; // total the school owes back (paid beyond effective expected)
     for (const s of students) {
-      const amount = structureAmountFor(structures, s.classId, s.streamId, termId);
+      const amount = resolveFeeAmount(eavFeeMap, s._id, structures, s.classId, s.streamId, termId);
       const paid = paidByStudent.get(s._id) ?? 0;
       const credit = Math.min(amount, priorCreditByStudent.get(s._id) ?? 0);
       expected += amount;
@@ -301,6 +372,7 @@ export const getTermSummary = query({
       creditApplied,
       overpaidCount,
       collectionRate: collectible > 0 ? Math.round(((collectible - outstanding) / collectible) * 100) : 0,
+      feeSource: eavFeeMap ? "eav" : "fee_structures", // P2#14: which engine computed fees
       debtors,
       paymentCount: payments.length,
       studentCount: students.length,
@@ -327,8 +399,11 @@ export const listStudentFees = query({
       paidByStudent.set(p.studentId, (paidByStudent.get(p.studentId) ?? 0) + p.amount);
     }
 
+    // P2#14: Build EAV fee map if configured
+    const eavFeeMap = await buildEavFeeMap(ctx, schoolId, students.map((s) => s._id));
+
     const rows = students.map((s) => {
-      const expected = structureAmountFor(structures, s.classId, s.streamId, termId);
+      const expected = resolveFeeAmount(eavFeeMap, s._id, structures, s.classId, s.streamId, termId);
       const paid = paidByStudent.get(s._id) ?? 0;
       return {
         student: s,
@@ -419,6 +494,9 @@ export const getStudentFees = query({
         .take(500),
     ]);
 
+    // P2#14: Build EAV fee map if configured
+    const eavFeeMap = await buildEavFeeMap(ctx, student.schoolId, [studentId]);
+
     // Walk terms chronologically up to (and including) the current one,
     // carrying over any overpayment as credit toward what is still owed.
     let carryOver = 0;
@@ -431,7 +509,7 @@ export const getStudentFees = query({
       credit: number;
     } | null = null;
     for (const term of terms) {
-      const expected = structureAmountFor(structures, student.classId, student.streamId, term._id);
+      const expected = resolveFeeAmount(eavFeeMap, studentId, structures, student.classId, student.streamId, term._id);
       const paid = payments.filter((p) => p.termId === term._id).reduce((s, p) => s + p.amount, 0);
       const creditFromPrior = Math.min(expected, carryOver);
       const effectiveExpected = expected - creditFromPrior;

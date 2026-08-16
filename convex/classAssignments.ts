@@ -1,6 +1,57 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
-import { requireSchoolMembership, requireStudentMembership, requireModuleEditAccessByName, logAuditEntry } from "./helpers";
+import { Id } from "./_generated/dataModel";
+import {
+  requireSchoolMembership,
+  requireStudentMembership,
+  requireModuleEditAccessByName,
+  logAuditEntry,
+} from "./helpers";
+import type { MutationCtx } from "./_generated/server";
+
+/**
+ * P1#7: upsert an `enrollments` row to match a class placement. Called from
+ * `create`/`bulkCreate` so the two records never disagree. Re-activates an
+ * existing row rather than duplicating it (a placement implies enrolment).
+ * Mirrors `enrollments.enroll` but stays internal to avoid an api cycle.
+ */
+async function syncEnrollment(
+  ctx: MutationCtx,
+  args: {
+    schoolId: Id<"schools">;
+    studentId: Id<"students">;
+    termId: Id<"terms">;
+    classId: Id<"classes">;
+    streamId?: Id<"streams">;
+  },
+) {
+  const existing = await ctx.db
+    .query("enrollments")
+    .withIndex("by_studentId_termId", (q) =>
+      q.eq("studentId", args.studentId).eq("termId", args.termId)
+    )
+    .first();
+  const now = Date.now();
+  if (existing) {
+    await ctx.db.patch(existing._id, {
+      classId: args.classId,
+      streamId: args.streamId,
+      status: "active",
+      updatedAt: now,
+    });
+  } else {
+    await ctx.db.insert("enrollments", {
+      schoolId: args.schoolId,
+      studentId: args.studentId,
+      termId: args.termId,
+      classId: args.classId,
+      streamId: args.streamId,
+      status: "active",
+      enrolledAt: now,
+      updatedAt: now,
+    });
+  }
+}
 
 /**
  * List all class assignments for a term.
@@ -102,6 +153,15 @@ export const create = mutation({
       streamId: args.streamId,
       termId: args.termId,
     });
+    // P1#7: keep the enrolment anchor in sync — a term placement implies an
+    // active enrolment (upsert reactivates, so re-assigning just updates it).
+    await syncEnrollment(ctx, {
+      schoolId: args.schoolId,
+      studentId: args.studentId,
+      termId: args.termId,
+      classId: args.classId,
+      streamId: args.streamId,
+    });
     await logAuditEntry(ctx, args.schoolId, "classAssignment.create", {
       assignmentId: id,
       studentId: args.studentId,
@@ -146,6 +206,15 @@ export const bulkCreate = mutation({
         classId: args.classId,
         streamId: args.streamId,
         termId: args.termId,
+      });
+      // P1#7: mirror into the enrolment anchor so per-term enrolment stats
+      // and the status state machine see every placed student.
+      await syncEnrollment(ctx, {
+        schoolId: args.schoolId,
+        studentId,
+        termId: args.termId,
+        classId: args.classId,
+        streamId: args.streamId,
       });
       created++;
     }

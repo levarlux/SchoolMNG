@@ -31,6 +31,7 @@ const DEFAULTS: Record<string, ChartDef[]> = {
     { chartKey: "exam_mean_trend", chartType: "line", title: "Exam Mean Trend", description: "Average marks across exams", position: 50, color: "#8b5cf6" },
     { chartKey: "performance_by_class", chartType: "bar", title: "Performance by Class", description: "Mean marks on the latest exam", position: 60 },
     { chartKey: "subject_averages", chartType: "horizontalBar", title: "Subject Averages", description: "Mean marks per subject, latest exam", position: 70, color: "#8b5cf6" },
+    { chartKey: "enrollment_trend", chartType: "bar", title: "Enrollment Trends", description: "Active, withdrawn, and graduated students by term", position: 75, color: "#3b82f6" },
     { chartKey: "attendance_rate_trend", chartType: "line", title: "Daily Attendance Rate", description: "Last 14 days", position: 80, color: "#10b981" },
     { chartKey: "attendance_today", chartType: "doughnut", title: "Today's Status", description: "Present/Absent/Late/Excused breakdown", position: 90 },
     { chartKey: "attendance_by_class", chartType: "horizontalBar", title: "Attendance by Class", description: "Last 30 days — lowest first", position: 100, color: "#10b981" },

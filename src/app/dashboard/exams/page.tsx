@@ -145,7 +145,7 @@ function ExamsList() {
                   exams.map((e) => ({
                     Name: e.name,
                     Type: EXAM_TYPES.find((t) => t.value === e.examType)?.label ?? e.examType,
-                    Term: termMap.get(e.termId) ? `${termMap.get(e.termId)!.name} ${termMap.get(e.termId)!.year}` : "",
+                    Term: termMap.get(e.termId) ? `${(termMap.get(e.termId) as any).name} ${(termMap.get(e.termId) as any).year}` : "",
                     Date: new Date(e.date).toISOString().slice(0, 10),
                   })),
                   "exams"
@@ -273,7 +273,7 @@ function ExamsList() {
             </thead>
             <tbody>
               {filtered.map((ex) => {
-                const term = termMap.get(ex.termId);
+                const term = termMap.get(ex.termId) as any;
                 return (
                   <tr key={ex._id} className="border-t border-border hover:bg-secondary/5">
                     <td className="p-3 font-medium">

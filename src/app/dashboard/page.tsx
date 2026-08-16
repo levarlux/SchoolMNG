@@ -159,9 +159,12 @@ export default function Dashboard() {
     { label: "Announcements", href: "/dashboard/announcements", icon: MessageSquare, color: "text-indigo-600", bg: "bg-indigo-50" },
   ];
 
+  const enrollment = analytics.enrollment;
+
   const hasFinance = !!finance && finance.studentCount > 0;
   const hasAcademic = academic.examTrend.length > 0 || academic.byClass.length > 0;
   const hasAttendance = attendance.trend.some((t) => t.total > 0) || attendance.today.total > 0;
+  const hasEnrollment = enrollment && enrollment.trend.length > 0;
 
   const methodLabels: Record<string, string> = {
     cash: "Cash",
@@ -519,6 +522,71 @@ export default function Dashboard() {
                 ) : (
                   <EmptyChart message="No subject results yet" />
                 )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )}
+
+      {/* ══ Enrollment Trends (§5 spec gap) ═══════════════════════ */}
+      {hasEnrollment && isChartVisible("enrollment_trend") && (
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Users className="h-5 w-5 text-blue-600" />
+            <h2 className="text-lg font-bold">Enrollment Trends</h2>
+            {enrollment.summary.currentTermName && (
+              <span className="text-xs text-muted-foreground">Current: {enrollment.summary.currentTermName}</span>
+            )}
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {/* Enrollment over time */}
+            <Card className="lg:col-span-2">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Enrollment by Term</CardTitle>
+                <CardDescription>Active, withdrawn, and graduated students over time</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {enrollment.trend.some((t) => t.total > 0) ? (
+                  <BarChart
+                    labels={enrollment.trend.map((t) => t.label)}
+                    datasets={[
+                      { label: "Active", data: enrollment.trend.map((t) => t.active), color: "#3b82f6" },
+                      { label: "Withdrawn", data: enrollment.trend.map((t) => t.withdrawn), color: "#f59e0b" },
+                      { label: "Graduated", data: enrollment.trend.map((t) => t.graduated), color: "#22c55e" },
+                    ]}
+                    height={230}
+                  />
+                ) : (
+                  <EmptyChart message="No enrollment records yet" />
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Summary stats */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Enrollment Summary</CardTitle>
+                <CardDescription>Lifetime totals</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Currently Active</span>
+                    <span className="text-lg font-bold text-blue-600">{enrollment.summary.currentTermActive}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Total Enrolled</span>
+                    <span className="text-lg font-bold">{enrollment.summary.totalEnrolled}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Graduated</span>
+                    <span className="text-lg font-bold text-green-600">{enrollment.summary.graduatedCount}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Withdrawn</span>
+                    <span className="text-lg font-bold text-yellow-600">{enrollment.summary.withdrawnCount}</span>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>

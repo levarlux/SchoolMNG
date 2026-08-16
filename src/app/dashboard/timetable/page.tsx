@@ -160,8 +160,8 @@ export default function TimetablePage() {
                 <p className="text-xs text-muted-foreground">No classes</p>
               )}
               {timetableByDay[idx]?.map((entry) => {
-                const subject = subjectMap.get(entry.subjectId);
-                const cls = classMap.get(entry.classId);
+                const subject = subjectMap.get(entry.subjectId) as any;
+                const cls = classMap.get(entry.classId) as any;
                 return (
                   <div
                     key={entry._id}

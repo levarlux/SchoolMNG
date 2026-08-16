@@ -19,11 +19,12 @@ export const listBySection = query({
     const section = await ctx.db.get(args.sectionId);
     if (!section) throw new Error("Section not found");
     await requireSchoolMembership(ctx, section.schoolId);
-    return await ctx.db
+    const fields = await ctx.db
       .query("fields")
       .withIndex("by_sectionId", (q) => q.eq("sectionId", args.sectionId))
       .order("asc")
       .take(100);
+    return fields.filter((f) => !f.deletedAt);
   },
 });
 
@@ -31,11 +32,27 @@ export const listBySchool = query({
   args: { schoolId: v.id("schools") },
   handler: async (ctx, args) => {
     await requireSchoolMembership(ctx, args.schoolId);
-    return await ctx.db
+    const fields = await ctx.db
       .query("fields")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", args.schoolId))
       .order("asc")
       .take(500);
+    return fields.filter((f) => !f.deletedAt);
+  },
+});
+
+export const listArchivedBySection = query({
+  args: { sectionId: v.id("sections") },
+  handler: async (ctx, args) => {
+    const section = await ctx.db.get(args.sectionId);
+    if (!section) throw new Error("Section not found");
+    await requireSchoolMembership(ctx, section.schoolId);
+    return await ctx.db
+      .query("fields")
+      .withIndex("by_sectionId", (q) => q.eq("sectionId", args.sectionId))
+      .filter((q) => q.neq(q.field("deletedAt"), undefined))
+      .order("asc")
+      .take(100);
   },
 });
 
@@ -125,6 +142,42 @@ export const remove = mutation({
     // from record forms but its fieldValues are preserved for historical data.
     await ctx.db.patch(args.id, { deletedAt: Date.now() });
     await logAuditEntry(ctx, field.schoolId, "field.remove", {
+      fieldId: args.id,
+      name: field.name,
+    });
+  },
+});
+
+export const restore = mutation({
+  args: { id: v.id("fields") },
+  handler: async (ctx, args) => {
+    const field = await ctx.db.get(args.id);
+    if (!field) throw new Error("Field not found");
+    await requirePrincipal(ctx, field.schoolId);
+    await ctx.db.patch(args.id, { deletedAt: undefined });
+    await logAuditEntry(ctx, field.schoolId, "field.restore", {
+      fieldId: args.id,
+      name: field.name,
+    });
+  },
+});
+
+export const hardDelete = mutation({
+  args: { id: v.id("fields") },
+  handler: async (ctx, args) => {
+    const field = await ctx.db.get(args.id);
+    if (!field) throw new Error("Field not found");
+    await requirePrincipal(ctx, field.schoolId);
+    // Permanent delete: drop archived fieldValues so the field is fully gone.
+    const values = await ctx.db
+      .query("fieldValues")
+      .withIndex("by_fieldId", (q) => q.eq("fieldId", args.id))
+      .take(500);
+    for (const fv of values) {
+      await ctx.db.delete(fv._id);
+    }
+    await ctx.db.delete(args.id);
+    await logAuditEntry(ctx, field.schoolId, "field.hardDelete", {
       fieldId: args.id,
       name: field.name,
     });

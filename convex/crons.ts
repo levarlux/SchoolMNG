@@ -25,4 +25,11 @@ crons.interval("expire-cancelled-subscriptions", { hours: 6 }, internal.subscrip
  */
 crons.interval("refresh-dashboard-cache", { hours: 1 }, internal.refreshDashboardCache.refreshAllDashboardCaches);
 
+/**
+ * Re-evaluate all schools' tier assignments monthly.
+ * Adjusts Paystack plan recommendations as schools grow/shrink.
+ * Runs on the 1st of each month at 02:00 UTC.
+ */
+crons.cron("re-evaluate-tiers", "0 2 1 * *", internal.tierAssignment.reEvaluateAllTiers);
+
 export default crons;

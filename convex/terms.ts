@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { Id, Doc } from "./_generated/dataModel";
 import {
   requireSchoolMembership,
   requireModuleEditAccessByName,
@@ -15,6 +16,24 @@ export const listBySchool = query({
       .query("terms")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
       .order("desc")
+      .take(100);
+  },
+});
+
+/**
+ * List the direct children of a recursive term/period node
+ * (Year → Semester → Term → Week → Day, any depth).
+ */
+export const listChildren = query({
+  args: { parentId: v.id("terms") },
+  handler: async (ctx, { parentId }) => {
+    const parent = await ctx.db.get(parentId);
+    if (!parent) throw new Error("Term not found");
+    await requireSchoolMembership(ctx, parent.schoolId);
+    return await ctx.db
+      .query("terms")
+      .withIndex("by_parentId", (q) => q.eq("parentId", parentId))
+      .order("asc")
       .take(100);
   },
 });
@@ -72,6 +91,9 @@ export const create = mutation({
   args: {
     schoolId: v.id("schools"),
     academicYearId: v.id("academicYears"),
+    // Recursive period: Year → Semester → Term → Week → Day (any depth).
+    // Omit for a top-level term.
+    parentId: v.optional(v.id("terms")),
     name: v.string(),
     year: v.number(),
     startDate: v.float64(),
@@ -80,10 +102,19 @@ export const create = mutation({
   handler: async (ctx, args) => {
     await requireModuleEditAccessByName(ctx, args.schoolId, "Academics");
 
+    // Parent, if given, must belong to the same school and same academic year.
+    if (args.parentId) {
+      const parent = await ctx.db.get(args.parentId);
+      if (!parent || parent.schoolId !== args.schoolId) {
+        throw new Error("Parent term does not belong to this school");
+      }
+    }
+
     // Default status is "upcoming" — activate via activateTerm or rollover
     const termId = await ctx.db.insert("terms", {
       schoolId: args.schoolId,
       academicYearId: args.academicYearId,
+      parentId: args.parentId ?? undefined,
       name: args.name,
       year: args.year,
       startDate: args.startDate,
@@ -94,6 +125,7 @@ export const create = mutation({
       termId,
       name: args.name,
       year: args.year,
+      parentId: args.parentId ?? null,
     });
     return termId;
   },
@@ -109,6 +141,7 @@ export const update = mutation({
     status: v.optional(
       v.union(v.literal("upcoming"), v.literal("active"), v.literal("closed"))
     ),
+    parentId: v.optional(v.id("terms")),
   },
   handler: async (ctx, { id, ...updates }) => {
     const term = await ctx.db.get(id);
@@ -125,6 +158,21 @@ export const update = mutation({
         .first();
       if (currentActive && currentActive._id !== id) {
         await ctx.db.patch(currentActive._id, { status: "closed" });
+      }
+    }
+
+    // Re-parenting: forbid cycles (a node cannot be its own ancestor).
+    if (updates.parentId !== undefined) {
+      if (updates.parentId === id) {
+        throw new Error("A term cannot be its own parent");
+      }
+      let checkId: Id<"terms"> | null = updates.parentId;
+      let hops = 0;
+      while (checkId && hops < 20) {
+        if (checkId === id) throw new Error("Cannot reparent a term into its own subtree");
+        const ancestor: Doc<"terms"> | null = await ctx.db.get(checkId);
+        checkId = ancestor?.parentId ?? null;
+        hops++;
       }
     }
 
@@ -261,6 +309,15 @@ export const remove = mutation({
       .take(1);
     if (examsInTerm.length > 0) {
       throw new Error("Cannot delete term: exams are linked to it. Remove exams first.");
+    }
+
+    // Recursive terms: a node with children cannot be deleted directly.
+    const children = await ctx.db
+      .query("terms")
+      .withIndex("by_parentId", (q) => q.eq("parentId", id))
+      .take(1);
+    if (children.length > 0) {
+      throw new Error("Cannot delete term: it has nested terms. Remove the child terms first.");
     }
 
     await ctx.db.delete(id);

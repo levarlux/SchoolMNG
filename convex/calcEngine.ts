@@ -12,6 +12,47 @@
 import { v } from "convex/values";
 import { query } from "./_generated/server";
 import { requireSchoolMembership } from "./helpers";
+import { internal } from "./_generated/api";
+import { Id, Doc } from "./_generated/dataModel";
+
+// ── Helpers ───────────────────────────────────────────────────────────
+
+/** Resolve the current term for a school, or use the provided termId. */
+async function resolveCurrentTerm(
+  ctx: { db: { query: Function } },
+  schoolId: Id<"schools">,
+  termId?: Id<"terms">
+): Promise<Id<"terms">> {
+  if (termId) return termId;
+  const term = await ctx.db
+    .query("terms")
+    .withIndex("by_current", (q: any) => q.eq("schoolId", schoolId).eq("isCurrent", true))
+    .first();
+  if (!term) {
+    throw new Error("No current term found for this school");
+  }
+  return term._id;
+}
+
+/**
+ * Compute total expected fees: sum of fee_structure amounts for every
+ * student whose class has an active fee structure (matching stream if defined).
+ */
+function computeFeeExpected(
+  structures: Doc<"fee_structures">[],
+  students: Doc<"students">[]
+): number {
+  const classesWithFees = new Set(structures.map((s) => s.classId));
+  let expected = 0;
+  for (const s of students) {
+    if (!classesWithFees.has(s.classId)) continue;
+    const structure = structures.find(
+      (fs) => fs.classId === s.classId && (!fs.streamId || fs.streamId === s.streamId)
+    );
+    if (structure) expected += structure.amount;
+  }
+  return expected;
+}
 
 // ── Types ───────────────────────────────────────────────────────────
 
@@ -331,22 +372,63 @@ export const calculateFeeStats = query({
       case "total_collected":
         return { result: sum(records, "amount"), type: "number" };
       case "total_expected": {
-        const students = await ctx.db
-          .query("students")
-          .withIndex("by_schoolId", (q) => q.eq("schoolId", args.schoolId))
-          .take(10000);
-        return { result: students.length * 5000, type: "number", note: "Estimated" };
+        // P2#14: Check EAV config first — if useEavForFees is enabled,
+        // compute expected from EAV fieldValues instead of fee_structures.
+        const eavResult = await ctx.runQuery(internal.financeConfig.computeEavExpectedFees, {
+          schoolId: args.schoolId,
+        });
+        if (eavResult) {
+          return { result: eavResult.totalExpected, type: "number", source: "eav" };
+        }
+        // Fallback to hardcoded fee_structures
+        const termId = await resolveCurrentTerm(ctx, args.schoolId, args.termId);
+        const [structures, students] = await Promise.all([
+          ctx.db
+            .query("fee_structures")
+            .withIndex("by_term", (q) =>
+              q.eq("schoolId", args.schoolId).eq("termId", termId)
+            )
+            .take(500),
+          ctx.db
+            .query("students")
+            .withIndex("by_schoolId", (q) => q.eq("schoolId", args.schoolId))
+            .take(10000),
+        ]);
+        const expected = computeFeeExpected(structures, students);
+        return { result: expected, type: "number", source: "fee_structures" };
       }
       case "collection_rate": {
         const collected = sum(records, "amount");
-        const students = await ctx.db
-          .query("students")
-          .withIndex("by_schoolId", (q) => q.eq("schoolId", args.schoolId))
-          .take(10000);
-        const expected = students.length * 5000;
+        // P2#14: Check EAV config first
+        const eavResult = await ctx.runQuery(internal.financeConfig.computeEavExpectedFees, {
+          schoolId: args.schoolId,
+        });
+        if (eavResult) {
+          return {
+            result: percentage(collected, eavResult.totalExpected),
+            type: "percentage",
+            source: "eav",
+          };
+        }
+        // Fallback to hardcoded fee_structures
+        const termId = await resolveCurrentTerm(ctx, args.schoolId, args.termId);
+        const [structures, students] = await Promise.all([
+          ctx.db
+            .query("fee_structures")
+            .withIndex("by_term", (q) =>
+              q.eq("schoolId", args.schoolId).eq("termId", termId)
+            )
+            .take(500),
+          ctx.db
+            .query("students")
+            .withIndex("by_schoolId", (q) => q.eq("schoolId", args.schoolId))
+            .take(10000),
+        ]);
+        const expected = computeFeeExpected(structures, students);
         return {
           result: percentage(collected, expected),
           type: "percentage",
+          source: "fee_structures",
         };
       }
       case "average_payment":

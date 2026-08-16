@@ -243,7 +243,7 @@ export const getPermissionFilteredModules = internalQuery({
 
     return {
       roleKey: roleDoc.key,
-      isLeadership: roleDoc.key === "principal",
+      isLeadership: roleDoc.key === "principal" || roleDoc.isLeadership === true,
       allowedModules,
     };
   },
@@ -316,7 +316,7 @@ export const getFilteredSchoolContext = internalQuery({
       .first();
     if (!roleDoc) return null;
 
-    const isLeadership = roleDoc.key === "principal";
+    const isLeadership = roleDoc.key === "principal" || roleDoc.isLeadership === true;
 
     // Filter modules by permission
     const enabledModules = modules.filter((m) => m.isEnabled);

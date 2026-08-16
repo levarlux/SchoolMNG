@@ -9,6 +9,7 @@
  */
 
 import type * as academicYears from "../academicYears.js";
+import type * as accessResolver from "../accessResolver.js";
 import type * as admin from "../admin.js";
 import type * as admins from "../admins.js";
 import type * as admissions from "../admissions.js";
@@ -45,7 +46,9 @@ import type * as crons from "../crons.js";
 import type * as dashboardCache from "../dashboardCache.js";
 import type * as dashboardStats from "../dashboardStats.js";
 import type * as discipline from "../discipline.js";
+import type * as docTemplates from "../docTemplates.js";
 import type * as dutyRoster from "../dutyRoster.js";
+import type * as enrollments from "../enrollments.js";
 import type * as entityLinks from "../entityLinks.js";
 import type * as events from "../events.js";
 import type * as exams from "../exams.js";
@@ -58,6 +61,7 @@ import type * as fees from "../fees.js";
 import type * as fieldValues from "../fieldValues.js";
 import type * as fields from "../fields.js";
 import type * as files from "../files.js";
+import type * as financeConfig from "../financeConfig.js";
 import type * as fines from "../fines.js";
 import type * as gateLog from "../gateLog.js";
 import type * as globalSearch from "../globalSearch.js";
@@ -125,6 +129,9 @@ import type * as students from "../students.js";
 import type * as subjects from "../subjects.js";
 import type * as subscriptions from "../subscriptions.js";
 import type * as teachers from "../teachers.js";
+import type * as templateQueries from "../templateQueries.js";
+import type * as templateRenderer from "../templateRenderer.js";
+import type * as templateSeed from "../templateSeed.js";
 import type * as terms from "../terms.js";
 import type * as tierAssignment from "../tierAssignment.js";
 import type * as timetable from "../timetable.js";
@@ -140,6 +147,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   academicYears: typeof academicYears;
+  accessResolver: typeof accessResolver;
   admin: typeof admin;
   admins: typeof admins;
   admissions: typeof admissions;
@@ -176,7 +184,9 @@ declare const fullApi: ApiFromModules<{
   dashboardCache: typeof dashboardCache;
   dashboardStats: typeof dashboardStats;
   discipline: typeof discipline;
+  docTemplates: typeof docTemplates;
   dutyRoster: typeof dutyRoster;
+  enrollments: typeof enrollments;
   entityLinks: typeof entityLinks;
   events: typeof events;
   exams: typeof exams;
@@ -189,6 +199,7 @@ declare const fullApi: ApiFromModules<{
   fieldValues: typeof fieldValues;
   fields: typeof fields;
   files: typeof files;
+  financeConfig: typeof financeConfig;
   fines: typeof fines;
   gateLog: typeof gateLog;
   globalSearch: typeof globalSearch;
@@ -256,6 +267,9 @@ declare const fullApi: ApiFromModules<{
   subjects: typeof subjects;
   subscriptions: typeof subscriptions;
   teachers: typeof teachers;
+  templateQueries: typeof templateQueries;
+  templateRenderer: typeof templateRenderer;
+  templateSeed: typeof templateSeed;
   terms: typeof terms;
   tierAssignment: typeof tierAssignment;
   timetable: typeof timetable;

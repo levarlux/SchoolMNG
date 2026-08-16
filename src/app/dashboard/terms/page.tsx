@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
@@ -20,6 +20,104 @@ function formatDate(ts: number) {
   return new Date(ts).toLocaleDateString("en-KE", { year: "numeric", month: "short", day: "numeric" });
 }
 
+/**
+ * Recursive term/period card (P1#8): Year → Semester → Term → Week → Day.
+ * Children render nested beneath their parent with increasing indent.
+ */
+function TermCard({
+  term,
+  isLeadership,
+  onActivate,
+  onDelete,
+  children,
+  childrenByParent,
+  depth,
+}: {
+  term: Doc<"terms">;
+  isLeadership: boolean;
+  onActivate: (t: Doc<"terms">) => void;
+  onDelete: (id: Id<"terms">) => void;
+  children: Doc<"terms">[];
+  childrenByParent: Map<string, Doc<"terms">[]>;
+  depth: number;
+}) {
+  return (
+    <Card
+      className={term.status === "active" ? "ring-2 ring-primary" : ""}
+      style={{ marginLeft: depth > 0 ? depth * 16 : 0 }}
+    >
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg">
+            {depth > 0 && (
+              <span className="text-muted-foreground mr-1">
+                {"└ ".repeat(depth)}
+              </span>
+            )}
+            {term.name} {term.year}
+          </CardTitle>
+          {term.status === "active" && (
+            <span className="inline-flex items-center gap-1 text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
+              <CheckCircle2 className="h-3 w-3" /> Active
+            </span>
+          )}
+          {term.status === "closed" && (
+            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">Closed</span>
+          )}
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Calendar className="h-4 w-4" />
+          <span>{formatDate(term.startDate)} - {formatDate(term.endDate)}</span>
+        </div>
+        <div className="flex gap-2">
+          {isLeadership && term.status !== "active" && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onActivate(term)}
+            >
+              Set Active
+            </Button>
+          )}
+          {isLeadership && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-destructive hover:text-destructive"
+              onClick={() => onDelete(term._id)}
+            >
+              Delete
+            </Button>
+          )}
+        </div>
+        {term.parentId && (
+          <p className="text-xs text-muted-foreground italic">
+            Child of a larger period
+          </p>
+        )}
+        {children.length > 0 && (
+          <div className="space-y-3 pt-2 border-t">
+            {children.map((child) => (
+              <TermCard
+                key={child._id}
+                term={child}
+                isLeadership={isLeadership}
+                onActivate={onActivate}
+                onDelete={onDelete}
+                children={childrenByParent.get(child._id) ?? []}
+                childrenByParent={childrenByParent}
+                depth={depth + 1}
+              />
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function TermsPage() {
   const school = useSchool();
   const role = useRole();
@@ -35,16 +133,36 @@ export default function TermsPage() {
   const activateTerm = useMutation(api.terms.activate);
   const rolloverTerm = useMutation(api.terms.rollover);
 
-  const [showModal, setShowModal] = useState(false);
+const [showModal, setShowModal] = useState(false);
   const [showYearModal, setShowYearModal] = useState(false);
   const [name, setName] = useState("");
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [academicYearId, setAcademicYearId] = useState<string>("");
+  const [parentId, setParentId] = useState<string>("");
   const [yearLabel, setYearLabel] = useState(new Date().getFullYear().toString());
   const [yearStartDate, setYearStartDate] = useState("");
   const [yearEndDate, setYearEndDate] = useState("");
+
+  // Recursive period tree: top-level terms (no parent) in Year → Semester →
+  // Term → Week → Day order. Children are nested under their parent.
+  const topLevelTerms = useMemo(
+    () =>
+      (terms ?? []).filter((t) => !t.parentId).sort((a, b) => a.startDate - b.startDate),
+    [terms]
+  );
+  const childrenByParent = useMemo(() => {
+    const map = new Map<string, Doc<"terms">[]>();
+    for (const t of terms ?? []) {
+      if (!t.parentId) continue;
+      const list = map.get(t.parentId) ?? [];
+      list.push(t);
+      map.set(t.parentId, list);
+    }
+    for (const list of map.values()) list.sort((a, b) => a.startDate - b.startDate);
+    return map;
+  }, [terms]);
 
   if (terms === undefined) {
     return (
@@ -65,9 +183,10 @@ export default function TermsPage() {
         toast.error("Please select an academic year");
         return;
       }
-      await createTerm({
+await createTerm({
         schoolId: school._id,
         academicYearId: academicYearId as any,
+        parentId: parentId ? (parentId as any) : undefined,
         name: name.trim(),
         year: parseInt(year),
         startDate: new Date(startDate).getTime(),
@@ -79,6 +198,7 @@ export default function TermsPage() {
       setStartDate("");
       setEndDate("");
       setAcademicYearId("");
+      setParentId("");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to create term");
     }
@@ -186,50 +306,18 @@ export default function TermsPage() {
         </div>
       )}
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {terms.map((t) => (
-          <Card key={t._id} className={t.status === "active" ? "ring-2 ring-primary" : ""}>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">{t.name} {t.year}</CardTitle>
-                {t.status === "active" && (
-                  <span className="inline-flex items-center gap-1 text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
-                    <CheckCircle2 className="h-3 w-3" /> Active
-                  </span>
-                )}
-                {t.status === "closed" && (
-                  <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">Closed</span>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Calendar className="h-4 w-4" />
-                <span>{formatDate(t.startDate)} - {formatDate(t.endDate)}</span>
-              </div>
-              <div className="flex gap-2">
-                {isLeadership && t.status !== "active" && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleActivateTerm(t)}
-                  >
-                    Set Active
-                  </Button>
-                )}
-                {isLeadership && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-destructive hover:text-destructive"
-                    onClick={() => handleDelete(t._id)}
-                  >
-                    Delete
-                  </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {topLevelTerms.map((t) => (
+          <TermCard
+            key={t._id}
+            term={t}
+            isLeadership={isLeadership}
+            onActivate={handleActivateTerm}
+            onDelete={handleDelete}
+            children={childrenByParent.get(t._id) ?? []}
+            childrenByParent={childrenByParent}
+            depth={0}
+          />
         ))}
       </div>
 
@@ -291,7 +379,7 @@ export default function TermsPage() {
               <Input id="endDate" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
             </div>
           </div>
-          <div>
+<div>
             <Label htmlFor="academicYear">Academic Year *</Label>
             <Select id="academicYear" value={academicYearId} onChange={(e) => setAcademicYearId(e.target.value)} required>
               <option value="">Select academic year</option>
@@ -304,6 +392,18 @@ export default function TermsPage() {
                 No academic years yet. <button type="button" className="text-primary hover:underline" onClick={() => { setShowModal(false); setShowYearModal(true); }}>Create one first</button>
               </p>
             )}
+          </div>
+          <div>
+            <Label htmlFor="parent">Parent Period (optional)</Label>
+            <Select id="parent" value={parentId} onChange={(e) => setParentId(e.target.value)}>
+              <option value="">None — top-level period</option>
+              {topLevelTerms.map((t) => (
+                <option key={t._id} value={t._id}>{t.name} {t.year} (child of it)</option>
+              ))}
+            </Select>
+            <p className="text-xs text-muted-foreground mt-1">
+              Nest a term inside another period (e.g. a term inside a semester inside a year).
+            </p>
           </div>
           <div className="flex justify-end gap-2">
             <Button variant="outline" type="button" onClick={() => setShowModal(false)}>Cancel</Button>

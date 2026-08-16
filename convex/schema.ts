@@ -22,8 +22,12 @@ export default defineSchema({
     // Display title for the leadership role, e.g. "Headteacher", "Director".
     // Empty/undefined => defaults to "Principal".
     leadershipTitle: v.optional(v.string()),
+    // Tiering signals (spec §10): campuses + establishment status
+    campuses: v.optional(v.number()),
+    establishedAt: v.optional(v.float64()),
   }).index("by_clerkOrgId", ["clerkOrgId"])
-    .index("by_slug", ["slug"]),
+    .index("by_slug", ["slug"])
+    .index("by_status", ["status"]),
 
   // ── School Blueprint (flexibility phase 1) ─────────────────────────
   // Per-school configuration for how THIS school works: admission/staff
@@ -513,6 +517,7 @@ export default defineSchema({
     description: v.optional(v.string()),
     baseBucket: v.string(),
     isDefault: v.boolean(),
+    isLeadership: v.optional(v.boolean()), // per-school leadership flag (P0#4)
   })
     .index("by_schoolId", ["schoolId"])
     .index("by_schoolId_key", ["schoolId", "key"]),
@@ -623,14 +628,8 @@ export default defineSchema({
     schoolId: v.id("schools"),
     name: v.string(),
     code: v.string(),
-    level: v.union(
-      v.literal("pre_primary"),
-      v.literal("lower_primary"),
-      v.literal("upper_primary"),
-      v.literal("junior_secondary"),
-      v.literal("senior_secondary"),
-      v.literal("general"),
-    ),
+    // Blank canvas: school defines its own level categories (no hardcoded CBC union).
+    level: v.string(),
   }).index("by_schoolId", ["schoolId"])
     .index("by_level", ["schoolId", "level"]),
 
@@ -735,7 +734,10 @@ export default defineSchema({
     schoolId: v.id("schools"),
     teacherId: v.id("teachers"),
     subjectId: v.id("subjects"),
-    classId: v.id("classes"),
+    // Optional per §1.3: a Subject may be taught without routing through a
+    // Class (university model). Subject↔Class pairs that do exist are also
+    // expressible via entity_links ("subject_class"), so no fixed requirement.
+    classId: v.optional(v.id("classes")),
     streamId: v.optional(v.id("streams")),
   }).index("by_schoolId", ["schoolId"])
     .index("by_teacherId", ["teacherId"])
@@ -2205,4 +2207,67 @@ export default defineSchema({
   })
     .index("by_schoolId_page", ["schoolId", "page"])
     .index("by_schoolId_page_key", ["schoolId", "page", "chartKey"]),
+
+  // ── Document Templates (§3.5 — template-from-own-fields) ────────
+  // Schools design documents using their own EAV fields. Each template
+  // stores a layout definition that references fields by ID, so the
+  // same template structure works across different schools' field sets.
+  // The layout is a JSON blob with sections, each containing field
+  // references that are resolved at render time.
+  doc_templates: defineTable({
+    schoolId: v.id("schools"),
+    name: v.string(),           // template display name, e.g. "Report Card"
+    docType: v.union(
+      v.literal("report_card"),
+      v.literal("receipt"),
+      v.literal("class_list"),
+      v.literal("certificate"),
+      v.literal("general"),
+    ),
+    description: v.optional(v.string()),
+    // Layout definition: JSON blob describing the document structure.
+    // Contains sections with field references resolved at render time.
+    // Validated in docTemplates.ts mutations (too deeply nested for schema).
+    // Shape: { title, subtitle?, sections: [{ heading?, kind, fields?, columns?, text? }], footer? }
+    layout: v.any(),
+    // Page settings
+    pageSize: v.optional(v.union(
+      v.literal("letter"),
+      v.literal("a4"),
+      v.literal("legal"),
+    )),
+    isDefault: v.boolean(),    // true = system-seeded default for this docType
+    isSystem: v.boolean(),     // true = cannot be deleted, only modified
+    createdAt: v.float64(),
+    updatedAt: v.float64(),
+  })
+    .index("by_schoolId", ["schoolId"])
+    .index("by_schoolId_docType", ["schoolId", "docType"]),
+
+  // ── Finance Config (§4.1 — semantic layer for fee calculation) ──
+  // Maps which EAV fields represent fee amounts, due dates, and payment
+  // records. When configured, the finance engine reads from EAV fieldValues
+  // instead of (or in addition to) the hardcoded fee_structures table.
+  // This lets schools define their own fee fields via the Structure Builder
+  // and have the finance engine compute balances from them.
+  fee_config: defineTable({
+    schoolId: v.id("schools"),
+    // Which EAV field holds the fee amount (semantic: "amount")
+    amountFieldId: v.optional(v.id("fields")),
+    // Which EAV field holds the due date (semantic: "date")
+    dueDateFieldId: v.optional(v.id("fields")),
+    // Which EAV field holds the fee category/name
+    categoryFieldId: v.optional(v.id("fields")),
+    // Which EAV field holds a discount/scholarship amount
+    discountFieldId: v.optional(v.id("fields")),
+    // Whether to use EAV for fee resolution (false = use fee_structures)
+    useEavForFees: v.boolean(),
+    // Whether to use EAV for payment recording
+    useEavForPayments: v.boolean(),
+    // The module that contains the fee fields
+    moduleId: v.optional(v.id("modules")),
+    createdAt: v.float64(),
+    updatedAt: v.float64(),
+  })
+    .index("by_schoolId", ["schoolId"]),
 });

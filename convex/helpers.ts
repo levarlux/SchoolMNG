@@ -109,6 +109,28 @@ export function getLeadershipRoleKey(): string {
 }
 
 /**
+ * True when the given member role key is this school's leadership role.
+ * Fast path: the default key requires no extra read. For custom keys we check
+ * the roles table's per-school `isLeadership` flag (P0#4), so a school may
+ * promote any role to leadership without any hardcoded key.
+ */
+export async function isLeadershipRoleKey(
+  ctx: Ctx,
+  schoolId: Id<"schools">,
+  roleKey: string | null
+): Promise<boolean> {
+  if (!roleKey) return false;
+  if (roleKey === getLeadershipRoleKey()) return true;
+  const role = await ctx.db
+    .query("roles")
+    .withIndex("by_schoolId_key", (q) =>
+      q.eq("schoolId", schoolId).eq("key", roleKey)
+    )
+    .first();
+  return role?.isLeadership === true;
+}
+
+/**
  * Look up the display name for the school's leadership role.
  * Reads the editable `name` from the `roles` table (seeded "Principal",
  * can be renamed to "Headteacher" etc.), falling back to the default.
@@ -164,10 +186,11 @@ async function requireMinimumRole(
   if (!role) {
     throw new Error("You are not a member of this school");
   }
+  // Leadership is resolved per-school (P0#4): a school may promote any role.
+  const isLeader = await isLeadershipRoleKey(ctx, schoolId, role);
   const minWeight =
     minimum === LEADERSHIP_KEY ? 1 : ROLE_HIERARCHY[minimum] ?? 0;
-  const roleWeight =
-    role === LEADERSHIP_KEY ? 1 : ROLE_HIERARCHY[role] ?? 0;
+  const roleWeight = isLeader ? 1 : ROLE_HIERARCHY[role] ?? 0;
   if (roleWeight < minWeight) {
     throw new Error(
       `${minimum} access required. Your role: ${role}`

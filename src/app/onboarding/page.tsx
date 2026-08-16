@@ -137,6 +137,8 @@ interface OnboardingData {
   customFacilities: string[];
   headcountLearners: string;
   headcountStaff: string;
+  campuses: string;
+  establishedYear: string;
   recordsManagement: string;
   // Step 3: Setup route
   setupRoute: "guided" | "upload";
@@ -435,6 +437,8 @@ export default function OnboardingPage() {
       customFacilities: [],
       headcountLearners: "",
       headcountStaff: "",
+      campuses: "",
+      establishedYear: "",
       recordsManagement: "mixed",
       setupRoute: "guided",
       enabledModules,
@@ -1244,12 +1248,41 @@ export default function OnboardingPage() {
                           onChange={(e) => updateData({ headcountStaff: e.target.value })}
                           placeholder="Staff"
                         />
-                      </div>
-                    </div>
+</div>
                   </div>
+                </div>
 
-                  <div>
-                    <Label>How does the school manage records today?</Label>
+                <div>
+                  <Label>Number of campuses/branches</Label>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    How many physical locations/branches does the school operate?
+                  </p>
+                  <Input
+                    type="number"
+                    value={data.campuses}
+                    onChange={(e) => updateData({ campuses: e.target.value })}
+                    placeholder="1"
+                    min="1"
+                  />
+                </div>
+
+                <div>
+                  <Label>Year established</Label>
+                  <p className="text-xs text-muted-foreground mb-1">
+                    What year was the school founded? Used for tiering and planning.
+                  </p>
+                  <Input
+                    type="number"
+                    value={data.establishedYear}
+                    onChange={(e) => updateData({ establishedYear: e.target.value })}
+                    placeholder={new Date().getFullYear().toString()}
+                    min="1800"
+                    max={new Date().getFullYear()}
+                  />
+                </div>
+
+                <div>
+                  <Label>How does the school manage records today?</Label>
                     <div className="space-y-2 mt-1">
                       {RECORDS_OPTIONS.map((opt) => (
                         <label

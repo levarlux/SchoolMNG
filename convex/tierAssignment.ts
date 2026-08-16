@@ -80,13 +80,17 @@ export const TIERS = {
 export type TierName = keyof typeof TIERS;
 
 // ── Scoring Weights ──────────────────────────────────────────────
-
+//
+// Per spec §10: six signals — headcount, modules, facilities, fees,
+// boarding, campuses, establishment. Weights sum to 1.0.
 const WEIGHTS = {
-  headcount: 0.30,
-  modules: 0.25,
-  facilities: 0.20,
-  fees: 0.15,
+  headcount: 0.25,
+  modules: 0.20,
+  facilities: 0.15,
+  fees: 0.12,
   boarding: 0.10,
+  campuses: 0.10,
+  establishment: 0.08,
 } as const;
 
 // ── Scoring Functions ────────────────────────────────────────────
@@ -141,6 +145,28 @@ function scoreBoarding(data: OnboardingData): number {
   return data.isBoarding ? 100 : 20;
 }
 
+/** Score campuses (0–100) — multi-campus schools need higher tier */
+function scoreCampuses(data: OnboardingData): number {
+  const n = parseInt(data.campuses || "0", 10);
+  if (n <= 0) return 10; // No data or single campus
+  if (n === 1) return 20;
+  if (n === 2) return 50;
+  if (n <= 4) return 75;
+  return 100;
+}
+
+/** Score establishment status (0–100) — older/more established schools need higher tier */
+function scoreEstablishment(data: OnboardingData): number {
+  const year = parseInt(data.establishedYear || "0", 10);
+  if (year <= 0) return 10; // Unknown
+  const age = new Date().getFullYear() - year;
+  if (age < 2) return 15; // Brand new
+  if (age < 5) return 35; // Early stage
+  if (age < 15) return 60; // Established
+  if (age < 30) return 85; // Well established
+  return 100; // Legacy institution
+}
+
 // ── Onboarding Data Interface ────────────────────────────────────
 
 interface OnboardingData {
@@ -158,6 +184,8 @@ interface OnboardingData {
   enabledModules?: Record<string, boolean>;
   enableParentPortal?: boolean;
   enabledNotifications?: Record<string, boolean>;
+  campuses?: string;
+  establishedYear?: string;
   [key: string]: unknown;
 }
 
@@ -172,6 +200,8 @@ function computeCombinedScore(data: OnboardingData): {
   const facilitiesRaw = scoreFacilities(data);
   const feesRaw = scoreFees(data);
   const boardingRaw = scoreBoarding(data);
+  const campusesRaw = scoreCampuses(data);
+  const establishmentRaw = scoreEstablishment(data);
 
   const breakdown = {
     headcount: { raw: headcountRaw, weighted: headcountRaw * WEIGHTS.headcount },
@@ -179,6 +209,8 @@ function computeCombinedScore(data: OnboardingData): {
     facilities: { raw: facilitiesRaw, weighted: facilitiesRaw * WEIGHTS.facilities },
     fees: { raw: feesRaw, weighted: feesRaw * WEIGHTS.fees },
     boarding: { raw: boardingRaw, weighted: boardingRaw * WEIGHTS.boarding },
+    campuses: { raw: campusesRaw, weighted: campusesRaw * WEIGHTS.campuses },
+    establishment: { raw: establishmentRaw, weighted: establishmentRaw * WEIGHTS.establishment },
   };
 
   const score = Math.round(
@@ -186,7 +218,9 @@ function computeCombinedScore(data: OnboardingData): {
     breakdown.modules.weighted +
     breakdown.facilities.weighted +
     breakdown.fees.weighted +
-    breakdown.boarding.weighted
+    breakdown.boarding.weighted +
+    breakdown.campuses.weighted +
+    breakdown.establishment.weighted
   );
 
   return { score: Math.min(100, Math.max(0, score)), breakdown };
@@ -217,6 +251,8 @@ function generateAnalysis(
   lines.push(`- Facility breadth (${Math.round(WEIGHTS.facilities * 100)}%): ${breakdown.facilities.raw}/100`);
   lines.push(`- Fee level (${Math.round(WEIGHTS.fees * 100)}%): ${breakdown.fees.raw}/100`);
   lines.push(`- Boarding status (${Math.round(WEIGHTS.boarding * 100)}%): ${breakdown.boarding.raw}/100`);
+  lines.push(`- Campuses (${Math.round(WEIGHTS.campuses * 100)}%): ${breakdown.campuses.raw}/100`);
+  lines.push(`- Establishment (${Math.round(WEIGHTS.establishment * 100)}%): ${breakdown.establishment.raw}/100`);
   lines.push("");
   lines.push(`**Overall score: ${score}/100**`);
 
@@ -366,5 +402,67 @@ export const _getSession = internalQuery({
       .query("onboarding_sessions")
       .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
       .first();
+  },
+});
+
+// ── Tier Re-evaluation Cron ───────────────────────────────────────
+/**
+ * Re-evaluate all active schools' tiers based on current data.
+ * Runs periodically (e.g., monthly) to adjust tiers as schools grow/shrink.
+ */
+export const reEvaluateAllTiers = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const schools = await ctx.db
+      .query("schools")
+      .withIndex("by_status", (q) => q.eq("status", "active"))
+      .take(2000);
+
+    let reEvaluated = 0;
+    let tierChanges = 0;
+
+    for (const school of schools) {
+      // Get current onboarding session for data
+      const session = await ctx.db
+        .query("onboarding_sessions")
+        .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
+        .first();
+
+      if (!session || !session.collectedAnswers) continue;
+
+      const data = session.collectedAnswers as OnboardingData;
+      // Add current school fields
+      data.campuses = school.campuses?.toString() || data.campuses;
+      data.establishedYear = school.establishedAt
+        ? new Date(school.establishedAt).getFullYear().toString()
+        : data.establishedYear;
+
+      const { score, breakdown } = computeCombinedScore(data);
+      const newTier = scoreToTier(score);
+
+      // Get current subscription to check if tier changed
+      const sub = await ctx.db
+        .query("subscriptions")
+        .withIndex("by_schoolId", (q) => q.eq("schoolId", school._id))
+        .first();
+
+      if (sub && sub.recommendedTier !== newTier) {
+        const tierConfig = TIERS[newTier];
+        const analysis = generateAnalysis(data, score, newTier, breakdown);
+
+        await ctx.runMutation(internal.tierAssignment.saveTierRecommendation, {
+          schoolId: school._id,
+          sessionId: session._id,
+          tier: newTier,
+          score,
+          analysis,
+          planCode: tierConfig.planCode,
+        });
+        tierChanges++;
+      }
+      reEvaluated++;
+    }
+
+    return { reEvaluated, tierChanges };
   },
 });

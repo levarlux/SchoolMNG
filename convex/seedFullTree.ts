@@ -1016,6 +1016,10 @@ export async function seedFullTreeData(
   // Optional filter: only seed modules whose names are in this set.
   // When null/undefined, seeds ALL modules (legacy behaviour).
   modulesToSeed?: Set<string> | null,
+  // bare = blank canvas (spec §0): create the module shell only — no
+  // sections/fields. Existing schools keep their seeded structure; new
+  // schools build their own sections/fields in the Structure Builder.
+  bare?: boolean,
 ): Promise<{ modules: number; sections: number; fields: number }> {
   const created = { modules: 0, sections: 0, fields: 0 };
 
@@ -1128,8 +1132,14 @@ export async function seedFullTreeData(
         await ctx.db.patch(existingModule._id, { icon: mod.icon });
       }
 
-      for (const sec of mod.sections) {
-        await upsertSection(moduleId, null, sec);
+      // Blank canvas (spec §0): the module shell exists but carries no
+      // sections/fields. The school defines its own structure via the
+      // Structure Builder. Skipped in bare mode — full sections+fields
+      // seeding remains available for backfill/existing schools.
+      if (!bare) {
+        for (const sec of mod.sections) {
+          await upsertSection(moduleId, null, sec);
+        }
       }
 
       // Seed "edit" permission for the principal role on this module.
@@ -1170,9 +1180,11 @@ export const seedFullTree = internalMutation({
     // Optional: only seed modules whose names are in this array.
     // When omitted, seeds ALL modules (legacy behaviour).
     modulesToSeed: v.optional(v.array(v.string())),
+    // bare = blank canvas (spec §0): module shells only, no sections/fields.
+    bare: v.optional(v.boolean()),
   },
-  handler: async (ctx, { schoolId, modulesToSeed }) => {
+  handler: async (ctx, { schoolId, modulesToSeed, bare }) => {
     const filter = modulesToSeed && modulesToSeed.length > 0 ? new Set(modulesToSeed) : null;
-    return await seedFullTreeData(ctx, schoolId, filter);
+    return await seedFullTreeData(ctx, schoolId, filter, bare);
   },
 });

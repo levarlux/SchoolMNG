@@ -141,7 +141,7 @@ export default function StaffAttendancePage() {
       ) : (
         <div className="space-y-2">
           {teachers.map((teacher) => {
-            const record = attendanceMap.get(teacher._id);
+            const record = attendanceMap.get(teacher._id) as any;
             const config = record ? STATUS_CONFIG[record.status] : null;
             const Icon = config?.icon ?? Clock;
             return (

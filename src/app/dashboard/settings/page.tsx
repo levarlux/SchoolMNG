@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Modal } from "@/components/ui/modal";
 import { StructureBuilder } from "@/components/settings/structure-builder";
 import { BlueprintSettings } from "@/components/settings/blueprint-settings";
+import { FinanceConfig } from "@/components/settings/finance-config";
 import { Palette, Upload, ImageIcon, Check, AlertCircle, Copy, Zap, Layers, School, LogOut, UserRound, Mail, Phone, Trash2, AlertTriangle, Map, Play, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -532,22 +533,22 @@ export default function SettingsPage() {
             <p className="text-sm text-muted-foreground">No feature flags configured for this school.</p>
           ) : (
             <div className="space-y-2">
-              {Object.entries(featureFlags).map(([name, enabled]) => (
+              {Object.entries(featureFlags).map(([name, enabled]) => { const isEnabled = enabled as boolean; return (
                 <div key={name} className="flex items-center justify-between py-2 px-3 rounded-lg border border-border">
                   <span className="text-sm font-medium">{name}</span>
                   {isLeadershipRole(role) ? (
                     <div className="flex items-center gap-2">
-                      <span className={`text-xs font-medium ${enabled ? "text-green-700" : "text-gray-500"}`}>
-                        {enabled ? "Active" : "Inactive"}
+                      <span className={`text-xs font-medium ${isEnabled ? "text-green-700" : "text-gray-500"}`}>
+                        {isEnabled ? "Active" : "Inactive"}
                       </span>
                       <Toggle
-                        checked={enabled}
-                        onChange={() => handleToggleFeature(name, enabled)}
+                        checked={isEnabled}
+                        onChange={() => handleToggleFeature(name, isEnabled)}
                         disabled={togglingFlag === name}
-                        title={enabled ? `Disable ${name}` : `Enable ${name}`}
+                        title={isEnabled ? `Disable ${name}` : `Enable ${name}`}
                       />
                     </div>
-                  ) : enabled ? (
+                  ) : isEnabled ? (
                     <span className="inline-flex items-center gap-1.5 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-full border border-green-200">
                       <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
                       Active
@@ -559,7 +560,7 @@ export default function SettingsPage() {
                     </span>
                   )}
                 </div>
-              ))}
+              ); })}
             </div>
           )}
         </CardContent>
@@ -578,6 +579,15 @@ export default function SettingsPage() {
           </CardHeader>
           <CardContent>
             <StructureBuilder />
+          </CardContent>
+        </Card>
+      )}
+
+      {/* ── Finance Engine Config (P2#14) ───────────────── */}
+      {isLeadershipRole(role) && school && (
+        <Card className="lg:col-span-2">
+          <CardContent className="pt-6">
+            <FinanceConfig schoolId={school._id} />
           </CardContent>
         </Card>
       )}

@@ -647,15 +647,19 @@ function DeleteConfirmModal({
             {deleting.type === "module" && (
               <p className="text-red-700">
                 This will also permanently delete all {deleting.sections} section{deleting.sections === 1 ? "" : "s"} and{" "}
-                {deleting.fields} field{deleting.fields === 1 ? "" : "s"} inside it.
+                {deleting.fields} field{deleting.fields === 1 ? "" : "s"} inside it, and any data collected against them. This cannot be undone.
               </p>
             )}
             {deleting.type === "section" && (
               <p className="text-red-700">
-                This will also permanently delete all {deleting.fields} field{deleting.fields === 1 ? "" : "s"} inside it.
+                This will also permanently delete all {deleting.fields} field{deleting.fields === 1 ? "" : "s"} inside it, and any data collected against them. This cannot be undone.
               </p>
             )}
-            <p className="text-red-700">Any data collected against these fields will be removed too. This cannot be undone.</p>
+            {deleting.type === "field" && (
+              <p className="text-red-700">
+                The field will be archived and hidden from record forms. Past data is preserved and the field can be restored later.
+              </p>
+            )}
           </div>
         </div>
         <div>

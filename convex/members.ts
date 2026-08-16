@@ -1,8 +1,7 @@
 import { v } from "convex/values";
 import { mutation, action, query, internalMutation, internalQuery, type ActionCtx } from "./_generated/server";
 import { api, internal } from "./_generated/api";
-import { requireAuth, requireSchoolMembership, requirePrincipal, logAuditEntry } from "./helpers";
-import { LEADERSHIP_ROLE_KEY } from "./roles";
+import { requireAuth, requireSchoolMembership, requirePrincipal, logAuditEntry, isLeadershipRoleKey } from "./helpers";
 import { deleteClerkOrgMembership } from "./clerk";
 import { Doc, Id } from "./_generated/dataModel";
 
@@ -26,6 +25,23 @@ export const getRoleInternal = internalQuery({
       )
       .first();
     return member?.role ?? null;
+  },
+});
+
+/** Internal-only: is the caller's role the school's leadership role (per-school, P0#4)? */
+export const isLeaderInternal = internalQuery({
+  args: {
+    userId: v.string(),
+    schoolId: v.id("schools"),
+  },
+  handler: async (ctx, { userId, schoolId }) => {
+    const member = await ctx.db
+      .query("members")
+      .withIndex("by_userId_and_schoolId", (q) =>
+        q.eq("userId", userId).eq("schoolId", schoolId)
+      )
+      .first();
+    return member ? isLeadershipRoleKey(ctx, schoolId, member.role) : false;
   },
 });
 
@@ -68,7 +84,8 @@ export const add = mutation({
   handler: async (ctx, args) => {
     await requirePrincipal(ctx, args.schoolId);
 
-    if (args.role === LEADERSHIP_ROLE_KEY) {
+    // Block assigning the school's leadership role (resolved per-school, P0#4).
+    if (await isLeadershipRoleKey(ctx, args.schoolId, args.role)) {
       throw new Error("Cannot assign the leadership role through this method");
     }
 
@@ -335,11 +352,11 @@ export const revokeMember = action({
     });
     if (!member) throw new Error("Member not found");
 
-    const callerRole = await ctx.runQuery(internal.members.getRoleInternal, {
+    const callerIsLeader = await ctx.runQuery(internal.members.isLeaderInternal, {
       userId: identity.subject,
       schoolId: member.schoolId,
     });
-    if (callerRole !== LEADERSHIP_ROLE_KEY) {
+    if (!callerIsLeader) {
       throw new Error("Only the school head can revoke access");
     }
 

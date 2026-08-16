@@ -17,8 +17,7 @@
  */
 import { v } from "convex/values";
 import { query } from "./_generated/server";
-import { requireSchoolMembership, getMemberRole } from "./helpers";
-import { LEADERSHIP_ROLE_KEY } from "./roles";
+import { requireSchoolMembership, getMemberRole, isLeadershipRoleKey } from "./helpers";
 import type { Id } from "./_generated/dataModel";
 
 /** Sidebar grouping per EAV bucket. Keeps the nav organised the way the
@@ -67,7 +66,7 @@ const MODULE_HREF: Record<string, string | null> = {
   Discipline: "/dashboard/discipline",
   Finance: "/dashboard/fees",
   "Promotion/Progression": "/dashboard/students",
-  Documents: "/dashboard/students",
+  Documents: "/dashboard/documents",
   Communication: "/dashboard/announcements",
   Extracurricular: "/dashboard/extracurricular",
   Boarding: "/dashboard/students",
@@ -118,7 +117,7 @@ export const getNavTree = query({
   }> => {
     await requireSchoolMembership(ctx, schoolId);
     const role = await getMemberRole(ctx, schoolId);
-    const isLeadership = role === LEADERSHIP_ROLE_KEY;
+    const isLeadership = await isLeadershipRoleKey(ctx, schoolId, role);
 
     // Single batched read: all modules + all sections for the school, then
     // build the parent/child trees in memory (avoids N+1 queries per module).

@@ -137,12 +137,11 @@ export const chat = action({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
 
-    const callerRole = await ctx.runQuery(internal.members.getRoleInternal, {
+    const isLeader = await ctx.runQuery(internal.members.isLeaderInternal, {
       userId: identity.subject,
       schoolId: args.schoolId,
     });
-    const LEADERSHIP_ROLE_KEY = "principal";
-    if (callerRole !== LEADERSHIP_ROLE_KEY) {
+    if (!isLeader) {
       throw new Error("Only the school head can use the Permissions Assistant");
     }
 

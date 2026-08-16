@@ -44,14 +44,7 @@ export const create = mutation({
     schoolId: v.id("schools"),
     name: v.string(),
     code: v.string(),
-    level: v.union(
-      v.literal("pre_primary"),
-      v.literal("lower_primary"),
-      v.literal("upper_primary"),
-      v.literal("junior_secondary"),
-      v.literal("senior_secondary"),
-      v.literal("general"),
-    ),
+    level: v.string(),
   },
   handler: async (ctx, args) => {
     await requireModuleEditAccessByName(ctx, args.schoolId, "Academics");
@@ -70,16 +63,7 @@ export const update = mutation({
     id: v.id("subjects"),
     name: v.optional(v.string()),
     code: v.optional(v.string()),
-    level: v.optional(
-      v.union(
-        v.literal("pre_primary"),
-        v.literal("lower_primary"),
-        v.literal("upper_primary"),
-        v.literal("junior_secondary"),
-        v.literal("senior_secondary"),
-        v.literal("general"),
-      )
-    ),
+    level: v.optional(v.string()),
   },
   handler: async (ctx, { id, ...updates }) => {
     const subject = await ctx.db.get(id);

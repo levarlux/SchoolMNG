@@ -1,6 +1,7 @@
 import { query, mutation, internalMutation, internalQuery } from "./_generated/server";
 import { v } from "convex/values";
-import { requireSchoolMembership, logAuditEntry } from "./helpers";
+import { requireSchoolMembership, requirePrincipal, logAuditEntry, isLeadershipRoleKey } from "./helpers";
+import { Doc, Id } from "./_generated/dataModel";
 
 /** Default role archetypes seeded per school on creation. */
 export const DEFAULT_ROLES = [
@@ -49,6 +50,22 @@ export const getByKey = internalQuery({
         q.eq("schoolId", schoolId).eq("key", key)
       )
       .first();
+  },
+});
+
+/** Internal-only: is the given role key this school's leadership role (per-school, P0#4)? */
+export const isLeadershipByKey = internalQuery({
+  args: { schoolId: v.id("schools"), key: v.string() },
+  handler: async (ctx, { schoolId, key }) => {
+    // Fast path: the default leadership key needs no extra read.
+    if (key === LEADERSHIP_ROLE_KEY) return true;
+    const role = await ctx.db
+      .query("roles")
+      .withIndex("by_schoolId_key", (q) =>
+        q.eq("schoolId", schoolId).eq("key", key)
+      )
+      .first();
+    return role?.isLeadership === true;
   },
 });
 
@@ -183,14 +200,27 @@ export const seedDefaults = internalMutation({
     let created = 0;
     for (const role of DEFAULT_ROLES) {
       if (!existingKeys.has(role.key)) {
-        await ctx.db.insert("roles", {
+        const row: {
+          schoolId: Id<"schools">;
+          key: string;
+          name: string;
+          description?: string;
+          baseBucket: string;
+          isDefault: boolean;
+          isLeadership?: boolean;
+        } = {
           schoolId: args.schoolId,
           key: role.key,
           name: role.name,
           description: role.description,
           baseBucket: role.baseBucket,
           isDefault: true,
-        });
+        };
+        // The principal archetype is the school's leadership role. Storing
+        // this per-school (P0#4) lets a school later promote a different
+        // role to leadership without any hardcoded key.
+        if (role.key === LEADERSHIP_ROLE_KEY) row.isLeadership = true;
+        await ctx.db.insert("roles", row);
         created++;
       }
     }
@@ -199,6 +229,51 @@ export const seedDefaults = internalMutation({
       created,
     });
     return created;
+  },
+});
+
+/**
+ * Set the school-wide leadership display title (e.g. "Headteacher", "Director").
+ * Updates both the `roles` table display name for the leadership key AND
+ * `schools.leadershipTitle` for a fast lookup override.
+ */
+/**
+ * Per-school leadership role (P0#4): promote any role in this school to
+ * leadership. The promoted role gets `isLeadership: true` and all others are
+ * cleared, so leadership is fully configurable per school — auth gates
+ * resolve it through the flag rather than a hardcoded key.
+ */
+export const setLeadershipRole = mutation({
+  args: {
+    schoolId: v.id("schools"),
+    roleId: v.id("roles"),
+  },
+  handler: async (ctx, { schoolId, roleId }) => {
+    await requirePrincipal(ctx, schoolId);
+
+    const target = await ctx.db.get(roleId);
+    if (!target) throw new Error("Role not found");
+    if (target.schoolId !== schoolId) {
+      throw new Error("Role does not belong to this school");
+    }
+
+    // Clear the flag on every role, then set it on the target.
+    const roles = await ctx.db
+      .query("roles")
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(100);
+    for (const r of roles) {
+      if (r.isLeadership === true) {
+        await ctx.db.patch(r._id, { isLeadership: false });
+      }
+    }
+    await ctx.db.patch(target._id, { isLeadership: true });
+
+    await logAuditEntry(ctx, schoolId, "role.setLeadershipRole", {
+      roleId,
+      name: target.name,
+    });
+    return target;
   },
 });
 
@@ -216,13 +291,14 @@ export const setLeadershipTitle = mutation({
     await requireSchoolMembership(ctx, schoolId);
     const trimmed = title.trim() || "Principal";
 
-    // Update the roles table display name.
-    const leadership = await ctx.db
+    // Update the leadership role's display name (per-school resolved).
+    const roles = await ctx.db
       .query("roles")
-      .withIndex("by_schoolId_key", (q) =>
-        q.eq("schoolId", schoolId).eq("key", LEADERSHIP_ROLE_KEY)
-      )
-      .first();
+      .withIndex("by_schoolId", (q) => q.eq("schoolId", schoolId))
+      .take(100);
+    const leadership =
+      roles.find((r) => r.isLeadership === true) ??
+      roles.find((r) => r.key === LEADERSHIP_ROLE_KEY);
     if (leadership) {
       await ctx.db.patch(leadership._id, { name: trimmed });
     }

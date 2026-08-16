@@ -1,6 +1,7 @@
 ﻿"use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
@@ -14,15 +15,38 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
-import { Plus, Search, Upload, Download } from "lucide-react";
+import { Plus, Search, Upload, Download, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCsv } from "@/lib/csv-export";
 import { ImportStudio } from "@/components/import-studio";
+import { TeacherProfileView } from "@/components/teacher-profile-view";
 
 export default function TeachersPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center p-16">
+          <BrandLoader variant="book" size="md" />
+        </div>
+      }
+    >
+      <TeachersContent />
+    </Suspense>
+  );
+}
+
+function TeachersContent() {
+  const searchParams = useSearchParams();
+  const view = searchParams.get("view");
+  if (view) return <TeacherProfileView teacherId={view} />;
+  return <TeachersList />;
+}
+
+function TeachersList() {
   const school = useSchool();
   const role = useRole();
   const isLeadership = isLeadershipRole(role);
+  const router = useRouter();
   const teachers = useQuery(api.teachers.listBySchool, school ? { schoolId: school._id } : "skip");
   const createTeacher = useMutation(api.teachers.create);
   const deleteTeacher = useMutation(api.teachers.remove);
@@ -182,7 +206,11 @@ export default function TeachersPage() {
             </thead>
             <tbody>
               {filtered.map((t) => (
-                <tr key={t._id} className="border-t border-border hover:bg-secondary/5">
+                <tr
+                  key={t._id}
+                  className="border-t border-border hover:bg-secondary/5 cursor-pointer"
+                  onClick={() => router.push(`/dashboard/teachers?view=${t._id}`)}
+                >
                   <td className="p-3 font-medium">{t.firstName} {t.lastName}</td>
                   <td className="p-3">
                     <span
@@ -206,7 +234,10 @@ export default function TeachersPage() {
                         variant="ghost"
                         size="sm"
                         className="text-destructive hover:text-destructive"
-                        onClick={() => handleDelete(t._id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(t._id);
+                        }}
                       >
                         Delete
                       </Button>

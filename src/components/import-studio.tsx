@@ -1029,12 +1029,12 @@ export function ImportStudio({
   const [aiAnalyzingId, setAiAnalyzingId] = useState<string | null>(null);
   const [aiNotes, setAiNotes] = useState<Record<string, string>>({});
 
-  const existingAdmNos = useMemo(
-    () => new Set((students ?? []).map((s) => s.admNo.trim().toLowerCase())),
+  const existingAdmNos = useMemo<Set<string>>(
+    () => new Set((students ?? []).map((s) => (s.admNo ?? "").trim().toLowerCase())),
     [students]
   );
-  const classNames = useMemo(
-    () => new Set((classes ?? []).map((c) => c.name.toLowerCase().trim())),
+  const classNames = useMemo<Set<string>>(
+    () => new Set((classes ?? []).map((c) => (c.name ?? "").toLowerCase().trim())),
     [classes]
   );
 
@@ -1216,7 +1216,7 @@ export function ImportStudio({
         // headers still match — schools with consistent templates skip re-mapping.
         const profile = savedMappings?.find((m) => m.kind === kind);
         if (profile?.mapping) {
-          for (const [key, header] of Object.entries(profile.mapping)) {
+          for (const [key, header] of Object.entries(profile.mapping as Record<string, string>)) {
             if (headers.includes(header)) mapping[key] = header;
           }
         }
