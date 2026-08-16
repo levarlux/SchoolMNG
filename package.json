@@ -8,7 +8,7 @@
     "build:static": "node scripts/build-static.js",
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "test": "echo \"Tests not configured yet. Add vitest or jest to run.\" && exit 0",
+    "test": "vitest run",
     "test:convex": "npx convex dev --once 2>&1 | tail -5 && echo \"Convex functions compiled successfully\"",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
@@ -27,7 +27,7 @@
     "chart.js": "^4.5.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "convex": "^1.18.0",
+    "convex": "^1.44.0",
     "esbuild": "^0.28.1",
     "fflate": "^0.8.3",
     "fuse.js": "^7.5.0",
@@ -55,6 +55,7 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "convex-test": "^0.0.55",
     "enhanced-resolve": "^5.24.2",
     "eslint": "^10.8.1",
     "eslint-plugin-react": "^7.37.5",
@@ -62,6 +63,7 @@
     "postcss": "^8.5.19",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.7.0",
-    "typescript-eslint": "^8.67.0"
+    "typescript-eslint": "^8.67.0",
+    "vitest": "^4.1.10"
   }
 }
