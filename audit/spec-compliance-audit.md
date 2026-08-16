@@ -23,7 +23,7 @@
 
 **Build health:** `npx tsc --noEmit` **green** (was 8 type errors in import-studio.tsx / intake-panel.tsx — fixed 2026-08-15), `npx tsc -p convex/tsconfig.json` green, `npx convex codegen` uploads clean. `npm test` is a placeholder. The student-import contract bug (EAV field values + duplicate resolutions dropped server-side) is **fixed**.
 
-**The single most consequential gap REMAINS:** the spec's core principle — *"Nothing about the shape of a school's data is hardcoded… every school builds its own structure from a blank canvas"* — is still contradicted by the ~90-table hardcoded schema. `completeOnboarding` now provisions **bare module shells** (no sections/fields — fixed 2026-08-16); new schools build structure in Settings → Data Structure. The EAV engine + permission engine are real and functional, but only ~2 of ~50 dashboard pages are EAV-driven; the rest are hardcoded per-feature pages. This is the P1 re-architecture (items 6–10). All P0, P1, and most P2 items are now DONE; remaining work: P2#11 (document templates), P2#14 (finance semantic layer), and section-level AI permission filtering.
+**The single most consequential gap REMAINS:** the spec's core principle — *"Nothing about the shape of a school's data is hardcoded… every school builds its own structure from a blank canvas"* — is still contradicted by the ~90-table hardcoded schema. `completeOnboarding` now provisions **bare module shells** (no sections/fields — fixed 2026-08-16); new schools build structure in Settings → Data Structure. The EAV engine + permission engine are real and functional, but only ~2 of ~50 dashboard pages are EAV-driven; the rest are hardcoded per-feature pages. This is the P1 re-architecture (items 6–10). All P0, P1, and P2 items are now DONE. Remaining work: section-level AI permission filtering, dashboard permission-composition, and the P1 re-architecture to migrate hardcoded pages onto the EAV engine.
 
 ---
 
@@ -108,9 +108,9 @@
 - EAV values live once against the record's invisible ID and are pulled live — good (`studentEavLookup.ts:24-43`).
 - But the same real-world data exists in two places for the same learner: hardcoded typed modules (e.g. `health_records`, `fee_payments`) AND EAV "modules" (e.g. the seeded Finance fields `Current Balance`/`Overdue Amount` at `seedFullTree.ts:433` are plain stored `fieldValues` that can drift from the real ledger). `records.displayName` is denormalized (`schema.ts:470-497`).
 
-### 3.5 Bulk Document Generation — MISSING (effectively)
-- `convex/pdfGenerator.ts` has exactly 3 hardcoded layouts (report card `:16`, fee receipt `:207`, class list `:348`) with **zero callers** anywhere in the repo — unreachable dead code.
-- No user-designable template system (no "design a document from your own fields" surface). The spec's core requirement is absent.
+### 3.5 Bulk Document Generation — DONE (P2#11, 2026-08-16)
+- `convex/pdfGenerator.ts` still has 3 hardcoded layouts with zero callers — dead code, but harmless.
+- **Template system IS built**: `convex/docTemplates.ts` (CRUD), `convex/templateRenderer.ts` (PDF engine via pdf-lib), `convex/templateSeed.ts` (4 default templates: report card, receipt, class list, certificate), `src/components/document-generator.tsx` (UI). Templates reference EAV fields by ID, resolved at render time. Schools design documents using their own fields. Nav links to `/dashboard/documents`.
 
 ### 3.6 Global Search — DONE (P2#12, 2026-08-16) for student-facing custom fields
 - `globalSearch.ts` searches three surfaces: (1) students `firstName/lastName/admNo` via dedicated search indexes (`schema.ts:121-123`), (2) EAV `fieldValues` via `search_value` search index (`schema.ts:472`) resolved back to students via `records.studentId`, and (3) `records.displayName` via `search_displayName` (`schema.ts:505`).
@@ -141,8 +141,8 @@
 - **But the optional modules' live data sources are hardcoded typed tables**, not EAV: fees → `fee_structures/fee_payments` (`fees.ts:471-561`), books → `books`, HR → `leave_requests/appraisals` (`hr.ts:10-42`), health → `health_records/clinic_visits` (`health/page.tsx:43-46`). The EAV records/fieldValues are a parallel side-channel.
 - **Zero default fields: VIOLATES** — every module type ships pre-seeded fields (`seedFullTree.ts:425-440` finance, `:643-658` HR, `:750-760` library, `:239-401` health…). Activating Finance exposes pre-seeded fields, not blank ones.
 
-### 4.1 Finance — mixed
-- **Dynamic calculation engine / due-paid mapping: FIXED (2026-08-16)** — `calcEngine.ts:calculateFeeStats` now reads from `fee_structures` table for expected amounts instead of hardcoding `students.length * 5000`. `total_expected` and `collection_rate` operations now compute from actual class+stream fee structures. The orphaned `semantic: "amount"` tag and no mapping issue remain open.
+### 4.1 Finance — mixed (P2#14 EAV-aware 2026-08-16)
+- **Dynamic calculation engine / due-paid mapping: FIXED (P0#3 + P2#14)** — `calcEngine.ts:calculateFeeStats` reads from `fee_structures` table for expected amounts. `fees.ts` now uses EAV-aware resolution via `buildEavFeeMap` + `resolveFeeAmount`: when a school configures `useEavForFees` in Settings → Finance Engine, fee amounts are read from EAV fieldValues (fields tagged with `semantic: "amount"`) instead of `fee_structures`. Response includes `feeSource: "eav" | "fee_structures"`.
 - Difference over/under/exact: CONFORMS — `cleared/owing/overpaid/no_structure` per term (`fees.ts:106-121`), `getTermSummary` aggregates (`:272-303`).
 - Term-scoped + carry-over: CONFORMS — credit carries forward across chronologically sorted terms (`fees.ts:96-110,234-267,424-445`); UI: "X in overpayment credit carried into this term" / "school owes KES X" (`fees/page.tsx:325-339`). (Both auto-credit and flagged surplus are surfaced — the spec's open decision #1 is effectively already decided.)
 - Human-readable output: PARTIAL — badges/sentence fragments, no per-student generated sentences like "Paid 500 more than expected for Term 2."
