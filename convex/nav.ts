@@ -174,14 +174,19 @@ export const getNavTree = query({
       if (ROLE_GATED_MODULES.has(mod.name) && !isLeadership) continue;
 
       const byParent = sectionsByModule.get(mod._id) ?? new Map();
+      const hasEavSections = byParent.size > 0;
       const entry: NavModule = {
         moduleId: mod._id,
         name: mod.name,
         icon: mod.icon,
-        // Every module must land somewhere clickable: a dedicated dashboard
-        // page when one exists, otherwise the generic EAV records page for
-        // this module. No dead rows / arrow-cursor items.
-        href: MODULE_HREF[mod.name] ?? `/dashboard/records?moduleId=${mod._id}`,
+        // P1 re-architecture: when a module has EAV sections configured
+        // (school built structure in Settings → Data Structure), link to the
+        // generic EAV records page which renders via ModuleRenderer/RecordList.
+        // When no EAV sections exist yet, fall back to the hardcoded dashboard
+        // page (if one exists) or the generic records page.
+        href: hasEavSections
+          ? `/dashboard/records?moduleId=${mod._id}`
+          : (MODULE_HREF[mod.name] ?? `/dashboard/records?moduleId=${mod._id}`),
         sections: buildTree(byParent, null),
       };
       const groupLabel = BUCKET_GROUP[mod.bucket] ?? "Modules";

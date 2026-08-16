@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useSchool } from "@/lib/use-school";
+import { EavAwarePage } from "@/components/generic/EavAwarePage";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { BrandLoader } from "@/components/ui/brand-loader";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ export default function FeedingPage() {
   const boardingStudents = filtered.filter((s) => s.isBoarding);
 
   return (
+    <EavAwarePage moduleName="Feeding" bucket="learner">
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
@@ -164,5 +166,6 @@ export default function FeedingPage() {
         </Card>
       </div>
     </div>
+    </EavAwarePage>
   );
 }
