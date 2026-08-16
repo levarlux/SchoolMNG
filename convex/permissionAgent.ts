@@ -146,10 +146,10 @@ export const chat = action({
     }
 
     const [roles, modules, members, permissions] = await Promise.all([
-      ctx.runQuery(api.roles.listBySchool, { schoolId: args.schoolId }),
-      ctx.runQuery(api.modules.listBySchool, { schoolId: args.schoolId }),
-      ctx.runQuery(api.members.listBySchool, { schoolId: args.schoolId }),
-      ctx.runQuery(api.permissions.listBySchool, { schoolId: args.schoolId }),
+      ctx.runQuery(api.roles.listBySchool, { schoolId: args.schoolId }) as Promise<{ key: string; name: string; baseBucket: string }[]>,
+      ctx.runQuery(api.modules.listBySchool, { schoolId: args.schoolId }) as Promise<{ name: string }[]>,
+      ctx.runQuery(api.members.listBySchool, { schoolId: args.schoolId }) as Promise<{ name?: string; email?: string; userId: string; role?: string }[]>,
+      ctx.runQuery(api.permissions.listBySchool, { schoolId: args.schoolId }) as Promise<{ nodeType: string; nodeId: string; access: string }[]>,
     ]);
 
     const roleLines = roles.map((r) => `${r.key} (${r.name}) — base: ${r.baseBucket}`);

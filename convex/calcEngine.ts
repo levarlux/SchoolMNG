@@ -345,7 +345,7 @@ export const calculateFeeStats = query({
       v.literal("top_payers"),
     ),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<{ result: unknown; type: string; source?: string }> => {
     await requireSchoolMembership(ctx, args.schoolId);
     
     const payments = args.termId

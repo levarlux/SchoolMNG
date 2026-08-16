@@ -111,7 +111,7 @@ export const initializeCheckout = action({
     // 2. If planCode is invalid or missing, fetch live plans from Paystack (or auto-create missing ones)
     if (!isPlanValid) {
       console.log("[paystack] Resolving live plan from Paystack...");
-      const livePlans = await ctx.runAction(api.billing.getAllTierPlans, {});
+      const livePlans: { tier: string; planCode: string; amount: number }[] | null = await ctx.runAction(api.billing.getAllTierPlans, {});
       
       // Match by requested plan code or fallback to starter/first plan
       const match = livePlans?.find((p) => p.planCode === args.planCode) || livePlans?.[0];

@@ -10,7 +10,7 @@
 import { v } from "convex/values";
 import { action, internalMutation, internalQuery } from "./_generated/server";
 import { internal } from "./_generated/api";
-import { Id } from "./_generated/dataModel";
+import { Id, Doc } from "./_generated/dataModel";
 import { identityRowKey, rankCandidates, decideMatch, PersonRef } from "./identity";
 
 export const getStudentsForMarks = internalQuery({
@@ -109,10 +109,10 @@ export const importMarks = action({
     if (school.clerkOrgId !== identity.org_id) {
       throw new Error("Not authorised for this school");
     }
-    const students = await ctx.runQuery(internal.marksImport.getStudentsForMarks, {
+    const students: Doc<"students">[] = await ctx.runQuery(internal.marksImport.getStudentsForMarks, {
       schoolId: args.schoolId,
     });
-    const subjects = await ctx.runQuery(internal.marksImport.getSubjectsForMarks, {
+    const subjects: Doc<"subjects">[] = await ctx.runQuery(internal.marksImport.getSubjectsForMarks, {
       schoolId: args.schoolId,
     });
 
